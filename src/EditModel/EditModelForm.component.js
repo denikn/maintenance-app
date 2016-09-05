@@ -21,12 +21,8 @@ import FormBuilder from 'd2-ui/lib/forms/FormBuilder.component';
 import { createFieldConfig, typeToFieldMap } from '../forms/fields';
 import appState from '../App/appStateStore';
 import { Observable } from 'rx';
-
+import getI18n from '../i18n';
 import { applyRulesToFieldConfigs, getRulesForModelType } from './form-rules';
-
-config.i18n.strings.add('name');
-config.i18n.strings.add('code');
-config.i18n.strings.add('short_name');
 
 function createUniqueValidator(fieldConfig, modelDefinition, uid) {
     return function checkAgainstServer(value) {
@@ -46,8 +42,8 @@ function createUniqueValidator(fieldConfig, modelDefinition, uid) {
             .list()
             .then(collection => {
                 if (collection.size !== 0) {
-                    return getInstance()
-                        .then(d2 => d2.i18n.getTranslation('value_not_unique'))
+                    return getI18n()
+                        .then(i18n => i18n.t('Value not unique'))
                         .then(message => Promise.reject(message));
                 }
                 return Promise.resolve(true);
@@ -58,6 +54,7 @@ function createUniqueValidator(fieldConfig, modelDefinition, uid) {
 // TODO: Move this outside of this function as it is used with more than just this component
 export async function createFieldConfigForModelTypes(modelType) {
     const d2 = await getInstance();
+    const i18n = await getI18n();
 
     const formFieldsManager = new FormFieldsManager(new FormFieldsForModel(d2.models));
     formFieldsManager.setFieldOrder(fieldOrderNames.for(modelType));
@@ -72,12 +69,12 @@ export async function createFieldConfigForModelTypes(modelType) {
             if (fieldConfig.validators) {
                 fieldConfig.validators
                     .forEach(validator => {
-                        validator.message = d2.i18n.getTranslation(validator.message);
+                        validator.message = i18n.t(validator.message);
                     });
             }
 
             // Get translation for the field label
-            fieldConfig.props.labelText = d2.i18n.getTranslation(fieldConfig.props.labelText);
+            fieldConfig.props.labelText = i18n.t(fieldConfig.props.labelText);
 
             // Add required indicator when the field is required
             if (fieldConfig.props.isRequired) {

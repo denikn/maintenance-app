@@ -1957,3 +1957,11 @@ msgstr ""
 #: legend_set_attribute
 msgid "Legend"
 msgstr ""
+
+#: name
+msgid "Name"
+msgstr ""
+
+#: short_name
+msgid "Short name"
+msgstr ""

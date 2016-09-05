@@ -8,6 +8,7 @@ import TextField from '../../forms/form-fields/text-field';
 import ConfidentialField from './tracked-entity-attribute/ConfidentialField';
 import switchOnBoolean from './tracked-entity-attribute/switchOnBoolean';
 import withD2Context from 'd2-ui/lib/component-helpers/addD2Context';
+import { translate } from 'react-i18next';
 
 const isUniqueInSystem = (trackedEntityAttribute) => (trackedEntityAttribute.orgunitScope === false || trackedEntityAttribute.orgunitScope === undefined) &&
     (trackedEntityAttribute.programScope === false || trackedEntityAttribute.programScope === undefined);
@@ -49,16 +50,16 @@ const styles = {
     },
 };
 
-const GenerateFields = (props, context) => {
+const GenerateFields = (props, { i18n }) => {
     return (
         <div>
             <Checkbox
                 onChange={compose(() => updateValueForField('pattern', ''), updateValueForField('generated'), get('target.value'))}
-                labelText={context.d2.i18n.getTranslation('generated')}
+                labelText={i18n.t('Generated')}
                 value={props.model.generated}
             />
             {props.model.generated ? <TextField
-                labelText={context.d2.i18n.getTranslation('pattern')}
+                labelText={i18n.t('Pattern')}
                 value={props.model.pattern}
                 hintText="########"
                 onChange={compose(updateValueForField('pattern'), get('target.value'))}
@@ -68,7 +69,7 @@ const GenerateFields = (props, context) => {
 };
 
 GenerateFields.contextTypes = {
-    d2: React.PropTypes.object,
+    i18n: React.PropTypes.object,
 };
 
 const UniqueSubFields = (props, context) => {
@@ -114,16 +115,20 @@ const SkipLogicDepth = (props) => {
     );
 };
 
-const TrackedEntityField = withD2Context((props, { d2 }) => { console.log(props); return (
+const TrackedEntityField = (props, { i18n }) => { console.log(props); return (
     <SkipLogicDepth level="1">
         <DropDownAsync
-            labelText={d2.i18n.getTranslation('tracked_entity')}
+            labelText={i18n.t('Tracked Entity')}
             referenceType="trackedEntity"
             value={props.model.trackedEntity}
             onChange={compose((value) => actions.update({fieldName: 'trackedEntity', value, }), get('target.value'))}
         />
     </SkipLogicDepth>
-)});
+)};
+
+TrackedEntityField.contextTypes = {
+    i18n: React.PropTypes.object,
+};
 
 export default new Map([
     ['unique', {

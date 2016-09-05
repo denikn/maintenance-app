@@ -13,6 +13,8 @@ import LoadingMask from './loading-mask/LoadingMask.component';
 import dhis2 from 'd2-ui/lib/header-bar/dhis2';
 import routes from './router';
 import '../scss/maintenance.scss';
+import getI18n from './i18n';
+import { I18nextProvider } from 'react-i18next';
 
 if (process.env.NODE_ENV !== 'production') {
     log.setLevel(log.levels.DEBUG);
@@ -30,11 +32,17 @@ function configI18n(userSettings) {
 
     // Add english as locale for all cases (either as primary or fallback)
     config.i18n.sources.add('./i18n/i18n_module_en.properties');
+
+    return getI18n();
 }
 
-function startApp() {
+function startApp(i18next) {
+    window.i18next = i18next;
+
     render(
-        routes,
+        <I18nextProvider i18n={i18next}>
+            {routes}
+        </I18nextProvider>,
         document.getElementById('app')
     );
 }
@@ -55,6 +63,6 @@ getManifest('./manifest.webapp')
     })
     .then(getUserSettings)
     .then(configI18n)
-    .then(init)
+    .then((i18next) => init().then(() => i18next))
     .then(startApp)
     .catch(log.error.bind(log));

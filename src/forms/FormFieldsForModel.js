@@ -2,6 +2,14 @@ import log from 'loglevel';
 import camelCaseToUnderscores from 'd2-utilizr/lib/camelCaseToUnderscores';
 import { typeToFieldMap, createFieldConfig } from './fields';
 
+function camelCaseToHumanCase(word) {
+    const [first, ...others] = word.replace(/([a-z])([A-Z])([a-z])/g, function (match, first, second, third, index, word) {
+        return `${first} ${second}${third}`;
+    });
+
+    return `${first.toUpperCase()}${others.join('')}`;
+}
+
 const fieldNamesToIgnoreOnDisplay = ['id', 'publicAccess', 'created', 'lastUpdated', 'user', 'userGroupAccesses', 'attributeValues'];
 
 class FormFieldsForModel {
@@ -37,7 +45,7 @@ class FormFieldsForModel {
 
             fieldConfig.name = fieldName;
             fieldConfig.fieldOptions = {
-                labelText: camelCaseToUnderscores(fieldName),
+                labelText: camelCaseToHumanCase(fieldName),
             };
 
             return fieldConfig;
