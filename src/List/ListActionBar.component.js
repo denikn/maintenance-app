@@ -1,45 +1,44 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import FloatingActionButton from 'material-ui/FloatingActionButton/FloatingActionButton';
 import FontIcon from 'material-ui/FontIcon/FontIcon';
-import Auth from 'd2-ui/lib/auth/Auth.mixin';
 import { goToRoute } from '../router-utils';
 
-const ListActionBar = React.createClass({
-    propTypes: {
-        modelType: React.PropTypes.string.isRequired,
-        groupName: React.PropTypes.string.isRequired,
-    },
+function ListActionBar({ modelType, groupName }, { d2 }) {
+    const addClick = () => {
+        goToRoute(`/edit/${groupName}/${modelType}/add`);
+    };
 
-    mixins: [Auth],
+    const cssStyles = {
+        textAlign: 'right',
+        marginTop: '1rem',
+        bottom: '1.5rem',
+        right: '1.5rem',
+        position: 'fixed',
+        zIndex: 10,
+    };
 
-    _addClick() {
-        goToRoute(`/edit/${this.props.groupName}/${this.props.modelType}/add`);
-    },
+    const modelDefinition = d2.models[modelType];
 
-    render() {
-        const cssStyles = {
-            textAlign: 'right',
-            marginTop: '1rem',
-            bottom: '1.5rem',
-            right: '1.5rem',
-            position: 'fixed',
-            zIndex: 10,
-        };
+    if (!d2.currentUser.canCreate(modelDefinition)) {
+        return null;
+    }
 
-        const modelDefinition = this.getModelDefinitionByName(this.props.modelType);
+    return (
+        <div style={cssStyles}>
+            <FloatingActionButton onClick={addClick}>
+                <FontIcon className="material-icons">add</FontIcon>
+            </FloatingActionButton>
+        </div>
+    );
+}
 
-        if (!this.getCurrentUser().canCreate(modelDefinition)) {
-            return null;
-        }
+ListActionBar.propTypes = {
+    modelType: PropTypes.string.isRequired,
+    groupName: PropTypes.string.isRequired,
+};
 
-        return (
-            <div style={cssStyles}>
-                <FloatingActionButton onClick={this._addClick}>
-                    <FontIcon className="material-icons">add</FontIcon>
-                </FloatingActionButton>
-            </div>
-        );
-    },
-});
+ListActionBar.contextTypes = {
+    d2: PropTypes.object,
+};
 
 export default ListActionBar;
