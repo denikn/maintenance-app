@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import Action from 'd2-ui/lib/action/Action';
 import IndicatorExpressionManager from 'd2-ui/lib/expression-manager/ExpressionManager';
 import indicatorExpressionStatusStore from 'd2-ui/lib/expression-manager/ExpressionStatus.store';
 import { getInstance as getD2 } from 'd2/lib/d2';
 import { Observable } from 'rxjs';
-import Translate from 'd2-ui/lib/i18n/Translate.mixin';
 
 const indicatorExpressionStatusActions = Action.createActionsFromNames(['requestExpressionStatus']);
 indicatorExpressionStatusActions.requestExpressionStatus
@@ -24,25 +23,18 @@ indicatorExpressionStatusActions.requestExpressionStatus
         indicatorExpressionStatusStore.setState(response);
     });
 
-const IndicatorExpressionManagerContainer = React.createClass({
-    propTypes: {
-        indicatorExpressionChanged: React.PropTypes.func.isRequired,
-        description: React.PropTypes.string.isRequired,
-        formula: React.PropTypes.string.isRequired,
-        titleText: React.PropTypes.string.isRequired,
-    },
+class IndicatorExpressionManagerContainer extends Component{
+    constructor(props, context) {
+        super(props, context);
 
-    mixins: [Translate],
-
-    getInitialState() {
-        return {
+        this.state = {
             organisationUnitGroups: [],
             constants: [],
             programTrackedEntityAttributes: [],
             programIndicators: [],
             programDataElements: [],
         };
-    },
+    }
 
     componentDidMount() {
         getD2()
@@ -56,25 +48,34 @@ const IndicatorExpressionManagerContainer = React.createClass({
             .then(constants => this.setState({ constants }));
 
         this.refs.expressionManager.requestExpressionStatus();
-    },
-
-    getExpressionManager() {
-        return this.refs.expressionManager;
-    },
+    }
 
     render() {
+        const i18n = this.context.d2.i18n;
+
         return (
             <IndicatorExpressionManager
-                descriptionLabel={this.getTranslation('description')}
+                descriptionLabel={i18n.getTranslation('description')}
                 descriptionValue={this.props.description}
                 formulaValue={this.props.formula}
                 expressionStatusStore={indicatorExpressionStatusStore}
                 expressionChanged={this.props.indicatorExpressionChanged}
                 titleText={this.props.titleText}
                 ref="expressionManager"
-                />
+            />
         );
-    },
-});
+    }
+}
+
+IndicatorExpressionManagerContainer.contextTypes = {
+    d2: PropTypes.object,
+};
+
+IndicatorExpressionManagerContainer.propTypes = {
+    indicatorExpressionChanged: PropTypes.func.isRequired,
+    description: PropTypes.string.isRequired,
+    formula: PropTypes.string.isRequired,
+    titleText: PropTypes.string.isRequired,
+};
 
 export default IndicatorExpressionManagerContainer;

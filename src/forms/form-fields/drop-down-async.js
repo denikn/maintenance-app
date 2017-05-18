@@ -1,33 +1,18 @@
-import React from 'react';
-import DropDown from './drop-down';
+import React, { Component, PropTypes } from 'react';
 import { getInstance } from 'd2/lib/d2';
+import DropDown from './drop-down';
 import QuickAddLink from './helpers/QuickAddLink.component';
 import RefreshMask from './helpers/RefreshMask.component';
 
-export default React.createClass({
-    propTypes: {
-        referenceType: React.PropTypes.string.isRequired,
-        value: React.PropTypes.shape({
-            id: React.PropTypes.string.isRequired,
-        }),
-        onChange: React.PropTypes.func.isRequired,
-        quickAddLink: React.PropTypes.bool,
-        preventAutoDefault: React.PropTypes.bool,
-    },
+export default class DropDownAsync extends Component {
+    constructor(props, context) {
+        super(props, context);
 
-    getDefaultProps() {
-        return {
-            quickAddLink: true,
-            preventAutoDefault: false,
-        };
-    },
-
-    getInitialState() {
-        return {
+        this.state = {
             options: [],
             isRefreshing: false,
         };
-    },
+    };
 
     loadOptions() {
         const fieldsForReferenceType = this.props.referenceType === 'optionSet'
@@ -83,11 +68,11 @@ export default React.createClass({
                     });
                 }
             });
-    },
+    }
 
     componentDidMount() {
         this.loadOptions();
-    },
+    }
 
     // TODO: Remove this hack to update the categoryCombo property when the domainType is set to TRACKER
     // This should probably be done in the objectActions, however there we currently do not have any knowledge of the
@@ -105,11 +90,11 @@ export default React.createClass({
                 },
             });
         }
-    },
+    }
 
     componentWillUnmount() {
         this.omgLikeJustStop = true;
-    },
+    }
 
     render() {
         const {
@@ -143,62 +128,29 @@ export default React.createClass({
                     {...other}
                     options={this.state.options}
                     value={this.props.value ? this.props.value.id : undefined}
-                    onChange={this._onChange}
+                    onChange={this.onChange}
                     fullWidth
                 />
                 {quickAddLink ?
                     <QuickAddLink
                         referenceType={this.props.referenceType}
-                        onRefreshClick={this._onRefreshClick}
+                        onRefreshClick={this.onRefreshClick}
                     />
                 : null}
             </div>
         );
-    },
+    }
 
-    renderQuickAddLink() {
-        const sectionForReferenceType = getSectionForType(this.props.referenceType);
-
-        if (!sectionForReferenceType) {
-            return null;
-        }
-
-        const styles = {
-            quickAddWrap: {
-                display: 'flex',
-            },
-        };
-
-        return (
-            <div style={styles.quickAddWrap}>
-                <Link
-                    tooltip="Add some related object"
-                    tooltipPosition="top-left"
-                    to={`/edit/${sectionForReferenceType}/${this.props.referenceType}/add`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <IconButton tooltip="Add new" tooltipPosition="top-left">
-                        <AddCircleOutlineIcon />
-                    </IconButton>
-                </Link>
-                <IconButton tooltip="Refresh values" tooltipPosition="top-left" onClick={this._onRefreshClick}>
-                    <RefreshIcon />
-                </IconButton>
-            </div>
-        );
-    },
-
-    _onRefreshClick() {
+    onRefreshClick = () => {
         this.setState({
             isRefreshing: true,
         });
 
         this.loadOptions()
             .then(() => this.setState({ isRefreshing: false }));
-    },
+    };
 
-    _onChange(event) {
+    onChange = (event) => {
         if (event.target.value === null) {
             this.props.onChange({
                 target: {
@@ -216,5 +168,20 @@ export default React.createClass({
                 },
             });
         }
-    },
-});
+    };
+}
+
+DropDownAsync.defaultProps = {
+    quickAddLink: true,
+    preventAutoDefault: false,
+};
+
+DropDownAsync.propTypes = {
+    referenceType: PropTypes.string.isRequired,
+    value: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+    }),
+    onChange: PropTypes.func.isRequired,
+    quickAddLink: PropTypes.bool,
+    preventAutoDefault: PropTypes.bool,
+};

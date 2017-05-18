@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import Store from 'd2-ui/lib/store/Store';
 import { getInstance } from 'd2/lib/d2';
 import GroupEditor from 'd2-ui/lib/group-editor/GroupEditor.component';
 import GroupEditorWithOrdering from 'd2-ui/lib/group-editor/GroupEditorWithOrdering.component';
 import Action from 'd2-ui/lib/action/Action';
-import Translate from 'd2-ui/lib/i18n/Translate.mixin';
 import TextField from 'material-ui/TextField/TextField';
 import log from 'loglevel';
 import QuickAddLink from './helpers/QuickAddLink.component';
@@ -61,36 +60,24 @@ multiSelectActions.removeItemsFromModelCollection
         complete();
     });
 
-export default React.createClass({
-    propTypes: {
-        referenceType: React.PropTypes.string.isRequired,
-        referenceProperty: React.PropTypes.string.isRequired,
-        model: React.PropTypes.object.isRequired,
-        labelText: React.PropTypes.string.isRequired,
-        onChange: React.PropTypes.func.isRequired,
-        value: React.PropTypes.oneOfType([
-            React.PropTypes.shape({ values: React.PropTypes.func.isRequired }),
-            React.PropTypes.arrayOf(React.PropTypes.func)
-        ]),
-    },
+export default class MultiSelect extends Component {
+    constructor(props, context) {
+        super(props, context);
 
-    mixins: [Translate],
-
-    getInitialState() {
         const itemStore = Store.create();
         const assignedItemStore = Store.create();
 
         itemStore.state = [];
         assignedItemStore.state = [];
 
-        return {
+        this.state = {
             itemStore,
             assignedItemStore,
             filterText: '',
             isRefreshing: false,
             canCreate: false,
         };
-    },
+    }
 
     componentWillMount() {
         if (!this.props.referenceType) {
@@ -102,7 +89,7 @@ export default React.createClass({
             .then(this.loadAvailableItems)
             .then(this.populateItemStore)
             .then(this.populateAssignedStore);
-    },
+    }
 
     renderGroupEditor() {
         if (this.props.model.modelDefinition.modelValidations[this.props.referenceProperty] &&
@@ -112,9 +99,9 @@ export default React.createClass({
                 <GroupEditorWithOrdering
                     itemStore={this.state.itemStore}
                     assignedItemStore={this.state.assignedItemStore}
-                    onAssignItems={this._assignItems}
-                    onRemoveItems={this._removeItems}
-                    onOrderChanged={this._orderChanged}
+                    onAssignItems={this.assignItems}
+                    onRemoveItems={this.removeItems}
+                    onOrderChanged={this.orderChanged}
                     height={250}
                     filterText={this.state.filterText}
                 />
@@ -125,13 +112,13 @@ export default React.createClass({
             <GroupEditor
                 itemStore={this.state.itemStore}
                 assignedItemStore={this.state.assignedItemStore}
-                onAssignItems={this._assignItems}
-                onRemoveItems={this._removeItems}
+                onAssignItems={this.assignItems}
+                onRemoveItems={this.removeItems}
                 height={250}
                 filterText={this.state.filterText}
             />
         );
-    },
+    }
 
     render() {
         const styles = {
@@ -168,17 +155,17 @@ export default React.createClass({
                 </div>
                 <TextField
                     fullWidth
-                    hintText={this.getTranslation('search_available_selected_items')}
+                    hintText={this.context.d2.i18n.getTranslation('search_available_selected_items')}
                     defaultValue={this.state.filterText}
-                    onChange={this._setFilterText}
+                    onChange={this.setFilterText}
                 />
                 {this.renderGroupEditor()}
                 <div style={{ clear: 'both', height: '2rem', width: '100%' }} />
             </div>
         );
-    },
+    }
 
-    _orderChanged(newOrder) {
+    orderChanged = (newOrder) => {
         const itemList = this.state.itemStore.getState();
 
         // TODO: Move the following mutation to an `Action`
@@ -194,9 +181,9 @@ export default React.createClass({
 
         // Set the state to the store to emit the value to all subscribers
         this.state.assignedItemStore.setState(this.props.model[this.props.referenceProperty].toArray().map(value => value.id));
-    },
+    };
 
-    _assignItems(items) {
+    assignItems = (items) => {
         if (this.props.referenceProperty === 'aggregationLevels') {
             const newList = Array.from((new Set((this.props.model[this.props.referenceProperty] || []).concat(items.map(Number)))).values());
 
@@ -230,9 +217,9 @@ export default React.createClass({
                     resolve();
                 }, reject);
         });
-    },
+    };
 
-    _removeItems(items) {
+    removeItems = (items) => {
         if (this.props.referenceProperty === 'aggregationLevels') {
             const newList = Array.from((new Set((this.props.model[this.props.referenceProperty] || []).filter(v => items.map(Number).indexOf(v) === -1))).values());
 
@@ -259,15 +246,15 @@ export default React.createClass({
                     resolve();
                 }, reject);
         });
-    },
+    };
 
-    _setFilterText(event) {
+    setFilterText = (event) => {
         this.setState({
             filterText: event.target.value,
         });
-    },
+    };
 
-    updateForm(newAssignedItems) {
+    updateForm = (newAssignedItems) => {
         this.state.assignedItemStore.setState(unique([].concat(newAssignedItems)));
 
         this.props.onChange({
@@ -275,9 +262,9 @@ export default React.createClass({
                 value: this.props.model[this.props.referenceProperty],
             },
         });
-    },
+    };
 
-    reloadAvailableItems() {
+    reloadAvailableItems = () => {
         this.setState({
             isRefreshing: true,
         });
@@ -290,17 +277,17 @@ export default React.createClass({
                     isRefreshing: false,
                 });
             });
-    },
+    };
 
-    checkCreateAuthority(d2) {
+    checkCreateAuthority = (d2) => {
         const key = this.props.referenceType;
         if (d2.currentUser.canCreate(d2.models[key])) {
             this.setState({ canCreate: true });
         }
         return d2;
-    },
+    };
 
-    loadAvailableItems(d2) {
+    loadAvailableItems = (d2) => {
         if (d2.models[this.props.referenceType]) {
             const multiSelectSourceModelDefinition = d2.models[this.props.referenceType];
 
@@ -316,9 +303,9 @@ export default React.createClass({
                 .list({ paging: false, fields: 'displayName|rename(name),id,level', filter: filters });
         }
         return Promise.reject(`${this.props.referenceType} is not a model on d2.models`);
-    },
+    };
 
-    populateItemStore(availableItems) {
+    populateItemStore = (availableItems) => {
         if (this.props.referenceProperty === 'aggregationLevels') {
             this.state.itemStore.setState(Array.from(availableItems.values()).map((model) => {
                 return {
@@ -330,9 +317,9 @@ export default React.createClass({
         }
 
         this.state.itemStore.setState(availableItems);
-    },
+    };
 
-    populateAssignedStore() {
+    populateAssignedStore = () => {
         if (!this.props.value) {
             return this.state.assignedItemStore.setState([]);
         }
@@ -342,5 +329,21 @@ export default React.createClass({
         } else {
             this.state.assignedItemStore.setState(Array.from(this.props.value.values()).map(value => value.id));
         }
-    },
-});
+    };
+}
+
+MultiSelect.contextTypes = {
+    d2: PropTypes.object.isRequired,
+};
+
+MultiSelect.propTypes = {
+    referenceType: PropTypes.string.isRequired,
+    referenceProperty: PropTypes.string.isRequired,
+    model: PropTypes.object.isRequired,
+    labelText: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    value: PropTypes.oneOfType([
+        PropTypes.shape({values: PropTypes.func.isRequired}),
+        PropTypes.arrayOf(PropTypes.func)
+    ]),
+};

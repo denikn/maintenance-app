@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import fieldGroups from '../config/field-config/field-groups';
 import disabledOnEdit from '../config/disabled-on-edit';
 import { getInstance } from 'd2/lib/d2';
@@ -13,7 +13,6 @@ import FormButtons from './FormButtons.component';
 import log from 'loglevel';
 import extraFields from './extraFields';
 import CircularProgress from 'd2-ui/lib/circular-progress/CircularProgress';
-import Translate from 'd2-ui/lib/i18n/Translate.mixin';
 import FormBuilder from 'd2-ui/lib/forms/FormBuilder.component';
 import appState from '../App/appStateStore';
 import { Observable } from 'rxjs';
@@ -110,19 +109,11 @@ function PlaceholderComponent(props) {
     return null;
 }
 
-export default React.createClass({
-    propTypes: {
-        modelId: React.PropTypes.string.isRequired,
-        modelType: React.PropTypes.string.isRequired,
-        onSaveSuccess: React.PropTypes.func.isRequired,
-        onSaveError: React.PropTypes.func.isRequired,
-        onCancel: React.PropTypes.func.isRequired,
-    },
+export default class EditModelForm extends Component {
+    constructor(props, context) {
+        super(props, context);
 
-    mixins: [Translate],
-
-    getInitialState() {
-        return {
+        this.state = {
             modelToEdit: undefined,
             isLoading: true,
             formState: {
@@ -132,11 +123,11 @@ export default React.createClass({
             },
             activeStep: 0,
         };
-    },
+    }
 
     isAddOperation() {
         return this.props.modelId === 'add';
-    },
+    }
 
     componentWillMount() {
         this.subscription = modelToEditAndModelForm$
@@ -145,86 +136,11 @@ export default React.createClass({
             }, (errorMessage) => {
                 snackActions.show({ message: errorMessage, action: 'ok' });
             });
-
-/*
-        const modelType = this.props.modelType;
-
-        getInstance().then(d2 => {
-            const formFieldsManager = new FormFieldsManager(new FormFieldsForModel(d2.models));
-            formFieldsManager.setFieldOrder(fieldOrderNames.for(modelType));
-
-            for (const fieldOverrideConfig of fieldOverrides.for(modelType)) {
-                const [fieldName, overrideConfig] = fieldOverrideConfig;
-
-                formFieldsManager.addFieldOverrideFor(fieldName, overrideConfig);
-            }
-
-            this.subscription = modelToEditAndModelForm$
-                .subscribe(([modelToEdit, editFormFieldsForCurrentModelType]) => {
-                    const fieldConfigs = editFormFieldsForCurrentModelType
-                    // TODO: When switching to the FormBuilder that manages state this function for all values
-                    // would need to be executed only for the field that actually changed and/or the values that
-                    // change because of it.
-                        .map(fieldConfig => {
-                            fieldConfig.fieldOptions.model = modelToEdit;
-
-                            if (!this.isAddOperation() && disabledOnEdit.for(modelType).indexOf(fieldConfig.name) !== -1) {
-                                fieldConfig.props.disabled = true;
-                            }
-
-                            // The value is passes through a converter before being set onto the field config.
-                            // This is useful for when a value is a number and might have to be translated to a
-                            // value of the type Number.
-                            if (fieldConfig.beforePassToFieldConverter) {
-                                fieldConfig.value = fieldConfig.beforePassToFieldConverter(modelToEdit[fieldConfig.name]);
-                            } else {
-                                fieldConfig.value = modelToEdit[fieldConfig.name];
-                            }
-
-                            return fieldConfig;
-                        });
-
-                    const fieldConfigsAfterRules = applyRulesToFieldConfigs(getRulesForModelType(modelToEdit.modelDefinition.name), fieldConfigs, modelToEdit);
-                    const fieldConfigsWithAttributeFields = [].concat(
-                        fieldConfigsAfterRules,
-                        getAttributeFieldConfigs(this.context.d2, modelToEdit),
-                        (extraFields[modelType] || []).map(config => {
-                            config.props = config.props || {};
-                            config.props.modelToEdit = modelToEdit;
-                            return config;
-                        })
-                    );
-
-                    const fieldConfigsWithAttributeFieldsAndUniqueValidators = fieldConfigsWithAttributeFields
-                        .map(fieldConfig => addUniqueValidatorWhenUnique(fieldConfig, modelToEdit));
-
-                    const groups = fieldGroups.groupsByField(modelType);
-                    const fieldConfigsThatAreSometimesHiddenButAlsoSometimesNotHidden = fieldConfigsWithAttributeFieldsAndUniqueValidators
-                        .map(field => {
-                            if (groups && groups[field.name] !== (this.state && this.state.activeStep || 0) && !field.hiddenComponent) {
-                                field.hiddenComponent = field.component;
-                                field.component = PlaceholderComponent;
-                            }
-                            return field;
-                        });
-
-                    this.setState({
-                        fieldConfigs: fieldConfigsThatAreSometimesHiddenButAlsoSometimesNotHidden,
-                        modelToEdit: modelToEdit,
-                        isLoading: false,
-                    });
-                }, (errorMessage) => {
-                    snackActions.show({ message: errorMessage, action: 'ok' });
-                });
-
-            this.setState({
-                formFieldsManager: formFieldsManager,
-*/
-    },
+    }
 
     componentWillUnmount() {
         this.subscription && this.subscription.unsubscribe();
-    },
+    }
 
     renderSharingNotification() {
         const formPaperStyle = {
@@ -238,7 +154,7 @@ export default React.createClass({
         }
 
         return null;
-    },
+    }
 
     renderStepper() {
         const steps = fieldGroups.for(this.props.modelType);
@@ -248,12 +164,12 @@ export default React.createClass({
             <Stepper activeStep={this.state.activeStep} linear={false} style={{ margin: '0 -16px' }}>
                 {steps.map((step, s) => (
                     <Step key={s}>
-                        <StepButton onClick={() => this.setActiveStep(s)}>{this.getTranslation(step.label)}</StepButton>
+                        <StepButton onClick={() => this.setActiveStep(s)}>{this.context.d2.i18n.getTranslation(step.label)}</StepButton>
                     </Step>
                 ))}
             </Stepper>
         ) : null;
-    },
+    }
 
     renderForm() {
         const formPaperStyle = {
@@ -281,18 +197,18 @@ export default React.createClass({
                 {this.renderSharingNotification()}
                 <FormBuilder
                     fields={this.state.fieldConfigs}
-                    onUpdateField={this._onUpdateField}
-                    onUpdateFormStatus={this._onUpdateFormStatus}
+                    onUpdateField={this.onUpdateField}
+                    onUpdateFormStatus={this.onUpdateFormStatus}
                 />
                 <FormButtons>
-                    <SaveButton onClick={this._saveAction}
+                    <SaveButton onClick={this.saveAction}
                                 isValid={this.state.formState.valid && !this.state.formState.validating}
                                 isSaving={this.state.isSaving}/>
-                    <CancelButton onClick={this._closeAction}/>
+                    <CancelButton onClick={this.closeAction}/>
                 </FormButtons>
             </div>
         );
-    },
+    }
 
     render() {
         if (this.state.loading) {
@@ -300,9 +216,9 @@ export default React.createClass({
         }
 
         return this.renderForm();
-    },
+    }
 
-    setActiveStep(step) {
+    setActiveStep = (step) => {
         const stepsByField = fieldGroups.groupsByField(this.props.modelType);
         this.setState({
             activeStep: step,
@@ -324,9 +240,9 @@ export default React.createClass({
                 return field;
             }),
         })
-    },
+    }
 
-    _onUpdateField(fieldName, value) {
+    onUpdateField = (fieldName, value) => {
         const fieldConfig = this.state.fieldConfigs.find(fieldConfig => fieldConfig.name == fieldName);
 
         if (fieldConfig && fieldConfig.beforeUpdateConverter) {
@@ -334,15 +250,15 @@ export default React.createClass({
         }
 
         return objectActions.update({ fieldName, value });
-    },
+    };
 
-    _onUpdateFormStatus(formState) {
+    onUpdateFormStatus = (formState) => {
         this.setState({
             formState,
         });
-    },
+    };
 
-    _saveAction(event) {
+    saveAction = (event) => {
         event.preventDefault();
         // Set state to saving so forms actions are being prevented
         this.setState({ isSaving: true });
@@ -378,11 +294,23 @@ export default React.createClass({
                     this.props.onSaveError(errorMessage);
                 }
             );
-    },
+    };
 
-    _closeAction(event) {
+    closeAction = (event) => {
         event.preventDefault();
 
         this.props.onCancel();
-    },
-});
+    };
+}
+
+EditModelForm.contextTypes = {
+    d2: PropTypes.object,
+};
+
+EditModelForm.propTypes = {
+    modelId: PropTypes.string.isRequired,
+    modelType: PropTypes.string.isRequired,
+    onSaveSuccess: PropTypes.func.isRequired,
+    onSaveError: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+};

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import { getInstance } from 'd2/lib/d2';
 import CircularProgress from 'd2-ui/lib/circular-progress/CircularProgress';
 
@@ -19,22 +19,20 @@ function findValue(optionList, model) {
         .find(option => Array.from(model.indicatorGroups.values()).map(indicatorGroup => indicatorGroup.id).indexOf(option) !== -1);
 }
 
-export default React.createClass({
-    propTypes: {
-        source: React.PropTypes.object.isRequired,
-    },
+export default class DataIndicatorGroupsAssignment extends Component {
+    constructor(props, context) {
+        super(props, context);
 
-    getInitialState() {
         store.setState({
             indicatorGroupValues: {},
             remove: [],
             save: [],
         });
 
-        return {
+        this.state = {
             indicatorGroupSets: null,
         };
-    },
+    }
 
     componentDidMount() {
         getInstance()
@@ -47,13 +45,13 @@ export default React.createClass({
             .then(indicatorGroupSets => this.setState({ indicatorGroupSets }));
 
         this.subscription = store.subscribe(() => this.forceUpdate());
-    },
+    }
 
     componentWillUnmount() {
         if (this.subscription) {
             this.subscription && this.subscription.unsubscribe();
         }
-    },
+    }
 
     render() {
         if (!this.state.indicatorGroupSets) {
@@ -80,7 +78,7 @@ export default React.createClass({
                                 translateLabel={false}
                                 options={optionList}
                                 value={value}
-                                onChange={this._updateGroupStatus.bind(this, indicatorGroupSet.id, findValue(optionList, this.props.source))}
+                                onChange={this.updateGroupStatus.bind(this, indicatorGroupSet.id, findValue(optionList, this.props.source))}
                                 fullWidth
                             />
                         </div>
@@ -88,9 +86,9 @@ export default React.createClass({
                 })}
             </div>
         );
-    },
+    }
 
-    _updateGroupStatus(indicatorGroupSetId, oldValue, event) {
+    updateGroupStatus = (indicatorGroupSetId, oldValue, event) => {
         // TODO: Very bad to change props and set d2.model.dirty manually
         this.props.source.dirty = true;
 
@@ -98,5 +96,9 @@ export default React.createClass({
             indicatorGroupValues: Object.assign({}, store.state.indicatorGroupValues, { [indicatorGroupSetId]: event.target.value ? event.target.value : null }),
             remove: Array.from((new Set(store.state.remove.concat([oldValue])).values())),
         });
-    },
-});
+    };
+}
+
+DataIndicatorGroupsAssignment.propTypes = {
+    source: PropTypes.object.isRequired,
+};

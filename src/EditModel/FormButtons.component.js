@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import isArray from 'd2-utilizr/lib/isArray';
 
-export default function FormButtons(props) {
+export default function FormButtons({ children, style }) {
     const defaultStyle = {
         marginTop: '1rem',
     };
@@ -11,41 +11,25 @@ export default function FormButtons(props) {
         width: '10rem',
     };
 
-    const buttonsToRender = isArray(props.children) ? props.children : [props.children];
+    const buttonsToRender = isArray(children) ? children : [children];
+    const buttons = buttonsToRender.map((child, index) => {
+        return React.cloneElement(child, {
+            style: buttonStyle,
+            key: index,
+        });
+    });
 
     return (
-        <div style={Object.assign(defaultStyle, props.style)}>
-            {buttonsToRender.map((child, index) => {
-                return React.cloneElement(child, {
-                    style: buttonStyle,
-                    key: index,
-                });
-            })}
+        <div style={Object.assign(defaultStyle, style)}>
+            {buttons}
         </div>
     );
 }
 FormButtons.propTypes = {
-    style: React.PropTypes.object,
-    children: React.PropTypes.oneOfType([
-        React.PropTypes.array,
-        React.PropTypes.object,
+    style: PropTypes.object,
+    children: PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.object,
     ]).isRequired,
-    isFormValid: React.PropTypes.func,
+    isFormValid: PropTypes.func,
 };
-//
-// export default React.createClass({
-//
-//
-//    render() {
-//        return (
-//            <div style={this.props.style}>
-//                {this.props.children.map((child, index) => {
-//                    return React.cloneElement(child, {
-//                        isFormValid: this.props.isFormValid,
-//                        key: index,
-//                    });
-//                })}
-//            </div>
-//        );
-//    },
-// });

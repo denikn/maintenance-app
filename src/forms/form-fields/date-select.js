@@ -1,17 +1,8 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import DatePicker from 'material-ui/DatePicker/DatePicker';
 import IconButton from 'material-ui/IconButton/IconButton';
 
-export default React.createClass({
-    propTypes: {
-        value: React.PropTypes.oneOfType([
-            React.PropTypes.string,
-            React.PropTypes.object,
-        ]),
-        labelText: React.PropTypes.string.isRequired,
-        onChange: React.PropTypes.func.isRequired,
-    },
-
+export default class DateSelect extends Component {
     renderDatePicker() {
         const {
             labelText,
@@ -33,10 +24,10 @@ export default React.createClass({
                 mode="portrait"
                 autoOk
                 floatingLabelText={labelText}
-                onChange={this._onDateSelect}
+                onChange={this.onDateSelect}
             />
         );
-    },
+    }
 
     render() {
         const styles = {
@@ -58,23 +49,32 @@ export default React.createClass({
                         iconClassName="material-icons"
                         style={styles.closeButton}
                         iconStyle={styles.closeIcon}
-                        onClick={this._clearDate}
+                        onClick={this.clearDate}
                     >close</IconButton>
                 ) : null}
                 {this.renderDatePicker()}
             </div>
         );
-    },
+    }
 
-    _clearDate() {
-        this._onDateSelect(undefined, '');
-    },
+    clearDate = () => {
+        this.onDateSelect(undefined, '');
+    };
 
-    _onDateSelect(event, date) {
+    onDateSelect = (event, date) => {
         this.props.onChange({
             target: {
                 value: date,
             },
         });
-    },
-});
+    };
+}
+
+DateSelect.propTypes = {
+    value: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.object,
+    ]),
+    labelText: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+};
