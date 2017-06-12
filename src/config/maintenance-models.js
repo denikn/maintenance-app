@@ -149,9 +149,6 @@ const typeDetails = {
     },
     'program': {
         columns: ['displayName', 'publicAccess', 'lastUpdated'],
-        defaultFilters: [
-            ['programType', 'WITHOUT_REGISTRATION'],
-        ],
     },
     'programIndicator': {
         filters: ['program'],

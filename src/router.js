@@ -13,6 +13,7 @@ import listStore from './List/list.store';
 import store from './store';
 import { resetActiveStep } from './EditModel/actions';
 import { loadEventProgram } from './EditModel/event-program/actions';
+import EditProgram from './EditModel/EditProgram';
 import { loadProgramIndicator } from './EditModel/program-indicator/actions';
 
 import onDemand from './on-demand';
@@ -137,7 +138,7 @@ function createLoaderForSchema(schema, actionCreatorForLoadingObject, resetActiv
 
         // Fire load action for the event program program to be edited
         store.dispatch(actionCreatorForLoadingObject({ schema, id: params.modelId }));
-        store.dispatch(resetActiveStep())
+        store.dispatch(resetActiveStep());
 
         callback();
     };
@@ -253,7 +254,7 @@ const routes = (
                 </Route>
                 <Route
                     path="program/:modelId"
-                    component={delayRender(() => System.import('./EditModel/event-program/EditEventProgram.component'))}
+                    component={delayRender(() => System.import('./EditModel/EditProgram'))}
                     onEnter={createLoaderForSchema('program', loadEventProgram, resetActiveStep)}
                     hideSidebar
                     disableTabs
