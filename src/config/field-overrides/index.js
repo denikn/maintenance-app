@@ -20,6 +20,7 @@ import programRule from './programRule';
 import programRuleVariable from './programRuleVariable';
 import dataApprovalLevel from './dataApprovalLevel';
 import dataApprovalWorkflow from './dataApprovalWorkflow';
+import sqlView from './sqlView';
 
 const overridesByType = {
     attribute,
@@ -44,6 +45,7 @@ const overridesByType = {
     validationRule,
     dataApprovalLevel,
     dataApprovalWorkflow,
+    sqlView,
 };
 
 export default {
