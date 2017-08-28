@@ -350,6 +350,12 @@ const fieldOrderByName = new Map([
         'periodType',
         'dataApprovalLevels',
     ]],
+    ['sqlView', [
+        'name',
+        'description',
+        'cacheStrategy',
+        'sqlQuery',
+    ]],
 ]);
 
 export default {

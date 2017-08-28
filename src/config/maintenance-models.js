@@ -80,6 +80,7 @@ export function getSideBarConfig() {
                 'externalMapLayer',
                 'dataApprovalLevel',
                 'dataApprovalWorkflow',
+                'sqlView',
             ],
         },
     };
