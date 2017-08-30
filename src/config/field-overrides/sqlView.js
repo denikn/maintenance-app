@@ -1,19 +1,18 @@
 import TextField from '../../forms/form-fields/text-field';
 
-const textArea = () => {
-    const lbl = 'sql query';
-    const inputstl = { border: '1px solid blue', 'border-radius': '3px' };
-    return (
-        <TextField
-            inputStyle={inputstl}
-            multiLine={true}
-            rows={4}
-        />
-    );
-};
-
 export default new Map([
     ['sqlQuery', {
-        component: textArea,
+        component: TextField,
+        fieldOptions: {
+            multiLine: true,
+            rows: 5,
+            rowsMax: 8,
+            textareaStyle: {
+                border: '1px solid green',
+                borderRadius: '5px',
+                padding: '10px',
+            },
+            underlineShow: false,
+        },
     }],
 ]);

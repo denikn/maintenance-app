@@ -159,7 +159,7 @@ export function createFieldConfig(fieldConfig, modelDefinition, models) {
             referenceType: fieldConfig.referenceType,
             referenceProperty: fieldConfig.name,
             isInteger: fieldConfig.type === INTEGER,
-            multiLine: fieldConfig.name === 'description',
+            multiLine: fieldConfig.fieldOptions.multiLine || fieldConfig.name === 'description',
             fullWidth: true,
             translateOptions: fieldConstants && !!fieldConstants.length,
             isRequired: fieldConfig.required,
