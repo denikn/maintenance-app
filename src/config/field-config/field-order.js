@@ -270,7 +270,7 @@ const fieldOrderByName = new Map([
         'leftSide',
         'operator',
         'rightSide',
-        'skipFormValidation'
+        'skipFormValidation',
     ]],
     ['validationRuleGroup', [
         'name',
