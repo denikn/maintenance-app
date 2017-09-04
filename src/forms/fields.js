@@ -43,6 +43,8 @@ function createValidatorFromValidatorFunction(validatorFn) {
 }
 
 function addValidatorForType(type, modelValidation) {
+    // console.log('modelDefinition', modelDefinition);
+
     function maxNumber(value) {
         return Number(value) <= modelValidation.max;
     }
@@ -141,9 +143,11 @@ export function getFieldUIComponent(type) {
 }
 
 export function createFieldConfig(fieldConfig, modelDefinition, models) {
-    const fieldConstants = modelDefinition.modelProperties[fieldConfig.name] &&
-        (modelDefinition.modelProperties[fieldConfig.name].constants ||
-        []);
+    const constants = modelDefinition.modelProperties[fieldConfig.name] &&
+        modelDefinition.modelProperties[fieldConfig.name].constants;
+
+    const fieldConstants = constants || [];
+
     const basicFieldConfig = {
         name: fieldConfig.name,
         component: fieldConfig.component || getFieldUIComponent(fieldConfig.type),
