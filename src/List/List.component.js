@@ -267,6 +267,10 @@ const List = React.createClass({
             return model.modelDefinition.name === 'pushAnalysis' && model.access.write;
         case 'preview':
             return model.modelDefinition.name === 'pushAnalysis' && model.access.write;
+        case 'executeSqlQuery':
+            console.log('model', model);
+
+            return model.modelDefinition.name === 'sqlView' && model.type !== 'QUERY' && model.access.read;
         default:
             return true;
         }

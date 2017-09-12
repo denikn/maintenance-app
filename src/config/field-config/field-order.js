@@ -353,6 +353,7 @@ const fieldOrderByName = new Map([
     ['sqlView', [
         'name',
         'description',
+        'type',
         'cacheStrategy',
         'sqlQuery',
     ]],

@@ -192,6 +192,9 @@ const typeDetails = {
     dataApprovalLevel: {
         columns: ['displayName', 'categoryOptionGroupSet[displayName]', 'publicAccess', 'lastUpdated'],
     },
+    sqlView: {
+        columns: ['displayName', 'type', 'publicAccess', 'lastUpdated'],
+    },
 };
 
 export function getFilterFieldsForType(modelType) {

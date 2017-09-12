@@ -30,6 +30,7 @@ const contextActions = Action.createActionsFromNames([
     'pdfDataSetForm',
     'preview',
     'runNow',
+    'executeSqlQuery',
 ]);
 
 const confirm = message => new Promise((resolve, reject) => {
@@ -244,4 +245,19 @@ contextActions.preview
             });
     });
 
+contextActions.executeSqlQuery
+    .subscribe(async ({ data: model, complete: actionComplete, error: actionFailed }) => {
+        console.log('Hey, sql query');
+        const d2 = await getD2();
+
+        d2.Api.getApi().post([model.modelDefinition.plural, model.id, 'execute'].join('/'))
+            .then(() => {
+                snackActions.show({ message: d2.i18n.getTranslation('sql_query_executed') });
+                actionComplete();
+            })
+            .catch((err) => {
+                snackActions.show({ message: d2.i18n.getTranslation('failed_to_execute_sql_query'), action: 'ok' });
+                actionFailed(err);
+            });
+    });
 export default contextActions;
