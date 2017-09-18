@@ -73,6 +73,7 @@ export function getSideBarConfig() {
             items: [
                 'constant',
                 'attribute',
+                'colorSet',
                 'optionSet',
                 'legendSet',
                 'predictor',
@@ -176,6 +177,9 @@ const typeDetails = {
     attribute: {
         columns: ['displayName', 'valueType', 'mandatory', 'unique', 'publicAccess', 'lastUpdated'],
     },
+    colorSet: {
+        columns: ['displayName', 'lastUpdated'],
+    },
     optionSet: {
         columns: ['displayName', 'valueType', 'lastUpdated'],
     },
@@ -206,7 +210,7 @@ export function getFiltersForType(modelType) {
         return typeDetails[modelType]
             .filters
             .reduce((f, filters) => {
-                f[filters] = null;
+                f[filters] = null; // eslint-disable-line no-param-reassign
                 return f;
             }, {});
     }
@@ -217,7 +221,12 @@ export function getFiltersForType(modelType) {
 export function getTableColumnsForType(modelType, preservePropNames = false) {
     if (typeDetails.hasOwnProperty(modelType) && typeDetails[modelType].hasOwnProperty('columns')) {
         return typeDetails[modelType].columns
-            .map(col => preservePropNames ? col : col.replace(/(\w*)\[(\w*)]/, '$1___$2'));
+            .map((col) => {
+                if (preservePropNames) {
+                    return col;
+                }
+                return col.replace(/(\w*)\[(\w*)]/, '$1___$2');
+            });
     }
 
     // Default columns:

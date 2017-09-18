@@ -183,6 +183,11 @@ const fieldOrderByName = new Map([
         'unique',
         'dataElementAttribute', // TODO: This currently serves as the override for all <type>Attribute fields
     ]],
+    ['colorSet', [
+        'name',
+        'code',
+        'colors',
+    ]],
     ['optionSet', [
         'name',
         'code',
@@ -270,7 +275,7 @@ const fieldOrderByName = new Map([
         'leftSide',
         'operator',
         'rightSide',
-        'skipFormValidation'
+        'skipFormValidation',
     ]],
     ['validationRuleGroup', [
         'name',
