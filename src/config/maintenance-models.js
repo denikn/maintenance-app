@@ -69,6 +69,13 @@ export function getSideBarConfig() {
             ],
         },
 
+        optionGroupSection: {
+            items: [
+                'optionGroup',
+                'optionGroupSet'
+            ]
+        },
+
         otherSection: {
             items: [
                 'constant',
