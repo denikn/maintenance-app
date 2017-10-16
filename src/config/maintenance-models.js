@@ -92,8 +92,8 @@ export function getSectionForType(modelType) {
     return Object
         .keys(config)
         .find(section => config[section] &&
-                config[section].items &&
-                config[section].items.indexOf(modelType) >= 0);
+            config[section].items &&
+            config[section].items.indexOf(modelType) >= 0);
 }
 
 /**
@@ -162,7 +162,7 @@ const typeDetails = {
     },
     programRule: {
         filters: ['program'],
-        columns: ['displayName', 'description', 'program[displayName]', 'lastUpdated'],
+        columns: ['displayName', 'program[displayName]', 'lastUpdated'],
     },
     programRuleVariable: {
         filters: ['program', 'programRuleVariableSourceType'],
@@ -190,7 +190,22 @@ const typeDetails = {
         columns: ['displayName', 'mapLayerPosition', 'mapService', 'lastUpdated'],
     },
     dataApprovalLevel: {
-        columns: ['displayName', 'categoryOptionGroupSet[displayName]', 'publicAccess', 'lastUpdated'],
+        columns: [
+            'displayName',
+            'level',
+            'orgUnitLevel',
+            'categoryOptionGroupSet[displayName]',
+            'publicAccess',
+            'lastUpdated',
+        ],
+    },
+    dataApprovalWorkflow: {
+        columns: [
+            'displayName',
+            'periodType',
+            'publicAccess',
+            'lastUpdated',
+        ],
     },
     sqlView: {
         columns: ['displayName', 'type', 'publicAccess', 'lastUpdated'],
