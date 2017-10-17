@@ -224,10 +224,10 @@ export function getFiltersForType(modelType) {
     if (typeDetails.hasOwnProperty(modelType) && typeDetails[modelType].hasOwnProperty('filters')) {
         return typeDetails[modelType]
             .filters
-            .reduce((f, filterName) => ({
-                ...f,
-                [filterName]: null,
-            }), {});
+            .reduce((f, filters) => {
+                f[filters] = null;
+                return f;
+            }, {});
     }
 
     return [];
@@ -236,10 +236,7 @@ export function getFiltersForType(modelType) {
 export function getTableColumnsForType(modelType, preservePropNames = false) {
     if (typeDetails.hasOwnProperty(modelType) && typeDetails[modelType].hasOwnProperty('columns')) {
         return typeDetails[modelType].columns
-            .map((col) => {
-                const columnName = preservePropNames ? col : col.replace(/(\w*)\[(\w*)]/, '$1___$2');
-                return columnName;
-            });
+            .map((col) => preservePropNames ? col : col.replace(/(\w*)\[(\w*)]/, '$1___$2'));
     }
 
     // Default columns:
