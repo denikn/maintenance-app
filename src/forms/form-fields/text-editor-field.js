@@ -23,7 +23,7 @@ const styles = {
 
 };
 
-class TextEditorField extends React.Component {
+class ProgramRuleConditionField extends React.Component {
     constructor(props) {
         super(props);
 
@@ -76,20 +76,14 @@ class TextEditorField extends React.Component {
                 style={styles.ed17x0r}
                 value={this.state.value}
                 onChange={this.onChange}
-                ref={r => (this.editor = r)}
+                ref={r => this.editor = r}
             />
         );
     }
 }
 
-TextEditorField.propTypes = {
-    value: React.PropTypes.any,
-    disabled: React.PropTypes.bool,
-    onChange: React.PropTypes.func,
-};
-
-TextEditorField.contextTypes = {
+ProgramRuleConditionField.contextTypes = {
     d2: React.PropTypes.any,
 };
 
-export default TextEditorField;
+export default ProgramRuleConditionField;

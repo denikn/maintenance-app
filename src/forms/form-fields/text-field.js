@@ -10,7 +10,7 @@ export default class TextFormField extends Component {
         };
 
         this.updateOnChange = Action.create(`updateOnKeyUp - ${props.name}`);
-        this.onValueChanged = this.onValueChanged.bind(this);
+        this._onValueChanged = this._onValueChanged.bind(this);
     }
 
     componentDidMount() {
@@ -28,6 +28,12 @@ export default class TextFormField extends Component {
             });
     }
 
+    componentWillUnmount() {
+        if (this.subscription && this.subscription.unsubscribe) {
+            this.subscription.unsubscribe();
+        }
+    }
+
     componentWillReceiveProps(newProps) {
         // Keep local state in sync with the passed in value
         if (newProps.value !== this.props.value) {
@@ -37,29 +43,20 @@ export default class TextFormField extends Component {
         }
     }
 
-    componentWillUnmount() {
-        if (this.subscription && this.subscription.unsubscribe) {
-            this.subscription.unsubscribe();
-        }
-    }
-
-    onValueChanged(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        // Keep local state to keep the field responsiveness
-        this.setState({
-            fieldValue: event.currentTarget.value,
-        });
-
-        // Fire the update handler
-        this.updateOnChange(event.currentTarget.value);
-    }
-
     render() {
         const {
             label,
             labelText,
             multiLine,
+            model,
+            modelDefinition,
+            models,
+            referenceType,
+            referenceProperty,
+            isInteger,
+            translateOptions,
+            isRequired,
+            options,
             ...rest
         } = this.props;
         const errorStyle = {
@@ -75,17 +72,24 @@ export default class TextFormField extends Component {
                 {...rest}
                 value={this.state.fieldValue}
                 floatingLabelText={labelText}
-                onChange={this.onValueChanged}
+                onChange={this._onValueChanged}
             />
         );
     }
 
+    _onValueChanged(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        // Keep local state to keep the field responsiveness
+        this.setState({
+            fieldValue: event.currentTarget.value,
+        });
+
+        // Fire the update handler
+        this.updateOnChange(event.currentTarget.value);
+    }
 }
 TextFormField.propTypes = {
-    name: React.PropTypes.any,
-    value: React.PropTypes.any,
-    label: React.PropTypes.string,
     labelText: React.PropTypes.string.isRequired,
-    onChange: React.PropTypes.func,
     multiLine: React.PropTypes.bool,
 };
