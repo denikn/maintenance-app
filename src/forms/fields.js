@@ -1,6 +1,8 @@
 import { isRequired, isUrl, isNumber as isNumberValidator, isEmail } from 'd2-ui/lib/forms/Validators';
 import isString from 'd2-utilizr/lib/isString';
 import isNumber from 'lodash.isnumber';
+import log from 'loglevel';
+import { config, getInstance } from 'd2/lib/d2';
 import TextField from './form-fields/text-field';
 import MultiSelect from './form-fields/multi-select';
 import CheckBox from './form-fields/check-box';
@@ -22,6 +24,10 @@ export const EMAIL = Symbol('EMAIL');
 export const NUMBER = Symbol('NUMBER');
 export const COMPLEX = Symbol('COMPLEX');
 
+function toInteger(value) {
+    return Number.parseInt(value, 10);
+}
+
 function isIntegerValidator(value) {
     // Empty string values are correct values
     if (isString(value) && !value) {
@@ -42,9 +48,7 @@ function createValidatorFromValidatorFunction(validatorFn) {
     };
 }
 
-function addValidatorForType(type, modelValidation) {
-    // console.log('modelDefinition', modelDefinition);
-
+function addValidatorForType(type, modelValidation, modelDefinition) {
     function maxNumber(value) {
         return Number(value) <= modelValidation.max;
     }
@@ -99,7 +103,6 @@ function addValidatorForType(type, modelValidation) {
         break;
     case EMAIL:
         validators.push(createValidatorFromValidatorFunction(isEmail));
-        break;
     default:
         break;
     }
@@ -115,7 +118,7 @@ export function getValidatorsFromModelValidation(modelValidation, modelDefinitio
     }
 
     if (modelDefinition) {
-        validators = validators.concat(addValidatorForType(modelValidation.type, modelValidation));
+        validators = validators.concat(addValidatorForType(modelValidation.type, modelValidation, modelDefinition));
     }
 
     return validators;
@@ -143,11 +146,9 @@ export function getFieldUIComponent(type) {
 }
 
 export function createFieldConfig(fieldConfig, modelDefinition, models) {
-    const constants = modelDefinition.modelProperties[fieldConfig.name] &&
-        modelDefinition.modelProperties[fieldConfig.name].constants;
-
-    const fieldConstants = constants || [];
-
+    const fieldConstants = modelDefinition.modelProperties[fieldConfig.name] &&
+        modelDefinition.modelProperties[fieldConfig.name].constants ||
+        [];
     const basicFieldConfig = {
         name: fieldConfig.name,
         component: fieldConfig.component || getFieldUIComponent(fieldConfig.type),
