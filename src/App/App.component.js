@@ -101,6 +101,7 @@ class App extends AppWithD2 {
         );
     }
 }
+
 App.defaultProps = {
     d2: getInstance(),
 };

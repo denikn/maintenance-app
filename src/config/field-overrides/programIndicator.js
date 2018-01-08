@@ -16,6 +16,7 @@ import AttributeSelector from './program-indicator/AttributeSelector';
 import VariableSelector from './program-indicator/VariableSelector';
 import ConstantSelector from './program-indicator/ConstantSelector';
 import DataElementSelectors from './program-indicator/DataElementSelectors';
+import { AnalyticsPeriodBoundaries } from './program-indicator/AnalyticsPeriodBoundaries';
 import ExpressionStatusIcon, {
     ExpressionStatus,
     getColorForExpressionStatus,
@@ -87,6 +88,7 @@ function HelpText({ schema, property }, { d2 }) {
         </div>
     );
 }
+
 HelpText.contextTypes = {
     d2: PropTypes.object,
 };
@@ -264,6 +266,7 @@ const enhance = compose(
 
 export default new Map([
     decimals,
+
     ['expression', {
         component: enhance(ProgramIndicatorExpression),
     }],
@@ -271,4 +274,8 @@ export default new Map([
     ['filter', {
         component: enhance(ProgramIndicatorExpression),
     }],
+
+    ['analyticsPeriodBoundaries', {
+        component: AnalyticsPeriodBoundaries,
+    }]
 ]);

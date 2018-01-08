@@ -245,6 +245,7 @@ const fieldOrderByName = new Map([
         'decimals',
         'aggregationType',
         'analyticsType',
+        'analyticsPeriodBoundaries',
         'displayInForm',
         'legendSets',
         'aggregateExportCategoryOptionCombo',
