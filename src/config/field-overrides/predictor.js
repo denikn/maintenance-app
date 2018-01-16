@@ -11,8 +11,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import PeriodTypeDropDown from '../../forms/form-fields/period-type-drop-down';
 
 const expressionStatusStore = Store.create();
-
 const expressionStatusActions = Action.createActionsFromNames(['requestExpressionStatus']);
+
 expressionStatusActions.requestExpressionStatus
     .debounceTime(500)
     .map((action) => {

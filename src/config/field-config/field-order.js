@@ -296,6 +296,7 @@ const fieldOrderByName = new Map([
         'sequentialSampleCount',
         'annualSampleCount',
         'sequentialSkipCount',
+        'outputCombo',
     ]],
     ['pushAnalysis', [
         'name',
