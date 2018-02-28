@@ -3,7 +3,7 @@ import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
 import { map } from 'lodash/fp';
 
-import boundOnUpdate from './boundOnUpdate';
+import boundOnUpdate from '../helpers/boundOnUpdate';
 import SubjectAndMessageTemplateFields
     from '../../../forms/form-fields/subject-and-message-template-fields/subject-and-message-template-fields';
 

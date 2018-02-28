@@ -1,7 +1,4 @@
-import React from 'react';
-import { getInstance } from 'd2/lib/d2';
 import DropDownAsyncGetter from '../../forms/form-fields/drop-down-async-getter';
-
 
 async function getProgramDataElements(model, d2) {
     if (model && model.program && model.program.id) {
@@ -30,7 +27,6 @@ async function getProgramDataElements(model, d2) {
     return [];
 }
 
-
 async function getProgramStages(model, d2) {
     if (model && model.program && model.program.id) {
         const list = await d2.Api.getApi().get(['programs', model.program.id].join('/'), {
@@ -44,7 +40,6 @@ async function getProgramStages(model, d2) {
 
     return [];
 }
-
 
 async function getProgramTrackedEntityAttributes(model, d2) {
     if (model && model.program && model.program.id) {
@@ -60,7 +55,6 @@ async function getProgramTrackedEntityAttributes(model, d2) {
     return [];
 }
 
-
 function hasProgram(model) {
     return model && model.program && model.program.id;
 }
@@ -70,7 +64,6 @@ function hasProgramAndMaybeStageToo(model) {
         model.programRuleVariableSourceType !== 'DATAELEMENT_NEWEST_EVENT_PROGRAM_STAGE') ||
         (model.programStage && model.programStage.id);
 }
-
 
 export default new Map([
     ['name', {

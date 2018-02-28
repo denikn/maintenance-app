@@ -1,6 +1,6 @@
-import { SELECT } from '../../forms/fields';
 import isString from 'd2-utilizr/lib/isString';
 import isNumber from 'd2-utilizr/lib/isNumber';
+import { SELECT } from '../../forms/fields';
 
 export const decimals = ['decimals', {
     type: SELECT,

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import DropDownAsyncGetter from '../../../forms/form-fields/drop-down-async-getter';
-import boundOnUpdate from './boundOnUpdate';
+import boundOnUpdate from '../helpers/boundOnUpdate';
 
 const DataElementDropDown = compose(
     connect(undefined, boundOnUpdate),

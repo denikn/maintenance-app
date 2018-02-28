@@ -47,6 +47,9 @@ export default class SubjectAndMessageTemplateFields extends Component {
         const d2 = this.context.d2;
 
         const styles = {
+            dividerWrap: {
+                padding: '0 2rem 1rem',
+            },
             divider: {
                 marginTop: '2rem',
                 marginBottom: '2rem',
@@ -66,7 +69,7 @@ export default class SubjectAndMessageTemplateFields extends Component {
 
         return (
             <div style={{ ...styles.fieldWrap, ...this.props.style }}>
-                <Divider style={styles.divider} />
+                <div style={styles.dividerWrap}><Divider style={styles.divider} /></div>
                 <Heading level={3} style={styles.heading}>Message template</Heading>
                 <Row>
                     <Column>
@@ -95,7 +98,7 @@ export default class SubjectAndMessageTemplateFields extends Component {
                     </Column>
                     <VariableList onItemSelected={this.insertVariable} variableTypes={this.props.variableTypes} />
                 </Row>
-                <Divider style={styles.divider} />
+                <div style={styles.dividerWrap}><Divider style={styles.divider} /></div>
             </div>
         );
     }

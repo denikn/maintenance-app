@@ -69,7 +69,6 @@ export const enrollment = new Map([
 
 export const trackerProgram = new Map([
     ...sharedOverrides,
-
     [
         'trackedEntityType',
         {
