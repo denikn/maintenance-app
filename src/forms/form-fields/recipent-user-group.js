@@ -1,7 +1,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import DropDownAsync from '../../../forms/form-fields/drop-down-async';
+import DropDownAsync from './drop-down-async';
 
 const RecipentUserGroup = (props) => {
     if (!props.model || props.model.notificationRecipient !== 'USER_GROUP') {

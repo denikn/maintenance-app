@@ -50,7 +50,7 @@ const sharedOverrides = new Map([
 
 export const eventProgram = new Map([...sharedOverrides]);
 
-//Enrollment is used as customFieldOrderName for enrollment-stepper
+// Enrollment is used as customFieldOrderName for enrollment-stepper
 export const enrollment = new Map([
     ...sharedOverrides,
     // Translate relationShipFromA to a drop-down consisting of the relationships

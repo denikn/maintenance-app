@@ -1,52 +1,12 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField/TextField';
 import Row from 'd2-ui/lib/layout/Row.component';
 import Column from 'd2-ui/lib/layout/Column.component';
-import { List, ListItem } from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import Heading from 'd2-ui/lib/headings/Heading.component';
 import { map, compose } from 'lodash/fp';
-
-function prepareProps(d2, onItemSelected) {
-    return function ([type, name]) {
-        const label = name.displayName ? name.displayName : d2.i18n.getTranslation(name);
-        const varName = name.id ? name.id : name;
-        return {
-            primaryText: label,
-            onClick() {
-                onItemSelected(`${type}{${varName}}`);
-            },
-        };
-    };
-}
-
-function renderListItem(props) {
-    return (
-        <ListItem
-            key={props.primaryText}
-            {...props}
-        />
-    );
-}
-
-function VariableList({ onItemSelected, variableTypes }, { d2 }) {
-    const listItems = map(compose(renderListItem, prepareProps(d2, onItemSelected)), variableTypes);
-
-    return (
-        <div style={{ flex: '0 0 33%' }}>
-            <Heading level={4} style={{ fontSize: '1rem', paddingBottom: '1rem' }}>Template variables</Heading>
-            <div style={{ maxHeight: '300px', overflowY: 'scroll' }}>
-                <List>
-                    {listItems}
-                </List>
-            </div>
-        </div>
-    );
-}
-
-VariableList.contextTypes = {
-    d2: PropTypes.object,
-};
+import VariableList from './variable-list';
 
 export default class SubjectAndMessageTemplateFields extends Component {
     constructor(props, context) {
@@ -79,9 +39,12 @@ export default class SubjectAndMessageTemplateFields extends Component {
         });
     }
 
+    subjectOnChange = (event, value) => this.props.onUpdate({ fieldName: 'subjectTemplate', value })
+
+    messageOnChange = (event, value) => this.props.onUpdate({ fieldName: 'messageTemplate', value })
+
     render() {
         const d2 = this.context.d2;
-        const { model, onUpdate } = this.props;
 
         const styles = {
             divider: {
@@ -113,8 +76,8 @@ export default class SubjectAndMessageTemplateFields extends Component {
                                 fullWidth
                                 floatingLabelText={d2.i18n.getTranslation('subject_template')}
                                 onBlur={this.setActiveField('subjectTemplate')}
-                                value={model.subjectTemplate || ''}
-                                onChange={(event, value) => onUpdate({ fieldName: 'subjectTemplate', value })}
+                                value={this.props.model.subjectTemplate || ''}
+                                onChange={this.subjectOnChange}
                                 onKeyUp={this.setActiveField('subjectTemplate')}
                             />
                         </div>
@@ -125,8 +88,8 @@ export default class SubjectAndMessageTemplateFields extends Component {
                                 fullWidth
                                 floatingLabelText={d2.i18n.getTranslation('message_template')}
                                 onBlur={this.setActiveField('messageTemplate')}
-                                value={model.messageTemplate || ''}
-                                onChange={(event, value) => onUpdate({ fieldName: 'messageTemplate', value })}
+                                value={this.props.model.messageTemplate || ''}
+                                onChange={this.messageOnChange}
                             />
                         </div>
                     </Column>
@@ -137,6 +100,19 @@ export default class SubjectAndMessageTemplateFields extends Component {
         );
     }
 }
+
+SubjectAndMessageTemplateFields.propTypes = {
+    style: PropTypes.object,
+    variableTypes: PropTypes.array,
+    onUpdate: PropTypes.func.isRequired,
+    model: PropTypes.object.isRequired,
+};
+
+SubjectAndMessageTemplateFields.defaultProps = {
+    style: {},
+    variableTypes: [],
+};
+
 
 SubjectAndMessageTemplateFields.contextTypes = {
     d2: PropTypes.object,

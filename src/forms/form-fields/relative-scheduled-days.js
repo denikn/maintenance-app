@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
 import MenuItem from 'material-ui/MenuItem';
@@ -6,7 +7,6 @@ import getContext from 'recompose/getContext';
 import withState from 'recompose/withState';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
-import { has } from 'lodash/fp';
 
 const relativeScheduledDaysStyle = {
     display: 'flex',
@@ -31,7 +31,7 @@ const enhance = compose(
                 onChange({ target: { value: days } });
             }
         },
-    })
+    }),
 );
 
 function RelativeScheduledDays({ onChangeBeforeAfter, beforeOrAfter, onChangeDays, d2, value, style }) {
@@ -62,5 +62,18 @@ function RelativeScheduledDays({ onChangeBeforeAfter, beforeOrAfter, onChangeDay
         </div>
     );
 }
+
+RelativeScheduledDays.propTypes = {
+    onChangeBeforeAfter: PropTypes.func.isRequired,
+    onChangeDays: PropTypes.func.isRequired,
+    beforeOrAfter: PropTypes.string.isRequired,
+    d2: PropTypes.object.isRequired,
+    value: PropTypes.number,
+    style: PropTypes.object,
+};
+RelativeScheduledDays.defaultProps = {
+    style: {},
+    value: 0,
+};
 
 export default enhance(RelativeScheduledDays);

@@ -264,8 +264,8 @@ const enhance = compose(
 );
 
 export default new Map([
-    [ 'analyticsPeriodBoundaries', {
-        component: AnalyticsPeriodBoundaries
+    ['analyticsPeriodBoundaries', {
+        component: AnalyticsPeriodBoundaries,
     }],
 
     ['expression', {

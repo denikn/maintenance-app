@@ -1,8 +1,9 @@
 
-import DeliveryChannels from './program-notification-template/DeliveryChannels';
-import RelativeScheduledDays from './program-notification-template/RelativeScheduledDays';
-import RecipentUserGroup from './data-set-notification-template/RecipentUserGroup';
-import DataSetNotificationSubjectAndMessageTemplateFields from './data-set-notification-template/DataSetNotificationSubjectAndMessageTemplateFields';
+import RelativeScheduledDays from '../../forms/form-fields/relative-scheduled-days';
+import RecipentUserGroup from '../../forms/form-fields/recipent-user-group';
+import DeliveryChannels from '../../forms/form-fields/delivery-channels';
+import DataSetNotificationSubjectAndMessageTemplateFields
+    from './data-set-notification-template/DataSetNotificationSubjectAndMessageTemplateFields';
 
 export default new Map([
     ['deliveryChannels', {

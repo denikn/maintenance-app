@@ -1,128 +1,10 @@
-import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import withProps from 'recompose/withProps';
-import compose from 'recompose/compose';
-import { map } from 'lodash/fp';
-
-import RelativeScheduledDays from './program-notification-template/RelativeScheduledDays';
-import DeliveryChannels from './program-notification-template/DeliveryChannels';
-import DropDownAsync from '../../forms/form-fields/drop-down-async';
-import SubjectAndMessageTemplateFields from './validation-notification-template/SubjectAndMessageTemplateFields';
-import { setStageNotificationValue } from '../../EditModel/event-program/notifications/actions';
-import DropDown from '../../forms/form-fields/drop-down';
-import DropDownAsyncGetter from '../../forms/form-fields/drop-down-async-getter';
-
-const PROGRAM_STAGE_VARIABLES = [
-    'program_name',
-    'program_stage_name',
-    'org_unit_name',
-    'due_date',
-    'days_since_due_date',
-    'days_until_due_date',
-    'current_date',
-];
-
-const PROGRAM_VARIABLES = [
-    'program_name',
-    'org_unit_name',
-    'due_date',
-    'days_since_due_date',
-    'days_until_due_date',
-    'current_date',
-];
-
-const toVariableType = name => ['V', name];
-const toAttributeType = name => ['A', name]; // Used for program attributes
-const toDataElementType = name => ['#', name];
-
-const dataElementsTypeMap = dataElements =>
-    map(toDataElementType, dataElements);
-const attributesToTypeMap = attributes => map(toAttributeType, attributes);
-
-const boundOnUpdate = dispatch =>
-    bindActionCreators(
-        {
-            onUpdate: ({ fieldName, value }) =>
-                setStageNotificationValue(fieldName, value),
-        },
-        dispatch
-    );
-
-const NotificationSubjectAndMessageTemplateFields = compose(
-    connect(undefined, boundOnUpdate),
-    withProps(({ dataElements, attributes, isProgram }) => {
-        let constantVariables = PROGRAM_STAGE_VARIABLES;
-        let variables = dataElementsTypeMap(dataElements);
-
-        if (isProgram) {
-            constantVariables = PROGRAM_VARIABLES;
-            variables = attributesToTypeMap(attributes);
-        }
-
-        return {
-            variableTypes: map(toVariableType, constantVariables).concat(
-                variables
-            ),
-        };
-    })
-)(SubjectAndMessageTemplateFields);
-
-//Using dropdownasync-getter due to support for references
-const ProgramAttributeDropDown = compose(connect(undefined, boundOnUpdate))(props => {
-    const attributesOpts = props.attributes
-        .filter(attr => attr.valueType === 'PHONE_NUMBER')
-        .map(attr => ({
-            text: attr.displayName,
-            value: attr.trackedEntityAttribute.id,
-        }));
-
-    const getAttrs = () => Promise.resolve(attributesOpts);
-    return (
-        <DropDownAsyncGetter
-            labelText={props.labelText}
-            options={attributesOpts}
-            onChange={event =>
-                props.onUpdate({
-                    fieldName: 'recipientProgramAttribute',
-                    value: event.target.value,
-                })}
-            value={props.model.recipientProgramAttribute}
-            fullWidth
-            isRequired
-            model={props.model}
-            getter={getAttrs}
-        />
-    );
-});
-
-const DataElementDropDown = compose(
-    connect(undefined, boundOnUpdate)
-)(props => {
-    const dataElementOpts = props.dataElements
-        .filter(de => de.valueType == 'PHONE_NUMBER')
-        .map(de => ({
-            text: de.displayName,
-            value: de.id,
-        }));
-    const getElems = () => Promise.resolve(dataElementOpts);
-    return (
-        <DropDownAsyncGetter
-            labelText={props.labelText}
-            options={dataElementOpts}
-            onChange={event =>
-                props.onUpdate({
-                    fieldName: 'recipientDataElement',
-                    value: event.target.value,
-                })}
-            value={props.model.recipientDataElement}
-            fullWidth
-            isRequired
-            model={props.model}
-            getter={getElems}
-        />
-    );
-});
+import DataElementDropDown from './program-notification-template/DataElementDropDown';
+import ProgramAttributeDropDown from './program-notification-template/ProgramAttributeDropDown';
+import RecipentUserGroup from '../../forms/form-fields/recipent-user-group';
+import DeliveryChannels from '../../forms/form-fields/delivery-channels';
+import RelativeScheduledDays from '../../forms/form-fields/relative-scheduled-days';
+import ProgramNotificationSubjectAndMessageTemplateFields
+    from './program-notification-template/ProgramNotificationSubjectAndMessageTemplateFields';
 
 /**
  * programNotificationTemplate are shared for both program notification and
@@ -130,53 +12,26 @@ const DataElementDropDown = compose(
  * between these two, as they have different behavior and overrides.
  */
 const sharedOverrides = [
-    [
-        'deliveryChannels',
-        {
-            component: DeliveryChannels,
-        },
-    ],
-    [
-        'relativeScheduledDays',
-        {
-            component: RelativeScheduledDays,
-        },
-    ],
-    [
-        'recipientUserGroup',
-        {
-            component: props => {
-                if (
-                    !props.model ||
-                    props.model.notificationRecipient !== 'USER_GROUP'
-                ) {
-                    return null;
-                }
-
-                return <DropDownAsync {...props} />;
-            },
-        },
-    ],
-
-    [
-        'recipientProgramAttribute',
-        {
-            component: ProgramAttributeDropDown,
-        },
-    ],
-    [
-        'messageTemplate',
-        {
-            component: props =>
-                <NotificationSubjectAndMessageTemplateFields {...props} />,
-        },
-    ],
+    ['deliveryChannels', {
+        component: DeliveryChannels,
+    }],
+    ['relativeScheduledDays', {
+        component: RelativeScheduledDays,
+    }],
+    ['recipientUserGroup', {
+        component: RecipentUserGroup,
+    }],
+    ['recipientProgramAttribute', {
+        component: ProgramAttributeDropDown,
+    }],
+    ['messageTemplate', {
+        component: ProgramNotificationSubjectAndMessageTemplateFields,
+    }],
 ];
 
 export const programNotificationTemplate = new Map([
     ...sharedOverrides,
-    [
-        'notificationTrigger',
+    ['notificationTrigger',
         {
             required: true,
             fieldOptions: {
@@ -190,8 +45,7 @@ export const programNotificationTemplate = new Map([
             },
         },
     ],
-    [
-        'notificationRecipient',
+    ['notificationRecipient',
         {
             required: true,
             fieldOptions: {
@@ -209,8 +63,7 @@ export const programNotificationTemplate = new Map([
 
 export const programStageNotificationTemplate = new Map([
     ...sharedOverrides,
-    [
-        'notificationTrigger',
+    ['notificationTrigger',
         {
             required: true,
             fieldOptions: {
@@ -223,8 +76,7 @@ export const programStageNotificationTemplate = new Map([
             },
         },
     ],
-    [
-        'notificationRecipient',
+    ['notificationRecipient',
         {
             required: true,
             fieldOptions: {
@@ -233,18 +85,15 @@ export const programStageNotificationTemplate = new Map([
                     'ORGANISATION_UNIT_CONTACT',
                     'USERS_AT_ORGANISATION_UNIT',
                     'USER_GROUP',
-                    'PROGRAM_ATTRIBUTE', //This is only for Tracker programs
+                    'PROGRAM_ATTRIBUTE', // This is only for Tracker programs
                     'DATA_ELEMENT',
                 ],
             },
         },
     ],
-    [
-        'recipientDataElement',
-        {
-            component: DataElementDropDown,
-        },
-    ],
+    ['recipientDataElement', {
+        component: DataElementDropDown,
+    }],
 ]);
 
 export default programNotificationTemplate;
