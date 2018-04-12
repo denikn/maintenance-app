@@ -55,13 +55,16 @@ const Color = ({ id, name, color, onChange, onDelete }) => {
 Color.propTypes = {
     name: PropTypes.string,
     color: PropTypes.string,
-    id: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
-    onDelete: PropTypes.func.isRequired,
+    id: PropTypes.string,
+    onChange: PropTypes.func,
+    onDelete: PropTypes.func,
 };
 
 Color.defaultProps = {
+    onChange: () => {},
+    onDelete: () => {},
     name: '',
+    id: '',
     color: '#000000',
 };
 
