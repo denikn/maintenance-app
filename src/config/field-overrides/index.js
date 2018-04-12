@@ -2,6 +2,7 @@ import attribute from './attribute';
 import dataElement from './dataElement';
 import indicator from './indicator';
 import dataSet from './dataSet';
+import colorSet from './colorSet';
 import dataSetNotificationTemplate from './dataSetNotificationTemplate';
 import organisationUnit from './organisationUnit';
 import organisationUnitGroup from './organisationUnitGroup';
@@ -55,6 +56,7 @@ const overridesByType = {
     trackedEntityType,
     trackerProgram,
     enrollment,
+    colorSet,
 };
 
 export default {

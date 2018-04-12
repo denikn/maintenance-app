@@ -75,6 +75,7 @@ export function getSideBarConfig() {
                 'constant',
                 'attribute',
                 'optionSet',
+                'colorSet',
                 'legendSet',
                 'predictor',
                 'pushAnalysis',
@@ -183,6 +184,9 @@ const typeDetails = {
     },
     optionSet: {
         columns: ['displayName', 'valueType', 'lastUpdated'],
+    },
+    colorSet: {
+        columns: ['displayName', 'lastUpdated'],
     },
     predictor: {
         columns: ['displayName', 'output[displayName]', 'periodType', 'lastUpdated'],

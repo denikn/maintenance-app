@@ -183,6 +183,11 @@ const fieldOrderByName = new Map([
         'description',
         'value',
     ]],
+    ['colorSet', [
+        'name',
+        'code',
+        'colors',
+    ]],
     ['attribute', [
         'name',
         'shortName',
@@ -223,7 +228,7 @@ const fieldOrderByName = new Map([
         'captureCoordinates',
         'validCompleteOnly',
         'preGenerateUID',
-        'executionDateLabel'
+        'executionDateLabel',
     ]],
     ['trackerProgram', [
         'name',
