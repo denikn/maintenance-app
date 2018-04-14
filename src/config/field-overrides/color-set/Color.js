@@ -23,9 +23,9 @@ const styles = {
     },
 };
 
-const Color = ({ id, name, color, onChange, onDelete }) => {
-    const onNameChange = (event, newName) => onChange(newName, color);
-    const onColorChange = newColor => onChange(name, newColor);
+const Color = ({ id, name, color, onChange, onDeleteColor }) => {
+    const onNameChange = (event, newName) => onChange({ name: newName, color });
+    const onColorChange = newColor => onChange({ name, color: newColor });
 
     return (
         <Row style={styles.row}>
@@ -44,7 +44,7 @@ const Color = ({ id, name, color, onChange, onDelete }) => {
             </div>
             <FlatButton
                 label="Remove"
-                onClick={onDelete}
+                onClick={onDeleteColor}
                 secondary
                 style={styles.button}
             />
@@ -55,16 +55,13 @@ const Color = ({ id, name, color, onChange, onDelete }) => {
 Color.propTypes = {
     name: PropTypes.string,
     color: PropTypes.string,
-    id: PropTypes.string,
-    onChange: PropTypes.func,
-    onDelete: PropTypes.func,
+    id: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    onDeleteColor: PropTypes.func.isRequired,
 };
 
 Color.defaultProps = {
-    onChange: () => {},
-    onDelete: () => {},
     name: '',
-    id: '',
     color: '#000000',
 };
 

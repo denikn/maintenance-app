@@ -1,35 +1,17 @@
 import React, { PropTypes } from 'react';
-import { compose, get, equals, filter, findIndex, slice, negate } from 'lodash/fp';
-
+import { findIndex, reject } from 'lodash/fp';
 import Color from './Color';
 
 const Colors = ({ colors, onChange }) => {
-    const propertyEqualTo = (property, id) =>
-        compose(
-            equals(id),
-            get(property),
-        );
-
-    const idEqualTo = id => propertyEqualTo('id', id);
-
     const onColorDelete = (colorToRemove) => {
-        const isNotColorToRemove = negate(idEqualTo(colorToRemove.id));
-        const remainingColors = filter(isNotColorToRemove, colors);
-
-        onChange(remainingColors);
+        const remainingColors = reject({ id: colorToRemove.id }, colors);
+        onChange({ target: { value: remainingColors } });
     };
 
     const onColorChange = (updatedColor) => {
-        const getColorIndex = color => findIndex(idEqualTo(color.id), colors);
-        const currentColorIndex = getColorIndex(updatedColor, colors);
-        const colorsBeforeCurrentColor = slice(0, currentColorIndex, colors);
-        const colorsAfterCurrentColor = slice(currentColorIndex + 1, colors.length, colors);
-
-        onChange([].concat(
-            colorsBeforeCurrentColor,
-            updatedColor,
-            colorsAfterCurrentColor),
-        );
+        const currentColorIndex = findIndex({ id: updatedColor.id }, colors);
+        colors.splice(currentColorIndex, 1, updatedColor);
+        onChange({ target: { value: colors } });
     };
 
     const colorRows = colors.map((color) => {
@@ -43,7 +25,7 @@ const Colors = ({ colors, onChange }) => {
                 name={color.name}
                 color={color.color}
                 onChange={onChangeColor}
-                onDelete={onDeleteColor}
+                onDeleteColor={onDeleteColor}
             />);
     });
 

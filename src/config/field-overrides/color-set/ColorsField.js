@@ -26,17 +26,15 @@ const ColorsField = ({ value, errorText, onChange }) => {
     const addColor = () => {
         const newColor = { id: generateUid() };
         const newColors = value.concat(newColor);
-        console.log(newColors);
-        onChange(newColors);
+        onChange({ target: { value: newColors } });
     };
 
     return (
         <div>
             <span style={styles.labelStyle}>Colors</span>
-
-            <RaisedButton style={styles.addButton} label="Add color" onClick={addColor} secondary />
             <Colors colors={value} onChange={onChange} />
             <ErrorMessage message={errorText} />
+            <RaisedButton style={styles.addButton} label="Add color" onClick={addColor} secondary />
             <Divider />
         </div>);
 };
@@ -48,8 +46,11 @@ ColorsField.propTypes = {
         id: PropTypes.string,
         name: PropTypes.string,
         color: PropTypes.string,
-    })).isRequired,
+    })),
 };
-ColorsField.defaultProps = { errorText: '' };
+ColorsField.defaultProps = {
+    errorText: '',
+    value: [],
+};
 
 export default ColorsField;
