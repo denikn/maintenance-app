@@ -32,9 +32,9 @@ const ColorsField = ({ value, errorText, onChange }) => {
     return (
         <div>
             <span style={styles.labelStyle}>Colors</span>
+            <RaisedButton style={styles.addButton} label="Add color" onClick={addColor} secondary />
             <Colors colors={value} onChange={onChange} />
             <ErrorMessage message={errorText} />
-            <RaisedButton style={styles.addButton} label="Add color" onClick={addColor} secondary />
             <Divider />
         </div>);
 };

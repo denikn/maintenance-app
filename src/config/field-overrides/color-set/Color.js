@@ -37,6 +37,7 @@ const Color = ({ id, name, color, onChange, onDeleteColor }) => {
             <div style={styles.textField}>
                 <TextField
                     id={id}
+                    hintText={'Enter color name'}
                     value={name}
                     onChange={onNameChange}
                     fullWidth
@@ -62,7 +63,7 @@ Color.propTypes = {
 
 Color.defaultProps = {
     name: '',
-    color: '#000000',
+    color: 'Select color',
 };
 
 export default Color;
