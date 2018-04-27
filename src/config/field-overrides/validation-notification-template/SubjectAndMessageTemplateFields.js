@@ -6,7 +6,7 @@ import { List, ListItem } from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import Heading from 'd2-ui/lib/headings/Heading.component';
 import { map, compose } from 'lodash/fp';
-
+import TextFormField from '../../../forms/form-fields/text-field';
 function prepareProps(d2, onItemSelected) {
     return function ([type, name]) {
         const label = name.displayName ? name.displayName : d2.i18n.getTranslation(name);
@@ -108,24 +108,29 @@ export default class SubjectAndMessageTemplateFields extends Component {
                 <Row>
                     <Column>
                         <div style={styles.subject}>
-                            <TextField
+                            <TextFormField
                                 name="subjectTemplate"
                                 fullWidth
+                                errorText={this.props.errorText}
+
                                 floatingLabelText={d2.i18n.getTranslation('subject_template')}
                                 onBlur={this.setActiveField('subjectTemplate')}
                                 value={model.subjectTemplate || ''}
+                                {...this.props}
                                 onChange={(event, value) => onUpdate({ fieldName: 'subjectTemplate', value })}
                                 onKeyUp={this.setActiveField('subjectTemplate')}
                             />
                         </div>
                         <div>
-                            <TextField
+                            <TextFormField
                                 name="messageTemplate"
                                 multiLine
                                 fullWidth
+                                isRequired={this.props.isRequired}
                                 floatingLabelText={d2.i18n.getTranslation('message_template')}
                                 onBlur={this.setActiveField('messageTemplate')}
                                 value={model.messageTemplate || ''}
+                                {...this.props}
                                 onChange={(event, value) => onUpdate({ fieldName: 'messageTemplate', value })}
                             />
                         </div>

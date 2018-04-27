@@ -117,8 +117,8 @@ export default React.createClass({
             isLoading: true,
             formState: {
                 validating: false,
-                valid: false,
-                pristine: true,
+                valid: true,
+                pristine: true
             },
             activeStep: 0,
         };
@@ -171,6 +171,8 @@ export default React.createClass({
         ) : null;
     },
 
+
+
     renderForm() {
         const formPaperStyle = {
             width: '100%',
@@ -193,6 +195,7 @@ export default React.createClass({
                     fields={this.state.fieldConfigs}
                     onUpdateField={this._onUpdateField}
                     onUpdateFormStatus={this._onUpdateFormStatus}
+                    ref={this.setFormRef}
                 />
                 <FormButtons>
                     <SaveButton
@@ -236,12 +239,43 @@ export default React.createClass({
         }
     },
 
+    setFormRef(form) {
+        this.formRef = form;
+    },
+
+    /**
+     * Checks if required in the form are set.
+     *
+     * @returns {boolean} True if all required fields are set. False otherwise
+     */
+    isRequiredFieldsValid() {
+        let result = true;
+        const formRef = this.formRef;
+        const formRefStateClone = formRef.getStateClone();
+        this.state.fieldConfigs.map((fieldConfig) => {
+            if((fieldConfig.fieldOptions && !fieldConfig.fieldOptions.isRequired)) {
+                console.log(fieldConfig)
+                return;
+            }
+            //error message or true if its succeeds
+            const res = formRef.validateField(formRefStateClone, fieldConfig.name, fieldConfig.value);
+            console.log(res, fieldConfig.name)
+            if(res !== true) {
+                result = false;
+            }
+
+        })
+        formRef.setState(formRefStateClone);
+        console.log("VALIDED FORM: ", result)
+        return result;
+    },
+
     _onUpdateField(fieldName, value) {
         const fieldConfig = this.state.fieldConfigs.find(fieldConfig => fieldConfig.name == fieldName);
         if (fieldConfig && fieldConfig.beforeUpdateConverter) {
             return objectActions.update({ fieldName, value: fieldConfig.beforeUpdateConverter(value) });
         }
-
+        console.log("UPDATE: ", fieldName, "val: ", value)
         return objectActions.update({ fieldName, value });
     },
 
@@ -251,8 +285,14 @@ export default React.createClass({
         });
     },
 
+
+
     _saveAction(event) {
         event.preventDefault();
+        if(!this.isRequiredFieldsValid()) {
+            snackActions.show({ message: 'there_was_an_error_in_form', action: 'ok', translate: true });
+            return;
+        }
         // Set state to saving so forms actions are being prevented
         this.setState({ isSaving: true });
 
