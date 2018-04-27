@@ -4,6 +4,7 @@ import log from 'loglevel';
 import { Observable } from 'rxjs';
 
 import { Step, Stepper, StepButton } from 'material-ui/Stepper';
+import { get } from 'lodash/fp';
 
 import { getInstance } from 'd2/lib/d2';
 import { isString } from 'd2-utilizr';
@@ -23,9 +24,8 @@ import FormButtons from './FormButtons.component';
 import extraFields from './extraFields';
 
 import appState from '../App/appStateStore';
-import { createFieldConfigForModelTypes, addUniqueValidatorWhenUnique, getAttributeFieldConfigs } from './formHelpers';
+import { createFieldConfigForModelTypes, addUniqueValidatorWhenUnique } from './formHelpers';
 import { applyRulesToFieldConfigs, getRulesForModelType } from './form-rules';
-
 
 const currentSection$ = appState
     .filter(state => state.sideBar && state.sideBar.currentSection)
@@ -40,7 +40,8 @@ const isAddOperation = model => model.id === undefined;
 
 const d2$ = Observable.fromPromise(getInstance());
 
-const modelToEditAndModelForm$ = Observable.combineLatest(modelToEditStore, editFormFieldsForCurrentSection$, currentSection$, d2$)
+const modelToEditAndModelForm$ = Observable
+    .combineLatest(modelToEditStore, editFormFieldsForCurrentSection$, currentSection$, d2$)
     .filter(([modelToEdit, formFields, currentType]) => {
         if (modelToEdit && modelToEdit.modelDefinition && modelToEdit.modelDefinition.name) {
             return modelToEdit.modelDefinition.name === currentType;
@@ -77,7 +78,11 @@ const modelToEditAndModelForm$ = Observable.combineLatest(modelToEditStore, edit
                 return fieldConfig;
             });
 
-        const fieldConfigsAfterRules = applyRulesToFieldConfigs(getRulesForModelType(modelToEdit.modelDefinition.name), fieldConfigs, modelToEdit);
+        const fieldConfigsAfterRules = applyRulesToFieldConfigs(
+            getRulesForModelType(modelToEdit.modelDefinition.name),
+            fieldConfigs,
+            modelToEdit,
+        );
         const fieldConfigsWithAttributeFields = [].concat(
             fieldConfigsAfterRules,
             // getAttributeFieldConfigs(d2, modelToEdit),
@@ -95,10 +100,6 @@ const modelToEditAndModelForm$ = Observable.combineLatest(modelToEditStore, edit
             isLoading: false,
         };
     });
-
-function PlaceholderComponent(props) {
-    return null;
-}
 
 export default React.createClass({
     propTypes: {
@@ -118,7 +119,7 @@ export default React.createClass({
             formState: {
                 validating: false,
                 valid: true,
-                pristine: true
+                pristine: true,
             },
             activeStep: 0,
         };
@@ -156,6 +157,10 @@ export default React.createClass({
         return null;
     },
 
+    addStepBelongingToFields(steps) {
+
+    },
+
     renderStepper() {
         const steps = fieldGroups.for(this.props.modelType);
         const stepCount = steps.length;
@@ -170,8 +175,6 @@ export default React.createClass({
             </Stepper>
         ) : null;
     },
-
-
 
     renderForm() {
         const formPaperStyle = {
@@ -200,7 +203,7 @@ export default React.createClass({
                 <FormButtons>
                     <SaveButton
                         onClick={this._saveAction}
-                        isValid={this.state.formState.valid && !this.state.formState.validating}
+                        isValid
                         isSaving={this.state.isSaving}
                     />
                     <CancelButton onClick={this._closeAction} />
@@ -218,10 +221,10 @@ export default React.createClass({
     },
 
     /*
-        Sets the style of the fields that are not part of the active steps to 'none'
-        so that they are "hidden". For this to work, the components needs to have
-        an outer div that receives the props.style. 
-    */
+     *  Sets the style of the fields that are not part of the active steps to 'none'
+     *  so that they are "hidden". For this to work, the components needs to have
+     *  an outer div that receives the props.style. 
+     */
     setActiveStep(step) {
         const stepsByField = fieldGroups.groupsByField(this.props.modelType);
         if (stepsByField) {
@@ -243,39 +246,59 @@ export default React.createClass({
         this.formRef = form;
     },
 
+    /* 
+     * The result coming from FormBuilder validateField will contain an error message on fail and 
+     * a boolean true if it succeeds. This is an attempt to clarify.
+     */
+    isValidatedResultErrorMessage(validatedResult) {
+        return validatedResult !== true;
+    },
+
     /**
-     * Checks if required in the form are set.
-     *
-     * @returns {boolean} True if all required fields are set. False otherwise
+     * Checks if the fields that are marked as required in the form are valid.
+     * If not, it will post an error message to snackBar with the field that is not valid.
+     * If the form 
+     * TODO: refactor. Should rather return a message. And let saveAction print that message if present.
+     * Should return when it finds the first message.
+     * @returns {boolean} True if all required fields are valid. False otherwise
      */
     isRequiredFieldsValid() {
         let result = true;
         const formRef = this.formRef;
         const formRefStateClone = formRef.getStateClone();
-        this.state.fieldConfigs.map((fieldConfig) => {
-            if((fieldConfig.fieldOptions && !fieldConfig.fieldOptions.isRequired)) {
-                console.log(fieldConfig)
-                return;
-            }
-            //error message or true if its succeeds
-            const res = formRef.validateField(formRefStateClone, fieldConfig.name, fieldConfig.value);
-            console.log(res, fieldConfig.name)
-            if(res !== true) {
-                result = false;
-            }
 
-        })
+        this.state.fieldConfigs
+            .filter(fieldConfig => get('isRequired', fieldConfig.fieldOptions) === true)
+            .map((fieldConfig) => {
+                const validatedResult = formRef.validateField(formRefStateClone, fieldConfig.name, fieldConfig.value);
+                if (this.isValidatedResultErrorMessage(validatedResult)) {
+                    const fieldStep = fieldConfig.step
+                        ? `On step ${fieldConfig.step}`
+                        : '';
+                    const errorMessage =
+                        `${this.getTranslation('missing_required_property_field')} : ${fieldConfig.translatedName}.
+                         ${fieldStep}`;
+
+                    snackActions.show({
+                        message: errorMessage,
+                        action: 'ok',
+                    });
+                    result = false;
+                }
+            });
+
         formRef.setState(formRefStateClone);
-        console.log("VALIDED FORM: ", result)
         return result;
     },
 
     _onUpdateField(fieldName, value) {
-        const fieldConfig = this.state.fieldConfigs.find(fieldConfig => fieldConfig.name == fieldName);
+        const fieldConfig = this.state.fieldConfigs.find(fieldConfig => fieldConfig.name === fieldName);
         if (fieldConfig && fieldConfig.beforeUpdateConverter) {
-            return objectActions.update({ fieldName, value: fieldConfig.beforeUpdateConverter(value) });
+            return objectActions.update({
+                fieldName,
+                value: fieldConfig.beforeUpdateConverter(value),
+            });
         }
-        console.log("UPDATE: ", fieldName, "val: ", value)
         return objectActions.update({ fieldName, value });
     },
 
@@ -285,12 +308,10 @@ export default React.createClass({
         });
     },
 
-
-
     _saveAction(event) {
         event.preventDefault();
-        if(!this.isRequiredFieldsValid()) {
-            snackActions.show({ message: 'there_was_an_error_in_form', action: 'ok', translate: true });
+
+        if (!this.isRequiredFieldsValid()) {
             return;
         }
         // Set state to saving so forms actions are being prevented
