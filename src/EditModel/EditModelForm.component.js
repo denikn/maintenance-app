@@ -1,31 +1,33 @@
 import React from 'react';
-
 import log from 'loglevel';
 import { Observable } from 'rxjs';
 
-import { Step, Stepper, StepButton } from 'material-ui/Stepper';
-import { get } from 'lodash/fp';
-
 import { getInstance } from 'd2/lib/d2';
 import { isString } from 'd2-utilizr';
+
+import { Step, Stepper, StepButton } from 'material-ui/Stepper';
 import CircularProgress from 'd2-ui/lib/circular-progress/CircularProgress';
 import Translate from 'd2-ui/lib/i18n/Translate.mixin';
 import FormBuilder from 'd2-ui/lib/forms/FormBuilder.component';
 
-import fieldGroups from '../config/field-config/field-groups';
-import disabledOnEdit from '../config/disabled-on-edit';
-import modelToEditStore from './modelToEditStore';
-import objectActions from './objectActions';
-import snackActions from '../Snackbar/snack.actions';
 import SaveButton from './SaveButton.component';
 import CancelButton from './CancelButton.component';
 import SharingNotification from './SharingNotification.component';
 import FormButtons from './FormButtons.component';
+
+import fieldGroups from '../config/field-config/field-groups';
 import extraFields from './extraFields';
+
+import disabledOnEdit from '../config/disabled-on-edit';
+import modelToEditStore from './modelToEditStore';
+
+import objectActions from './objectActions';
+import snackActions from '../Snackbar/snack.actions';
 
 import appState from '../App/appStateStore';
 import { createFieldConfigForModelTypes, addUniqueValidatorWhenUnique } from './formHelpers';
 import { applyRulesToFieldConfigs, getRulesForModelType } from './form-rules';
+import getFirstInvalidFieldMessage from './form-helpers/validateFields';
 
 const currentSection$ = appState
     .filter(state => state.sideBar && state.sideBar.currentSection)
@@ -157,10 +159,6 @@ export default React.createClass({
         return null;
     },
 
-    addStepBelongingToFields(steps) {
-
-    },
-
     renderStepper() {
         const steps = fieldGroups.for(this.props.modelType);
         const stepCount = steps.length;
@@ -246,51 +244,6 @@ export default React.createClass({
         this.formRef = form;
     },
 
-    /* 
-     * The result coming from FormBuilder validateField will contain an error message on fail and 
-     * a boolean true if it succeeds. This is an attempt to clarify.
-     */
-    isValidatedResultErrorMessage(validatedResult) {
-        return validatedResult !== true;
-    },
-
-    /**
-     * Checks if the fields that are marked as required in the form are valid.
-     * If not, it will post an error message to snackBar with the field that is not valid.
-     * If the form 
-     * TODO: refactor. Should rather return a message. And let saveAction print that message if present.
-     * Should return when it finds the first message.
-     * @returns {boolean} True if all required fields are valid. False otherwise
-     */
-    isRequiredFieldsValid() {
-        let result = true;
-        const formRef = this.formRef;
-        const formRefStateClone = formRef.getStateClone();
-
-        this.state.fieldConfigs
-            .filter(fieldConfig => get('isRequired', fieldConfig.fieldOptions) === true)
-            .map((fieldConfig) => {
-                const validatedResult = formRef.validateField(formRefStateClone, fieldConfig.name, fieldConfig.value);
-                if (this.isValidatedResultErrorMessage(validatedResult)) {
-                    const fieldStep = fieldConfig.step
-                        ? `On step ${fieldConfig.step}`
-                        : '';
-                    const errorMessage =
-                        `${this.getTranslation('missing_required_property_field')} : ${fieldConfig.translatedName}.
-                         ${fieldStep}`;
-
-                    snackActions.show({
-                        message: errorMessage,
-                        action: 'ok',
-                    });
-                    result = false;
-                }
-            });
-
-        formRef.setState(formRefStateClone);
-        return result;
-    },
-
     _onUpdateField(fieldName, value) {
         const fieldConfig = this.state.fieldConfigs.find(fieldConfig => fieldConfig.name === fieldName);
         if (fieldConfig && fieldConfig.beforeUpdateConverter) {
@@ -311,9 +264,15 @@ export default React.createClass({
     _saveAction(event) {
         event.preventDefault();
 
-        if (!this.isRequiredFieldsValid()) {
+        const invalidFieldMessage = getFirstInvalidFieldMessage(this.state.fieldConfigs, this.formRef);
+        if (invalidFieldMessage) {
+            snackActions.show({
+                message: `${this.getTranslation('missing_required_property_field')} ${invalidFieldMessage}`,
+                action: 'ok',
+            });
             return;
         }
+
         // Set state to saving so forms actions are being prevented
         this.setState({ isSaving: true });
 

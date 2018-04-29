@@ -1,5 +1,4 @@
 import { findIndex } from 'lodash/fp';
-import { EIO } from 'constants';
 import fieldOrder from './field-order';
 
 /*
@@ -121,8 +120,6 @@ export default {
     groupNoByName(fieldName, modelType) {
         if (this.isGroupedFields(modelType)) {
             const modelGroup = fieldGroupsForModelType.get(modelType);
-            console.log(fieldName);
-            console.log(modelGroup);
             return findIndex((group => group.fields.includes(fieldName)), modelGroup);
         }
         return 0;

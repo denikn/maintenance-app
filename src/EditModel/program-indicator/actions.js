@@ -1,4 +1,5 @@
 import { createActionCreator } from '../actions';
+
 export { NOTIFY_USER, notifyUser } from '../actions';
 
 // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -21,6 +22,10 @@ export const loadProgramIndicator = createActionCreator(PROGRAM_INDICATOR_LOAD);
 export const loadProgramIndicatorSuccess = createActionCreator(PROGRAM_INDICATOR_LOAD_SUCCESS);
 export const loadProgramIndicatorFailure = createActionCreator(PROGRAM_INDICATOR_LOAD_ERROR);
 
+export const PROGRAM_INDICATOR_VALIDATE = 'PROGRAM_INDICATOR_VALIDATE';
+
+export const validateProgramIndicator = store => ({ type: PROGRAM_INDICATOR_VALIDATE, payLoad: store });
+
 export const PROGRAM_INDICATOR_SAVE = 'PROGRAM_INDICATOR_SAVE';
 export const PROGRAM_INDICATOR_SAVE_SUCCESS = 'PROGRAM_INDICATOR_SAVE_SUCCESS';
 export const PROGRAM_INDICATOR_SAVE_ERROR = 'PROGRAM_INDICATOR_SAVE_ERROR';
@@ -30,4 +35,7 @@ export const saveProgramIndicatorSuccess = createActionCreator(PROGRAM_INDICATOR
 export const saveProgramIndicatorError = createActionCreator(PROGRAM_INDICATOR_SAVE_ERROR);
 
 export const PROGRAM_INDICATOR_TO_EDIT_FIELD_CHANGED = 'PROGRAM_INDICATOR_TO_EDIT_FIELD_CHANGED';
-export const editFieldChanged = (field, value) => ({ type: PROGRAM_INDICATOR_TO_EDIT_FIELD_CHANGED, payload: { field, value } });
+export const editFieldChanged = (field, value) => ({
+    type: PROGRAM_INDICATOR_TO_EDIT_FIELD_CHANGED,
+    payload: { field, value },
+});

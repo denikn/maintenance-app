@@ -1,9 +1,8 @@
-import React from 'react';
 import { bindActionCreators } from 'redux';
-import { saveProgramIndicator } from './actions';
+import { validateProgramIndicator } from './actions';
 import { createConnectedFormActionButtonsForSchema } from '../FormActionButtons';
 
-const mapDispatchToProps = dispatch => bindActionCreators({ onSaveAction: saveProgramIndicator }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ onSaveAction: validateProgramIndicator }, dispatch);
 
 const ProgramIndicatorActionButtons = createConnectedFormActionButtonsForSchema(mapDispatchToProps);
 

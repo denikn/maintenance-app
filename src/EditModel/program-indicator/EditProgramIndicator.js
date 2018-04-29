@@ -1,20 +1,30 @@
 import React from 'react';
-import { camelCaseToUnderscores } from 'd2-utilizr';
+import PropTypes from 'prop-types';
+
+import { get } from 'lodash/fp';
 import mapPropsStream from 'recompose/mapPropsStream';
+import { camelCaseToUnderscores } from 'd2-utilizr';
+
 import FormHeading from '../FormHeading';
 import FormSubHeading from '../FormSubHeading';
 import ProgramIndicatorStepper from './ProgramIndicatorStepper';
 import ProgramIndicatorStepperContent from './ProgramIndicatorStepperContent';
-import programIndicatorStore from './programIndicatorStore';
-import { get } from 'lodash/fp';
-import { createConnectedForwardButton, createConnectedBackwardButton, createStepperNavigation } from '../stepper/stepper';
-import { previousStep, nextStep } from './actions';
 import ProgramIndicatorActionButtons from './ProgramIndicatorActionButtons';
+
+import programIndicatorStore from './programIndicatorStore';
+import { previousStep, nextStep } from './actions';
+import {
+    createConnectedForwardButton,
+    createConnectedBackwardButton,
+    createStepperNavigation,
+} from '../stepper/stepper';
 
 const EventProgramStepperNavigationForward = createConnectedForwardButton(nextStep);
 const EventProgramStepperNavigationBackward = createConnectedBackwardButton(previousStep);
-
-const StepperNavigation = createStepperNavigation(EventProgramStepperNavigationBackward, EventProgramStepperNavigationForward);
+const StepperNavigation = createStepperNavigation(
+    EventProgramStepperNavigationBackward,
+    EventProgramStepperNavigationForward,
+);
 
 const withPreLoadedModel = mapPropsStream(props$ => props$
     .combineLatest(
@@ -22,8 +32,8 @@ const withPreLoadedModel = mapPropsStream(props$ => props$
         (props, programIndicatorState) => ({
             ...props,
             programIndicator: programIndicatorState.programIndicator,
-        })
-    )
+        }),
+    ),
 );
 
 const styles = {
@@ -44,8 +54,17 @@ function EditProgramIndicator({ programIndicator, ...props }) {
     return (
         <div style={styles.navigationWrap}>
             <div style={styles.heading}>
-                <FormHeading schema={schema} groupName={groupName}>{camelCaseToUnderscores(schema)}</FormHeading>
-                <FormSubHeading>{programIndicatorName && programName ? `${programIndicatorName} for ${programName}` : ''}</FormSubHeading>
+                <FormHeading
+                    schema={schema}
+                    groupName={groupName}
+                >
+                    {camelCaseToUnderscores(schema)}
+                </FormHeading>
+                <FormSubHeading>
+                    {programIndicatorName && programName
+                        ? `${programIndicatorName} for ${programName}`
+                        : ''}
+                </FormSubHeading>
             </div>
             <ProgramIndicatorStepper />
             <ProgramIndicatorStepperContent
@@ -58,5 +77,10 @@ function EditProgramIndicator({ programIndicator, ...props }) {
         </div>
     );
 }
+
+EditProgramIndicator.propTypes = {
+    programIndicator: PropTypes.object.isRequired,
+    params: PropTypes.object.isRequired,
+};
 
 export default withPreLoadedModel(EditProgramIndicator);

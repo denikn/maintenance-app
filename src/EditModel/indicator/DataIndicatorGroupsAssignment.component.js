@@ -2,8 +2,8 @@ import React from 'react';
 import { getInstance } from 'd2/lib/d2';
 import CircularProgress from 'd2-ui/lib/circular-progress/CircularProgress';
 
-import DropDown from '../forms/form-fields/drop-down';
-import store from './indicatorGroupsStore';
+import DropDown from '../../forms/form-fields/drop-down';
+import store from '../indicatorGroupsStore';
 
 function getLoadingIndicator() {
     return (
@@ -13,6 +13,7 @@ function getLoadingIndicator() {
     );
 }
 
+// TODO: I belive this is no longer used.
 function findValue(optionList, model) {
     return optionList
         .map(option => option.value)
@@ -43,7 +44,10 @@ export default React.createClass({
                 filter: ['compulsory:eq:true'],
                 paging: false,
             }))
-            .then(response => response.indicatorGroupSets)
+            .then((response) => {
+                console.log(response);
+                return response.indicatorGroupSets;
+            })
             .then(indicatorGroupSets => this.setState({ indicatorGroupSets }));
 
         this.subscription = store.subscribe(() => this.forceUpdate());
@@ -68,8 +72,11 @@ export default React.createClass({
                         text: ig.displayName,
                     }));
 
-                    const value = Object.prototype.hasOwnProperty.call(store.state.indicatorGroupValues, indicatorGroupSet.id) ? store.state.indicatorGroupValues[indicatorGroupSet.id] : findValue(optionList, this.props.source);
-
+                    const value = Object.prototype.hasOwnProperty
+                        .call(store.state.indicatorGroupValues, indicatorGroupSet.id)
+                        ? store.state.indicatorGroupValues[indicatorGroupSet.id]
+                        : findValue(optionList, this.props.source);
+                    console.log(value);
                     return (
                         <div key={`dataIndicatorGroupAssignment${key}`}>
                             <DropDown
