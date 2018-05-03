@@ -31,10 +31,15 @@ try {
 
 function bypass(req, res, opt) {
     req.headers.Authorization = dhisConfig.authorization;
+    console.log()
     console.log('[PROXY]'.cyan.bold, req.method.green.bold, req.url.magenta, '=>'.dim, opt.target.dim);
 }
 
-const scriptPrefix = (isDevBuild ? dhisConfig.baseUrl : '..');
+const authForProxy = {
+    'Authorization': dhisConfig.authorization
+}
+
+const scriptPrefix = (isDevBuild ? '..' : '..');
 
 const webpackConfig = {
     context: __dirname,
@@ -160,12 +165,13 @@ const webpackConfig = {
                 ],
                 target: dhisConfig.baseUrl,
                 changeOrigin: true,
-                bypass,
+                headers: authForProxy,
             },
             {
                 path: '/i18n/**',
                 target: 'http://localhost:8081/src',
                 bypass,
+
             },
             {
                 path: '/polyfill.min.js',

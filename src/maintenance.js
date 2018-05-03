@@ -16,6 +16,8 @@ import systemSettingsStore from './App/systemSettingsStore';
 import rxjsconfig from 'recompose/rxjsObservableConfig';
 import setObservableConfig from 'recompose/setObservableConfig';
 import periodTypeStore from './App/periodTypeStore';
+import store from './store';
+
 setObservableConfig(rxjsconfig);
 
 if (process.env.NODE_ENV !== 'production') {
@@ -74,6 +76,25 @@ function startApp() {
     );
 }
 
+function errorApp(err) {
+    log.error(err);
+    
+    if(err.message && err.httpStatusCode) {
+        err = `API failed with status ${err.httpStatusCode}: ${err.message}`
+    }
+    render(
+        <MuiThemeProvider muiTheme={appTheme}>
+            <div>
+                FAILED TO LOAD APP!
+                <div>
+                    Error: {err}
+                </div>
+            </div>
+        </MuiThemeProvider>,
+        document.getElementById('app')
+    );
+}
+
 render(
     <MuiThemeProvider muiTheme={appTheme}>
         <LoadingMask />
@@ -83,8 +104,14 @@ render(
 
 getManifest('./manifest.webapp')
     .then((manifest) => {
-        const baseUrl = process.env.NODE_ENV === 'production' ? manifest.getBaseUrl() : dhisDevConfig.baseUrl;
+        const isProd = process.env.NODE_ENV === 'production';
+        const baseUrl = isProd ? manifest.getBaseUrl() : dhisDevConfig.baseUrl;
+     //   config.headers = isProd ? null : { 'Authorization' : dhisDevConfig.authorization, 'X-Requested-With': 'XMLHttpRequest' };
+
         config.baseUrl = `${baseUrl}/api/29`;
+        config.unauthorizedCb = () => {
+            store.dispatch({ type: "SESSION_EXPIRED" });
+        }
         log.info(`Loading: ${manifest.name} v${manifest.version}`);
         log.info(`Built ${manifest.manifest_generated_at}`);
     })
@@ -93,4 +120,4 @@ getManifest('./manifest.webapp')
     .then(init)
     .then(getSystemSettings)
     .then(startApp)
-    .catch(log.error.bind(log));
+    .catch(e => errorApp(e));
