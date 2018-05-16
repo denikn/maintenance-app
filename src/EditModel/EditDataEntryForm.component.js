@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Rx from 'rxjs';
 import log from 'loglevel';
@@ -626,10 +627,10 @@ class EditDataEntryForm extends React.Component {
     }
 }
 EditDataEntryForm.propTypes = {
-    params: React.PropTypes.object,
+    params: PropTypes.object,
 };
 EditDataEntryForm.contextTypes = {
-    d2: React.PropTypes.any,
+    d2: PropTypes.any,
 };
 
 export default EditDataEntryForm;

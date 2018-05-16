@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TextField from 'material-ui/TextField/TextField';
 import Action from 'd2-ui/lib/action/Action';
@@ -116,14 +117,14 @@ export default class TextFormField extends Component {
 }
 
 TextFormField.propTypes = {
-    name: React.PropTypes.string,
-    value: React.PropTypes.any,
-    label: React.PropTypes.string,
-    labelText: React.PropTypes.string.isRequired,
-    onChange: React.PropTypes.func,
-    multiLine: React.PropTypes.bool,
-    style: React.PropTypes.any,
-    errorStyle: React.PropTypes.object,
+    name: PropTypes.string,
+    value: PropTypes.any,
+    label: PropTypes.string,
+    labelText: PropTypes.string.isRequired,
+    onChange: PropTypes.func,
+    multiLine: PropTypes.bool,
+    style: PropTypes.any,
+    errorStyle: PropTypes.object,
 };
 
 TextFormField.defaultProps = {

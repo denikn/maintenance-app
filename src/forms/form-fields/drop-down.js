@@ -280,7 +280,7 @@ Dropdown.defaultProps = {
 };
 
 Dropdown.contextTypes = {
-    d2: React.PropTypes.any,
+    d2: PropTypes.any,
 };
 
 export default Dropdown;

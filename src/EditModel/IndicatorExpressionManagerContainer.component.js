@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Action from 'd2-ui/lib/action/Action';
 import IndicatorExpressionManager from 'd2-ui/lib/expression-manager/ExpressionManager';
@@ -25,10 +26,10 @@ indicatorExpressionStatusActions.requestExpressionStatus
 
 const IndicatorExpressionManagerContainer = React.createClass({
     propTypes: {
-        indicatorExpressionChanged: React.PropTypes.func.isRequired,
-        description: React.PropTypes.string,
-        formula: React.PropTypes.string,
-        titleText: React.PropTypes.string,
+        indicatorExpressionChanged: PropTypes.func.isRequired,
+        description: PropTypes.string,
+        formula: PropTypes.string,
+        titleText: PropTypes.string,
     },
 
     mixins: [Translate],

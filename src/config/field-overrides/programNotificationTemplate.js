@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import withProps from 'recompose/withProps';
@@ -101,7 +102,7 @@ const ProgramAttributeDropDown = compose(connect(undefined, boundOnUpdate))(
 const DataElementDropDown = compose(connect(undefined, boundOnUpdate))(
     props => {
         const dataElementOpts = props.dataElements
-            .filter(de => de.valueType == 'PHONE_NUMBER')
+            .filter(de => de.valueType === 'PHONE_NUMBER')
             .map(de => ({
                 text: de.displayName,
                 value: de.id,

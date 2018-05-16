@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Card from 'material-ui/Card/Card';
 import CardHeader from 'material-ui/Card/CardHeader';
@@ -8,10 +9,10 @@ import Translate from 'd2-ui/lib/i18n/Translate.mixin';
 
 export default React.createClass({
     propTypes: {
-        menuItems: React.PropTypes.arrayOf(
-            React.PropTypes.shape({
-                name: React.PropTypes.string,
-                description: React.PropTypes.string,
+        menuItems: PropTypes.arrayOf(
+            PropTypes.shape({
+                name: PropTypes.string,
+                description: PropTypes.string,
             })
         ),
     },

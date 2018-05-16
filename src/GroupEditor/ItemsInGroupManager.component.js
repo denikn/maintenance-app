@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import TextField from 'material-ui/TextField/TextField';
@@ -14,7 +15,7 @@ export default React.createClass({
     mixins: [Translate],
 
     contextTypes: {
-        d2: React.PropTypes.object,
+        d2: PropTypes.object,
     },
 
     getInitialState() {

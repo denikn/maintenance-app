@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import log from 'loglevel';
 
@@ -467,14 +468,14 @@ class SectionDialog extends React.Component {
 }
 
 SectionDialog.propTypes = {
-    open: React.PropTypes.bool.isRequired,
-    sectionModel: React.PropTypes.any.isRequired,
-    categoryCombos: React.PropTypes.array.isRequired,
-    onRequestClose: React.PropTypes.func.isRequired,
-    onSaveSection: React.PropTypes.func.isRequired,
+    open: PropTypes.bool.isRequired,
+    sectionModel: PropTypes.any.isRequired,
+    categoryCombos: PropTypes.array.isRequired,
+    onRequestClose: PropTypes.func.isRequired,
+    onSaveSection: PropTypes.func.isRequired,
 };
 SectionDialog.contextTypes = {
-    d2: React.PropTypes.any.isRequired,
+    d2: PropTypes.any.isRequired,
 };
 
 export default SectionDialog;

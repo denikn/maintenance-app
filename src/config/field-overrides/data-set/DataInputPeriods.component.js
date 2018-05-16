@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import Dialog from 'material-ui/Dialog';
@@ -233,6 +234,6 @@ class DataInputPeriods extends React.Component {
         );
     }
 }
-DataInputPeriods.contextTypes = { d2: React.PropTypes.any };
+DataInputPeriods.contextTypes = { d2: PropTypes.any };
 
 export default DataInputPeriods;

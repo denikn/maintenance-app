@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import withProps from 'recompose/withProps';
 import mapProps from 'recompose/mapProps';
 import compose from 'recompose/compose';

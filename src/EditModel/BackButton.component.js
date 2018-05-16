@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import IconButton from 'material-ui/IconButton/IconButton';
 import addD2Context from 'd2-ui/lib/component-helpers/addD2Context';
@@ -37,7 +38,7 @@ function BackButton(props, context) {
     );
 }
 BackButton.propTypes = {
-    tooltip: React.PropTypes.string,
+    tooltip: PropTypes.string,
 };
 
 export default addD2Context(BackButton);

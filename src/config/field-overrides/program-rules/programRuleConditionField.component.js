@@ -1,6 +1,5 @@
 import React from 'react';
-import { PropTypes } from 'prop-types';
-
+import PropTypes from 'prop-types';
 import { RaisedButton, IconButton, Divider } from 'material-ui';
 import { Link } from 'react-router';
 

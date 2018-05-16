@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 // TODO: Put this in D2-UI
@@ -90,13 +91,13 @@ class TextEditorField extends React.Component {
 }
 
 TextEditorField.propTypes = {
-    value: React.PropTypes.any,
-    disabled: React.PropTypes.bool,
-    onChange: React.PropTypes.func,
+    value: PropTypes.any,
+    disabled: PropTypes.bool,
+    onChange: PropTypes.func,
 };
 
 TextEditorField.contextTypes = {
-    d2: React.PropTypes.any,
+    d2: PropTypes.any,
 };
 
 TextEditorField.defaultProps = {

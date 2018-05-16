@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import Dialog from 'material-ui/Dialog';
@@ -132,11 +133,11 @@ class OrgUnitSelectDialog extends React.Component {
     }
 }
 OrgUnitSelectDialog.contextTypes = {
-    d2: React.PropTypes.object.isRequired,
+    d2: PropTypes.object.isRequired,
 };
 OrgUnitSelectDialog.propTypes = {
-    value: React.PropTypes.object,
-    readOnly: React.PropTypes.bool,
+    value: PropTypes.object,
+    readOnly: PropTypes.bool,
 };
 
 export default OrgUnitSelectDialog;

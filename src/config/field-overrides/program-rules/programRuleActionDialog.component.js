@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import FormBuilder from 'd2-ui/lib/forms/FormBuilder.component';
 import Dialog from 'material-ui/Dialog';
@@ -441,14 +442,14 @@ class ProgramRuleActionDialog extends React.Component {
     }
 }
 
-ProgramRuleActionDialog.contextTypes = { d2: React.PropTypes.any };
+ProgramRuleActionDialog.contextTypes = { d2: PropTypes.any };
 
 ProgramRuleActionDialog.propTypes = {
-    open: React.PropTypes.bool.isRequired,
-    onRequestClose: React.PropTypes.func.isRequired,
-    onUpdateRuleActionModel: React.PropTypes.func.isRequired,
-    program: React.PropTypes.object.isRequired,
-    ruleActionModel: React.PropTypes.object.isRequired,
+    open: PropTypes.bool.isRequired,
+    onRequestClose: PropTypes.func.isRequired,
+    onUpdateRuleActionModel: PropTypes.func.isRequired,
+    program: PropTypes.object.isRequired,
+    ruleActionModel: PropTypes.object.isRequired,
 };
 
 export default ProgramRuleActionDialog;

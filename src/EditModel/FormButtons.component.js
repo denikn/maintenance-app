@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import isArray from 'd2-utilizr/lib/isArray';
 
@@ -27,12 +28,12 @@ export default function FormButtons(props) {
     );
 }
 FormButtons.propTypes = {
-    style: React.PropTypes.object,
-    children: React.PropTypes.oneOfType([
-        React.PropTypes.array,
-        React.PropTypes.object,
+    style: PropTypes.object,
+    children: PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.object,
     ]).isRequired,
-    isFormValid: React.PropTypes.func,
+    isFormValid: PropTypes.func,
 };
 //
 // export default React.createClass({

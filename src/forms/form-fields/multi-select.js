@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Store from 'd2-ui/lib/store/Store';
 import { getInstance } from 'd2/lib/d2';
@@ -71,15 +72,15 @@ function isOrganisationUnitLevelReference(referenceProperty, modelDefinition) {
 // TODO: Refactor to es2015 class
 export default React.createClass({
     propTypes: {
-        referenceType: React.PropTypes.string.isRequired,
-        referenceProperty: React.PropTypes.string.isRequired,
-        model: React.PropTypes.object.isRequired,
-        labelText: React.PropTypes.string.isRequired,
-        onChange: React.PropTypes.func.isRequired,
-        value: React.PropTypes.oneOfType([
-            React.PropTypes.shape({ values: React.PropTypes.func.isRequired }),
-            React.PropTypes.arrayOf(React.PropTypes.func),
-            React.PropTypes.array,
+        referenceType: PropTypes.string.isRequired,
+        referenceProperty: PropTypes.string.isRequired,
+        model: PropTypes.object.isRequired,
+        labelText: PropTypes.string.isRequired,
+        onChange: PropTypes.func.isRequired,
+        value: PropTypes.oneOfType([
+            PropTypes.shape({ values: PropTypes.func.isRequired }),
+            PropTypes.arrayOf(PropTypes.func),
+            PropTypes.array,
         ]),
     },
 

@@ -68,7 +68,7 @@ function loadEventProgramMetadataByProgramId(programPayload) {
 
         // A api format payload that contains a program and a programStage
         const programStages =
-            programPayload.query.type == 'WITH_REGISTRATION'
+            programPayload.query.type === 'WITH_REGISTRATION'
                 ? []
                 : [
                       {

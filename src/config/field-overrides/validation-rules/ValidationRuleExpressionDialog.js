@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { withState, withProps, compose } from 'recompose';
 import Store from 'd2-ui/lib/store/Store';
@@ -65,7 +66,7 @@ function ValidationRuleExpressionDialog(
     );
 }
 ValidationRuleExpressionDialog.contextTypes = {
-    d2: React.PropTypes.object,
+    d2: PropTypes.object,
 };
 
 const enhanceExpressionDialog = compose(

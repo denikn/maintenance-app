@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import TextField from '../../forms/form-fields/text-field';
 import { isNumber } from 'd2-ui/lib/forms/Validators';
@@ -154,9 +155,9 @@ class CoordinateField extends React.Component {
     }
 }
 CoordinateField.propTypes = {
-    value: React.PropTypes.string,
-    onChange: React.PropTypes.func.isRequired,
+    value: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
 };
-CoordinateField.contextTypes = { d2: React.PropTypes.object.isRequired };
+CoordinateField.contextTypes = { d2: PropTypes.object.isRequired };
 
 export default CoordinateField;

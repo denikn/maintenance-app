@@ -1,3 +1,4 @@
+import React from 'react';
 import { getInstance } from 'd2/lib/d2';
 import DropDownAsyncGetter from '../../forms/form-fields/drop-down-async-getter';
 

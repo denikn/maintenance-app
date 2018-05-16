@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Sidebar from 'd2-ui/lib/sidebar/Sidebar.component';
 import noop from 'd2-utilizr/lib/noop';
@@ -23,13 +24,13 @@ function MaintenanceSideBar(props) {
 }
 
 MaintenanceSideBar.propTypes = {
-    style: React.PropTypes.object,
-    sections: React.PropTypes.arrayOf(React.PropTypes.object),
-    onChangeSection: React.PropTypes.func,
-    currentSection: React.PropTypes.string,
-    children: React.PropTypes.oneOfType([
-        React.PropTypes.object,
-        React.PropTypes.array,
+    style: PropTypes.object,
+    sections: PropTypes.arrayOf(PropTypes.object),
+    onChangeSection: PropTypes.func,
+    currentSection: PropTypes.string,
+    children: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.array,
     ]),
 };
 MaintenanceSideBar.defaultProps = {

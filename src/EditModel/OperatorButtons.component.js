@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 import RaisedButton from 'material-ui/RaisedButton';
@@ -42,7 +43,7 @@ class OperatorButtons extends Component {
                     {this.operatorButton(' >= ')}
                     {this.operatorButton(' < ')}
                     {this.operatorButton(' <= ')}
-                    {this.operatorButton(' == ')}
+                    {this.operatorButton(' === ')}
                     {this.operatorButton(' != ')}
                 </div>
                 <div style={styles.operatorButtonSeparator}>
@@ -56,7 +57,7 @@ class OperatorButtons extends Component {
 }
 
 OperatorButtons.propTypes = {
-    onClick: React.PropTypes.func.isRequired,
+    onClick: PropTypes.func.isRequired,
 };
 
 export default OperatorButtons;

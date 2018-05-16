@@ -66,11 +66,9 @@ class ProgramStageList extends Component {
     };
 
     componentWillReceiveProps(nextProps) {
-        // shouldnt this be this.state.stages?
-        // Also any reason for the != instead of !==?
         if (
-            this.props.stages != nextProps.programStages &&
-            this.props.programStages != nextProps.programStages
+            this.props.stages !== nextProps.programStages &&
+            this.props.programStages !== nextProps.programStages
         ) {
             this.setState({
                 ...this.state,

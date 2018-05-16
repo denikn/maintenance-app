@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import FloatingActionButton from 'material-ui/FloatingActionButton/FloatingActionButton';
 import FontIcon from 'material-ui/FontIcon/FontIcon';
@@ -69,8 +70,8 @@ ProgramSpeedDial = addD2Context(ProgramSpeedDial);
 
 const ListActionBar = React.createClass({
     propTypes: {
-        modelType: React.PropTypes.string.isRequired,
-        groupName: React.PropTypes.string.isRequired,
+        modelType: PropTypes.string.isRequired,
+        groupName: PropTypes.string.isRequired,
     },
 
     _addClick() {

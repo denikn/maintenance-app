@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { equals, compose } from 'lodash/fp';
 import withState from 'recompose/withState';
 import getContext from 'recompose/getContext';

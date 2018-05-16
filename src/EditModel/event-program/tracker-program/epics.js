@@ -23,11 +23,11 @@ import {
 const d2$ = Observable.fromPromise(getInstance());
 
 const getProgramStageById = curry((stageId, store) =>
-    store.programStages.find(stage => stage.id == stageId)
+    store.programStages.find(stage => stage.id === stageId)
 );
 
 const getProgramStageIndexById = curry((stageId, store) =>
-    store.programStages.findIndex(stage => stage.id == stageId)
+    store.programStages.findIndex(stage => stage.id === stageId)
 );
 
 /**
@@ -113,7 +113,7 @@ export const editTrackerProgramStage = action$ =>
                 .map(get('programStages'))
                 .map(programStages => {
                     const index = programStages.findIndex(
-                        stage => stage.id == stageId
+                        stage => stage.id === stageId
                     );
                     const programStage = programStages[index];
 
@@ -136,7 +136,7 @@ export const saveTrackerProgramStage = action$ =>
             programStore.take(1).map(store => {
                 const stageId = store.programStageToEditCopy.id;
                 const index = store.programStages.findIndex(
-                    stage => stage.id == stageId
+                    stage => stage.id === stageId
                 );
 
                 if (index < 0) {
@@ -201,7 +201,7 @@ const deleteProgramStage = action$ =>
             programStore.take(1).map(store => {
                 try {
                     const ind = store.programStages.findIndex(
-                        stage => stage.id == action.stageId
+                        stage => stage.id === action.stageId
                     );
 
                     const index = getProgramStageIndexById(action.stageId)(

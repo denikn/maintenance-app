@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import ColorPicker from '../../forms/form-fields/color-picker';
@@ -13,7 +14,7 @@ const SymbolPickerField = (props, context) => {
 
     return <IconPicker {...props} imgPath={imgPath} />;
 };
-SymbolPickerField.contextTypes = { d2: React.PropTypes.any };
+SymbolPickerField.contextTypes = { d2: PropTypes.any };
 
 export default new Map([
     [

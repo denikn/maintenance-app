@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Translate from 'd2-ui/lib/i18n/Translate.mixin';
 import { config } from 'd2/lib/d2';
@@ -7,8 +8,8 @@ import { withAuth } from '../utils/Auth';
 
 const SharingNotification = React.createClass({
     propTypes: {
-        modelType: React.PropTypes.string,
-        style: React.PropTypes.object,
+        modelType: PropTypes.string,
+        style: PropTypes.object,
     },
 
     mixins: [Translate],

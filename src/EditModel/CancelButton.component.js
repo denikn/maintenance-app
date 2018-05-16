@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Button from 'material-ui/FlatButton';
 import addD2Context from 'd2-ui/lib/component-helpers/addD2Context';
@@ -36,11 +37,11 @@ function CancelButton(
 }
 
 CancelButton.propTypes = {
-    onClick: React.PropTypes.func.isRequired,
+    onClick: PropTypes.func.isRequired,
     /* A handler that should return an object with "dirty"-key,
     describing if the current edited model is dirty
      */
-    isDirtyHandler: React.PropTypes.func,
+    isDirtyHandler: PropTypes.func,
 };
 
 export default addD2Context(CancelButton);

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import optionSorter from './optionSorter';
 import RaisedButton from 'material-ui/RaisedButton/RaisedButton';
 import { getInstance } from 'd2/lib/d2';

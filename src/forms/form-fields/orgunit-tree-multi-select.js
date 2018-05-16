@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import OrgUnitTree from 'd2-ui/lib/org-unit-tree/OrgUnitTreeMultipleRoots.component';
 import OrgUnitSelectByLevel from 'd2-ui/lib/org-unit-select/OrgUnitSelectByLevel.component';
@@ -303,10 +304,10 @@ export default class OrganisationUnitTreeMultiSelect extends React.Component {
     }
 }
 OrganisationUnitTreeMultiSelect.contextTypes = {
-    d2: React.PropTypes.object.isRequired,
+    d2: PropTypes.object.isRequired,
 };
 OrganisationUnitTreeMultiSelect.propTypes = {
-    value: React.PropTypes.object,
+    value: PropTypes.object,
 };
 OrganisationUnitTreeMultiSelect.defaultProps = {
     value: [],

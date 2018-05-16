@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import ObservedEvents from '../utils/ObservedEvents.mixin';
 import Translate from 'd2-ui/lib/i18n/Translate.mixin';
@@ -9,8 +10,8 @@ const unsearchableSections = ['organisationUnit'];
 
 const SearchBox = React.createClass({
     propTypes: {
-        searchObserverHandler: React.PropTypes.func.isRequired,
-        initialValue: React.PropTypes.string,
+        searchObserverHandler: PropTypes.func.isRequired,
+        initialValue: PropTypes.string,
     },
 
     mixins: [ObservedEvents, Translate],

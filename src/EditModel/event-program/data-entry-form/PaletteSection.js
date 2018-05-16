@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import pure from 'recompose/pure';
 
@@ -52,7 +53,7 @@ function PaletteSection(
 }
 
 PaletteSection.contextTypes = {
-    d2: React.PropTypes.object,
+    d2: PropTypes.object,
 };
 
 export const PurePaletteSection = pure(PaletteSection);

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Dialog from 'material-ui/Dialog/Dialog';
 import RaisedButton from 'material-ui/RaisedButton/RaisedButton';
@@ -149,7 +150,7 @@ class IndicatorExtraFields extends React.Component {
 }
 
 IndicatorExtraFields.propTypes = {
-    modelToEdit: React.PropTypes.object.isRequired,
+    modelToEdit: PropTypes.object.isRequired,
 };
 
 export default {

@@ -150,7 +150,7 @@ const setProgramStageNotificationAddModel = (action$, store) =>
             // Set default values
             model.id = generateUid();
             model.lastUpdated = new Date().toISOString();
-            if (notificationType == 'PROGRAM_NOTIFICATION') {
+            if (notificationType === 'PROGRAM_NOTIFICATION') {
                 return setEditModel(model, 'PROGRAM_NOTIFICATION');
             }
             if (psStore.programStages.length < 1) {
