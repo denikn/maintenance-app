@@ -16,15 +16,15 @@ import {
 import { previousStep, nextStep } from './actions';
 
 const EventProgramStepperNavigationForward = createConnectedForwardButton(
-    nextStep,
+    nextStep
 );
 const EventProgramStepperNavigationBackward = createConnectedBackwardButton(
-    previousStep,
+    previousStep
 );
 
 const StepperNavigation = createStepperNavigation(
     EventProgramStepperNavigationBackward,
-    EventProgramStepperNavigationForward,
+    EventProgramStepperNavigationForward
 );
 
 const styles = {
@@ -53,9 +53,7 @@ function EditEventProgram(props) {
                 >
                     {`event_${camelCaseToUnderscores(schema)}`}
                 </FormHeading>
-                <FormSubHeading>
-                    {props.model.displayName}
-                </FormSubHeading>
+                <FormSubHeading>{props.model.displayName}</FormSubHeading>
             </div>
             <div>
                 <EventProgramStepper />
@@ -72,7 +70,6 @@ function EditEventProgram(props) {
     );
 }
 
-
 EditEventProgram.propTypes = {
     params: PropTypes.object.isRequired,
     isProgramStageStepperActive: PropTypes.bool,
@@ -82,6 +79,5 @@ EditEventProgram.propTypes = {
 EditEventProgram.defaultProps = {
     isProgramStageStepperActive: false,
 };
-
 
 export default EditEventProgram;

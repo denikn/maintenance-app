@@ -12,25 +12,27 @@ import { createFormFor } from '../../../formHelpers';
 
 const programStageFields = fieldOrder.for('programStage');
 
-export const EditProgramStageDetails = (props) => {
+export const EditProgramStageDetails = props => {
     const connectedEditForm = connect(null, dispatch =>
         bindActionCreators(
             {
                 editFieldChanged: (field, value) =>
                     editProgramStageField(props.programStage.id, field, value),
             },
-            dispatch,
-        ),
+            dispatch
+        )
     );
-    const ProgramStageDetailsForm = pure(connectedEditForm(
-        wrapVerticalStepInPaper(
-            createFormFor(
-                props.programStage$,
-                'programStage',
-                programStageFields,
-            ),
-        ),
-    ));
+    const ProgramStageDetailsForm = pure(
+        connectedEditForm(
+            wrapVerticalStepInPaper(
+                createFormFor(
+                    props.programStage$,
+                    'programStage',
+                    programStageFields
+                )
+            )
+        )
+    );
     return <ProgramStageDetailsForm {...props} />;
 };
 

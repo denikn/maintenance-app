@@ -52,16 +52,15 @@ function SectionTabs(props) {
         },
     };
 
-    const sections = props.sections
-        .map((section, index) => (
-            <Tab
-                key={index}
-                style={props.disabled ? styles.disabledTabStyle : styles.tabStyle}
-                disabled={props.disabled}
-                label={section.label}
-                value={section.key}
-            />
-        ));
+    const sections = props.sections.map((section, index) => (
+        <Tab
+            key={index}
+            style={props.disabled ? styles.disabledTabStyle : styles.tabStyle}
+            disabled={props.disabled}
+            label={section.label}
+            value={section.key}
+        />
+    ));
 
     return (
         <div style={styles.navStyle}>
@@ -71,7 +70,11 @@ function SectionTabs(props) {
                     onChange={props.changeSection}
                     style={styles.tabsStyle}
                     tabItemContainerStyle={styles.tabItemContainerStyle}
-                    inkBarStyle={props.disabled ? styles.disabledInkBarStyle : styles.inkBarStyle}
+                    inkBarStyle={
+                        props.disabled
+                            ? styles.disabledInkBarStyle
+                            : styles.inkBarStyle
+                    }
                 >
                     {sections}
                 </Tabs>

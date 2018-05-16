@@ -50,7 +50,10 @@ describe('Stepper utility functions', () => {
         });
 
         test('should render in vertical position', () => {
-            const VerticalStepper = createStepperFromConfig(stepperConfig, 'vertical');
+            const VerticalStepper = createStepperFromConfig(
+                stepperConfig,
+                'vertical'
+            );
             const renderedStepper = shallow(<VerticalStepper />);
 
             expect(renderedStepper.prop('orientation')).toBe('vertical');
@@ -59,8 +62,18 @@ describe('Stepper utility functions', () => {
         test('should render both steps as not active', () => {
             const renderedStepper = renderStepper(stepperConfig);
 
-            expect(renderedStepper.find(Step).at(0).prop('active')).toBe(false);
-            expect(renderedStepper.find(Step).at(1).prop('active')).toBe(false);
+            expect(
+                renderedStepper
+                    .find(Step)
+                    .at(0)
+                    .prop('active')
+            ).toBe(false);
+            expect(
+                renderedStepper
+                    .find(Step)
+                    .at(1)
+                    .prop('active')
+            ).toBe(false);
         });
 
         test('should render the 2nd step as active', () => {
@@ -68,8 +81,18 @@ describe('Stepper utility functions', () => {
                 activeStep: 'last',
             });
 
-            expect(renderedStepper.children().at(0).prop('active')).toBe(false);
-            expect(renderedStepper.children().at(1).prop('active')).toBe(true);
+            expect(
+                renderedStepper
+                    .children()
+                    .at(0)
+                    .prop('active')
+            ).toBe(false);
+            expect(
+                renderedStepper
+                    .children()
+                    .at(1)
+                    .prop('active')
+            ).toBe(true);
         });
 
         test('should render the 2nd step as active by index', () => {
@@ -85,14 +108,24 @@ describe('Stepper utility functions', () => {
             stepperConfig[0].content = () => <div>Content!</div>;
             const renderedStepper = renderStepper(stepperConfig);
 
-            expect(renderedStepper.find(Step).at(0).children(StepContent)).toHaveLength(1);
+            expect(
+                renderedStepper
+                    .find(Step)
+                    .at(0)
+                    .children(StepContent)
+            ).toHaveLength(1);
         });
 
         test('should render call the stepperClicked callback', () => {
             const stepperClicked = jest.fn();
-            const renderedStepper = renderStepper(stepperConfig, { stepperClicked });
+            const renderedStepper = renderStepper(stepperConfig, {
+                stepperClicked,
+            });
 
-            renderedStepper.find(StepButton).at(0).simulate('click');
+            renderedStepper
+                .find(StepButton)
+                .at(0)
+                .simulate('click');
 
             expect(stepperClicked).toHaveBeenCalledWith('first');
         });
@@ -108,51 +141,71 @@ describe('Stepper utility functions', () => {
         });
 
         test('should log a warning when no active step has been passed', () => {
-            const ContentStepper = createStepperContentFromConfig(stepperConfig);
+            const ContentStepper = createStepperContentFromConfig(
+                stepperConfig
+            );
             const renderedStepper = shallow(<ContentStepper />);
 
-            expect(log.warn).toBeCalledWith('The `activeStep` prop is undefined, therefore the component created by `createStepperContentFromConfig` will render null');
+            expect(log.warn).toBeCalledWith(
+                'The `activeStep` prop is undefined, therefore the component created by `createStepperContentFromConfig` will render null'
+            );
         });
 
         test('should log a warning when the step does not have a component', () => {
-            const ContentStepper = createStepperContentFromConfig(stepperConfig);
-            const renderedStepper = shallow(<ContentStepper activeStep="first" />);
+            const ContentStepper = createStepperContentFromConfig(
+                stepperConfig
+            );
+            const renderedStepper = shallow(
+                <ContentStepper activeStep="first" />
+            );
 
-            expect(log.warn).toBeCalledWith('Could not find a content component for a step with key (first) in', stepperConfig);
+            expect(log.warn).toBeCalledWith(
+                'Could not find a content component for a step with key (first) in',
+                stepperConfig
+            );
         });
 
         test('should render null when no component has been provided', () => {
-            const ContentStepper = createStepperContentFromConfig(stepperConfig);
-            const renderedStepper = shallow(<ContentStepper activeStep="first" />);
+            const ContentStepper = createStepperContentFromConfig(
+                stepperConfig
+            );
+            const renderedStepper = shallow(
+                <ContentStepper activeStep="first" />
+            );
 
             expect(renderedStepper.html()).toBeNull();
         });
 
-        test(
-            'should render the component that is provided with the step when that step is active',
-            () => {
-                const MyContent = () => (<div>My content</div>);
-                stepperConfig[0].component = MyContent;
+        test('should render the component that is provided with the step when that step is active', () => {
+            const MyContent = () => <div>My content</div>;
+            stepperConfig[0].component = MyContent;
 
-                const ContentStepper = createStepperContentFromConfig(stepperConfig);
-                const renderedStepper = shallow(<ContentStepper activeStep="first" />);
+            const ContentStepper = createStepperContentFromConfig(
+                stepperConfig
+            );
+            const renderedStepper = shallow(
+                <ContentStepper activeStep="first" />
+            );
 
-                expect(renderedStepper.type()).toEqual(MyContent);
-            }
-        );
+            expect(renderedStepper.type()).toEqual(MyContent);
+        });
 
-        test(
-            'should pass the props (besides `activeStep`) through to the step component',
-            () => {
-                const MyContent = () => (<div>My content</div>);
-                stepperConfig[0].component = MyContent;
+        test('should pass the props (besides `activeStep`) through to the step component', () => {
+            const MyContent = () => <div>My content</div>;
+            stepperConfig[0].component = MyContent;
 
-                const ContentStepper = createStepperContentFromConfig(stepperConfig);
-                const renderedStepper = shallow(<ContentStepper activeStep="first" name="John" coolStyle />);
+            const ContentStepper = createStepperContentFromConfig(
+                stepperConfig
+            );
+            const renderedStepper = shallow(
+                <ContentStepper activeStep="first" name="John" coolStyle />
+            );
 
-                expect(renderedStepper.props()).toEqual({ name: 'John', coolStyle: true });
-            }
-        );
+            expect(renderedStepper.props()).toEqual({
+                name: 'John',
+                coolStyle: true,
+            });
+        });
     });
 
     describe('StepperNavigationBack', () => {
@@ -161,7 +214,9 @@ describe('Stepper utility functions', () => {
 
         beforeEach(() => {
             onBackClickSpy = jest.fn();
-            backButton = shallow(<StepperNavigationBack onBackClick={onBackClickSpy} />);
+            backButton = shallow(
+                <StepperNavigationBack onBackClick={onBackClickSpy} />
+            );
         });
 
         afterEach(() => {
@@ -189,7 +244,9 @@ describe('Stepper utility functions', () => {
 
         beforeEach(() => {
             onForwardClickSpy = jest.fn();
-            forwardButton = shallow(<StepperNavigationForward onForwardClick={onForwardClickSpy} />);
+            forwardButton = shallow(
+                <StepperNavigationForward onForwardClick={onForwardClickSpy} />
+            );
         });
 
         test('should render a IconButton', () => {

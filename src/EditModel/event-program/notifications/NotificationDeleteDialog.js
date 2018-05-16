@@ -9,16 +9,8 @@ import Dialog from 'material-ui/Dialog';
 // Move to d2-ui
 const DeleteDialog = ({ onCancel, onConfirm, question, open, t }) => {
     const actions = [
-        <FlatButton
-            label={t('cancel')}
-            primary
-            onTouchTap={onCancel}
-        />,
-        <FlatButton
-            label={t('delete')}
-            primary
-            onTouchTap={onConfirm}
-        />,
+        <FlatButton label={t('cancel')} primary onTouchTap={onCancel} />,
+        <FlatButton label={t('delete')} primary onTouchTap={onConfirm} />,
     ];
 
     return (
@@ -31,7 +23,7 @@ const DeleteDialog = ({ onCancel, onConfirm, question, open, t }) => {
             {question}
         </Dialog>
     );
-}
+};
 
 DeleteDialog.propTypes = {
     onCancel: PropTypes.func,

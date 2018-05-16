@@ -14,9 +14,12 @@ function getLoadingIndicator() {
 }
 
 function findValue(optionList, model) {
-    return optionList
-        .map(option => option.value)
-        .find(option => Array.from(model.indicatorGroups.values()).map(indicatorGroup => indicatorGroup.id).indexOf(option) !== -1);
+    return optionList.map(option => option.value).find(
+        option =>
+            Array.from(model.indicatorGroups.values())
+                .map(indicatorGroup => indicatorGroup.id)
+                .indexOf(option) !== -1
+    );
 }
 
 export default React.createClass({
@@ -38,11 +41,13 @@ export default React.createClass({
 
     componentDidMount() {
         getInstance()
-            .then(d2 => d2.Api.getApi().get('indicatorGroupSets', {
-                fields: 'id,displayName,indicatorGroups[id,displayName]',
-                filter: ['compulsory:eq:true'],
-                paging: false,
-            }))
+            .then(d2 =>
+                d2.Api.getApi().get('indicatorGroupSets', {
+                    fields: 'id,displayName,indicatorGroups[id,displayName]',
+                    filter: ['compulsory:eq:true'],
+                    paging: false,
+                })
+            )
             .then(response => response.indicatorGroupSets)
             .then(indicatorGroupSets => this.setState({ indicatorGroupSets }));
 
@@ -63,12 +68,19 @@ export default React.createClass({
         return (
             <div>
                 {this.state.indicatorGroupSets.map((indicatorGroupSet, key) => {
-                    const optionList = indicatorGroupSet.indicatorGroups.map(ig => ({
-                        value: ig.id,
-                        text: ig.displayName,
-                    }));
+                    const optionList = indicatorGroupSet.indicatorGroups.map(
+                        ig => ({
+                            value: ig.id,
+                            text: ig.displayName,
+                        })
+                    );
 
-                    const value = Object.prototype.hasOwnProperty.call(store.state.indicatorGroupValues, indicatorGroupSet.id) ? store.state.indicatorGroupValues[indicatorGroupSet.id] : findValue(optionList, this.props.source);
+                    const value = Object.prototype.hasOwnProperty.call(
+                        store.state.indicatorGroupValues,
+                        indicatorGroupSet.id
+                    )
+                        ? store.state.indicatorGroupValues[indicatorGroupSet.id]
+                        : findValue(optionList, this.props.source);
 
                     return (
                         <div key={`dataIndicatorGroupAssignment${key}`}>
@@ -78,7 +90,11 @@ export default React.createClass({
                                 translateLabel={false}
                                 options={optionList}
                                 value={value}
-                                onChange={this._updateGroupStatus.bind(this, indicatorGroupSet.id, findValue(optionList, this.props.source))}
+                                onChange={this._updateGroupStatus.bind(
+                                    this,
+                                    indicatorGroupSet.id,
+                                    findValue(optionList, this.props.source)
+                                )}
                                 fullWidth
                             />
                         </div>
@@ -93,8 +109,18 @@ export default React.createClass({
         this.props.source.dirty = true;
 
         store.setState({
-            indicatorGroupValues: Object.assign({}, store.state.indicatorGroupValues, { [indicatorGroupSetId]: event.target.value ? event.target.value : null }),
-            remove: Array.from((new Set(store.state.remove.concat([oldValue])).values())),
+            indicatorGroupValues: Object.assign(
+                {},
+                store.state.indicatorGroupValues,
+                {
+                    [indicatorGroupSetId]: event.target.value
+                        ? event.target.value
+                        : null,
+                }
+            ),
+            remove: Array.from(
+                new Set(store.state.remove.concat([oldValue])).values()
+            ),
         });
     },
 });

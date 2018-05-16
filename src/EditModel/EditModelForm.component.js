@@ -25,7 +25,10 @@ import objectActions from './objectActions';
 import snackActions from '../Snackbar/snack.actions';
 
 import appState from '../App/appStateStore';
-import { createFieldConfigForModelTypes, addUniqueValidatorWhenUnique } from './formHelpers';
+import {
+    createFieldConfigForModelTypes,
+    addUniqueValidatorWhenUnique,
+} from './formHelpers';
 import { applyRulesToFieldConfigs, getRulesForModelType } from './form-rules';
 import getFirstInvalidFieldMessage from './form-helpers/validateFields';
 
@@ -35,36 +38,54 @@ const currentSection$ = appState
     .filter(state => state)
     .distinctUntilChanged();
 
-const editFormFieldsForCurrentSection$ = currentSection$
-    .flatMap(modelType => Observable.fromPromise(createFieldConfigForModelTypes(modelType)));
+const editFormFieldsForCurrentSection$ = currentSection$.flatMap(modelType =>
+    Observable.fromPromise(createFieldConfigForModelTypes(modelType))
+);
 
 const isAddOperation = model => model.id === undefined;
 
 const d2$ = Observable.fromPromise(getInstance());
 
-const modelToEditAndModelForm$ = Observable
-    .combineLatest(modelToEditStore, editFormFieldsForCurrentSection$, currentSection$, d2$)
+const modelToEditAndModelForm$ = Observable.combineLatest(
+    modelToEditStore,
+    editFormFieldsForCurrentSection$,
+    currentSection$,
+    d2$
+)
     .filter(([modelToEdit, formFields, currentType]) => {
-        if (modelToEdit && modelToEdit.modelDefinition && modelToEdit.modelDefinition.name) {
+        if (
+            modelToEdit &&
+            modelToEdit.modelDefinition &&
+            modelToEdit.modelDefinition.name
+        ) {
             return modelToEdit.modelDefinition.name === currentType;
         }
         return false;
     })
     .map(([modelToEdit, editFormFieldsForCurrentModelType, modelType, d2]) => {
         const fieldConfigs = editFormFieldsForCurrentModelType
-        // TODO: When switching to the FormBuilder that manages state this function for all values
-        // would need to be executed only for the field that actually changed and/or the values that
-        // change because of it.
-            .map((fieldConfig) => {
+            // TODO: When switching to the FormBuilder that manages state this function for all values
+            // would need to be executed only for the field that actually changed and/or the values that
+            // change because of it.
+            .map(fieldConfig => {
                 fieldConfig.fieldOptions.model = modelToEdit;
 
-                if (!isAddOperation(modelToEdit) && disabledOnEdit.for(modelType).indexOf(fieldConfig.name) !== -1) {
+                if (
+                    !isAddOperation(modelToEdit) &&
+                    disabledOnEdit.for(modelType).indexOf(fieldConfig.name) !==
+                        -1
+                ) {
                     fieldConfig.props.disabled = true;
                 }
 
                 // Check if value is an attribute
-                if (Object.keys(modelToEdit.attributes || []).indexOf(fieldConfig.name) >= 0) {
-                    fieldConfig.value = modelToEdit.attributes[fieldConfig.name];
+                if (
+                    Object.keys(modelToEdit.attributes || []).indexOf(
+                        fieldConfig.name
+                    ) >= 0
+                ) {
+                    fieldConfig.value =
+                        modelToEdit.attributes[fieldConfig.name];
                     return fieldConfig;
                 }
 
@@ -72,7 +93,9 @@ const modelToEditAndModelForm$ = Observable
                 // This is useful for when a value is a number and might have to be translated to a
                 // value of the type Number.
                 if (fieldConfig.beforePassToFieldConverter) {
-                    fieldConfig.value = fieldConfig.beforePassToFieldConverter(modelToEdit[fieldConfig.name]);
+                    fieldConfig.value = fieldConfig.beforePassToFieldConverter(
+                        modelToEdit[fieldConfig.name]
+                    );
                 } else {
                     fieldConfig.value = modelToEdit[fieldConfig.name];
                 }
@@ -83,19 +106,21 @@ const modelToEditAndModelForm$ = Observable
         const fieldConfigsAfterRules = applyRulesToFieldConfigs(
             getRulesForModelType(modelToEdit.modelDefinition.name),
             fieldConfigs,
-            modelToEdit,
+            modelToEdit
         );
         const fieldConfigsWithAttributeFields = [].concat(
             fieldConfigsAfterRules,
             // getAttributeFieldConfigs(d2, modelToEdit),
-            (extraFields[modelType] || []).map((config) => {
+            (extraFields[modelType] || []).map(config => {
                 config.props = config.props || {};
                 config.props.modelToEdit = modelToEdit;
                 return config;
-            }),
+            })
         );
-        const fieldConfigsWithAttributeFieldsAndUniqueValidators = fieldConfigsWithAttributeFields
-            .map(fieldConfig => addUniqueValidatorWhenUnique(fieldConfig, modelToEdit));
+        const fieldConfigsWithAttributeFieldsAndUniqueValidators = fieldConfigsWithAttributeFields.map(
+            fieldConfig =>
+                addUniqueValidatorWhenUnique(fieldConfig, modelToEdit)
+        );
         return {
             fieldConfigs: fieldConfigsWithAttributeFieldsAndUniqueValidators,
             modelToEdit,
@@ -132,13 +157,15 @@ export default React.createClass({
     },
 
     componentWillMount() {
-        this.subscription = modelToEditAndModelForm$
-            .subscribe((newState) => {
+        this.subscription = modelToEditAndModelForm$.subscribe(
+            newState => {
                 this.setState(newState);
                 this.setActiveStep(this.state.activeStep);
-            }, (errorMessage) => {
+            },
+            errorMessage => {
                 snackActions.show({ message: errorMessage, action: 'ok' });
-            });
+            }
+        );
     },
 
     componentWillUnmount() {
@@ -153,7 +180,12 @@ export default React.createClass({
         };
 
         if (this.isAddOperation()) {
-            return (<SharingNotification style={formPaperStyle} modelType={this.props.modelType} />);
+            return (
+                <SharingNotification
+                    style={formPaperStyle}
+                    modelType={this.props.modelType}
+                />
+            );
         }
 
         return null;
@@ -164,10 +196,16 @@ export default React.createClass({
         const stepCount = steps.length;
 
         return stepCount > 1 ? (
-            <Stepper activeStep={this.state.activeStep} linear={false} style={{ margin: '0 -16px' }}>
+            <Stepper
+                activeStep={this.state.activeStep}
+                linear={false}
+                style={{ margin: '0 -16px' }}
+            >
                 {steps.map((step, s) => (
                     <Step key={s}>
-                        <StepButton onClick={() => this.setActiveStep(s)}>{this.getTranslation(step.label)}</StepButton>
+                        <StepButton onClick={() => this.setActiveStep(s)}>
+                            {this.getTranslation(step.label)}
+                        </StepButton>
                     </Step>
                 ))}
             </Stepper>
@@ -183,9 +221,7 @@ export default React.createClass({
         };
 
         if (this.state.isLoading) {
-            return (
-                <CircularProgress />
-            );
+            return <CircularProgress />;
         }
 
         return (
@@ -201,7 +237,10 @@ export default React.createClass({
                 <FormButtons>
                     <SaveButton
                         onClick={this._saveAction}
-                        isValid={this.state.formState.valid && !this.state.formState.validating}
+                        isValid={
+                            this.state.formState.valid &&
+                            !this.state.formState.validating
+                        }
                         isSaving={this.state.isSaving}
                     />
                     <CancelButton onClick={this._closeAction} />
@@ -212,7 +251,7 @@ export default React.createClass({
 
     render() {
         if (this.state.loading) {
-            return (<div>Loading data....</div>);
+            return <div>Loading data....</div>;
         }
 
         return this.renderForm();
@@ -228,7 +267,7 @@ export default React.createClass({
         if (stepsByField) {
             this.setState({
                 activeStep: step,
-                fieldConfigs: this.state.fieldConfigs.map((field) => {
+                fieldConfigs: this.state.fieldConfigs.map(field => {
                     if (stepsByField[field.name] === step) {
                         field.props.style = { display: 'block' };
                     } else {
@@ -245,7 +284,9 @@ export default React.createClass({
     },
 
     _onUpdateField(fieldName, value) {
-        const fieldConfig = this.state.fieldConfigs.find(fieldConfig => fieldConfig.name === fieldName);
+        const fieldConfig = this.state.fieldConfigs.find(
+            fieldConfig => fieldConfig.name === fieldName
+        );
         if (fieldConfig && fieldConfig.beforeUpdateConverter) {
             return objectActions.update({
                 fieldName,
@@ -264,10 +305,15 @@ export default React.createClass({
     _saveAction(event) {
         event.preventDefault();
 
-        const invalidFieldMessage = getFirstInvalidFieldMessage(this.state.fieldConfigs, this.formRef);
+        const invalidFieldMessage = getFirstInvalidFieldMessage(
+            this.state.fieldConfigs,
+            this.formRef
+        );
         if (invalidFieldMessage) {
             snackActions.show({
-                message: `${this.getTranslation('missing_required_property_field')} ${invalidFieldMessage}`,
+                message: `${this.getTranslation(
+                    'missing_required_property_field'
+                )} ${invalidFieldMessage}`,
                 action: 'ok',
             });
             return;
@@ -276,21 +322,29 @@ export default React.createClass({
         // Set state to saving so forms actions are being prevented
         this.setState({ isSaving: true });
 
-        objectActions.saveObject({ id: this.props.modelId, modelType: this.props.modelType })
+        objectActions
+            .saveObject({
+                id: this.props.modelId,
+                modelType: this.props.modelType,
+            })
             .subscribe(
-                (message) => {
+                message => {
                     this.setState({ isSaving: false });
 
                     snackActions.show({ message, translate: true });
 
                     this.props.onSaveSuccess(this.state.modelToEdit);
                 },
-                (errorMessage) => {
+                errorMessage => {
                     // TODO: d2 queries require a JSON body on 200 OK, an empty body is not valid JSON
                     if (errorMessage.httpStatusCode === 200) {
                         log.warn('Save errored due to empty 200 OK body');
 
-                        snackActions.show({ message: 'success', action: 'ok', translate: true });
+                        snackActions.show({
+                            message: 'success',
+                            action: 'ok',
+                            translate: true,
+                        });
 
                         return this.props.onSaveSuccess(this.state.modelToEdit);
                     }
@@ -301,11 +355,14 @@ export default React.createClass({
 
                     if (isString(errorMessage)) {
                         log.debug(errorMessage);
-                        snackActions.show({ message: errorMessage, action: 'ok' });
+                        snackActions.show({
+                            message: errorMessage,
+                            action: 'ok',
+                        });
                     }
 
                     this.props.onSaveError(errorMessage);
-                },
+                }
             );
     },
 

@@ -11,14 +11,18 @@ export default function FormButtons(props) {
         width: '10rem',
     };
 
-    const buttonsToRender = isArray(props.children) ? props.children : [props.children];
+    const buttonsToRender = isArray(props.children)
+        ? props.children
+        : [props.children];
 
     return (
         <div style={Object.assign(defaultStyle, props.style)}>
-            {buttonsToRender.map((child, index) => React.cloneElement(child, {
-                style: buttonStyle,
-                key: index,
-            }))}
+            {buttonsToRender.map((child, index) =>
+                React.cloneElement(child, {
+                    style: buttonStyle,
+                    key: index,
+                })
+            )}
         </div>
     );
 }

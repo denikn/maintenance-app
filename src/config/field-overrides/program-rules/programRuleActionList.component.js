@@ -33,137 +33,233 @@ class ProgramRuleActionsList extends React.Component {
     }
 
     render() {
-        const programRuleActions = this.props.model[this.props.referenceProperty].toArray();
+        const programRuleActions = this.props.model[
+            this.props.referenceProperty
+        ].toArray();
 
-        const displayActions = programRuleActions.map((action) => {
+        const displayActions = programRuleActions.map(action => {
             let actionDetails = action.programRuleActionType;
             let field;
 
             switch (action.programRuleActionType) {
-            case 'SHOWWARNING':
-            case 'SHOWERROR':
-            case 'WARNINGONCOMPLETE':
-            case 'ERRORONCOMPLETE':
-                field = [
-                    action.dataElement && `"${action.dataElement.displayName}"`,
-                    (
+                case 'SHOWWARNING':
+                case 'SHOWERROR':
+                case 'WARNINGONCOMPLETE':
+                case 'ERRORONCOMPLETE':
+                    field = [
+                        action.dataElement &&
+                            `"${action.dataElement.displayName}"`,
                         action.programRuleActionType !== 'WARNINGONCOMPLETE' &&
                         action.programRuleActionType !== 'ERRORONCOMPLETE' &&
                         action.trackedEntityAttribute
-                    ) ? `"${action.trackedEntityAttribute.displayName}"` : '',
-                ].filter(s => s).map(s => s.trim()).join(', ');
+                            ? `"${action.trackedEntityAttribute.displayName}"`
+                            : '',
+                    ]
+                        .filter(s => s)
+                        .map(s => s.trim())
+                        .join(', ');
                 // NO BREAK!
 
-            case 'DISPLAYTEXT':
-            case 'DISPLAYKEYVALUEPAIR':
-                if (!field && action.location) {
-                    if (action.location === 'feedback') field = this.getTranslation('feedback_widget');
-                    else if (action.location === 'indicators') field = this.getTranslation('program_indicator_widget');
-                }
-                field = field ? ` ${this.getTranslation('on')} ${field}` : '';
-                const text = action.content ? (action.content.length > 25 ? `${action.content.substr(0, 22)}...` : action.content) : '';
-                actionDetails = `${this.getTranslation(programRuleActionTypes[action.programRuleActionType].label)}: ` +
-                    `"${text}"${field}`;
-                break;
+                case 'DISPLAYTEXT':
+                case 'DISPLAYKEYVALUEPAIR':
+                    if (!field && action.location) {
+                        if (action.location === 'feedback')
+                            field = this.getTranslation('feedback_widget');
+                        else if (action.location === 'indicators')
+                            field = this.getTranslation(
+                                'program_indicator_widget'
+                            );
+                    }
+                    field = field
+                        ? ` ${this.getTranslation('on')} ${field}`
+                        : '';
+                    const text = action.content
+                        ? action.content.length > 25
+                            ? `${action.content.substr(0, 22)}...`
+                            : action.content
+                        : '';
+                    actionDetails =
+                        `${this.getTranslation(
+                            programRuleActionTypes[action.programRuleActionType]
+                                .label
+                        )}: ` + `"${text}"${field}`;
+                    break;
 
-            case 'HIDEFIELD':
-                field = [
-                    action.dataElement && `"${action.dataElement.displayName}"`,
-                    action.trackedEntityAttribute && `"${action.trackedEntityAttribute.displayName}"`,
-                ].filter(s => s).map(s => s.trim()).join(', ');
-                actionDetails = `${this.getTranslation(programRuleActionTypes[action.programRuleActionType].label)}: ${
-                    field}`;
-                break;
+                case 'HIDEFIELD':
+                    field = [
+                        action.dataElement &&
+                            `"${action.dataElement.displayName}"`,
+                        action.trackedEntityAttribute &&
+                            `"${action.trackedEntityAttribute.displayName}"`,
+                    ]
+                        .filter(s => s)
+                        .map(s => s.trim())
+                        .join(', ');
+                    actionDetails = `${this.getTranslation(
+                        programRuleActionTypes[action.programRuleActionType]
+                            .label
+                    )}: ${field}`;
+                    break;
 
-            case 'HIDESECTION':
-                actionDetails = `${this.getTranslation(programRuleActionTypes[action.programRuleActionType].label)}: ` +
-                    `"${action.programStageSection && action.programStageSection.displayName}"`;
-                break;
+                case 'HIDESECTION':
+                    actionDetails =
+                        `${this.getTranslation(
+                            programRuleActionTypes[action.programRuleActionType]
+                                .label
+                        )}: ` +
+                        `"${action.programStageSection &&
+                            action.programStageSection.displayName}"`;
+                    break;
 
-            case 'HIDEPROGRAMSTAGE':
-                actionDetails = `${this.getTranslation(programRuleActionTypes[action.programRuleActionType].label)}: ` +
-                    `"${action.programStage && action.programStage.displayName}"`;
-                break;
+                case 'HIDEPROGRAMSTAGE':
+                    actionDetails =
+                        `${this.getTranslation(
+                            programRuleActionTypes[action.programRuleActionType]
+                                .label
+                        )}: ` +
+                        `"${action.programStage &&
+                            action.programStage.displayName}"`;
+                    break;
 
-            case 'ASSIGN':
-                field = [
-                    action.dataElement && `"${action.dataElement.displayName}"`,
-                    action.content && `"${action.content}"`,
-                ].filter(s => s).map(s => s.trim()).join(', ');
-                actionDetails = `${this.getTranslation(programRuleActionTypes[action.programRuleActionType].label)}: ` +
-                    `"${action.data}" ${this.getTranslation('to_field')} ${field}`;
-                break;
+                case 'ASSIGN':
+                    field = [
+                        action.dataElement &&
+                            `"${action.dataElement.displayName}"`,
+                        action.content && `"${action.content}"`,
+                    ]
+                        .filter(s => s)
+                        .map(s => s.trim())
+                        .join(', ');
+                    actionDetails =
+                        `${this.getTranslation(
+                            programRuleActionTypes[action.programRuleActionType]
+                                .label
+                        )}: ` +
+                        `"${action.data}" ${this.getTranslation(
+                            'to_field'
+                        )} ${field}`;
+                    break;
 
-            case 'CREATEEVENT':
-                actionDetails = `${this.getTranslation(programRuleActionTypes[action.programRuleActionType].label)} ` +
-                    `${this.getTranslation('in_program_stage')}: ` +
-                    `${action.programStage && action.programStage.displayName}`;
-                break;
+                case 'CREATEEVENT':
+                    actionDetails =
+                        `${this.getTranslation(
+                            programRuleActionTypes[action.programRuleActionType]
+                                .label
+                        )} ` +
+                        `${this.getTranslation('in_program_stage')}: ` +
+                        `${action.programStage &&
+                            action.programStage.displayName}`;
+                    break;
 
-            case 'SETMANDATORYFIELD':
-                field = [
-                    action.dataElement && `"${action.dataElement.displayName}"`,
-                    action.trackedEntityAttribute && `"${action.trackedEntityAttribute.displayName}"`,
-                ].filter(s => s).map(s => s.trim()).join(', ');
-                actionDetails = `${this.getTranslation(programRuleActionTypes[action.programRuleActionType].label)}: ${
-                    field}`;
-                break;
+                case 'SETMANDATORYFIELD':
+                    field = [
+                        action.dataElement &&
+                            `"${action.dataElement.displayName}"`,
+                        action.trackedEntityAttribute &&
+                            `"${action.trackedEntityAttribute.displayName}"`,
+                    ]
+                        .filter(s => s)
+                        .map(s => s.trim())
+                        .join(', ');
+                    actionDetails = `${this.getTranslation(
+                        programRuleActionTypes[action.programRuleActionType]
+                            .label
+                    )}: ${field}`;
+                    break;
 
-            case 'SENDMESSAGE':
-                const withDateString = action.data ? `${this.getTranslation('at_date')} "${action.data}"` : ''
-                const displayName = action.programNotificationTemplate
+                case 'SENDMESSAGE':
+                    const withDateString = action.data
+                        ? `${this.getTranslation('at_date')} "${action.data}"`
+                        : '';
+                    const displayName = action.programNotificationTemplate
                         ? action.programNotificationTemplate.displayName
-                        : this.getTranslation('no_notification_template_specified');
+                        : this.getTranslation(
+                              'no_notification_template_specified'
+                          );
 
-                actionDetails = `${this.getTranslation(
-                    programRuleActionTypes[action.programRuleActionType].label)
-                }: ${displayName} ${withDateString}`;
+                    actionDetails = `${this.getTranslation(
+                        programRuleActionTypes[action.programRuleActionType]
+                            .label
+                    )}: ${displayName} ${withDateString}`;
 
-                break;
+                    break;
 
-            default:
-                actionDetails = action.programRuleActionType;
+                default:
+                    actionDetails = action.programRuleActionType;
             }
 
             return Object.assign(action, {
-                action: programRuleActionTypes.hasOwnProperty(action.programRuleActionType)
-                    ? this.getTranslation(programRuleActionTypes[action.programRuleActionType].label)
+                action: programRuleActionTypes.hasOwnProperty(
+                    action.programRuleActionType
+                )
+                    ? this.getTranslation(
+                          programRuleActionTypes[action.programRuleActionType]
+                              .label
+                      )
                     : action.programRuleActionType,
                 actionDetails,
             });
         });
 
-        const editAction = (model) => {
+        const editAction = model => {
             this.setState({
                 dialogOpen: true,
                 currentRuleActionModel: Object.assign(model.clone(), {
-                    dataElement: model.dataElement && model.dataElement.id || undefined,
-                    trackedEntityAttribute: model.trackedEntityAttribute && model.trackedEntityAttribute.id || undefined,
-                    programStage: model.programStage && model.programStage.id || undefined,
-                    programStageSection: model.programStageSection && model.programStageSection.id || undefined,
-                    programNotificationTemplate: model.programNotificationTemplate && model.programNotificationTemplate.id || undefined,
+                    dataElement:
+                        (model.dataElement && model.dataElement.id) ||
+                        undefined,
+                    trackedEntityAttribute:
+                        (model.trackedEntityAttribute &&
+                            model.trackedEntityAttribute.id) ||
+                        undefined,
+                    programStage:
+                        (model.programStage && model.programStage.id) ||
+                        undefined,
+                    programStageSection:
+                        (model.programStageSection &&
+                            model.programStageSection.id) ||
+                        undefined,
+                    programNotificationTemplate:
+                        (model.programNotificationTemplate &&
+                            model.programNotificationTemplate.id) ||
+                        undefined,
                 }),
             });
         };
 
-        const deleteAction = (model) => {
+        const deleteAction = model => {
             snackActions.show({
-                message: this.getTranslation('confirm_delete_program_rule_action'),
+                message: this.getTranslation(
+                    'confirm_delete_program_rule_action'
+                ),
                 action: 'confirm',
                 onActionTouchTap: () => {
-                    this.props.onChange({ target: { value: this.props.model.programRuleActions.remove(model) } });
-                    snackActions.show({ message: this.getTranslation('program_rule_action_deleted') });
+                    this.props.onChange({
+                        target: {
+                            value: this.props.model.programRuleActions.remove(
+                                model
+                            ),
+                        },
+                    });
+                    snackActions.show({
+                        message: this.getTranslation(
+                            'program_rule_action_deleted'
+                        ),
+                    });
                 },
             });
         };
 
         const styles = {
-            wrap: Object.assign({
-                marginTop: 16,
-                marginBottom: 16,
-                position: 'relative',
-                width: '100%',
-            }, this.props.style),
+            wrap: Object.assign(
+                {
+                    marginTop: 16,
+                    marginBottom: 16,
+                    position: 'relative',
+                    width: '100%',
+                },
+                this.props.style
+            ),
             fab: {
                 position: 'absolute',
                 right: 64,
@@ -191,7 +287,10 @@ class ProgramRuleActionsList extends React.Component {
         return (
             <div style={styles.wrap}>
                 <div style={styles.fab}>
-                    <FloatingActionButton onClick={this.addProgramRuleAction} disabled={this.props.disabled}>
+                    <FloatingActionButton
+                        onClick={this.addProgramRuleAction}
+                        disabled={this.props.disabled}
+                    >
                         <FontIcon className="material-icons">add</FontIcon>
                     </FloatingActionButton>
                 </div>
@@ -204,19 +303,26 @@ class ProgramRuleActionsList extends React.Component {
                     }}
                     primaryAction={editAction}
                 />
-                {this.state.dialogOpen &&
+                {this.state.dialogOpen && (
                     <ProgramRuleActionDialog
                         open={this.state.dialogOpen}
                         ruleActionModel={this.state.currentRuleActionModel}
                         program={this.props.model.program}
                         parentModel={this.props.model}
-                        onRequestClose={() => this.setState({ dialogOpen: false })}
+                        onRequestClose={() =>
+                            this.setState({ dialogOpen: false })
+                        }
                         onChange={onChangeMakeDirtyHandler}
-                        onUpdateRuleActionModel={(field, value) => this.setState({
-                            programRuleAction: Object.assign(this.state.currentRuleActionModel, { [field]: value }),
-                        })}
+                        onUpdateRuleActionModel={(field, value) =>
+                            this.setState({
+                                programRuleAction: Object.assign(
+                                    this.state.currentRuleActionModel,
+                                    { [field]: value }
+                                ),
+                            })
+                        }
                     />
-                }
+                )}
             </div>
         );
     }

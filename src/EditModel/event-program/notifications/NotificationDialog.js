@@ -58,12 +58,8 @@ const notificationDialogStyle = {
 const DialogTitle = props => {
     return (
         <div style={{ ...props.style, paddingBottom: 10 }}>
-            <h3 style={notificationDialogStyle.titleStyle}>
-                {props.title}
-            </h3>
-            <Subheader>
-                {props.subtitle}
-            </Subheader>
+            <h3 style={notificationDialogStyle.titleStyle}>{props.title}</h3>
+            <Subheader>{props.subtitle}</Subheader>
         </div>
     );
 };
@@ -98,9 +94,11 @@ const NotificationDialog = (
             onTouchTap={() => onConfirm(model)}
         />,
     ];
-    const title = `${!isTracker || isProgram
-        ? t('program_notification')
-        : t('program_stage_notification')}`;
+    const title = `${
+        !isTracker || isProgram
+            ? t('program_notification')
+            : t('program_stage_notification')
+    }`;
     const StepperComponent = isProgram ? ProgramStepper : ProgramStageStepper;
     return (
         <Dialog
@@ -139,7 +137,6 @@ const mapStateToProps = (
     state,
     { model, availableDataElements, programStages, dataElements }
 ) => {
-
     const selectedPSId =
         (model && model.programStage && model.programStage.id) ||
         (programStages.length > 0 && programStages[0].id) ||
@@ -165,10 +162,13 @@ const mapDispatchToPropsForDialog = dispatch =>
     );
 
 export const ProgramStageNotificationDialog = compose(
-    branchWithMessage(({ programStages }) => programStages && programStages.length < 1, {
-        message: 'cannot_create_program_notification_without_program_stage',
-        translate: true,
-    }),
+    branchWithMessage(
+        ({ programStages }) => programStages && programStages.length < 1,
+        {
+            message: 'cannot_create_program_notification_without_program_stage',
+            translate: true,
+        }
+    ),
     connect(mapStateToProps, mapDispatchToPropsForDialog)
 )(NotificationDialog);
 
@@ -184,15 +184,17 @@ export const ProgramNotificationDialog = connect(null, dispatch =>
 
 /* Chooses what dialog to display according to isProgram prop */
 export const NotificationDialogChooser = props =>
-    props.isProgram
-        ? <ProgramNotificationDialog
-              {...props}
-              dialogStyle={notificationDialogStyle}
-          />
-        : <ProgramStageNotificationDialog
-              {...props}
-              dialogStyle={notificationDialogStyle}
-          />;
+    props.isProgram ? (
+        <ProgramNotificationDialog
+            {...props}
+            dialogStyle={notificationDialogStyle}
+        />
+    ) : (
+        <ProgramStageNotificationDialog
+            {...props}
+            dialogStyle={notificationDialogStyle}
+        />
+    );
 
 export const EnhancedDialog = compose(
     connect(state => ({

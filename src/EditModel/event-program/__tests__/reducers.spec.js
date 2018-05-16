@@ -1,10 +1,10 @@
 import reducer from '../reducers';
 import * as actions from '../actions';
 import { STEPPER_RESET_ACTIVE_STEP } from '../../actions';
-import { PROGRAM_STEPPER_SET_DISABLE } from "../actions";
+import { PROGRAM_STEPPER_SET_DISABLE } from '../actions';
 import * as iterator from '../../stepper/stepIterator';
-import { initialState as notificationsInitialState } from "../notifications/reducers";
-import { initialState as stepperInitialState} from "../reducers";
+import { initialState as notificationsInitialState } from '../notifications/reducers';
+import { initialState as stepperInitialState } from '../reducers';
 
 describe('Event Program', () => {
     beforeAll(() => {
@@ -33,8 +33,8 @@ describe('Event Program', () => {
                 stageNotifications: notificationsInitialState,
                 programStageStepper: {
                     activeStep: stepKey,
-                    stageId: null
-                }
+                    stageId: null,
+                },
             };
 
             expect(actualState).toEqual(expectedState);
@@ -83,7 +83,9 @@ describe('Event Program', () => {
                     activeStep: expectedStepKey,
                 };
 
-                const actualState = reducer(initialState, { type: actions.EVENT_PROGRAM_STEP_NEXT });
+                const actualState = reducer(initialState, {
+                    type: actions.EVENT_PROGRAM_STEP_NEXT,
+                });
 
                 expect(iterator.next).toHaveBeenCalledTimes(1);
                 expect(iterator.previous).toHaveBeenCalledTimes(0);
@@ -98,7 +100,9 @@ describe('Event Program', () => {
                     activeStep: expectedStepKey,
                 };
 
-                const actualState = reducer(initialState, { type: actions.EVENT_PROGRAM_STEP_PREVIOUS });
+                const actualState = reducer(initialState, {
+                    type: actions.EVENT_PROGRAM_STEP_PREVIOUS,
+                });
 
                 expect(iterator.next).toHaveBeenCalledTimes(0);
                 expect(iterator.previous).toHaveBeenCalledTimes(1);
@@ -111,10 +115,12 @@ describe('Event Program', () => {
 
                 const expectedState = {
                     activeStep: expectedStepKey,
-                    isLoading: true
+                    isLoading: true,
                 };
 
-                const actualState = reducer(initialState, { type: STEPPER_RESET_ACTIVE_STEP });
+                const actualState = reducer(initialState, {
+                    type: STEPPER_RESET_ACTIVE_STEP,
+                });
 
                 expect(iterator.next).toHaveBeenCalledTimes(0);
                 expect(iterator.previous).toHaveBeenCalledTimes(0);
@@ -122,29 +128,29 @@ describe('Event Program', () => {
             });
 
             test('should handle PROGRAM_STEPPER_SET_DISABLE action', () => {
-
                 const expectedState = {
                     activeStep: initialState.step.activeStep,
-                    disabled: true
-                }
+                    disabled: true,
+                };
                 const actualStateTrue = reducer(initialState, {
                     type: PROGRAM_STEPPER_SET_DISABLE,
                     payload: {
-                        disabled: true
-                    }
+                        disabled: true,
+                    },
                 });
                 expect(actualStateTrue.step).toEqual(expectedState);
 
                 const actualStateFalse = reducer(initialState, {
                     type: PROGRAM_STEPPER_SET_DISABLE,
                     payload: {
-                        disabled: false
-                    }
+                        disabled: false,
+                    },
                 });
-                expect(actualStateFalse.step).toEqual({...expectedState, disabled: false})
-            })
-
-
+                expect(actualStateFalse.step).toEqual({
+                    ...expectedState,
+                    disabled: false,
+                });
+            });
         });
     });
 });

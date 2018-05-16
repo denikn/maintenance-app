@@ -24,7 +24,9 @@ function TopBarButton({ icon, toolTipText, onClick, disabled }, { d2 }) {
             tooltip={d2.i18n.getTranslation(toolTipText)}
             tooltipPosition="bottom-left"
             onClick={onClick}
-            iconStyle={disabled ? styles.disabledButtonStyle : styles.buttonStyle}
+            iconStyle={
+                disabled ? styles.disabledButtonStyle : styles.buttonStyle
+            }
             disabled={disabled}
         >
             {icon}
@@ -38,15 +40,21 @@ const GroupEditorButton = compose(
         toolTipText: 'metadata_group_editor',
         onClick: goToGroupEditor,
     }),
-    addD2Context,
+    addD2Context
 )(TopBarButton);
 
 function TopBarButtons(props, { d2 }) {
-    const showGroupEditor = () => d2.currentUser.canCreate(d2.models.dataElementGroup) || d2.currentUser.canCreate(d2.models.indicatorGroup);
+    const showGroupEditor = () =>
+        d2.currentUser.canCreate(d2.models.dataElementGroup) ||
+        d2.currentUser.canCreate(d2.models.indicatorGroup);
 
     return (
         <div>
-            {showGroupEditor() ? <GroupEditorButton disabled={props.disabled} /> : renderNothing()}
+            {showGroupEditor() ? (
+                <GroupEditorButton disabled={props.disabled} />
+            ) : (
+                renderNothing()
+            )}
         </div>
     );
 }

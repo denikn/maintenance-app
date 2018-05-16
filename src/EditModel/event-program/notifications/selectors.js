@@ -43,7 +43,7 @@ export const getProgramStageDataElements = ({
 export const getProgramStageDataElementsByStageId = state => id => {
     const { programStages, availableDataElements } = state;
     const index = getProgramStageIndexById(state, id);
-    if(index < 0) return null;
+    if (index < 0) return null;
     const programStageDataElements = programStages[
         index
     ].programStageDataElements.map(psde => psde.dataElement.id);
@@ -71,6 +71,6 @@ export const getNotificationType = get(
     'eventProgram.stageNotifications.notificationType'
 );
 
-export const isProgramNotification = state => 'PROGRAM_NOTIFICATION' == get(
-    'eventProgram.stageNotifications.notificationType'
-)(state);
+export const isProgramNotification = state =>
+    'PROGRAM_NOTIFICATION' ==
+    get('eventProgram.stageNotifications.notificationType')(state);

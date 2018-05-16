@@ -18,6 +18,4 @@ export const RenderSnackbarError = lifecycle({
  * @returns {*} A component that renders nothing if test passes
  */
 export const branchWithMessage = (test, snackAction) =>
-    branch(test, _ => _ =>
-        <RenderSnackbarError snackAction={snackAction} />,
-    );
+    branch(test, _ => _ => <RenderSnackbarError snackAction={snackAction} />);

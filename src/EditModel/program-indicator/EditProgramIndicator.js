@@ -7,17 +7,28 @@ import ProgramIndicatorStepper from './ProgramIndicatorStepper';
 import ProgramIndicatorStepperContent from './ProgramIndicatorStepperContent';
 import programIndicatorStore from './programIndicatorStore';
 import { get } from 'lodash/fp';
-import { createConnectedForwardButton, createConnectedBackwardButton, createStepperNavigation } from '../stepper/stepper';
+import {
+    createConnectedForwardButton,
+    createConnectedBackwardButton,
+    createStepperNavigation,
+} from '../stepper/stepper';
 import { previousStep, nextStep } from './actions';
 import ProgramIndicatorActionButtons from './ProgramIndicatorActionButtons';
 
-const EventProgramStepperNavigationForward = createConnectedForwardButton(nextStep);
-const EventProgramStepperNavigationBackward = createConnectedBackwardButton(previousStep);
+const EventProgramStepperNavigationForward = createConnectedForwardButton(
+    nextStep
+);
+const EventProgramStepperNavigationBackward = createConnectedBackwardButton(
+    previousStep
+);
 
-const StepperNavigation = createStepperNavigation(EventProgramStepperNavigationBackward, EventProgramStepperNavigationForward);
+const StepperNavigation = createStepperNavigation(
+    EventProgramStepperNavigationBackward,
+    EventProgramStepperNavigationForward
+);
 
-const withPreLoadedModel = mapPropsStream(props$ => props$
-    .combineLatest(
+const withPreLoadedModel = mapPropsStream(props$ =>
+    props$.combineLatest(
         programIndicatorStore,
         (props, programIndicatorState) => ({
             ...props,
@@ -44,16 +55,22 @@ function EditProgramIndicator({ programIndicator, ...props }) {
     return (
         <div style={styles.navigationWrap}>
             <div style={styles.heading}>
-                <FormHeading schema={schema} groupName={groupName}>{camelCaseToUnderscores(schema)}</FormHeading>
-                <FormSubHeading>{programIndicatorName && programName ? `${programIndicatorName} for ${programName}` : ''}</FormSubHeading>
+                <FormHeading schema={schema} groupName={groupName}>
+                    {camelCaseToUnderscores(schema)}
+                </FormHeading>
+                <FormSubHeading>
+                    {programIndicatorName && programName
+                        ? `${programIndicatorName} for ${programName}`
+                        : ''}
+                </FormSubHeading>
             </div>
             <ProgramIndicatorStepper />
-            <ProgramIndicatorStepperContent
-                schema={schema}
-                {...props}
-            />
+            <ProgramIndicatorStepperContent schema={schema} {...props} />
             <StepperNavigation>
-                <ProgramIndicatorActionButtons groupName={groupName} schema={schema} />
+                <ProgramIndicatorActionButtons
+                    groupName={groupName}
+                    schema={schema}
+                />
             </StepperNavigation>
         </div>
     );

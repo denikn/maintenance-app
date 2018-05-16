@@ -56,19 +56,19 @@ function getSystemSettings(d2) {
         d2.Api.getApi().get('periodTypes'),
     ]).then(([settings, periodTypeDefs]) => {
         systemSettingsStore.setState(settings);
-        periodTypeStore.setState(periodTypeDefs.periodTypes.map(p => ({
-            text: d2.i18n.getTranslation(p.name.toLocaleLowerCase()),
-            value: p.name,
-        })));
+        periodTypeStore.setState(
+            periodTypeDefs.periodTypes.map(p => ({
+                text: d2.i18n.getTranslation(p.name.toLocaleLowerCase()),
+                value: p.name,
+            }))
+        );
     });
 }
 
 function startApp() {
     render(
         <MuiThemeProvider muiTheme={appTheme}>
-            <div>
-                {routes}
-            </div>
+            <div>{routes}</div>
         </MuiThemeProvider>,
         document.getElementById('app')
     );
@@ -82,8 +82,11 @@ render(
 );
 
 getManifest('./manifest.webapp')
-    .then((manifest) => {
-        const baseUrl = process.env.NODE_ENV === 'production' ? manifest.getBaseUrl() : dhisDevConfig.baseUrl;
+    .then(manifest => {
+        const baseUrl =
+            process.env.NODE_ENV === 'production'
+                ? manifest.getBaseUrl()
+                : dhisDevConfig.baseUrl;
         config.baseUrl = `${baseUrl}/api/29`;
         log.info(`Loading: ${manifest.name} v${manifest.version}`);
         log.info(`Built ${manifest.manifest_generated_at}`);

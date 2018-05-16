@@ -9,10 +9,22 @@ class Empty extends Component {
     }
 }
 
-export default memoize(function switchOnBoolean(predicate, WhenTrue, WhenFalse = Empty) {
-    const switchedComponent = (props, context) => predicate(props, context) ? <WhenTrue d2={context.d2} {...props} /> : <WhenFalse d2={context.d2} {...props} />;
+export default memoize(function switchOnBoolean(
+    predicate,
+    WhenTrue,
+    WhenFalse = Empty
+) {
+    const switchedComponent = (props, context) =>
+        predicate(props, context) ? (
+            <WhenTrue d2={context.d2} {...props} />
+        ) : (
+            <WhenFalse d2={context.d2} {...props} />
+        );
 
-    switchedComponent.displayName = wrapDisplayName(WhenTrue, switchOnBoolean.name);
+    switchedComponent.displayName = wrapDisplayName(
+        WhenTrue,
+        switchOnBoolean.name
+    );
 
     return withD2Context(switchedComponent);
 });

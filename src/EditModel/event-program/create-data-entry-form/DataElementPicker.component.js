@@ -31,13 +31,20 @@ const styles = {
     },
 };
 
-const DataElementPicker = ({ availableDataElements, activeDataElements, onElementPicked }, { d2 }) => (
+const DataElementPicker = (
+    { availableDataElements, activeDataElements, onElementPicked },
+    { d2 }
+) => (
     <div style={styles.dataElementPicker}>
-        <div style={styles.header}>{`${d2.i18n.getTranslation('available_data_elements')}:`}</div>
+        <div style={styles.header}>{`${d2.i18n.getTranslation(
+            'available_data_elements'
+        )}:`}</div>
         <div style={styles.dataElementList}>
-            { availableDataElements.map((element) => {
-                const elementIsActive = find(active =>
-                    isEqual(get('id', active), get('id', element)), activeDataElements);
+            {availableDataElements.map(element => {
+                const elementIsActive = find(
+                    active => isEqual(get('id', active), get('id', element)),
+                    activeDataElements
+                );
 
                 return (
                     <AvailableDataElement
@@ -99,9 +106,13 @@ class AvailableDataElement extends Component {
             }}
         >
             {this.props.dataElement.displayName}
-            {!this.props.active && <FontIcon color="gray" className="material-icons">add</FontIcon>}
+            {!this.props.active && (
+                <FontIcon color="gray" className="material-icons">
+                    add
+                </FontIcon>
+            )}
         </div>
-    )
+    );
 }
 
 AvailableDataElement.propTypes = {

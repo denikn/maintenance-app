@@ -11,7 +11,7 @@ class PeriodTypeDropDown extends React.Component {
     }
 
     componentWillMount() {
-        this.sub = periodTypeStore.subscribe((periodTypes) => {
+        this.sub = periodTypeStore.subscribe(periodTypes => {
             this.setState({ options: periodTypes });
         });
     }

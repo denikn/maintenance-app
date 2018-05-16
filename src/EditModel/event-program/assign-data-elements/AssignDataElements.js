@@ -158,24 +158,24 @@ const ProgramStageDataElement = pure(
                     />
                 </TableRowColumn>
                 <TableRowColumn>
-                    {isDateValue
-                        ? <Checkbox
-                              checked={isCheckedForProp('allowFutureDate')}
-                              onClick={onChangeFlipBooleanForProperty(
-                                  'allowFutureDate'
-                              )}
-                          />
-                        : null}
+                    {isDateValue ? (
+                        <Checkbox
+                            checked={isCheckedForProp('allowFutureDate')}
+                            onClick={onChangeFlipBooleanForProperty(
+                                'allowFutureDate'
+                            )}
+                        />
+                    ) : null}
                 </TableRowColumn>
                 <TableRowColumn>
-                    {hasOptionSet
-                        ? <Checkbox
-                              checked={isCheckedForProp('renderOptionsAsRadio')}
-                              onClick={onChangeFlipBooleanForProperty(
-                                  'renderOptionsAsRadio'
-                              )}
-                          />
-                        : null}
+                    {hasOptionSet ? (
+                        <Checkbox
+                            checked={isCheckedForProp('renderOptionsAsRadio')}
+                            onClick={onChangeFlipBooleanForProperty(
+                                'renderOptionsAsRadio'
+                            )}
+                        />
+                    ) : null}
                 </TableRowColumn>
             </TableRow>
         );
@@ -232,7 +232,7 @@ function AssignDataElements(props, { d2 }) {
 
     return (
         <Paper>
-            <div style={{ padding: '2rem 3rem 4rem', ...(props.outerDivStyle)}}>
+            <div style={{ padding: '2rem 3rem 4rem', ...props.outerDivStyle }}>
                 <TextField
                     hintText={d2.i18n.getTranslation(
                         'search_available_selected_items'
@@ -270,9 +270,7 @@ function AssignDataElements(props, { d2 }) {
                         </TableHeaderColumn>
                     </TableRow>
                 </TableHeader>
-                <TableBody displayRowCheckbox={false}>
-                    {tableRows}
-                </TableBody>
+                <TableBody displayRowCheckbox={false}>{tableRows}</TableBody>
             </Table>
         </Paper>
     );
@@ -280,7 +278,7 @@ function AssignDataElements(props, { d2 }) {
 
 AssignDataElements.contextTypes = {
     d2: PropTypes.object,
-    outerDivStyle: PropTypes.object
+    outerDivStyle: PropTypes.object,
 };
 
 export default enhance(AssignDataElements);

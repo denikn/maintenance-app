@@ -6,7 +6,11 @@ import { compose } from 'recompose';
 import ProgramStageList from './ProgramStageList';
 import EditProgramStage from './EditProgramStage';
 import { editProgramStage } from './actions';
-import { getProgramStageById$, firstProgramStage$, withProgramAndStages } from './utils';
+import {
+    getProgramStageById$,
+    firstProgramStage$,
+    withProgramAndStages,
+} from './utils';
 import { getCurrentProgramStageId } from './selectors';
 
 class ProgramStage extends Component {
@@ -20,17 +24,19 @@ class ProgramStage extends Component {
         const programStage$ =
             props.currentProgramStageId !== 'add' &&
             getProgramStageById$(props.currentProgramStageId).defaultIfEmpty(
-                firstProgramStage$,
+                firstProgramStage$
             );
 
         return (
             <div>
-                {this.props.currentProgramStageId
-                    ? <EditProgramStage programStage$={programStage$} />
-                    : <ProgramStageList
+                {this.props.currentProgramStageId ? (
+                    <EditProgramStage programStage$={programStage$} />
+                ) : (
+                    <ProgramStageList
                         program={props.program}
                         programStages={props.programStages}
-                    />}
+                    />
+                )}
             </div>
         );
     }
@@ -56,8 +62,7 @@ ProgramStage.defaultProps = {
     programStage: {},
 };
 
-
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
-    withProgramAndStages,
+    withProgramAndStages
 )(ProgramStage);

@@ -30,7 +30,7 @@ import {
     addAttributesToProgram,
     removeAttributesFromProgram,
     editProgramAttributes,
-    setAttributesOrder
+    setAttributesOrder,
 } from './actions';
 
 const styles = {
@@ -55,7 +55,7 @@ const mapDispatchToProps = dispatch =>
             addAttributesToProgram,
             removeAttributesFromProgram,
             editProgramAttributes,
-            setAttributesOrder
+            setAttributesOrder,
         },
         dispatch
     );
@@ -177,7 +177,7 @@ function AssignAttributes(props, { d2 }) {
     // Create edit-able rows for assigned attributes
     const tableRows = props.assignedAttributes
         .map(addDisplayProperties(props.availableAttributes))
-        .map(programAttribute =>
+        .map(programAttribute => (
             <ProgramAttributeRow
                 key={programAttribute.id}
                 displayName={
@@ -193,7 +193,7 @@ function AssignAttributes(props, { d2 }) {
                     !!programAttribute.trackedEntityAttribute.optionSet
                 }
             />
-        );
+        ));
 
     return (
         <Paper>
@@ -244,9 +244,7 @@ function AssignAttributes(props, { d2 }) {
                         </TableHeaderColumn>
                     </TableRow>
                 </TableHeader>
-                <TableBody displayRowCheckbox={false}>
-                    {tableRows}
-                </TableBody>
+                <TableBody displayRowCheckbox={false}>{tableRows}</TableBody>
             </Table>
         </Paper>
     );

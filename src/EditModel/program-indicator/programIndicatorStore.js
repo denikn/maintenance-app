@@ -1,5 +1,20 @@
 import Store from 'd2-ui/lib/store/Store';
-import { equals, first, negate, some, get, compose, find, identity, map, __, concat, includes, findIndex, isObject } from 'lodash/fp';
+import {
+    equals,
+    first,
+    negate,
+    some,
+    get,
+    compose,
+    find,
+    identity,
+    map,
+    __,
+    concat,
+    includes,
+    findIndex,
+    isObject,
+} from 'lodash/fp';
 import { getOwnedPropertyJSON } from 'd2/lib/model/helpers/json';
 
 // // programSelector :: StoreState -> Model<Program>
@@ -64,9 +79,7 @@ import { getOwnedPropertyJSON } from 'd2/lib/model/helpers/json';
 function isValidState(state) {
     const acceptedKeys = ['programIndicator'];
 
-    return Object
-        .keys(state)
-        .every(key => some(equals(key), acceptedKeys));
+    return Object.keys(state).every(key => some(equals(key), acceptedKeys));
 }
 
 /**
@@ -92,15 +105,21 @@ function isValidState(state) {
  */
 const programIndicatorStore = Store.create();
 
-const storeSetState = programIndicatorStore.setState.bind(programIndicatorStore);
+const storeSetState = programIndicatorStore.setState.bind(
+    programIndicatorStore
+);
 
-programIndicatorStore.setState = (newState) => {
+programIndicatorStore.setState = newState => {
     if (!isObject(newState)) {
-        throw new Error('You are attempting to set a state that is a non object');
+        throw new Error(
+            'You are attempting to set a state that is a non object'
+        );
     }
 
     if (!isValidState(newState)) {
-        throw new Error('You are attempting to set an invalid state onto the programIndicatorStore');
+        throw new Error(
+            'You are attempting to set an invalid state onto the programIndicatorStore'
+        );
     }
 
     storeSetState({

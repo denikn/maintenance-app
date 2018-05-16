@@ -14,7 +14,11 @@ import withStateFrom from 'd2-ui/lib/component-helpers/withStateFrom';
 import CancelButton from '../CancelButton.component';
 import modelToEditStore from '../modelToEditStore';
 import OptionSorter from './OptionSorter.component';
-import { typeToFieldMap, getFieldUIComponent, getValidatorsFromModelValidation } from '../../forms/fields';
+import {
+    typeToFieldMap,
+    getFieldUIComponent,
+    getValidatorsFromModelValidation,
+} from '../../forms/fields';
 import { createFieldConfigForModelTypes, isAttribute } from '../formHelpers';
 import Pagination from 'd2-ui/lib/pagination/Pagination.component';
 import { calculatePageValue } from '../../List/helpers/pagination'; // TODO: Move this out to some other file.
@@ -37,31 +41,36 @@ const optionList$ = Observable.combineLatest(
 
 const optionForm$ = Observable.combineLatest(
     Observable.fromPromise(createFieldConfigForModelTypes('option')),
-    modelToEditStore,
-)
-    .flatMap(async ([fieldConfigs, modelToEdit]) => {
-        const d2 = await getInstance();
+    modelToEditStore
+).flatMap(async ([fieldConfigs, modelToEdit]) => {
+    const d2 = await getInstance();
 
-        return fieldConfigs
-            .map((fieldConfig) => {
-                // Adjust the code when dealing with a different
-                if (fieldConfig.name === 'code' && typeToFieldMap.has(modelToEdit.valueType)) {
-                    // Get the correct matching Ui component
-                    fieldConfig.component = getFieldUIComponent(typeToFieldMap.get(modelToEdit.valueType));
-                    // Copy the optionSet value type onto the code field
-                    fieldConfig.type = typeToFieldMap.get(modelToEdit.valueType);
-                    // Generate the validator and pre-translate their messages
-                    fieldConfig.validators = getValidatorsFromModelValidation(fieldConfig, d2.models.option)
-                        .map((validator) => {
-                            validator.message = d2.i18n.getTranslation(validator.message);
+    return fieldConfigs.map(fieldConfig => {
+        // Adjust the code when dealing with a different
+        if (
+            fieldConfig.name === 'code' &&
+            typeToFieldMap.has(modelToEdit.valueType)
+        ) {
+            // Get the correct matching Ui component
+            fieldConfig.component = getFieldUIComponent(
+                typeToFieldMap.get(modelToEdit.valueType)
+            );
+            // Copy the optionSet value type onto the code field
+            fieldConfig.type = typeToFieldMap.get(modelToEdit.valueType);
+            // Generate the validator and pre-translate their messages
+            fieldConfig.validators = getValidatorsFromModelValidation(
+                fieldConfig,
+                d2.models.option
+            ).map(validator => {
+                validator.message = d2.i18n.getTranslation(validator.message);
 
-                            return validator;
-                        });
-                }
-                // For the code field we replace the fieldConfig with a config that matches the type of the optionSet
-                return fieldConfig;
+                return validator;
             });
+        }
+        // For the code field we replace the fieldConfig with a config that matches the type of the optionSet
+        return fieldConfig;
     });
+});
 
 const optionFormData$ = Observable.combineLatest(
     optionForm$,
@@ -71,12 +80,13 @@ const optionFormData$ = Observable.combineLatest(
         model: optionDialogState.model,
         isAdd: !optionDialogState.model.id,
         isDialogOpen: optionDialogState.isDialogOpen,
-    }))
+    })
+)
     .flatMap(async ({ fieldConfigs, model, isAdd, ...other }) => {
         const d2 = await getInstance();
 
         return Promise.resolve({
-            fieldConfigs: fieldConfigs.map((fieldConfig) => {
+            fieldConfigs: fieldConfigs.map(fieldConfig => {
                 if (isAttribute(model, fieldConfig)) {
                     fieldConfig.value = model.attributes[fieldConfig.name];
                 } else {
@@ -121,7 +131,10 @@ class AddOptionDialog extends Component {
                 autoScrollBodyContent
             >
                 <Heading>{this.props.title}</Heading>
-                <FormBuilder fields={this.props.fieldConfigs} onUpdateField={this._onUpdateField} />
+                <FormBuilder
+                    fields={this.props.fieldConfigs}
+                    onUpdateField={this._onUpdateField}
+                />
                 <FormButtons>
                     <SaveButton
                         isValid={this.state.isFormValid}
@@ -143,25 +156,24 @@ class AddOptionDialog extends Component {
             isSaving: true,
         });
 
-        actions.saveOption(this.props.model, this.props.parentModel)
-            .subscribe(
-                () => {
-                    snackActions.show({ message: 'option_saved', translate: true });
-                    this.setState({
-                        isSaving: false,
-                    });
-                    this.props.onRequestClose();
+        actions.saveOption(this.props.model, this.props.parentModel).subscribe(
+            () => {
+                snackActions.show({ message: 'option_saved', translate: true });
+                this.setState({
+                    isSaving: false,
+                });
+                this.props.onRequestClose();
 
-                    // After the save was successful we request the options from the server to get the updated list
-                    actions.getOptionsFor(this.props.parentModel);
-                },
-                ({ message, translate }) => {
-                    snackActions.show({ message, action: 'ok', translate });
-                    this.setState({
-                        isSaving: false,
-                    });
-                }
-            );
+                // After the save was successful we request the options from the server to get the updated list
+                actions.getOptionsFor(this.props.parentModel);
+            },
+            ({ message, translate }) => {
+                snackActions.show({ message, action: 'ok', translate });
+                this.setState({
+                    isSaving: false,
+                });
+            }
+        );
     }
 }
 AddOptionDialog.defaultProps = {
@@ -187,7 +199,9 @@ class OptionManagement extends Component {
     }
 
     componentDidMount() {
-        this.subscription = actions.getOptionsFor(this.props.model).subscribe(() => this.forceUpdate());
+        this.subscription = actions
+            .getOptionsFor(this.props.model)
+            .subscribe(() => this.forceUpdate());
     }
 
     componentWillUnmount() {
@@ -230,8 +244,9 @@ class OptionManagement extends Component {
 
         const contextActions = {
             edit: this._onEditOption,
-            delete: modelToDelete => actions.deleteOption(modelToDelete, this.props.model),
-            translate: (modelToTranslate) => {
+            delete: modelToDelete =>
+                actions.deleteOption(modelToDelete, this.props.model),
+            translate: modelToTranslate => {
                 this.setState({
                     modelToTranslate,
                 });
@@ -240,8 +255,14 @@ class OptionManagement extends Component {
 
         return (
             <div style={styles.optionManagementWrap}>
-                <OptionSorter style={styles.sortBarStyle} buttonStyle={styles.sortButtonStyle} rows={this.props.rows} />
-                {this.props.pager && this.props.pager.total > 50 ? this.displayInCorrectOrderWarning() : undefined}
+                <OptionSorter
+                    style={styles.sortBarStyle}
+                    buttonStyle={styles.sortButtonStyle}
+                    rows={this.props.rows}
+                />
+                {this.props.pager && this.props.pager.total > 50
+                    ? this.displayInCorrectOrderWarning()
+                    : undefined}
                 {this.renderPagination()}
                 <div style={styles.dataTableWrap}>
                     {this.props.isLoading ? <LinearProgress /> : undefined}
@@ -251,7 +272,10 @@ class OptionManagement extends Component {
                         primaryAction={this._onEditOption}
                         contextMenuActions={contextActions}
                     />
-                    <FloatingActionButton onClick={this._onAddOption} style={styles.addButton}>
+                    <FloatingActionButton
+                        onClick={this._onAddOption}
+                        style={styles.addButton}
+                    >
                         <ContentAdd />
                     </FloatingActionButton>
                 </div>
@@ -259,15 +283,22 @@ class OptionManagement extends Component {
                     onRequestClose={this._onAddDialogClose}
                     parentModel={this.props.model}
                 />
-                {this.state.modelToTranslate ? <TranslationDialog
-                    objectToTranslate={this.state.modelToTranslate}
-                    objectTypeToTranslate={this.state.modelToTranslate && this.state.modelToTranslate.modelDefinition}
-                    open={Boolean(this.state.modelToTranslate)}
-                    onTranslationSaved={this._translationSaved}
-                    onTranslationError={this._translationErrored}
-                    onRequestClose={() => this.setState({ modelToTranslate: null })}
-                    fieldsToTranslate={['name']}
-                /> : null }
+                {this.state.modelToTranslate ? (
+                    <TranslationDialog
+                        objectToTranslate={this.state.modelToTranslate}
+                        objectTypeToTranslate={
+                            this.state.modelToTranslate &&
+                            this.state.modelToTranslate.modelDefinition
+                        }
+                        open={Boolean(this.state.modelToTranslate)}
+                        onTranslationSaved={this._translationSaved}
+                        onTranslationError={this._translationErrored}
+                        onRequestClose={() =>
+                            this.setState({ modelToTranslate: null })
+                        }
+                        fieldsToTranslate={['name']}
+                    />
+                ) : null}
             </div>
         );
     }
@@ -284,8 +315,12 @@ class OptionManagement extends Component {
         };
 
         const paginationProps = {
-            hasNextPage: () => Boolean(this.props.pager.hasNextPage) && this.props.pager.hasNextPage(),
-            hasPreviousPage: () => Boolean(this.props.pager.hasPreviousPage) && this.props.pager.hasPreviousPage(),
+            hasNextPage: () =>
+                Boolean(this.props.pager.hasNextPage) &&
+                this.props.pager.hasNextPage(),
+            hasPreviousPage: () =>
+                Boolean(this.props.pager.hasPreviousPage) &&
+                this.props.pager.hasPreviousPage(),
             onNextPageClick: () => {
                 this.setState({ isLoading: true });
                 this.props.getNextPage();
@@ -323,7 +358,11 @@ class OptionManagement extends Component {
         return (
             <div style={style}>
                 <AlertIcon color="orange" />
-                <div style={textStyle}>{this.i18n.getTranslation('list_might_not_represent_the_accurate_order_of_options_due_the_availability_of_pagination')}</div>
+                <div style={textStyle}>
+                    {this.i18n.getTranslation(
+                        'list_might_not_represent_the_accurate_order_of_options_due_the_availability_of_pagination'
+                    )}
+                </div>
             </div>
         );
     }
@@ -334,7 +373,11 @@ class OptionManagement extends Component {
 
     _translationErrored(errorMessage) {
         log.error(errorMessage);
-        snackActions.show({ message: 'translation_save_error', action: 'ok', translate: true });
+        snackActions.show({
+            message: 'translation_save_error',
+            action: 'ok',
+            translate: true,
+        });
     }
 
     _onAddOption() {
@@ -358,9 +401,13 @@ OptionManagement.defaultProps = {
     optionDialogOpen: false,
 };
 
-const stateForOptionManagement$ = Observable.combineLatest(modelToEditStore, optionList$, (modelToEdit, optionList) => ({
-    ...optionList,
-    model: modelToEdit,
-}));
+const stateForOptionManagement$ = Observable.combineLatest(
+    modelToEditStore,
+    optionList$,
+    (modelToEdit, optionList) => ({
+        ...optionList,
+        model: modelToEdit,
+    })
+);
 
 export default withStateFrom(stateForOptionManagement$, OptionManagement);

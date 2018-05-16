@@ -8,18 +8,27 @@ import OrganisationUnitTreeWithSingleSelectionAndSearch from '../OrganisationUni
 
 class SideBarContainer extends React.Component {
     componentWillMount() {
-        this.subscription = sideBarStore
-            .subscribe((sideBarState) => {
-                this.setState({
-                    ...sideBarState,
-                    organisationUnitsToReload: this.state && this.state.organisationUnitsToReload ? this.state.organisationUnitsToReload : [],
-                });
+        this.subscription = sideBarStore.subscribe(sideBarState => {
+            this.setState({
+                ...sideBarState,
+                organisationUnitsToReload:
+                    this.state && this.state.organisationUnitsToReload
+                        ? this.state.organisationUnitsToReload
+                        : [],
             });
+        });
 
         this.organisationUnitSaved = organisationUnitTreeChanged$
             .filter(orgUnits => orgUnits)
-            .subscribe((organisationUnitToReload) => {
-                this.setState({ organisationUnitsToReload: [organisationUnitToReload.id] }, () => this.forceUpdate());
+            .subscribe(organisationUnitToReload => {
+                this.setState(
+                    {
+                        organisationUnitsToReload: [
+                            organisationUnitToReload.id,
+                        ],
+                    },
+                    () => this.forceUpdate()
+                );
             });
     }
 
@@ -28,7 +37,10 @@ class SideBarContainer extends React.Component {
             this.subscription.unsubscribe();
         }
 
-        if (this.organisationUnitSaved && this.organisationUnitSaved.unsubscribe) {
+        if (
+            this.organisationUnitSaved &&
+            this.organisationUnitSaved.unsubscribe
+        ) {
             this.organisationUnitSaved.unsubscribe();
         }
     }
@@ -42,12 +54,21 @@ class SideBarContainer extends React.Component {
             return [this.state.selectedOrganisationUnit.path];
         }
 
-        return this.state.userOrganisationUnits.toArray().map(v => v.path).concat(this.state.initiallyExpanded || []);
+        return this.state.userOrganisationUnits
+            .toArray()
+            .map(v => v.path)
+            .concat(this.state.initiallyExpanded || []);
     }
 
     renderSidebarItems() {
-        if (this.state.currentSubSection === 'organisationUnit' && !/#\/edit\//.test(document.location.hash)) {
-            if (this.state.userOrganisationUnits && this.state.selectedOrganisationUnit) {
+        if (
+            this.state.currentSubSection === 'organisationUnit' &&
+            !/#\/edit\//.test(document.location.hash)
+        ) {
+            if (
+                this.state.userOrganisationUnits &&
+                this.state.selectedOrganisationUnit
+            ) {
                 const styles = {
                     wrapperStyle: {
                         padding: '1.5rem',
@@ -58,31 +79,51 @@ class SideBarContainer extends React.Component {
                     },
                 };
 
-                const orgUnitSearchHits = appState.getState().sideBar.organisationUnits;
+                const orgUnitSearchHits = appState.getState().sideBar
+                    .organisationUnits;
                 const roots = Array.isArray(orgUnitSearchHits)
                     ? orgUnitSearchHits
-                    : this.state.userOrganisationUnits.toArray().map((ou) => {
-                        // Use the name as displayName if it has not been loaded
-                        if (!ou.displayName) {
-                            ou.displayName = ou.name;
-                        }
-                        return ou;
-                    });
+                    : this.state.userOrganisationUnits.toArray().map(ou => {
+                          // Use the name as displayName if it has not been loaded
+                          if (!ou.displayName) {
+                              ou.displayName = ou.name;
+                          }
+                          return ou;
+                      });
 
-                const initiallyExpanded = this.getExpandedItems(orgUnitSearchHits);
+                const initiallyExpanded = this.getExpandedItems(
+                    orgUnitSearchHits
+                );
 
                 return (
                     <div style={styles.wrapperStyle}>
                         <OrganisationUnitTreeWithSingleSelectionAndSearch
-                            onUpdateInput={this._searchOrganisationUnits.bind(this)}
-                            onAutoCompleteValueSelected={this._onAutoCompleteValueSelected.bind(this)}
-                            autoCompleteDataSource={(this.state.autoCompleteOrganisationUnits || []).map(model => model.name)}
+                            onUpdateInput={this._searchOrganisationUnits.bind(
+                                this
+                            )}
+                            onAutoCompleteValueSelected={this._onAutoCompleteValueSelected.bind(
+                                this
+                            )}
+                            autoCompleteDataSource={(
+                                this.state.autoCompleteOrganisationUnits || []
+                            ).map(model => model.name)}
                             roots={roots}
-                            selected={this.state.selectedOrganisationUnit ? [this.state.selectedOrganisationUnit.path] : []}
+                            selected={
+                                this.state.selectedOrganisationUnit
+                                    ? [this.state.selectedOrganisationUnit.path]
+                                    : []
+                            }
                             initiallyExpanded={initiallyExpanded}
-                            onSelectClick={this._onChangeSelectedOrgUnit.bind(this)}
-                            idsThatShouldBeReloaded={orgUnitSearchHits || this.state.organisationUnitsToReload}
-                            noHitsLabel={this.context.d2.i18n.getTranslation('no_matching_organisation_units')}
+                            onSelectClick={this._onChangeSelectedOrgUnit.bind(
+                                this
+                            )}
+                            idsThatShouldBeReloaded={
+                                orgUnitSearchHits ||
+                                this.state.organisationUnitsToReload
+                            }
+                            noHitsLabel={this.context.d2.i18n.getTranslation(
+                                'no_matching_organisation_units'
+                            )}
                             hideMemberCount
                             hideCheckboxes
                         />
@@ -90,16 +131,13 @@ class SideBarContainer extends React.Component {
                 );
             }
 
-            return (
-                <LinearProgress />
-            );
+            return <LinearProgress />;
         }
         return null;
     }
 
     _searchOrganisationUnits(searchValue) {
-        onOrgUnitSearch(searchValue)
-            .subscribe(() => {}, e => console.error(e));
+        onOrgUnitSearch(searchValue).subscribe(() => {}, e => console.error(e));
     }
 
     _onChangeSelectedOrgUnit(event, model) {
@@ -113,8 +151,9 @@ class SideBarContainer extends React.Component {
     }
 
     _onAutoCompleteValueSelected(displayName) {
-        const ouToSelect = (this.state.autoCompleteOrganisationUnits || [])
-            .find(model => model.displayName === displayName);
+        const ouToSelect = (
+            this.state.autoCompleteOrganisationUnits || []
+        ).find(model => model.displayName === displayName);
 
         if (ouToSelect) {
             this._onChangeSelectedOrgUnit(null, ouToSelect);
@@ -130,9 +169,7 @@ class SideBarContainer extends React.Component {
 
     render() {
         if (!this.state || !this.state.sections) {
-            return (
-                <LinearProgress />
-            );
+            return <LinearProgress />;
         }
 
         const sideBarWrapperStyle = {

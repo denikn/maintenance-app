@@ -1,3 +1,1 @@
-export default [
-    'dataDimensionType',
-];
+export default ['dataDimensionType'];

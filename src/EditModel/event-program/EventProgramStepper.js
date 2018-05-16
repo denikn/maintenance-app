@@ -9,7 +9,10 @@ const mapStateToProps = state => ({
     activeStep: activeStepSelector(state),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({ stepperClicked: changeStep }, dispatch);
-const EventProgramStepper = connect(mapStateToProps, mapDispatchToProps)(createStepperFromConfig(steps));
+const mapDispatchToProps = dispatch =>
+    bindActionCreators({ stepperClicked: changeStep }, dispatch);
+const EventProgramStepper = connect(mapStateToProps, mapDispatchToProps)(
+    createStepperFromConfig(steps)
+);
 
 export default EventProgramStepper;

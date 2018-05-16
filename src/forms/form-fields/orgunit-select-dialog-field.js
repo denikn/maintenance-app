@@ -9,7 +9,6 @@ import OrgUnitTree from 'd2-ui/lib/org-unit-tree/OrgUnitTreeMultipleRoots.compon
 
 import appStateStore from '../../App/appStateStore';
 
-
 class OrgUnitSelectDialog extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -22,28 +21,38 @@ class OrgUnitSelectDialog extends React.Component {
         };
 
         if (props.value) {
-            context.d2.models.organisationUnits.get(props.value.id, { fields: 'id,displayName,path' }).then((orgUnit) => {
-                this.setState({
-                    selected: [orgUnit.path],
-                    parentName: orgUnit.displayName,
+            context.d2.models.organisationUnits
+                .get(props.value.id, { fields: 'id,displayName,path' })
+                .then(orgUnit => {
+                    this.setState({
+                        selected: [orgUnit.path],
+                        parentName: orgUnit.displayName,
+                    });
                 });
-            });
         }
 
-        this.getTranslation = context.d2.i18n.getTranslation.bind(context.d2.i18n);
+        this.getTranslation = context.d2.i18n.getTranslation.bind(
+            context.d2.i18n
+        );
         this.handleSelectClick = this.handleSelectClick.bind(this);
         this.save = this.save.bind(this);
     }
 
     componentWillMount() {
         this.subscriptions = [];
-        this.subscriptions.push(appStateStore.subscribe((appState) => {
-            this.setState({ roots: appState.userOrganisationUnits.toArray() });
-        }));
+        this.subscriptions.push(
+            appStateStore.subscribe(appState => {
+                this.setState({
+                    roots: appState.userOrganisationUnits.toArray(),
+                });
+            })
+        );
     }
 
     componentWillUnmount() {
-        this.subscriptions.forEach(disposable => disposable.unsubscribe && disposable.unsubscribe());
+        this.subscriptions.forEach(
+            disposable => disposable.unsubscribe && disposable.unsubscribe()
+        );
     }
 
     handleSelectClick(e, orgUnit) {
@@ -65,7 +74,8 @@ class OrgUnitSelectDialog extends React.Component {
                 color: 'rgba(0,0,0,0.4)',
             },
             dialogContent: {
-                minHeight: 450, maxHeight: 450,
+                minHeight: 450,
+                maxHeight: 450,
             },
             cancelButton: {
                 marginRight: '16px',
@@ -91,7 +101,12 @@ class OrgUnitSelectDialog extends React.Component {
                     floatingLabelText={this.props.labelText}
                     style={{ width: '100%' }}
                     value={this.state.parentName || ''}
-                    onClick={e => this.setState({ value: this.props.value, dialogOpen: true })}
+                    onClick={e =>
+                        this.setState({
+                            value: this.props.value,
+                            dialogOpen: true,
+                        })
+                    }
                 />
                 <Dialog
                     open={this.state.dialogOpen}

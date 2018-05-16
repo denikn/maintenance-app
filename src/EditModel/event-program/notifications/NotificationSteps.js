@@ -38,7 +38,9 @@ class WhatToSendStep extends Component {
         super(props);
 
         this.state = {
-            programStageId: props.model.programStage ?  props.model.programStage.id : null,
+            programStageId: props.model.programStage
+                ? props.model.programStage.id
+                : null,
         };
     }
 
@@ -124,19 +126,29 @@ const stepToFormBuilder = ({
 
     //TODO cleanup this
     //Remove PROGRAM_ATTRIBUTE options when it's an event-program
-    if(!isTracker && !isProgram) {
+    if (!isTracker && !isProgram) {
         fieldsToUse = fieldsToUse.map(field => {
-            if(field.name == 'notificationRecipient') {
-                const removedOptions = field.props.options.filter(opt => opt.value !== "PROGRAM_ATTRIBUTE");
-                const propsWithRemovedRecipient = {...field.props, options: removedOptions}
-                return { ...field, props: { ...propsWithRemovedRecipient} }
+            if (field.name == 'notificationRecipient') {
+                const removedOptions = field.props.options.filter(
+                    opt => opt.value !== 'PROGRAM_ATTRIBUTE'
+                );
+                const propsWithRemovedRecipient = {
+                    ...field.props,
+                    options: removedOptions,
+                };
+                return { ...field, props: { ...propsWithRemovedRecipient } };
             }
             return field;
-        })
+        });
     }
     return (
         <FormBuilder
-            fields={fieldsToUse.map(addPropsToFieldConfig(fieldProps, ['recipientDataElement', 'recipientProgramAttribute']))}
+            fields={fieldsToUse.map(
+                addPropsToFieldConfig(fieldProps, [
+                    'recipientDataElement',
+                    'recipientProgramAttribute',
+                ])
+            )}
             onUpdateField={onUpdateField}
         />
     );

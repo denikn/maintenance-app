@@ -12,8 +12,7 @@ export default function IconPickerField(props) {
             },
         });
     }
-    const iconPickerOptions = props.options
-        .map(option => option.value);
+    const iconPickerOptions = props.options.map(option => option.value);
 
     // remove when padding has been fixed in d2-ui. past version "29.0.11",
     const iconPopoverStyle = {

@@ -13,23 +13,36 @@ const styles = {
     },
 };
 
-export default function FormActionButtons({ onSaveAction, onCancelAction, isDirtyHandler, isSaving }) {
+export default function FormActionButtons({
+    onSaveAction,
+    onCancelAction,
+    isDirtyHandler,
+    isSaving,
+}) {
     return (
         <div>
             <SaveButton onClick={onSaveAction} isSaving={isSaving} />
-            <CancelButton onClick={onCancelAction} isDirtyHandler={isDirtyHandler} style={styles.cancelButton} />
+            <CancelButton
+                onClick={onCancelAction}
+                isDirtyHandler={isDirtyHandler}
+                style={styles.cancelButton}
+            />
         </div>
     );
 }
 
-export function createConnectedFormActionButtonsForSchema(mapDispatchToProps, mapStateToProps = null) {
-    const onCancelActionCreator = (groupName, schema) => () => goToAndScrollUp(`/list/${groupName}/${schema}`);
+export function createConnectedFormActionButtonsForSchema(
+    mapDispatchToProps,
+    mapStateToProps = null
+) {
+    const onCancelActionCreator = (groupName, schema) => () =>
+        goToAndScrollUp(`/list/${groupName}/${schema}`);
 
     const enhance = compose(
         withProps(({ groupName, schema }) => ({
             onCancelAction: onCancelActionCreator(groupName, schema),
         })),
-        connect(mapStateToProps, mapDispatchToProps),
+        connect(mapStateToProps, mapDispatchToProps)
     );
 
     return enhance(FormActionButtons);

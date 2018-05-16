@@ -120,7 +120,10 @@ export default {
     groupNoByName(fieldName, modelType) {
         if (this.isGroupedFields(modelType)) {
             const modelGroup = fieldGroupsForModelType.get(modelType);
-            return findIndex((group => group.fields.includes(fieldName)), modelGroup);
+            return findIndex(
+                group => group.fields.includes(fieldName),
+                modelGroup
+            );
         }
         return 0;
     },
@@ -139,7 +142,7 @@ export default {
                 .get(modelType)
                 .map(group => group.fields)
                 .reduce((fieldsWithStep, groupFields, stepNo) => {
-                    groupFields.map(field => fieldsWithStep[field] = stepNo);
+                    groupFields.map(field => (fieldsWithStep[field] = stepNo));
                     return fieldsWithStep;
                 }, {});
         }

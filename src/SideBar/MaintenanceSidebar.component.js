@@ -12,7 +12,10 @@ function MaintenanceSideBar(props) {
                 onChangeSection={noop}
                 onSectionClick={props.onChangeSection || noop}
                 currentSection={props.currentSection}
-                styles={Object.assign({ leftBar: { overflowY: 'initial' } }, props.style)}
+                styles={Object.assign(
+                    { leftBar: { overflowY: 'initial' } },
+                    props.style
+                )}
             />
             {props.children}
         </div>

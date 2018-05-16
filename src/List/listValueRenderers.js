@@ -21,13 +21,13 @@ const BooleanCellField = branch(
 )(removeProps(RemoveIcon));
 
 // For boolean valueTypes render a check mark icon when the value is true or a dash for when it is false.
-addValueRenderer(
-    ({ valueType }) => valueType === 'BOOLEAN',
-    BooleanCellField,
-);
+addValueRenderer(({ valueType }) => valueType === 'BOOLEAN', BooleanCellField);
 
 // For a formType field render a translated version of the value (e.g "SECTION -> Sectie" for the nlNL locale)
 addValueRenderer(
-    ({ columnName, valueType }) => columnName === 'formType' && valueType === 'CONSTANT',
-    renderNothingWhenValueIsNotAString(({ value }) => (<Translate>{value.toLowerCase()}</Translate>))
+    ({ columnName, valueType }) =>
+        columnName === 'formType' && valueType === 'CONSTANT',
+    renderNothingWhenValueIsNotAString(({ value }) => (
+        <Translate>{value.toLowerCase()}</Translate>
+    ))
 );

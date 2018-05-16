@@ -3,20 +3,35 @@ import RightSideExpressionField from './validation-rules/RightSideExpressionFiel
 import PeriodTypeDropDown from '../../forms/form-fields/period-type-drop-down';
 
 export default new Map([
-    ['periodType', {
-        component: PeriodTypeDropDown,
-    }],
-    ['importance', {
-        required: true,
-    }],
-    ['leftSide', {
-        component: LeftSideExpressionField,
-    }],
-    ['rightSide', {
-        component: RightSideExpressionField,
-    }],
-    ['organisationUnitLevels', {
-        referenceType: 'organisationUnitLevel',
-        fieldOptions: {},
-    }],
+    [
+        'periodType',
+        {
+            component: PeriodTypeDropDown,
+        },
+    ],
+    [
+        'importance',
+        {
+            required: true,
+        },
+    ],
+    [
+        'leftSide',
+        {
+            component: LeftSideExpressionField,
+        },
+    ],
+    [
+        'rightSide',
+        {
+            component: RightSideExpressionField,
+        },
+    ],
+    [
+        'organisationUnitLevels',
+        {
+            referenceType: 'organisationUnitLevel',
+            fieldOptions: {},
+        },
+    ],
 ]);

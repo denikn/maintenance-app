@@ -41,16 +41,20 @@ DataElement.propTypes = {
 };
 
 const SortableDataElement = SortableElement(DataElement);
-const SortableDataList = SortableContainer(({ dataElements, isSortingIndex }) => <div>
-    { dataElements.map((dataElement, index) => (
-        <SortableDataElement
-            dataElement={dataElement}
-            index={index}
-            isSortingIndex={isSortingIndex}
-            key={`item-${index}`}
-            sortIndex={index}
-        />
-        ))}
-</div>);
+const SortableDataList = SortableContainer(
+    ({ dataElements, isSortingIndex }) => (
+        <div>
+            {dataElements.map((dataElement, index) => (
+                <SortableDataElement
+                    dataElement={dataElement}
+                    index={index}
+                    isSortingIndex={isSortingIndex}
+                    key={`item-${index}`}
+                    sortIndex={index}
+                />
+            ))}
+        </div>
+    )
+);
 
 export default SortableDataList;

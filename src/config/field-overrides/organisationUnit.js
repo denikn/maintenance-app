@@ -13,29 +13,42 @@ export default new Map([
         },
     ],
     [
-        'coordinates', {
+        'coordinates',
+        {
             component: CoordinateField,
             fieldOptions: {},
         },
     ],
     [
-        'openingDate', {
-            validators: [{
-                validator(value, formState) {
-                    return isStartDateBeforeEndDate(value, formState.fields.closedDate.value);
+        'openingDate',
+        {
+            validators: [
+                {
+                    validator(value, formState) {
+                        return isStartDateBeforeEndDate(
+                            value,
+                            formState.fields.closedDate.value
+                        );
+                    },
+                    message: 'closed_date_cannot_be_before_opening_date',
                 },
-                message: 'closed_date_cannot_be_before_opening_date',
-            }],
+            ],
         },
     ],
     [
-        'closedDate', {
-            validators: [{
-                validator(value, formState) {
-                    return isStartDateBeforeEndDate(formState.fields.openingDate.value, value);
+        'closedDate',
+        {
+            validators: [
+                {
+                    validator(value, formState) {
+                        return isStartDateBeforeEndDate(
+                            formState.fields.openingDate.value,
+                            value
+                        );
+                    },
+                    message: 'closed_date_cannot_be_before_opening_date',
                 },
-                message: 'closed_date_cannot_be_before_opening_date',
-            }],
+            ],
         },
     ],
 ]);

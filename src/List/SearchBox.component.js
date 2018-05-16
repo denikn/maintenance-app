@@ -5,14 +5,12 @@ import TextField from 'material-ui/TextField/TextField';
 import { config } from 'd2/lib/d2';
 import { currentSubSection$ } from '../App/appStateStore';
 
-const unsearchableSections = [
-    'organisationUnit',
-];
+const unsearchableSections = ['organisationUnit'];
 
 const SearchBox = React.createClass({
     propTypes: {
         searchObserverHandler: React.PropTypes.func.isRequired,
-        initialValue: React.PropTypes.string
+        initialValue: React.PropTypes.string,
     },
 
     mixins: [ObservedEvents, Translate],
@@ -31,19 +29,27 @@ const SearchBox = React.createClass({
     componentDidMount() {
         const searchObserver = this.events.searchBox
             .debounceTime(400)
-            .map(event => event && event.target && event.target.value ? event.target.value : '')
+            .map(
+                event =>
+                    event && event.target && event.target.value
+                        ? event.target.value
+                        : ''
+            )
             .distinctUntilChanged();
 
         this.props.searchObserverHandler(searchObserver);
 
-        this.subscription = currentSubSection$
-            .subscribe(currentSection => this.setState({
+        this.subscription = currentSubSection$.subscribe(currentSection =>
+            this.setState({
                 showSearchField: !unsearchableSections.includes(currentSection),
-            }));
+            })
+        );
     },
 
     componentWillUnmount() {
-        this.subscription && this.subscription.unsubscribe && this.subscription.unsubscribe();
+        this.subscription &&
+            this.subscription.unsubscribe &&
+            this.subscription.unsubscribe();
     },
 
     render() {
@@ -61,7 +67,9 @@ const SearchBox = React.createClass({
                     fullWidth={false}
                     type="search"
                     onChange={this._onKeyUp}
-                    floatingLabelText={`${this.getTranslation('search_by_name')}`}
+                    floatingLabelText={`${this.getTranslation(
+                        'search_by_name'
+                    )}`}
                 />
             </div>
         ) : null;

@@ -3,7 +3,11 @@ import { identity, noop, getOr, get } from 'lodash/fp';
 import CollapsibleList from './CollapsibleList';
 
 const AttributeSelector = mapProps(({ program, onSelect = noop, ...props }) => {
-    const programAttributeItems = getOr([], 'programTrackedEntityAttributes', program)
+    const programAttributeItems = getOr(
+        [],
+        'programTrackedEntityAttributes',
+        program
+    )
         .map(get('trackedEntityAttribute'))
         .filter(identity) // TODO: Also filter on valueType
         .map(trackedEntityAttribute => ({

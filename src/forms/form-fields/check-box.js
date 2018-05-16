@@ -15,7 +15,7 @@ function createOnClick({ onChange, value }) {
     };
 }
 
-const CheckboxWrap = (props) => {
+const CheckboxWrap = props => {
     // Do not pass the value on to the CheckBox component
     const {
         value,
@@ -50,10 +50,8 @@ const CheckboxWrap = (props) => {
 
 CheckboxWrap.propTypes = {
     onChange: PropTypes.func,
-    labelText: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.object,
-    ]).isRequired,
+    labelText: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+        .isRequired,
     value: PropTypes.oneOfType([
         PropTypes.bool,
         PropTypes.oneOf(['true', 'false']),
@@ -64,6 +62,5 @@ CheckboxWrap.defaultProps = {
     onChange: () => {},
     value: false,
 };
-
 
 export default CheckboxWrap;

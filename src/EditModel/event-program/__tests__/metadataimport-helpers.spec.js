@@ -28,7 +28,8 @@ describe('MetaDataImport helpers', () => {
             },
             typeReports: [
                 {
-                    klass: 'org.hisp.dhis.dataelement.DataElementCategoryOption',
+                    klass:
+                        'org.hisp.dhis.dataelement.DataElementCategoryOption',
                     stats: {
                         created: 1,
                         updated: 0,
@@ -78,7 +79,8 @@ describe('MetaDataImport helpers', () => {
                             uid: 'MslrqljzDcW',
                             errorReports: [
                                 {
-                                    message: 'Missing required property `name`.',
+                                    message:
+                                        'Missing required property `name`.',
                                     mainKlass: 'org.hisp.dhis.program.Program',
                                     errorKlass: 'java.lang.String',
                                     errorProperty: 'name',
@@ -89,7 +91,8 @@ describe('MetaDataImport helpers', () => {
                     ],
                 },
                 {
-                    klass: 'org.hisp.dhis.dataelement.DataElementCategoryOption',
+                    klass:
+                        'org.hisp.dhis.dataelement.DataElementCategoryOption',
                     stats: {
                         created: 0,
                         updated: 0,
@@ -99,26 +102,33 @@ describe('MetaDataImport helpers', () => {
                     },
                     objectReports: [
                         {
-                            klass: 'org.hisp.dhis.dataelement.DataElementCategoryOption',
+                            klass:
+                                'org.hisp.dhis.dataelement.DataElementCategoryOption',
                             index: 0,
                             errorReports: [
                                 {
-                                    message: 'Property `code` with value `2222332` on object 234234 [Jg6u9usyKgl] (DataElementCategoryOption) already exists on object ucZp3aEMfR5.',
-                                    mainKlass: 'org.hisp.dhis.dataelement.DataElementCategoryOption',
+                                    message:
+                                        'Property `code` with value `2222332` on object 234234 [Jg6u9usyKgl] (DataElementCategoryOption) already exists on object ucZp3aEMfR5.',
+                                    mainKlass:
+                                        'org.hisp.dhis.dataelement.DataElementCategoryOption',
                                     mainId: 'ucZp3aEMfR5',
                                     errorProperty: 'code',
                                     errorCode: 'E5003',
                                 },
                                 {
-                                    message: 'Property `name` with value `234234` on object 234234 [Jg6u9usyKgl] (DataElementCategoryOption) already exists on object ucZp3aEMfR5.',
-                                    mainKlass: 'org.hisp.dhis.dataelement.DataElementCategoryOption',
+                                    message:
+                                        'Property `name` with value `234234` on object 234234 [Jg6u9usyKgl] (DataElementCategoryOption) already exists on object ucZp3aEMfR5.',
+                                    mainKlass:
+                                        'org.hisp.dhis.dataelement.DataElementCategoryOption',
                                     mainId: 'ucZp3aEMfR5',
                                     errorProperty: 'name',
                                     errorCode: 'E5003',
                                 },
                                 {
-                                    message: 'Property `shortName` with value `2422` on object 234234 [Jg6u9usyKgl] (DataElementCategoryOption) already exists on object ucZp3aEMfR5.',
-                                    mainKlass: 'org.hisp.dhis.dataelement.DataElementCategoryOption',
+                                    message:
+                                        'Property `shortName` with value `2422` on object 234234 [Jg6u9usyKgl] (DataElementCategoryOption) already exists on object ucZp3aEMfR5.',
+                                    mainKlass:
+                                        'org.hisp.dhis.dataelement.DataElementCategoryOption',
                                     mainId: 'ucZp3aEMfR5',
                                     errorProperty: 'shortName',
                                     errorCode: 'E5003',
@@ -132,88 +142,141 @@ describe('MetaDataImport helpers', () => {
     });
 
     test('should return an object', () => {
-        expect(typeof getImportStatus(successfullImportResponse)).toBe('object');
+        expect(typeof getImportStatus(successfullImportResponse)).toBe(
+            'object'
+        );
     });
 
     test('should retain the original properties on success', () => {
-        expect(getImportStatus(successfullImportResponse).typeReports).toEqual(successfullImportResponse.typeReports);
-        expect(getImportStatus(successfullImportResponse).stats).toEqual(successfullImportResponse.stats);
-        expect(getImportStatus(successfullImportResponse).importParams).toEqual(successfullImportResponse.importParams);
-        expect(getImportStatus(successfullImportResponse).status).toEqual(successfullImportResponse.status);
+        expect(getImportStatus(successfullImportResponse).typeReports).toEqual(
+            successfullImportResponse.typeReports
+        );
+        expect(getImportStatus(successfullImportResponse).stats).toEqual(
+            successfullImportResponse.stats
+        );
+        expect(getImportStatus(successfullImportResponse).importParams).toEqual(
+            successfullImportResponse.importParams
+        );
+        expect(getImportStatus(successfullImportResponse).status).toEqual(
+            successfullImportResponse.status
+        );
     });
 
     test('should retain the original properties on failure', () => {
-        expect(getImportStatus(unsuccessfullImportResponse).typeReports).toEqual(unsuccessfullImportResponse.typeReports);
-        expect(getImportStatus(unsuccessfullImportResponse).stats).toEqual(unsuccessfullImportResponse.stats);
-        expect(getImportStatus(unsuccessfullImportResponse).importParams).toEqual(unsuccessfullImportResponse.importParams);
-        expect(getImportStatus(unsuccessfullImportResponse).status).toEqual(unsuccessfullImportResponse.status);
+        expect(
+            getImportStatus(unsuccessfullImportResponse).typeReports
+        ).toEqual(unsuccessfullImportResponse.typeReports);
+        expect(getImportStatus(unsuccessfullImportResponse).stats).toEqual(
+            unsuccessfullImportResponse.stats
+        );
+        expect(
+            getImportStatus(unsuccessfullImportResponse).importParams
+        ).toEqual(unsuccessfullImportResponse.importParams);
+        expect(getImportStatus(unsuccessfullImportResponse).status).toEqual(
+            unsuccessfullImportResponse.status
+        );
     });
 
     describe('isOk', () => {
         test('should be a function', () => {
-            expect(typeof getImportStatus(successfullImportResponse).isOk).toBe('function');
+            expect(typeof getImportStatus(successfullImportResponse).isOk).toBe(
+                'function'
+            );
         });
 
         test('should return true when the import is successful', () => {
-            expect(getImportStatus(successfullImportResponse).isOk()).toBe(true);
+            expect(getImportStatus(successfullImportResponse).isOk()).toBe(
+                true
+            );
         });
 
         test('should return false when the import errored', () => {
-            expect(getImportStatus(unsuccessfullImportResponse).isOk()).toBe(false);
+            expect(getImportStatus(unsuccessfullImportResponse).isOk()).toBe(
+                false
+            );
         });
     });
 
     describe('typeReports', () => {
         test('should have a type report for each object on success', () => {
-            expect(getImportStatus(successfullImportResponse).typeReports).toHaveLength(1);
+            expect(
+                getImportStatus(successfullImportResponse).typeReports
+            ).toHaveLength(1);
         });
 
         test('should have a type report for each object on failure', () => {
-            expect(getImportStatus(unsuccessfullImportResponse).typeReports).toHaveLength(2);
+            expect(
+                getImportStatus(unsuccessfullImportResponse).typeReports
+            ).toHaveLength(2);
         });
     });
 
     describe('errorsPerObject', () => {
         test('should be an empty array on successful import', () => {
-            expect(getImportStatus(successfullImportResponse).errorsPerObject).toEqual([]);
+            expect(
+                getImportStatus(successfullImportResponse).errorsPerObject
+            ).toEqual([]);
         });
 
         test('should contain an object for each object that has errors', () => {
-            expect(getImportStatus(unsuccessfullImportResponse).errorsPerObject).toHaveLength(2);
+            expect(
+                getImportStatus(unsuccessfullImportResponse).errorsPerObject
+            ).toHaveLength(2);
         });
 
         test('should have the id for the program object', () => {
-            expect(getImportStatus(unsuccessfullImportResponse).errorsPerObject[0].id).toBe('MslrqljzDcW');
+            expect(
+                getImportStatus(unsuccessfullImportResponse).errorsPerObject[0]
+                    .id
+            ).toBe('MslrqljzDcW');
         });
 
         // TODO: The id a categoryOption can not be retrieved in a reliable way
         xit('should have the id for the categoryOption object', () => {
-            expect(getImportStatus(unsuccessfullImportResponse).errorsPerObject[1].id).toBe('Jg6u9usyKgl');
+            expect(
+                getImportStatus(unsuccessfullImportResponse).errorsPerObject[1]
+                    .id
+            ).toBe('Jg6u9usyKgl');
         });
 
         test('should have the errors group by property', () => {
-            expect(getImportStatus(unsuccessfullImportResponse).errorsPerObject[1].errors).toEqual({
-                code: [{
-                    message: 'Property `code` with value `2222332` on object 234234 [Jg6u9usyKgl] (DataElementCategoryOption) already exists on object ucZp3aEMfR5.',
-                    mainKlass: 'org.hisp.dhis.dataelement.DataElementCategoryOption',
-                    mainId: 'ucZp3aEMfR5',
-                    errorProperty: 'code',
-                    errorCode: 'E5003',
-                }],
-                name: [{
-                    message: 'Property `name` with value `234234` on object 234234 [Jg6u9usyKgl] (DataElementCategoryOption) already exists on object ucZp3aEMfR5.',
-                    mainKlass: 'org.hisp.dhis.dataelement.DataElementCategoryOption',
-                    mainId: 'ucZp3aEMfR5',
-                    errorProperty: 'name',
-                    errorCode: 'E5003',
-                }],
-                shortName: [{
-                    message: 'Property `shortName` with value `2422` on object 234234 [Jg6u9usyKgl] (DataElementCategoryOption) already exists on object ucZp3aEMfR5.',
-                    mainKlass: 'org.hisp.dhis.dataelement.DataElementCategoryOption',
-                    mainId: 'ucZp3aEMfR5',
-                    errorProperty: 'shortName',
-                    errorCode: 'E5003',
-                }],
+            expect(
+                getImportStatus(unsuccessfullImportResponse).errorsPerObject[1]
+                    .errors
+            ).toEqual({
+                code: [
+                    {
+                        message:
+                            'Property `code` with value `2222332` on object 234234 [Jg6u9usyKgl] (DataElementCategoryOption) already exists on object ucZp3aEMfR5.',
+                        mainKlass:
+                            'org.hisp.dhis.dataelement.DataElementCategoryOption',
+                        mainId: 'ucZp3aEMfR5',
+                        errorProperty: 'code',
+                        errorCode: 'E5003',
+                    },
+                ],
+                name: [
+                    {
+                        message:
+                            'Property `name` with value `234234` on object 234234 [Jg6u9usyKgl] (DataElementCategoryOption) already exists on object ucZp3aEMfR5.',
+                        mainKlass:
+                            'org.hisp.dhis.dataelement.DataElementCategoryOption',
+                        mainId: 'ucZp3aEMfR5',
+                        errorProperty: 'name',
+                        errorCode: 'E5003',
+                    },
+                ],
+                shortName: [
+                    {
+                        message:
+                            'Property `shortName` with value `2422` on object 234234 [Jg6u9usyKgl] (DataElementCategoryOption) already exists on object ucZp3aEMfR5.',
+                        mainKlass:
+                            'org.hisp.dhis.dataelement.DataElementCategoryOption',
+                        mainId: 'ucZp3aEMfR5',
+                        errorProperty: 'shortName',
+                        errorCode: 'E5003',
+                    },
+                ],
             });
         });
     });

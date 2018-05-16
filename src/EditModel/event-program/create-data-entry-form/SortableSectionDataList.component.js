@@ -53,16 +53,22 @@ SectionDataElement.propTypes = {
 };
 
 const SortableSectionDataElement = SortableElement(SectionDataElement);
-const SortableSectionDataList = SortableContainer(({ sectionDataElements, onDataElementRemoved }) => <div>
-    { sectionDataElements.map((dataElement, index) => (
-        <SortableSectionDataElement
-            first={index === 0}
-            dataElement={dataElement}
-            onRemove={() => { onDataElementRemoved(dataElement.id); }}
-            index={index}
-            key={`item-${index}`}
-        />
-        ))}
-</div>);
+const SortableSectionDataList = SortableContainer(
+    ({ sectionDataElements, onDataElementRemoved }) => (
+        <div>
+            {sectionDataElements.map((dataElement, index) => (
+                <SortableSectionDataElement
+                    first={index === 0}
+                    dataElement={dataElement}
+                    onRemove={() => {
+                        onDataElementRemoved(dataElement.id);
+                    }}
+                    index={index}
+                    key={`item-${index}`}
+                />
+            ))}
+        </div>
+    )
+);
 
 export default SortableSectionDataList;

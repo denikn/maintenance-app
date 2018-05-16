@@ -21,8 +21,15 @@ const styles = {
     },
 };
 
-function ValidationRuleExpressionField({ value, onButtonClick, open, close, onChange, buttonLabel }) {
-    const onSave = (newValue) => {
+function ValidationRuleExpressionField({
+    value,
+    onButtonClick,
+    open,
+    close,
+    onChange,
+    buttonLabel,
+}) {
+    const onSave = newValue => {
         onChange({ target: { value: newValue } });
         close();
     };
@@ -30,7 +37,10 @@ function ValidationRuleExpressionField({ value, onButtonClick, open, close, onCh
     return (
         <div style={styles.field}>
             <Row>
-                <RaisedButton style={styles.expressionButton} onClick={onButtonClick}>
+                <RaisedButton
+                    style={styles.expressionButton}
+                    onClick={onButtonClick}
+                >
                     <Translate>{buttonLabel}</Translate>
                 </RaisedButton>
                 <div style={styles.expressionDescription}>
@@ -54,7 +64,7 @@ const enhance = compose(
     withProps(({ toggleOpen }) => ({
         onButtonClick: () => toggleOpen(true),
         close: () => toggleOpen(false),
-    })),
+    }))
 );
 
 ValidationRuleExpressionField.propTypes = {

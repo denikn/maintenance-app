@@ -24,14 +24,21 @@ function CollapsibleList({ items, label, onItemClick, expanded, setExpanded }) {
 
     const children = items.map((item, index) => (
         <div
-            key={item.value} onClick={() => onItemClick(item.value)}
-            style={index === 0 ? styles.firstCollapsibleListItem : styles.collapsibleListItem}
+            key={item.value}
+            onClick={() => onItemClick(item.value)}
+            style={
+                index === 0
+                    ? styles.firstCollapsibleListItem
+                    : styles.collapsibleListItem
+            }
         >
             {item.label}
         </div>
     ));
 
-    const labelComponent = (<span style={styles.collapsibleListLabel}>{label}</span>);
+    const labelComponent = (
+        <span style={styles.collapsibleListLabel}>{label}</span>
+    );
 
     return (
         <div style={styles.collapsibleListWrap}>

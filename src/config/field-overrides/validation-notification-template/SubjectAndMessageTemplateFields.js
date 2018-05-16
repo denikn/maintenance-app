@@ -35,7 +35,7 @@ export default class SubjectAndMessageTemplateFields extends Component {
     };
 
     setActiveField(field) {
-        return (event) => {
+        return event => {
             this.setState({
                 lastActiveField: field,
                 lastIndex: event.target.selectionEnd,
@@ -43,22 +43,26 @@ export default class SubjectAndMessageTemplateFields extends Component {
         };
     }
 
-
-    insertVariable = (variable) => {
+    insertVariable = variable => {
         const lastIndex = this.state.lastIndex;
-        const currentValue = (this.props.model[this.state.lastActiveField] || '');
+        const currentValue = this.props.model[this.state.lastActiveField] || '';
 
         this.props.onUpdate({
             fieldName: this.state.lastActiveField,
-            value: `${currentValue.slice(0, lastIndex)}${variable}${currentValue.slice(lastIndex)}`,
+            value: `${currentValue.slice(
+                0,
+                lastIndex
+            )}${variable}${currentValue.slice(lastIndex)}`,
         });
-    }
+    };
 
     render() {
         const d2 = this.context.d2;
 
-        const subjectChange = (event, value) => this.props.onUpdate({ fieldName: 'subjectTemplate', value });
-        const messageChange = (event, value) => this.props.onUpdate({ fieldName: 'messageTemplate', value });
+        const subjectChange = (event, value) =>
+            this.props.onUpdate({ fieldName: 'subjectTemplate', value });
+        const messageChange = (event, value) =>
+            this.props.onUpdate({ fieldName: 'messageTemplate', value });
         const messageLabel = d2.i18n.getTranslation('message_template');
 
         return (
@@ -73,7 +77,9 @@ export default class SubjectAndMessageTemplateFields extends Component {
                             <TextField
                                 label="subjectTemplate"
                                 fullWidth
-                                floatingLabelText={d2.i18n.getTranslation('subject_template')}
+                                floatingLabelText={d2.i18n.getTranslation(
+                                    'subject_template'
+                                )}
                                 onBlur={this.setActiveField('subjectTemplate')}
                                 value={this.props.model.subjectTemplate || ''}
                                 onChange={subjectChange}
@@ -87,7 +93,9 @@ export default class SubjectAndMessageTemplateFields extends Component {
                                 fullWidth
                                 errorText={this.props.errorText}
                                 required={this.props.isRequired}
-                                floatingLabelText={`${messageLabel} ${this.props.isRequired ? '(*)' : ''}`}
+                                floatingLabelText={`${messageLabel} ${
+                                    this.props.isRequired ? '(*)' : ''
+                                }`}
                                 onBlur={this.setActiveField('messageTemplate')}
                                 value={this.props.model.messageTemplate || ''}
                                 onChange={messageChange}
@@ -95,7 +103,10 @@ export default class SubjectAndMessageTemplateFields extends Component {
                             />
                         </div>
                     </Column>
-                    <VariableList onItemSelected={this.insertVariable} variableTypes={this.props.variableTypes} />
+                    <VariableList
+                        onItemSelected={this.insertVariable}
+                        variableTypes={this.props.variableTypes}
+                    />
                 </Row>
                 <Divider style={styles.divider} />
             </div>

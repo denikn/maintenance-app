@@ -29,9 +29,12 @@ function getOwnedPropertyJSON(model) {
     const ownedProperties = this.getOwnedPropertyNames();
     const collectionProperties = model.getCollectionChildrenPropertyNames();
 
-    Object.keys(this.modelValidations).forEach((propertyName) => {
+    Object.keys(this.modelValidations).forEach(propertyName => {
         if (ownedProperties.indexOf(propertyName) >= 0) {
-            if (model.dataValues[propertyName] !== undefined && model.dataValues[propertyName] !== null) {
+            if (
+                model.dataValues[propertyName] !== undefined &&
+                model.dataValues[propertyName] !== null
+            ) {
                 // Handle collections and plain values different
                 if (collectionProperties.indexOf(propertyName) === -1) {
                     objectToSave[propertyName] = model.dataValues[propertyName];
@@ -39,20 +42,28 @@ function getOwnedPropertyJSON(model) {
                     // compulsoryDataElementOperands is not an array of models.
                     // TODO: This is not the proper way to do this. We should check if the array contains Models
                     if (propertyName === 'compulsoryDataElementOperands') {
-                        objectToSave[propertyName] = model.dataValues[propertyName];
+                        objectToSave[propertyName] =
+                            model.dataValues[propertyName];
                         return;
                     }
 
                     // Transform an object collection to an array of objects with id properties
-                    objectToSave[propertyName] = Array
-                        .from(model.dataValues[propertyName].values())
+                    objectToSave[propertyName] = Array.from(
+                        model.dataValues[propertyName].values()
+                    )
                         .filter(value => value.id)
-                        .map((childModel) => {
+                        .map(childModel => {
                             // Legends can be saved as part of the LegendSet object.
                             // To make this work properly we will return all of the properties for the items in the collection
                             // instead of just the `id` fields
-                            if (model.modelDefinition && model.modelDefinition.name === 'legendSet') {
-                                return getOwnedPropertyJSON.call(childModel.modelDefinition, childModel);
+                            if (
+                                model.modelDefinition &&
+                                model.modelDefinition.name === 'legendSet'
+                            ) {
+                                return getOwnedPropertyJSON.call(
+                                    childModel.modelDefinition,
+                                    childModel
+                                );
                             }
 
                             // For any other types we return an object with just an id
@@ -88,7 +99,12 @@ class CompulsoryDataElementOperandDialog extends Component {
             itemsSelectedStore.setState(
                 props.model.compulsoryDataElementOperands
                     .filter(deo => deo.dataElement && deo.categoryOptionCombo)
-                    .map(deo => `${deo.dataElement.id}.${deo.categoryOptionCombo.id}`)
+                    .map(
+                        deo =>
+                            `${deo.dataElement.id}.${
+                                deo.categoryOptionCombo.id
+                            }`
+                    )
             );
         }
     }
@@ -101,20 +117,28 @@ class CompulsoryDataElementOperandDialog extends Component {
             itemsAvailableStore.setState(
                 props.dataElementOperands.map(operand => ({
                     text: operand.displayName,
-                    value: [operand.dataElementId, operand.optionComboId].join('.'),
+                    value: [operand.dataElementId, operand.optionComboId].join(
+                        '.'
+                    ),
                 }))
             );
 
             itemsSelectedStore.setState(
                 props.model.compulsoryDataElementOperands
                     .filter(deo => deo.dataElement && deo.categoryOptionCombo)
-                    .map(deo => [deo.dataElement.id, deo.categoryOptionCombo.id].join('.'))
+                    .map(deo =>
+                        [deo.dataElement.id, deo.categoryOptionCombo.id].join(
+                            '.'
+                        )
+                    )
             );
         }
     }
 
     render() {
-        const saveButtonText = this.state.isSaving ? this.i18n.getTranslation('saving') : this.i18n.getTranslation('save');
+        const saveButtonText = this.state.isSaving
+            ? this.i18n.getTranslation('saving')
+            : this.i18n.getTranslation('save');
         const dialogActions = [
             <FlatButton
                 disabled={this.state.isSaving}
@@ -141,7 +165,12 @@ class CompulsoryDataElementOperandDialog extends Component {
                 contentStyle={{ maxWidth: 'none', width: '95%' }}
             >
                 <div style={{ marginBottom: '3.5rem' }}>
-                    <Heading>{this.i18n.getTranslation('edit_compulsory_data_elements')} - {this.props.model && this.props.model.displayName}</Heading>
+                    <Heading>
+                        {this.i18n.getTranslation(
+                            'edit_compulsory_data_elements'
+                        )}{' '}
+                        - {this.props.model && this.props.model.displayName}
+                    </Heading>
                     <TextField
                         floatingLabelText={this.i18n.getTranslation('filter')}
                         style={{ width: '100%' }}
@@ -160,11 +189,11 @@ class CompulsoryDataElementOperandDialog extends Component {
         );
     }
 
-    _changeFilter = (event) => {
+    _changeFilter = event => {
         this.setState({ filterText: event.target.value });
     };
 
-    _assignItems = async (selectedItems) => {
+    _assignItems = async selectedItems => {
         const newState = itemsSelectedStore.getState().concat(selectedItems);
 
         itemsSelectedStore.setState(newState);
@@ -172,8 +201,9 @@ class CompulsoryDataElementOperandDialog extends Component {
         return Promise.resolve(true);
     };
 
-    _removeItems = (selectedItems) => {
-        const newState = itemsSelectedStore.getState()
+    _removeItems = selectedItems => {
+        const newState = itemsSelectedStore
+            .getState()
             .filter(item => selectedItems.indexOf(item) === -1);
 
         itemsSelectedStore.setState(newState);
@@ -182,7 +212,8 @@ class CompulsoryDataElementOperandDialog extends Component {
     };
 
     _saveCollection = () => {
-        const collectionToSave = itemsSelectedStore.getState()
+        const collectionToSave = itemsSelectedStore
+            .getState()
             .map(combinationId => combinationId.split('.'))
             .filter(ids => ids.length === 2)
             .map(([dataElementId, categoryOptionComboId]) => ({
@@ -198,12 +229,15 @@ class CompulsoryDataElementOperandDialog extends Component {
             isSaving: true,
         });
 
-        const payload = getOwnedPropertyJSON.bind(this.props.model.modelDefinition)(this.props.model);
+        const payload = getOwnedPropertyJSON.bind(
+            this.props.model.modelDefinition
+        )(this.props.model);
         const d2 = this.context.d2;
 
         // TODO: Should be done propery without modifying props and preferably without saving the whole model
         this.props.model.compulsoryDataElementOperands = collectionToSave;
-        this.props.model.save()
+        this.props.model
+            .save()
             .then(() => {
                 snackActions.show({
                     message: 'saved_compulsory_data_elements',

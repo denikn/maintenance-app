@@ -18,17 +18,24 @@ import componentFromStream from 'recompose/componentFromStream';
 import DataSetElementCategoryComboSelectionDialog from './DataSetElementCategoryComboSelectionDialog.component';
 
 function getCategoryComboNameForDataElement(dses, de) {
-    const dataSetElementForDataElement = Array
-        .from(dses || [])
-        .find(dse => dse.dataElement && dse.dataElement.id === de.id);
+    const dataSetElementForDataElement = Array.from(dses || []).find(
+        dse => dse.dataElement && dse.dataElement.id === de.id
+    );
 
-    if (dataSetElementForDataElement && dataSetElementForDataElement.categoryCombo && dataSetElementForDataElement.categoryCombo.id !== de.categoryCombo.id) {
+    if (
+        dataSetElementForDataElement &&
+        dataSetElementForDataElement.categoryCombo &&
+        dataSetElementForDataElement.categoryCombo.id !== de.categoryCombo.id
+    ) {
         return dataSetElementForDataElement.categoryCombo.displayName;
     }
 }
 
 function getDataElementNameForGroupEditor(dataSetElements, dataElement) {
-    const categoryComboName = getCategoryComboNameForDataElement(dataSetElements, dataElement);
+    const categoryComboName = getCategoryComboNameForDataElement(
+        dataSetElements,
+        dataElement
+    );
 
     if (categoryComboName) {
         return `${dataElement.displayName} (${categoryComboName})`;
@@ -69,17 +76,26 @@ class DataSetElementField extends Component {
 
         // TODO: Should update this with the assigned category combo name
         this.state.itemStore.setState(
-            props.dataElements
-                .map(dataElement => ({
-                    text: getDataElementNameForGroupEditor(props.dataSet.dataSetElements, dataElement),
-                    value: dataElement.id,
-                }))
+            props.dataElements.map(dataElement => ({
+                text: getDataElementNameForGroupEditor(
+                    props.dataSet.dataSetElements,
+                    dataElement
+                ),
+                value: dataElement.id,
+            }))
         );
         this.state.assignedItemStore.setState(
             Array.from(props.dataSet.dataSetElements || [])
                 .filter(dse => dse.dataElement)
-                .sort((left, right) => ((left.dataElement && left.dataElement.displayName || '').localeCompare(right.dataElement && right.dataElement.displayName)))
-                .map(dse => dse.dataElement.id),
+                .sort((left, right) =>
+                    (
+                        (left.dataElement && left.dataElement.displayName) ||
+                        ''
+                    ).localeCompare(
+                        right.dataElement && right.dataElement.displayName
+                    )
+                )
+                .map(dse => dse.dataElement.id)
         );
     }
 
@@ -89,17 +105,26 @@ class DataSetElementField extends Component {
 
     componentWillReceiveProps(props) {
         this.state.itemStore.setState(
-            props.dataElements
-                .map(dataElement => ({
-                    text: getDataElementNameForGroupEditor(props.dataSet.dataSetElements, dataElement),
-                    value: dataElement.id,
-                }))
+            props.dataElements.map(dataElement => ({
+                text: getDataElementNameForGroupEditor(
+                    props.dataSet.dataSetElements,
+                    dataElement
+                ),
+                value: dataElement.id,
+            }))
         );
 
         this.state.assignedItemStore.setState(
             Array.from(props.dataSet.dataSetElements || [])
                 .filter(dse => dse.dataElement)
-                .sort((left, right) => ((left.dataElement && left.dataElement.displayName || '').localeCompare(right.dataElement && right.dataElement.displayName)))
+                .sort((left, right) =>
+                    (
+                        (left.dataElement && left.dataElement.displayName) ||
+                        ''
+                    ).localeCompare(
+                        right.dataElement && right.dataElement.displayName
+                    )
+                )
                 .map(dse => dse.dataElement.id)
         );
     }
@@ -108,24 +133,31 @@ class DataSetElementField extends Component {
         this.setState({
             filterText: value,
         });
-    }
+    };
 
     updateCategoryCombosForDataSetElements() {
         // Give all the dataSetElements that do not have a category combo assign the dataElement's category combo.
         // This is required due to the API giving dataSetElements that do not provide a categoryCombo the `default` categoryCombo.
-        Array.from(this.props.dataSet.dataSetElements || [])
-            .forEach((dataSetElement) => {
-                const isDataSetElementDoesNotHaveCategoryCombo = dataSetElement.dataElement && dataSetElement.dataElement.categoryCombo && !dataSetElement.categoryCombo;
+        Array.from(this.props.dataSet.dataSetElements || []).forEach(
+            dataSetElement => {
+                const isDataSetElementDoesNotHaveCategoryCombo =
+                    dataSetElement.dataElement &&
+                    dataSetElement.dataElement.categoryCombo &&
+                    !dataSetElement.categoryCombo;
 
                 if (isDataSetElementDoesNotHaveCategoryCombo) {
-                    dataSetElement.categoryCombo = dataSetElement.dataElement.categoryCombo;
+                    dataSetElement.categoryCombo =
+                        dataSetElement.dataElement.categoryCombo;
                 }
-            });
+            }
+        );
     }
 
-    _assignItems = (items) => {
+    _assignItems = items => {
         const updateGroupEditorState = () => {
-            const uniqueItems = new Set(this.state.assignedItemStore.getState().concat(items));
+            const uniqueItems = new Set(
+                this.state.assignedItemStore.getState().concat(items)
+            );
 
             this.state.assignedItemStore.setState(Array.from(uniqueItems));
 
@@ -133,11 +165,16 @@ class DataSetElementField extends Component {
             this.updateCategoryCombosForDataSetElements();
         };
 
-        const generateUids = numberofUids => range(0, numberofUids, 1).map(() => generateUid());
+        const generateUids = numberofUids =>
+            range(0, numberofUids, 1).map(() => generateUid());
         const codes = generateUids(items.length);
 
         items
-            .map(dataElementId => this.props.dataElements.find(dataElement => dataElement.id === dataElementId))
+            .map(dataElementId =>
+                this.props.dataElements.find(
+                    dataElement => dataElement.id === dataElementId
+                )
+            )
             .filter(de => de)
             .forEach((dataElement, index) => {
                 const dataSetElement = {
@@ -148,17 +185,21 @@ class DataSetElementField extends Component {
                     },
                 };
 
-                this.props.dataSet.dataSetElements = [].concat(this.props.dataSet.dataSetElements || []).concat([dataSetElement]);
+                this.props.dataSet.dataSetElements = []
+                    .concat(this.props.dataSet.dataSetElements || [])
+                    .concat([dataSetElement]);
             });
 
         updateGroupEditorState();
 
         return Promise.resolve();
-    }
+    };
 
-    _removeItems = (items) => {
+    _removeItems = items => {
         const updateGroupEditorStore = () => {
-            const uniqueItems = new Set(this.state.assignedItemStore.getState());
+            const uniqueItems = new Set(
+                this.state.assignedItemStore.getState()
+            );
 
             items.forEach(item => uniqueItems.delete(item));
 
@@ -169,22 +210,37 @@ class DataSetElementField extends Component {
 
         return Promise.resolve(true)
             .then(() => {
-                const dataSetElementsThatAreNotInItemsToRemove = (itemsToRemove = []) => ({ dataElement = {} }) => get('id', dataElement) && !itemsToRemove.includes(get('id', dataElement));
+                const dataSetElementsThatAreNotInItemsToRemove = (
+                    itemsToRemove = []
+                ) => ({ dataElement = {} }) =>
+                    get('id', dataElement) &&
+                    !itemsToRemove.includes(get('id', dataElement));
 
                 // Remove the items from the modelCollection
-                this.props.dataSet.dataSetElements = Array.from(this.props.dataSet.dataSetElements)
+                this.props.dataSet.dataSetElements = Array.from(
+                    this.props.dataSet.dataSetElements
+                )
                     // Only keep dataSetElements that do not exist in the `items` collection
                     .filter(dataSetElementsThatAreNotInItemsToRemove(items));
             })
             .then(updateGroupEditorStore)
             .catch(e => log.error(e));
-    }
+    };
 
-    _updateCategoryComboForDataSetElement = (selectedDataSetElement, categoryCombo) => {
+    _updateCategoryComboForDataSetElement = (
+        selectedDataSetElement,
+        categoryCombo
+    ) => {
         const dataSetElements = this.props.dataSet.dataSetElements;
 
-        if (dataSetElements.some(dataSetElement => dataSetElement === selectedDataSetElement)) {
-            const dataSetElement = dataSetElements.find(dataSetElement => dataSetElement === selectedDataSetElement);
+        if (
+            dataSetElements.some(
+                dataSetElement => dataSetElement === selectedDataSetElement
+            )
+        ) {
+            const dataSetElement = dataSetElements.find(
+                dataSetElement => dataSetElement === selectedDataSetElement
+            );
 
             dataSetElement.categoryCombo = categoryCombo;
 
@@ -194,38 +250,44 @@ class DataSetElementField extends Component {
                 },
             });
         }
-    }
+    };
 
-    updateForm = (newAssignedItems) => {
-        this.state.assignedItemStore.setState(uniq([].concat(newAssignedItems)));
+    updateForm = newAssignedItems => {
+        this.state.assignedItemStore.setState(
+            uniq([].concat(newAssignedItems))
+        );
 
         this.props.onChange({
             target: {
                 value: this.props.dataSet.dataSetElements,
             },
         });
-    }
+    };
 
     render() {
-        const {
-            categoryCombos,
-            dataSet,
-        } = this.props;
+        const { categoryCombos, dataSet } = this.props;
 
         return (
             <div style={styles.fieldWrap}>
                 <label style={styles.label}>{this.props.labelText}</label>
-                <Row flexValue="0 0 auto" style={{ justifyContent: 'space-between' }}>
+                <Row
+                    flexValue="0 0 auto"
+                    style={{ justifyContent: 'space-between' }}
+                >
                     <TextField
                         value={this.state.filterText}
                         onChange={this.setFilterText}
                         fullWidth
-                        hintText={this.context.d2.i18n.getTranslation('search_available_selected_items')}
+                        hintText={this.context.d2.i18n.getTranslation(
+                            'search_available_selected_items'
+                        )}
                     />
                     <DataSetElementCategoryComboSelectionDialog
                         dataSetElements={dataSet.dataSetElements}
                         categoryCombos={categoryCombos}
-                        onCategoryComboSelected={this._updateCategoryComboForDataSetElement}
+                        onCategoryComboSelected={
+                            this._updateCategoryComboForDataSetElement
+                        }
                     />
                 </Row>
                 <GroupEditor
@@ -262,28 +324,28 @@ async function dataSetElementFieldData() {
 }
 
 const metadata$ = Store.create();
-const loadMetaDataForDataSetElementField = () => dataSetElementFieldData().then(metadata => metadata$.setState(metadata));
+const loadMetaDataForDataSetElementField = () =>
+    dataSetElementFieldData().then(metadata => metadata$.setState(metadata));
 
-const enhancedDataElementField$ = props$ => Observable
-    .combineLatest(
+const enhancedDataElementField$ = props$ =>
+    Observable.combineLatest(
         props$,
-        metadata$
-            .startWith({ dataElements: [], categoryCombos: [] }),
+        metadata$.startWith({ dataElements: [], categoryCombos: [] }),
         (props, metadata) => ({
             ...metadata,
             ...props,
         })
     )
-    .map(({ model, dataElements, categoryCombos, ...props }) => (
-        <DataSetElementField
-            {...props}
-            dataSet={model}
-            dataElements={dataElements}
-            categoryCombos={categoryCombos}
-            onChange={props.onChange}
-            loadMetaData={loadMetaDataForDataSetElementField}
-        />
-    ))
-    .startWith(<LinearProgress />);
+        .map(({ model, dataElements, categoryCombos, ...props }) => (
+            <DataSetElementField
+                {...props}
+                dataSet={model}
+                dataElements={dataElements}
+                categoryCombos={categoryCombos}
+                onChange={props.onChange}
+                loadMetaData={loadMetaDataForDataSetElementField}
+            />
+        ))
+        .startWith(<LinearProgress />);
 
 export default componentFromStream(enhancedDataElementField$);

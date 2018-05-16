@@ -65,13 +65,13 @@ class TrackerNotificationAddButton extends React.Component {
                 onChange={this.handleOpen}
             >
                 <BubbleList>
-                    {this.state.items.map((item, index) =>
+                    {this.state.items.map((item, index) => (
                         <BubbleListItem
                             key={item.id}
                             {...item}
                             onClick={this.handleItemClick.bind(this, item.id)}
                         />
-                    )}
+                    ))}
                 </BubbleList>
             </SpeedDial>
         );

@@ -20,18 +20,19 @@ global.Headers = function Headers(headers) {
         },
         delete(key) {
             delete this[key];
-        }
+        },
     };
 
     return Object.assign(h, headers);
 };
 
 function getConfig() {
-    const dhisConfigPath = process.env.DHIS2_HOME && `${process.env.DHIS2_HOME}/config`;
+    const dhisConfigPath =
+        process.env.DHIS2_HOME && `${process.env.DHIS2_HOME}/config`;
     return require(dhisConfigPath);
 }
 
-const initD2Api = memoize(async function () {
+const initD2Api = memoize(async function() {
     const config = getConfig();
 
     const initOptions = {
@@ -48,14 +49,18 @@ const initD2Api = memoize(async function () {
 
 function saveFixture(url, response) {
     return new Promise((resolve, reject) => {
-        fs.writeFile(`${__dirname}/fixtures/${url}.json`, JSON.stringify(response, undefined, 2), function(err) {
-            if(err) {
-                return reject(err);
-            }
+        fs.writeFile(
+            `${__dirname}/fixtures/${url}.json`,
+            JSON.stringify(response, undefined, 2),
+            function(err) {
+                if (err) {
+                    return reject(err);
+                }
 
-            console.log(`Fixture (${url}) updated`);
-            resolve();
-        });
+                console.log(`Fixture (${url}) updated`);
+                resolve();
+            }
+        );
     });
 }
 
@@ -66,7 +71,7 @@ const getFixtureFromTheApi = curry((url, api) => {
 function createFixtureFromApi(url) {
     return initD2Api()
         .then(getFixtureFromTheApi(url))
-        .then((spread(saveFixture)))
+        .then(spread(saveFixture))
         .catch(console.error.bind(console));
 }
 
@@ -81,7 +86,10 @@ function getFixturePaths(rootPath = __dirname) {
     });
 }
 
-const getApiPathFromFixturePath = compose(replace('fixtures/', ''), replace('.json', ''));
+const getApiPathFromFixturePath = compose(
+    replace('fixtures/', ''),
+    replace('.json', '')
+);
 
 function updateFixturesForFilePaths(files) {
     return Promise.all(map(createFixtureFromApi, files));

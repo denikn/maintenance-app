@@ -6,14 +6,17 @@ import DropDown from '../../../forms/form-fields/drop-down';
 import actions from '../../../EditModel/objectActions';
 
 const isUniqueInSystem = trackedEntityAttribute =>
-    (trackedEntityAttribute.orgunitScope === false || trackedEntityAttribute.orgunitScope === undefined) &&
-    (trackedEntityAttribute.programScope === false || trackedEntityAttribute.programScope === undefined);
+    (trackedEntityAttribute.orgunitScope === false ||
+        trackedEntityAttribute.orgunitScope === undefined) &&
+    (trackedEntityAttribute.programScope === false ||
+        trackedEntityAttribute.programScope === undefined);
 
 const isUniqueInOrgUnit = trackedEntityAttribute =>
     trackedEntityAttribute.orgunitScope === true &&
-    (trackedEntityAttribute.programScope === false || trackedEntityAttribute.programScope === undefined);
+    (trackedEntityAttribute.programScope === false ||
+        trackedEntityAttribute.programScope === undefined);
 
-const getUniqueInDropDownValueFromTrackedEntityAttribute = (trackedEntityAttribute) => {
+const getUniqueInDropDownValueFromTrackedEntityAttribute = trackedEntityAttribute => {
     if (isUniqueInSystem(trackedEntityAttribute)) {
         return 'entire_system';
     }
@@ -23,7 +26,7 @@ const getUniqueInDropDownValueFromTrackedEntityAttribute = (trackedEntityAttribu
     }
 };
 
-const OrgUnitScopeDropDown = (props) => {
+const OrgUnitScopeDropDown = props => {
     const uniqueWithinOption = [
         {
             text: 'organisation_unit',
@@ -40,8 +43,10 @@ const OrgUnitScopeDropDown = (props) => {
             options={uniqueWithinOption}
             translateOptions
             isRequired
-            value={getUniqueInDropDownValueFromTrackedEntityAttribute(props.model)}
-            onChange={compose((value) => {
+            value={getUniqueInDropDownValueFromTrackedEntityAttribute(
+                props.model
+            )}
+            onChange={compose(value => {
                 if (value === 'organisation_unit') {
                     actions.update({ fieldName: 'orgunitScope', value: true });
                 }

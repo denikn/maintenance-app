@@ -14,9 +14,12 @@ function getLoadingdataElement() {
 }
 
 function findValue(optionList, model) {
-    return optionList
-        .map(option => option.value)
-        .find(option => Array.from(model.dataElementGroups.values()).map(dataElementGroup => dataElementGroup.id).indexOf(option) !== -1);
+    return optionList.map(option => option.value).find(
+        option =>
+            Array.from(model.dataElementGroups.values())
+                .map(dataElementGroup => dataElementGroup.id)
+                .indexOf(option) !== -1
+    );
 }
 
 export default React.createClass({
@@ -38,13 +41,17 @@ export default React.createClass({
 
     componentDidMount() {
         getInstance()
-            .then(d2 => d2.Api.getApi().get('dataElementGroupSets', {
-                fields: 'id,displayName,dataElementGroups[id,displayName]',
-                filter: ['compulsory:eq:true'],
-                paging: false,
-            }))
+            .then(d2 =>
+                d2.Api.getApi().get('dataElementGroupSets', {
+                    fields: 'id,displayName,dataElementGroups[id,displayName]',
+                    filter: ['compulsory:eq:true'],
+                    paging: false,
+                })
+            )
             .then(response => response.dataElementGroupSets)
-            .then(dataElementGroupSets => this.setState({ dataElementGroupSets }));
+            .then(dataElementGroupSets =>
+                this.setState({ dataElementGroupSets })
+            );
 
         this.subscription = store.subscribe(() => this.forceUpdate());
     },
@@ -60,8 +67,18 @@ export default React.createClass({
         this.props.source.dirty = true;
 
         store.setState({
-            dataElementGroupValues: Object.assign({}, store.state.dataElementGroupValues, { [dataElementGroupSetId]: event.target.value ? event.target.value : null }),
-            remove: Array.from((new Set(store.state.remove.concat([oldValue])).values())),
+            dataElementGroupValues: Object.assign(
+                {},
+                store.state.dataElementGroupValues,
+                {
+                    [dataElementGroupSetId]: event.target.value
+                        ? event.target.value
+                        : null,
+                }
+            ),
+            remove: Array.from(
+                new Set(store.state.remove.concat([oldValue])).values()
+            ),
         });
     },
 
@@ -72,13 +89,22 @@ export default React.createClass({
 
         return (
             <div>
-                {this.state.dataElementGroupSets.map((dataElementGroupSet) => {
-                    const optionList = dataElementGroupSet.dataElementGroups.map(ig => ({
-                        value: ig.id,
-                        text: ig.displayName,
-                    }));
+                {this.state.dataElementGroupSets.map(dataElementGroupSet => {
+                    const optionList = dataElementGroupSet.dataElementGroups.map(
+                        ig => ({
+                            value: ig.id,
+                            text: ig.displayName,
+                        })
+                    );
 
-                    const value = Object.prototype.hasOwnProperty.call(store.state.dataElementGroupValues, dataElementGroupSet.id) ? store.state.dataElementGroupValues[dataElementGroupSet.id] : findValue(optionList, this.props.source);
+                    const value = Object.prototype.hasOwnProperty.call(
+                        store.state.dataElementGroupValues,
+                        dataElementGroupSet.id
+                    )
+                        ? store.state.dataElementGroupValues[
+                              dataElementGroupSet.id
+                          ]
+                        : findValue(optionList, this.props.source);
 
                     return (
                         <div key={dataElementGroupSet.id}>
@@ -87,7 +113,11 @@ export default React.createClass({
                                 translateLabel={false}
                                 options={optionList}
                                 value={value}
-                                onChange={this._updateGroupStatus.bind(this, dataElementGroupSet.id, findValue(optionList, this.props.source))}
+                                onChange={this._updateGroupStatus.bind(
+                                    this,
+                                    dataElementGroupSet.id,
+                                    findValue(optionList, this.props.source)
+                                )}
                                 fullWidth
                             />
                         </div>

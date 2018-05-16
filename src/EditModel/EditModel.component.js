@@ -14,8 +14,16 @@ export default function EditModel(props) {
         <Paper>
             <EditModelForm
                 {...props}
-                onCancel={() => goToAndScrollUp(`/list/${props.groupName}/${props.modelType}`)}
-                onSaveSuccess={() => goToAndScrollUp(`/list/${props.groupName}/${props.modelType}`)}
+                onCancel={() =>
+                    goToAndScrollUp(
+                        `/list/${props.groupName}/${props.modelType}`
+                    )
+                }
+                onSaveSuccess={() =>
+                    goToAndScrollUp(
+                        `/list/${props.groupName}/${props.modelType}`
+                    )
+                }
                 onSaveError={errorMessage => onSaveError(errorMessage, props)}
             />
         </Paper>

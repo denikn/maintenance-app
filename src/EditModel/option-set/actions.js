@@ -7,35 +7,41 @@ import modelToEditStore from '../modelToEditStore';
 import snackActions from '../../Snackbar/snack.actions';
 import { isAttribute } from '../formHelpers';
 
-const actions = Action.createActionsFromNames(['saveOption', 'setActiveModel', 'closeOptionDialog', 'getOptionsFor', 'deleteOption', 'updateModel'], 'optionSet');
+const actions = Action.createActionsFromNames(
+    [
+        'saveOption',
+        'setActiveModel',
+        'closeOptionDialog',
+        'getOptionsFor',
+        'deleteOption',
+        'updateModel',
+    ],
+    'optionSet'
+);
 
 function processResponse(options) {
     if (!options.pager.hasNextPage() && !options.pager.hasPreviousPage()) {
-        return modelToEditStore
-            .take(1)
-            .subscribe((model) => {
-                const optionsInOrder = model.options
-                    .toArray()
-                    .map(({ id }) => options.get(id))
-                    .filter(option => option);
+        return modelToEditStore.take(1).subscribe(model => {
+            const optionsInOrder = model.options
+                .toArray()
+                .map(({ id }) => options.get(id))
+                .filter(option => option);
 
-                optionsForOptionSetStore.setState({
-                    onePage: true,
-                    isLoading: false,
-                    options: optionsInOrder,
-                });
+            optionsForOptionSetStore.setState({
+                onePage: true,
+                isLoading: false,
+                options: optionsInOrder,
             });
+        });
     }
 
     const state = {
         options: options.toArray(),
         getNextPage: () => {
-            options.pager.getNextPage()
-                .then(processResponse);
+            options.pager.getNextPage().then(processResponse);
         },
         getPreviousPage: () => {
-            options.pager.getPreviousPage()
-                .then(processResponse);
+            options.pager.getPreviousPage().then(processResponse);
         },
         pager: options.pager,
         onePage: false,
@@ -52,7 +58,11 @@ actions.updateModel.subscribe(({ data: [modelToEdit, field, value] }) => {
 
     if (isAttribute(model, { name: field })) {
         modelToEdit.attributes[field] = value;
-        log.debug(`Value for custom attribute '${field}' is now: ${modelToEdit.attributes[field]}`);
+        log.debug(
+            `Value for custom attribute '${field}' is now: ${
+                modelToEdit.attributes[field]
+            }`
+        );
     } else {
         model[field] = value;
         log.debug(`Value for '${field}' is now: ${modelToEdit[field]}`);
@@ -80,11 +90,12 @@ actions.setActiveModel.subscribe(async ({ data: model }) => {
     });
 });
 
-actions.saveOption
-    .subscribe(({ data: [model, parentModel], complete, error }) => {
+actions.saveOption.subscribe(
+    ({ data: [model, parentModel], complete, error }) => {
         const isAdd = !model.id;
 
-        model.save()
+        model
+            .save()
             .then(() => {
                 if (isAdd) {
                     // TODO: Use collection patching to solve this.
@@ -94,14 +105,26 @@ actions.saveOption
                 return true;
             })
             .then(complete)
-            .catch((response) => {
-                if (response.response && response.response.errorReports && response.response.errorReports.length && response.response.errorReports[0].message) {
-                    return error({ message: response.response.errorReports[0].message, translate: false });
+            .catch(response => {
+                if (
+                    response.response &&
+                    response.response.errorReports &&
+                    response.response.errorReports.length &&
+                    response.response.errorReports[0].message
+                ) {
+                    return error({
+                        message: response.response.errorReports[0].message,
+                        translate: false,
+                    });
                 }
 
-                return error({ message: 'option_failed_to_save', translate: true });
+                return error({
+                    message: 'option_failed_to_save',
+                    translate: true,
+                });
             });
-    });
+    }
+);
 
 actions.getOptionsFor.subscribe(async ({ data: model, complete }) => {
     optionsForOptionSetStore.setState({
@@ -123,31 +146,48 @@ actions.closeOptionDialog.subscribe(() => {
     });
 });
 
-actions.deleteOption.subscribe(async ({ data: [modelToDelete, modelParent], complete, error }) => {
-    const d2 = await getInstance();
-    const api = d2.Api.getApi();
+actions.deleteOption.subscribe(
+    async ({ data: [modelToDelete, modelParent], complete, error }) => {
+        const d2 = await getInstance();
+        const api = d2.Api.getApi();
 
-    if (!modelParent.id && modelToDelete.id) {
-        return error('unable_to_delete_due_to_missing_id');
+        if (!modelParent.id && modelToDelete.id) {
+            return error('unable_to_delete_due_to_missing_id');
+        }
+
+        const deleteMessage = d2.i18n.getTranslation(
+            'option_$$name$$_deleted',
+            {
+                name: modelToDelete.name,
+            }
+        );
+
+        return api
+            .delete(
+                `${modelParent.modelDefinition.apiEndpoint}/${
+                    modelParent.id
+                }/options/${modelToDelete.id}`
+            )
+            .then(() => modelToDelete.delete())
+            .then(() => snackActions.show({ message: deleteMessage }))
+            .then(() => actions.getOptionsFor(modelParent))
+            .then(() => modelParent.options.delete(modelToDelete.id))
+            .then(complete)
+            .catch(error);
     }
-
-    const deleteMessage = d2.i18n.getTranslation('option_$$name$$_deleted', { name: modelToDelete.name });
-
-    return api.delete(`${modelParent.modelDefinition.apiEndpoint}/${modelParent.id}/options/${modelToDelete.id}`)
-        .then(() => modelToDelete.delete())
-        .then(() => snackActions.show({ message: deleteMessage }))
-        .then(() => actions.getOptionsFor(modelParent))
-        .then(() => modelParent.options.delete(modelToDelete.id))
-        .then(complete)
-        .catch(error);
-});
+);
 
 export async function loadOptionsForOptionSet(optionSetId, paging) {
     const d2 = await getInstance();
 
     return d2.models.option
-        .filter().on('optionSet.id').equals(optionSetId)
-        .list({ fields: ':all,attributeValues[:owner,attribute[id,name]', paging });
+        .filter()
+        .on('optionSet.id')
+        .equals(optionSetId)
+        .list({
+            fields: ':all,attributeValues[:owner,attribute[id,name]',
+            paging,
+        });
 }
 
 export default actions;

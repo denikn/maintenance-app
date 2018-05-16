@@ -12,19 +12,20 @@ import PeriodTypeDropDown from '../../forms/form-fields/period-type-drop-down';
 
 const expressionStatusStore = Store.create();
 
-const expressionStatusActions = Action.createActionsFromNames(['requestExpressionStatus']);
+const expressionStatusActions = Action.createActionsFromNames([
+    'requestExpressionStatus',
+]);
 expressionStatusActions.requestExpressionStatus
     .debounceTime(500)
-    .map((action) => {
+    .map(action => {
         const encodedFormula = encodeURIComponent(action.data);
         const url = `expressions/description?expression=${encodedFormula}`;
-        const request = getInstance()
-            .then(d2 => d2.Api.getApi().get(url));
+        const request = getInstance().then(d2 => d2.Api.getApi().get(url));
 
         return Observable.fromPromise(request);
     })
     .concatAll()
-    .subscribe((response) => {
+    .subscribe(response => {
         expressionStatusStore.setState(response);
     });
 
@@ -35,16 +36,8 @@ function ExpressionDialog({ open, handleClose, handleSaveAndClose, ...props }) {
     };
 
     const actions = [
-        <FlatButton
-            label="Cancel"
-            primary
-            onTouchTap={handleClose}
-        />,
-        <FlatButton
-            label="Submit"
-            primary
-            onTouchTap={handleSaveAndClose}
-        />,
+        <FlatButton label="Cancel" primary onTouchTap={handleClose} />,
+        <FlatButton label="Submit" primary onTouchTap={handleSaveAndClose} />,
     ];
 
     return (
@@ -95,7 +88,10 @@ class ExpressionField extends Component {
 
     indicatorExpressionChanged = ({ formula, description }) => {
         this.setState({
-            value: Object.assign({}, this.state.value, { expression: formula, description }),
+            value: Object.assign({}, this.state.value, {
+                expression: formula,
+                description,
+            }),
         });
     };
 
@@ -118,7 +114,9 @@ class ExpressionField extends Component {
                     label={this.props.labelText}
                     onTouchTap={this.handleOpen}
                 />
-                {props.errorText ? <div style={styles.errorText}>{props.errorText}</div> : null}
+                {props.errorText ? (
+                    <div style={styles.errorText}>{props.errorText}</div>
+                ) : null}
                 <ExpressionDialog
                     {...props}
                     open={this.state.open}
@@ -138,33 +136,42 @@ ExpressionField.contextTypes = {
 };
 
 export default new Map([
-    ['periodType', {
-        component: PeriodTypeDropDown,
-    }],
-    ['generator', {
-        component: ExpressionField,
-        validators: [
-            {
-                validator: value => Boolean(value && value.description),
-                message: 'description_is_required',
-            },
-            {
-                validator: value => Boolean(value && value.expression),
-                message: 'expression_is_required',
-            },
-        ],
-    }],
-    ['sampleSkipTest', {
-        component: ExpressionField,
-        validators: [
-            {
-                validator: value => Boolean(value && value.description),
-                message: 'description_is_required',
-            },
-            {
-                validator: value => Boolean(value && value.expression),
-                message: 'expression_is_required',
-            },
-        ],
-    }],
+    [
+        'periodType',
+        {
+            component: PeriodTypeDropDown,
+        },
+    ],
+    [
+        'generator',
+        {
+            component: ExpressionField,
+            validators: [
+                {
+                    validator: value => Boolean(value && value.description),
+                    message: 'description_is_required',
+                },
+                {
+                    validator: value => Boolean(value && value.expression),
+                    message: 'expression_is_required',
+                },
+            ],
+        },
+    ],
+    [
+        'sampleSkipTest',
+        {
+            component: ExpressionField,
+            validators: [
+                {
+                    validator: value => Boolean(value && value.description),
+                    message: 'description_is_required',
+                },
+                {
+                    validator: value => Boolean(value && value.expression),
+                    message: 'expression_is_required',
+                },
+            ],
+        },
+    ],
 ]);

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
@@ -11,10 +10,20 @@ const flipBooleanPropertyOn = (object, key) => ({
     [key]: !object[key],
 });
 
-const AttributeRow = ({ attribute, onEditAttribute, isDateValue, displayName, isUnique, hasOptionSet, columns }, { d2 }) => {
-    const onChangeFlipBooleanForProperty = propertyName => () => onEditAttribute(
-        flipBooleanPropertyOn(attribute, propertyName),
-    );
+const AttributeRow = (
+    {
+        attribute,
+        onEditAttribute,
+        isDateValue,
+        displayName,
+        isUnique,
+        hasOptionSet,
+        columns,
+    },
+    { d2 }
+) => {
+    const onChangeFlipBooleanForProperty = propertyName => () =>
+        onEditAttribute(flipBooleanPropertyOn(attribute, propertyName));
 
     const isCheckedForProp = getOr(false, __, attribute);
 
@@ -22,48 +31,66 @@ const AttributeRow = ({ attribute, onEditAttribute, isDateValue, displayName, is
         <TableRow>
             <TableRowColumn>{displayName}</TableRowColumn>
 
-            {columns.includes('displayInList') &&
-            <TableRowColumn>
-                <Checkbox
-                    checked={isCheckedForProp('displayInList')}
-                    onClick={onChangeFlipBooleanForProperty('displayInList')}
-                />
-            </TableRowColumn>}
+            {columns.includes('displayInList') && (
+                <TableRowColumn>
+                    <Checkbox
+                        checked={isCheckedForProp('displayInList')}
+                        onClick={onChangeFlipBooleanForProperty(
+                            'displayInList'
+                        )}
+                    />
+                </TableRowColumn>
+            )}
 
-            {columns.includes('mandatory') &&
-            <TableRowColumn>
-                <Checkbox
-                    checked={isCheckedForProp('mandatory')}
-                    onClick={onChangeFlipBooleanForProperty('mandatory')}
-                />
-            </TableRowColumn>}
+            {columns.includes('mandatory') && (
+                <TableRowColumn>
+                    <Checkbox
+                        checked={isCheckedForProp('mandatory')}
+                        onClick={onChangeFlipBooleanForProperty('mandatory')}
+                    />
+                </TableRowColumn>
+            )}
 
-            {columns.includes('allowFutureDate') &&
-            <TableRowColumn>
-                {isDateValue && <Checkbox
-                    checked={isCheckedForProp('allowFutureDate')}
-                    onClick={onChangeFlipBooleanForProperty('allowFutureDate')}
-                />}
-            </TableRowColumn>}
+            {columns.includes('allowFutureDate') && (
+                <TableRowColumn>
+                    {isDateValue && (
+                        <Checkbox
+                            checked={isCheckedForProp('allowFutureDate')}
+                            onClick={onChangeFlipBooleanForProperty(
+                                'allowFutureDate'
+                            )}
+                        />
+                    )}
+                </TableRowColumn>
+            )}
 
-            {columns.includes('renderOptionsAsRadio') &&
-            <TableRowColumn>
-                {hasOptionSet && <Checkbox
-                    checked={isCheckedForProp('renderOptionsAsRadio')}
-                    onClick={onChangeFlipBooleanForProperty('renderOptionsAsRadio')}
-                />}
-            </TableRowColumn>}
+            {columns.includes('renderOptionsAsRadio') && (
+                <TableRowColumn>
+                    {hasOptionSet && (
+                        <Checkbox
+                            checked={isCheckedForProp('renderOptionsAsRadio')}
+                            onClick={onChangeFlipBooleanForProperty(
+                                'renderOptionsAsRadio'
+                            )}
+                        />
+                    )}
+                </TableRowColumn>
+            )}
 
-            {columns.includes('searchable') &&
-            <TableRowColumn>
-                <Checkbox
-                    checked={isUnique || isCheckedForProp('searchable')}
-                    disabled={isUnique}
-                    onClick={onChangeFlipBooleanForProperty('searchable')}
-                    title={d2.i18n.getTranslation('unique_attributes_always_searchable')}
-                />
-            </TableRowColumn>}
-        </TableRow>);
+            {columns.includes('searchable') && (
+                <TableRowColumn>
+                    <Checkbox
+                        checked={isUnique || isCheckedForProp('searchable')}
+                        disabled={isUnique}
+                        onClick={onChangeFlipBooleanForProperty('searchable')}
+                        title={d2.i18n.getTranslation(
+                            'unique_attributes_always_searchable'
+                        )}
+                    />
+                </TableRowColumn>
+            )}
+        </TableRow>
+    );
 };
 
 AttributeRow.propTypes = {
@@ -80,8 +107,13 @@ AttributeRow.defaultProps = {
     isDateValue: false,
     isUnique: false,
     hasOptionSet: false,
-    columns: ['displayInList', 'mandatory', 'allowFutureDate', 'renderOptionsAsRadio', 'searchable'],
-
+    columns: [
+        'displayInList',
+        'mandatory',
+        'allowFutureDate',
+        'renderOptionsAsRadio',
+        'searchable',
+    ],
 };
 
 AttributeRow.contextTypes = {

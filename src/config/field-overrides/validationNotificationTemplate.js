@@ -30,11 +30,14 @@ const ValidationNotificationSubjectAndMessageTemplateFields = compose(
     mapProps(props => ({
         ...props,
         onUpdate: actions.update,
-    })),
+    }))
 )(SubjectAndMessageTemplateFields);
 
 export default new Map([
-    ['messageTemplate', {
-        component: ValidationNotificationSubjectAndMessageTemplateFields,
-    }],
+    [
+        'messageTemplate',
+        {
+            component: ValidationNotificationSubjectAndMessageTemplateFields,
+        },
+    ],
 ]);

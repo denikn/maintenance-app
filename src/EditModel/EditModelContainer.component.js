@@ -11,7 +11,13 @@ function EditModelContainer(props) {
 
     return (
         <div>
-            <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '1rem' }}>
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    marginBottom: '1rem',
+                }}
+            >
                 <FormHeading schema={schema} groupName={props.params.groupName}>
                     {camelCaseToUnderscores(schema)}
                 </FormHeading>

@@ -28,9 +28,11 @@ const additionalTrackerProgramsVariables = [
     'enrollment_status',
 ];
 
-const getProgramVariablesForProgramType = (programType) => {
+const getProgramVariablesForProgramType = programType => {
     if (programType === 'WITH_REGISTRATION') {
-        return programIndicatorVariables.concat(additionalTrackerProgramsVariables);
+        return programIndicatorVariables.concat(
+            additionalTrackerProgramsVariables
+        );
     }
 
     return programIndicatorVariables;
@@ -38,28 +40,27 @@ const getProgramVariablesForProgramType = (programType) => {
 
 const d2$ = Observable.fromPromise(getInstance());
 
-const withVariablePropsForProgramType = mapPropsStream(props$ => props$
-    .mergeMap(({ programType, ...props }) => {
-        const variables = getProgramVariablesForProgramType(programType);
+const withVariablePropsForProgramType = mapPropsStream(props$ =>
+    props$
+        .mergeMap(({ programType, ...props }) => {
+            const variables = getProgramVariablesForProgramType(programType);
 
-        return d2$
-            .map(d2 => ({
+            return d2$.map(d2 => ({
                 ...props,
-                variables: variables
-                    .map(variable => ({
-                        label: d2.i18n.getTranslation(variable),
-                        value: variable,
-                    })),
+                variables: variables.map(variable => ({
+                    label: d2.i18n.getTranslation(variable),
+                    value: variable,
+                })),
             }));
-    })
-    .map(({ variables, onSelect = noop, ...props }) => ({
-        ...props,
-        items: variables.map(({ label, value }) => ({
-            value: `V{${value}}`,
-            label,
-        })),
-        onItemClick: onSelect,
-    })),
+        })
+        .map(({ variables, onSelect = noop, ...props }) => ({
+            ...props,
+            items: variables.map(({ label, value }) => ({
+                value: `V{${value}}`,
+                label,
+            })),
+            onItemClick: onSelect,
+        }))
 );
 
 const VariableSelector = withVariablePropsForProgramType(CollapsibleList);

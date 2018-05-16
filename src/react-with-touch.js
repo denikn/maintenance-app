@@ -20,7 +20,6 @@ React.addons = {
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
-
 global.React = React;
 global.ReactDOM = ReactDOM;
 

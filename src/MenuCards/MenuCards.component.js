@@ -8,10 +8,12 @@ import Translate from 'd2-ui/lib/i18n/Translate.mixin';
 
 export default React.createClass({
     propTypes: {
-        menuItems: React.PropTypes.arrayOf(React.PropTypes.shape({
-            name: React.PropTypes.string,
-            description: React.PropTypes.string,
-        })),
+        menuItems: React.PropTypes.arrayOf(
+            React.PropTypes.shape({
+                name: React.PropTypes.string,
+                description: React.PropTypes.string,
+            })
+        ),
     },
 
     mixins: [Translate],
@@ -62,7 +64,9 @@ export default React.createClass({
                     tooltip={this.getTranslation('add')}
                     tooltipPosition="top-center"
                     onClick={details.add}
-                >&#xE145;</IconButton>
+                >
+                    &#xE145;
+                </IconButton>
             );
         }
 
@@ -73,7 +77,9 @@ export default React.createClass({
                 tooltip={this.getTranslation('list')}
                 tooltipPosition="top-center"
                 onClick={details.list}
-            >&#xE8EF;</IconButton>
+            >
+                &#xE8EF;
+            </IconButton>
         );
 
         return (
@@ -85,9 +91,7 @@ export default React.createClass({
                     textStyle={styles.cardHeaderText}
                 />
                 <CardText style={textStyle}>{details.description}</CardText>
-                <CardActions style={actionStyle}>
-                    {actionButtons}
-                </CardActions>
+                <CardActions style={actionStyle}>{actionButtons}</CardActions>
             </Card>
         );
     },

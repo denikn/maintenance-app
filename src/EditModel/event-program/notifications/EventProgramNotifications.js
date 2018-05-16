@@ -11,7 +11,7 @@ import NotificationList from './NotificationList';
 import {
     getStageNotifications,
     getProgramStageDataElements,
-    getProgramStages
+    getProgramStages,
 } from './selectors';
 import NotificationDeleteDialog from './NotificationDeleteDialog';
 import { removeStageNotification, setEditModel, setAddModel } from './actions';
@@ -35,7 +35,7 @@ function EventProgramNotifications({
     setEditModel,
     setAddModel,
     dataElements,
-    programStages
+    programStages,
 }) {
     return (
         <div>
@@ -45,7 +45,10 @@ function EventProgramNotifications({
                 onEditNotification={setEditModel}
                 onAddNotification={setAddModel}
             />
-            <NotificationDialog dataElements={dataElements} programStages={programStages}/>
+            <NotificationDialog
+                dataElements={dataElements}
+                programStages={programStages}
+            />
             <NotificationDeleteDialog
                 setOpen={setOpen}
                 open={open}

@@ -19,8 +19,16 @@ const enhance = compose(
     })),
     lifecycle({
         componentDidMount() {
-            const { setStatus, validator, value, referenceProperty } = this.props;
-            const { status$, validate } = createExpressionValidator(referenceProperty, setStatus);
+            const {
+                setStatus,
+                validator,
+                value,
+                referenceProperty,
+            } = this.props;
+            const { status$, validate } = createExpressionValidator(
+                referenceProperty,
+                setStatus
+            );
 
             this.validate = validate;
 
@@ -38,18 +46,27 @@ const enhance = compose(
         componentWillUnmount() {
             this.validatorStatusSubscription.unsubscribe();
         },
-    }),
+    })
 );
 
 export default new Map([
-    ['analyticsPeriodBoundaries', {
-        component: AnalyticsPeriodBoundaries,
-    }],
-    ['expression', {
-        component: enhance(ProgramIndicatorExpression),
-    }],
-    ['filter', {
-        component: enhance(ProgramIndicatorExpression),
-    }],
+    [
+        'analyticsPeriodBoundaries',
+        {
+            component: AnalyticsPeriodBoundaries,
+        },
+    ],
+    [
+        'expression',
+        {
+            component: enhance(ProgramIndicatorExpression),
+        },
+    ],
+    [
+        'filter',
+        {
+            component: enhance(ProgramIndicatorExpression),
+        },
+    ],
     decimals,
 ]);

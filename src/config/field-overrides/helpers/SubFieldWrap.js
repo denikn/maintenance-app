@@ -21,9 +21,5 @@ export default function SubFieldWrap({ children, style = {} }) {
         ...style,
     };
 
-    return (
-        <div style={subfieldWrapStyle}>
-            {children}
-        </div>
-    );
+    return <div style={subfieldWrapStyle}>{children}</div>;
 }

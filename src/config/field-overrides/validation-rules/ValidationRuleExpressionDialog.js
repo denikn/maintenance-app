@@ -21,7 +21,21 @@ const styles = {
     },
 };
 
-function ValidationRuleExpressionDialog({ open, close, actions, expressionDetails = {}, buttonLabel, updateExpressionDetails, expressionStatusStore, onExpressionChanged, onMissingStrategyChanged, onSlidingWindowChanged }, { d2 }) {
+function ValidationRuleExpressionDialog(
+    {
+        open,
+        close,
+        actions,
+        expressionDetails = {},
+        buttonLabel,
+        updateExpressionDetails,
+        expressionStatusStore,
+        onExpressionChanged,
+        onMissingStrategyChanged,
+        onSlidingWindowChanged,
+    },
+    { d2 }
+) {
     return (
         <Dialog
             open={open}
@@ -55,48 +69,64 @@ ValidationRuleExpressionDialog.contextTypes = {
 };
 
 const enhanceExpressionDialog = compose(
-    withState('expressionDetails', 'updateExpressionDetails', ({ value }) => ({ ...value })),
+    withState('expressionDetails', 'updateExpressionDetails', ({ value }) => ({
+        ...value,
+    })),
     withState('expressionStatusStore', 'updateStore', () => Store.create()),
-    withProps(({ close, save, value, expressionDetails, expressionStatusStore, updateExpressionDetails, buttonLabel }) => {
-        const isExpressionValid = result('getState.status', expressionStatusStore) === 'OK';
-
-        const onClickSave = () => save(expressionDetails);
-        const discardChanges = () => updateExpressionDetails({ ...value });
-
-        const onClickClose = () => {
-            discardChanges();
-            close();
-        };
-
-        return ({
+    withProps(
+        ({
+            close,
+            save,
+            value,
+            expressionDetails,
+            expressionStatusStore,
+            updateExpressionDetails,
             buttonLabel,
-            actions: [
-                <FlatButton
-                    onClick={onClickClose}
-                    label={<Translate>cancel</Translate>}
-                />,
-                <FlatButton
-                    onClick={onClickSave}
-                    disabled={!isExpressionValid}
-                    style={styles.saveButton}
-                    label={<Translate>save</Translate>}
-                />,
-            ],
-            onExpressionChanged: ({ description, formula }) => updateExpressionDetails({
-                ...expressionDetails,
-                description,
-                expression: formula,
-            }),
-            onMissingStrategyChanged: missingValueStrategy => updateExpressionDetails({
-                ...expressionDetails,
-                missingValueStrategy,
-            }),
-            onSlidingWindowChanged: slidingWindow => updateExpressionDetails({
-                ...expressionDetails,
-                slidingWindow,
-            }),
-        });
-    }),
+        }) => {
+            const isExpressionValid =
+                result('getState.status', expressionStatusStore) === 'OK';
+
+            const onClickSave = () => save(expressionDetails);
+            const discardChanges = () => updateExpressionDetails({ ...value });
+
+            const onClickClose = () => {
+                discardChanges();
+                close();
+            };
+
+            return {
+                buttonLabel,
+                actions: [
+                    <FlatButton
+                        onClick={onClickClose}
+                        label={<Translate>cancel</Translate>}
+                    />,
+                    <FlatButton
+                        onClick={onClickSave}
+                        disabled={!isExpressionValid}
+                        style={styles.saveButton}
+                        label={<Translate>save</Translate>}
+                    />,
+                ],
+                onExpressionChanged: ({ description, formula }) =>
+                    updateExpressionDetails({
+                        ...expressionDetails,
+                        description,
+                        expression: formula,
+                    }),
+                onMissingStrategyChanged: missingValueStrategy =>
+                    updateExpressionDetails({
+                        ...expressionDetails,
+                        missingValueStrategy,
+                    }),
+                onSlidingWindowChanged: slidingWindow =>
+                    updateExpressionDetails({
+                        ...expressionDetails,
+                        slidingWindow,
+                    }),
+            };
+        }
+    )
 );
 
 export default enhanceExpressionDialog(ValidationRuleExpressionDialog);

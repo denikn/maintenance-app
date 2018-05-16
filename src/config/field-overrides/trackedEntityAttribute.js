@@ -13,14 +13,16 @@ import OrgUnitScopeDropDown from './tracked-entity-attribute/OrgUnitScopeDropDow
 import ConfidentialField from './tracked-entity-attribute/ConfidentialField';
 import withSkipLogic from './helpers/withSkipLogic';
 
-
 const TrackedEntityField = withD2Context((props, { d2 }) => (
     <SubFieldWrap>
         <DropDownAsync
             labelText={d2.i18n.getTranslation('tracked_entity')}
             referenceType="trackedEntity"
             value={props.model.trackedEntity}
-            onChange={compose(value => actions.update({ fieldName: 'trackedEntity', value }), get('target.value'))}
+            onChange={compose(
+                value => actions.update({ fieldName: 'trackedEntity', value }),
+                get('target.value')
+            )}
         />
     </SubFieldWrap>
 ));
@@ -36,16 +38,32 @@ const Pattern = props => (
 Pattern.propTypes = { model: PropTypes.object.isRequired };
 
 export default new Map([
-    ['confidential', {
-        component: ConfidentialField,
-    }],
-    ['valueType', {
-        component: withSkipLogic(props => props.value === 'TRACKER_ASSOCIATE', TrackedEntityField, DropDown),
-    }],
-    ['orgunitScope', {
-        component: OrgUnitScopeDropDown,
-    }],
-    ['pattern', {
-        component: Pattern,
-    }],
+    [
+        'confidential',
+        {
+            component: ConfidentialField,
+        },
+    ],
+    [
+        'valueType',
+        {
+            component: withSkipLogic(
+                props => props.value === 'TRACKER_ASSOCIATE',
+                TrackedEntityField,
+                DropDown
+            ),
+        },
+    ],
+    [
+        'orgunitScope',
+        {
+            component: OrgUnitScopeDropDown,
+        },
+    ],
+    [
+        'pattern',
+        {
+            component: Pattern,
+        },
+    ],
 ]);

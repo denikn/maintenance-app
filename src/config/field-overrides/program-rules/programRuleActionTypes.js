@@ -58,7 +58,8 @@ const actionTypeFieldMapping = {
         labelOverrides: {
             content: 'static_text',
             dataElement: 'data_element_to_display_warning_next_to',
-            trackedEntityAttribute: 'tracked_entity_attribute_to_display_warning_next_to',
+            trackedEntityAttribute:
+                'tracked_entity_attribute_to_display_warning_next_to',
             data: 'expression_to_evaluate_and_display_after_static_text',
         },
     },
@@ -69,7 +70,8 @@ const actionTypeFieldMapping = {
         labelOverrides: {
             content: 'static_text',
             dataElement: 'data_element_to_display_error_next_to',
-            trackedEntityAttribute: 'tracked_entity_attribute_to_display_error_next_to',
+            trackedEntityAttribute:
+                'tracked_entity_attribute_to_display_error_next_to',
             data: 'expression_to_evaluate_and_display_after_static_text',
         },
     },
@@ -80,7 +82,8 @@ const actionTypeFieldMapping = {
         labelOverrides: {
             content: 'static_text',
             dataElement: 'data_element_to_display_warning_next_to',
-            trackedEntityAttribute: 'tracked_entity_attribute_to_display_warning_next_to',
+            trackedEntityAttribute:
+                'tracked_entity_attribute_to_display_warning_next_to',
             data: 'expression_to_evaluate_and_display_after_static_text',
         },
     },
@@ -91,7 +94,8 @@ const actionTypeFieldMapping = {
         labelOverrides: {
             content: 'static_text',
             dataElement: 'data_element_to_display_error_next_to',
-            trackedEntityAttribute: 'tracked_entity_attribute_to_display_error_next_to',
+            trackedEntityAttribute:
+                'tracked_entity_attribute_to_display_error_next_to',
             data: 'expression_to_evaluate_and_display_after_static_text',
         },
     },
@@ -105,15 +109,16 @@ const actionTypeFieldMapping = {
         optional: ['dataElement', 'trackedEntityAttribute'],
         labelOverrides: {
             dataElement: 'data_element_to_make_mandatory',
-            trackedEntityAttribute: 'tracked_entity_attribute_to_make_mandatory',
+            trackedEntityAttribute:
+                'tracked_entity_attribute_to_make_mandatory',
         },
     },
     SENDMESSAGE: {
         label: 'send_message',
         optional: ['programNotificationTemplate', 'data'],
         labelOverrides: {
-            data: 'date_to_send_message'
-        }
+            data: 'date_to_send_message',
+        },
     },
 };
 

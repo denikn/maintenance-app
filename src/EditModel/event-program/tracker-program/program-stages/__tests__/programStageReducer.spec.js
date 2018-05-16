@@ -14,7 +14,7 @@ describe('ProgramStage Reducer', () => {
 
         intialState = {
             activeStep: iterator.first(steps),
-            stageId: null
+            stageId: null,
         };
     });
 
@@ -35,15 +35,15 @@ describe('ProgramStage Reducer', () => {
             const step = 'Padni';
             const expectedState = {
                 ...intialState,
-                activeStep: step
+                activeStep: step,
             };
 
             expect(
                 reducer(intialState, {
                     type: programActions.PROGRAM_STAGE_STEP_CHANGE,
                     payload: {
-                        stepKey: step
-                    }
+                        stepKey: step,
+                    },
                 })
             ).toEqual(expectedState);
         });
@@ -54,11 +54,11 @@ describe('ProgramStage Reducer', () => {
 
             const expectedState = {
                 ...intialState,
-                activeStep: step
+                activeStep: step,
             };
             expect(
                 reducer(intialState, {
-                    type: programActions.PROGRAM_STAGE_STEP_NEXT
+                    type: programActions.PROGRAM_STAGE_STEP_NEXT,
                 })
             ).toEqual(expectedState);
             expect(iterator.next).toHaveBeenCalledTimes(1);
@@ -71,11 +71,11 @@ describe('ProgramStage Reducer', () => {
 
             const expectedState = {
                 ...intialState,
-                activeStep: step
+                activeStep: step,
             };
             expect(
                 reducer(intialState, {
-                    type: programActions.PROGRAM_STAGE_STEP_PREVIOUS
+                    type: programActions.PROGRAM_STAGE_STEP_PREVIOUS,
                 })
             ).toEqual(expectedState);
             expect(iterator.next).toHaveBeenCalledTimes(0);
@@ -88,11 +88,11 @@ describe('ProgramStage Reducer', () => {
 
             const expectedState = {
                 ...intialState,
-                activeStep: step
+                activeStep: step,
             };
             expect(
                 reducer(intialState, {
-                    type: STEPPER_RESET_ACTIVE_STEP
+                    type: STEPPER_RESET_ACTIVE_STEP,
                 })
             ).toEqual(expectedState);
             expect(iterator.first).toHaveBeenCalledTimes(1);
@@ -103,26 +103,26 @@ describe('ProgramStage Reducer', () => {
 
             const expectedState = {
                 ...intialState,
-                stageId
+                stageId,
             };
             expect(
                 reducer(intialState, {
                     type: programActions.PROGRAM_STAGE_EDIT,
                     payload: {
-                        stageId: stageId
-                    }
+                        stageId: stageId,
+                    },
                 })
             ).toEqual(expectedState);
         });
 
         test('it should handle PROGRAM_STAGE_EDIT_RESET', () => {
             const expectedState = {
-                ...intialState
+                ...intialState,
             };
 
             expect(
                 reducer(intialState, {
-                    type: programActions.PROGRAM_STAGE_EDIT_RESET
+                    type: programActions.PROGRAM_STAGE_EDIT_RESET,
                 })
             ).toEqual(expectedState);
         });

@@ -6,9 +6,13 @@ import programIndicatorEpics from './EditModel/program-indicator/epics';
 import programIndicatorReducer from './EditModel/program-indicator/reducers';
 import snackBarReducer from './Snackbar/reducers';
 import snackBarEpics from './Snackbar/epics';
-import { createLogger } from "redux-logger";
+import { createLogger } from 'redux-logger';
 
-const epics = combineEpics(eventProgramEpics, programIndicatorEpics, snackBarEpics);
+const epics = combineEpics(
+    eventProgramEpics,
+    programIndicatorEpics,
+    snackBarEpics
+);
 const middlewares = [createEpicMiddleware(epics)];
 
 const appReducers = combineReducers({
@@ -17,10 +21,8 @@ const appReducers = combineReducers({
     snackBar: snackBarReducer,
 });
 
-if (process.env.NODE_ENV === "development") {
-    middlewares.push(
-        createLogger()
-    );
+if (process.env.NODE_ENV === 'development') {
+    middlewares.push(createLogger());
 }
 
 export default createStore(appReducers, applyMiddleware(...middlewares));

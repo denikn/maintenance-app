@@ -51,10 +51,13 @@ const cardTarget = {
         }
 
         // Determine rectangle on screen
-        const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
+        const hoverBoundingRect = findDOMNode(
+            component
+        ).getBoundingClientRect();
 
         // Get vertical middle
-        const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+        const hoverMiddleY =
+            (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 
         // Determine mouse position
         const clientOffset = monitor.getClientOffset();
@@ -82,37 +85,45 @@ const cardTarget = {
     },
 };
 
-const OptionValueWithDrag = DragSource(ItemTypes.OPTION, cardSource, collect)(OptionValue);
-const OptionValueWithDragAndDrop = DropTarget(ItemTypes.OPTION, cardTarget, connect => ({
-    connectDropTarget: connect.dropTarget(),
-}))(OptionValueWithDrag);
+const OptionValueWithDrag = DragSource(ItemTypes.OPTION, cardSource, collect)(
+    OptionValue
+);
+const OptionValueWithDragAndDrop = DropTarget(
+    ItemTypes.OPTION,
+    cardTarget,
+    connect => ({
+        connectDropTarget: connect.dropTarget(),
+    })
+)(OptionValueWithDrag);
 
-const SortableList = DragDropContext(HTML5Backend)(class extends Component {
-    render() {
-        return (
-            <div>
-                {this.props.options.map((option, index) => (<OptionValueWithDragAndDrop
-                    key={option.id}
-                    index={index}
-                    moveOption={this.props.moveOption}
-                    displayName={option.displayName}
-                    code={option.code}
-                    id={option.id}
-                />))}
-            </div>
-        );
+const SortableList = DragDropContext(HTML5Backend)(
+    class extends Component {
+        render() {
+            return (
+                <div>
+                    {this.props.options.map((option, index) => (
+                        <OptionValueWithDragAndDrop
+                            key={option.id}
+                            index={index}
+                            moveOption={this.props.moveOption}
+                            displayName={option.displayName}
+                            code={option.code}
+                            id={option.id}
+                        />
+                    ))}
+                </div>
+            );
+        }
     }
-});
+);
 
-const sortDialogState$ = Observable
-    .combineLatest(
-        sortDialogStore,
-        optionsForOptionSetStore,
-    )
-    .map(([state, optionState]) => ({
-        ...state,
-        ...optionState,
-    }));
+const sortDialogState$ = Observable.combineLatest(
+    sortDialogStore,
+    optionsForOptionSetStore
+).map(([state, optionState]) => ({
+    ...state,
+    ...optionState,
+}));
 
 const styles = {
     actionButtonWrap: {
@@ -144,8 +155,12 @@ class SortDialog extends Component {
     }
 
     moveOption = (dragId, targetId) => {
-        const dragIndex = this.state.options.findIndex(option => option.id === dragId);
-        const targetIndex = this.state.options.findIndex(option => option.id === targetId);
+        const dragIndex = this.state.options.findIndex(
+            option => option.id === dragId
+        );
+        const targetIndex = this.state.options.findIndex(
+            option => option.id === targetId
+        );
         const dragOption = this.state.options[dragIndex];
 
         const newList = [...this.state.options];
@@ -156,7 +171,7 @@ class SortDialog extends Component {
         this.setState({
             options: newList,
         });
-    }
+    };
 
     render() {
         return (
@@ -170,13 +185,19 @@ class SortDialog extends Component {
                 <Heading>{this.i18n.getTranslation('sorting')}</Heading>
                 {this.renderDialogContent()}
                 <div style={styles.actionButtonWrap}>
-                    {this.isShowSaveButton() ? <RaisedButton
-                        style={styles.actionButton}
-                        disabled={this.props.isSaving}
-                        onClick={this._saveOptionOrder}
-                        primary
-                        label={this.i18n.getTranslation(this.props.isSaving ? 'saving' : 'save')}
-                    /> : undefined}
+                    {this.isShowSaveButton() ? (
+                        <RaisedButton
+                            style={styles.actionButton}
+                            disabled={this.props.isSaving}
+                            onClick={this._saveOptionOrder}
+                            primary
+                            label={this.i18n.getTranslation(
+                                this.props.isSaving ? 'saving' : 'save'
+                            )}
+                        />
+                    ) : (
+                        undefined
+                    )}
                     <RaisedButton
                         style={styles.actionButton}
                         disabled={this.props.isSaving}
@@ -199,12 +220,19 @@ class SortDialog extends Component {
 
         if (!this.props.onePage) {
             return (
-                <div style={{ padding: '1rem 0' }}>{this.i18n.getTranslation('manual_sorting_is_not_available_for_option_sets_with_more_than_50_options')}</div>
+                <div style={{ padding: '1rem 0' }}>
+                    {this.i18n.getTranslation(
+                        'manual_sorting_is_not_available_for_option_sets_with_more_than_50_options'
+                    )}
+                </div>
             );
         }
 
         return (
-            <SortableList options={this.state.options} moveOption={this.moveOption} />
+            <SortableList
+                options={this.state.options}
+                moveOption={this.moveOption}
+            />
         );
     }
 
@@ -216,10 +244,9 @@ class SortDialog extends Component {
         const modelToEdit = modelToEditStore.getState();
 
         modelToEdit.options.clear();
-        this.state.options
-            .forEach((option) => {
-                modelToEdit.options.add(option);
-            });
+        this.state.options.forEach(option => {
+            modelToEdit.options.add(option);
+        });
 
         sortDialogStore.setState({
             ...sortDialogStore.getState(),
@@ -260,7 +287,7 @@ class SortDialog extends Component {
                     translate: true,
                 });
             });
-    }
+    };
 
     _closeDialog() {
         setSortDialogOpenTo(false);

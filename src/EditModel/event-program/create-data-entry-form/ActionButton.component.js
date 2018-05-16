@@ -7,14 +7,20 @@ const ActionButton = ({ onClick, icon }) => {
         transition: 'none',
     };
 
-    const onIconClick = (e) => {
+    const onIconClick = e => {
         if (e) e.stopPropagation();
         onClick();
-    }
+    };
 
     return (
-        <IconButton style={noTransition} iconStyle={noTransition} onClick={onIconClick}>
-            <FontIcon color="gray" className="material-icons">{icon}</FontIcon>
+        <IconButton
+            style={noTransition}
+            iconStyle={noTransition}
+            onClick={onIconClick}
+        >
+            <FontIcon color="gray" className="material-icons">
+                {icon}
+            </FontIcon>
         </IconButton>
     );
 };

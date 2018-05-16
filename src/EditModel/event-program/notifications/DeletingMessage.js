@@ -22,8 +22,8 @@ export default function DeletingMessage({ isDeleting, name }, { d2 }) {
 
     return (
         <div style={styles.wrap}>
-            <h1>{ d2.i18n.getTranslation('deleting') }</h1>
-            <h2>{ name }</h2>
+            <h1>{d2.i18n.getTranslation('deleting')}</h1>
+            <h2>{name}</h2>
         </div>
     );
 }

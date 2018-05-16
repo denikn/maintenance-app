@@ -11,32 +11,43 @@ const SymbolPickerField = (props, context) => {
 
     const imgPath = `${systemRootFolder}/images/orgunitgroup`;
 
-    return (<IconPicker {...props} imgPath={imgPath} />);
+    return <IconPicker {...props} imgPath={imgPath} />;
 };
 SymbolPickerField.contextTypes = { d2: React.PropTypes.any };
 
 export default new Map([
-    ['color', {
-        component: ColorPicker,
-    }],
-    ['symbol', {
-        component: SymbolPickerField,
-        fieldOptions: {
-            options: (function () {
-                const symbolUrls = [];
-                let i = 1;
-
-                for (; i <= 40; i++) {
-                    const filename = i > 9 ? i : `0${i}`;
-                    symbolUrls.push(`${filename}.${i > 25 ? 'svg' : 'png'}`);
-                }
-
-                return symbolUrls;
-            }()),
+    [
+        'color',
+        {
+            component: ColorPicker,
         },
-    }],
-    ['organisationUnits', {
-        component: OrganisationUnitTreeMultiSelect,
-        fieldOptions: {},
-    }],
+    ],
+    [
+        'symbol',
+        {
+            component: SymbolPickerField,
+            fieldOptions: {
+                options: (function() {
+                    const symbolUrls = [];
+                    let i = 1;
+
+                    for (; i <= 40; i++) {
+                        const filename = i > 9 ? i : `0${i}`;
+                        symbolUrls.push(
+                            `${filename}.${i > 25 ? 'svg' : 'png'}`
+                        );
+                    }
+
+                    return symbolUrls;
+                })(),
+            },
+        },
+    ],
+    [
+        'organisationUnits',
+        {
+            component: OrganisationUnitTreeMultiSelect,
+            fieldOptions: {},
+        },
+    ],
 ]);

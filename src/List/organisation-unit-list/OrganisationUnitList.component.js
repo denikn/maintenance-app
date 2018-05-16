@@ -10,7 +10,10 @@ export default class OrganisationUnitList extends React.Component {
     componentDidMount() {
         this.subscription = appState
             // Only do this is we're actually about to show organisation units
-            .filter(appState => appState.sideBar.currentSubSection === 'organisationUnit')
+            .filter(
+                appState =>
+                    appState.sideBar.currentSubSection === 'organisationUnit'
+            )
             .map(({ selectedOrganisationUnit, userOrganisationUnits }) => ({
                 selectedOrganisationUnit,
                 userOrganisationUnitIds: userOrganisationUnits
@@ -20,24 +23,39 @@ export default class OrganisationUnitList extends React.Component {
             .filter(state => state.selectedOrganisationUnit)
             .distinctUntilChanged(null, state => state.selectedOrganisationUnit)
             .subscribe(
-                async ({ selectedOrganisationUnit, userOrganisationUnitIds }) => {
+                async ({
+                    selectedOrganisationUnit,
+                    userOrganisationUnitIds,
+                }) => {
                     const d2 = await getInstance();
 
                     if (!selectedOrganisationUnit.id) {
-                        return listActions.setListSource(ModelCollection.create(d2.models.organisationUnit));
+                        return listActions.setListSource(
+                            ModelCollection.create(d2.models.organisationUnit)
+                        );
                     }
 
                     let organisationUnitList = d2.models.organisationUnit
-                        .filter().on('name').notEqual('default');
+                        .filter()
+                        .on('name')
+                        .notEqual('default');
 
                     organisationUnitList = await organisationUnitList
-                        .filter().on('name').notEqual('default')
-                        .filter().on('parent.id').equals(selectedOrganisationUnit.id)
+                        .filter()
+                        .on('name')
+                        .notEqual('default')
+                        .filter()
+                        .on('parent.id')
+                        .equals(selectedOrganisationUnit.id)
                         .list({ fields: fieldFilteringForQuery });
 
                     // When a root organisation unit is selected we also add the root organisation unit to the list
                     // of available organisation units to pick from
-                    if (userOrganisationUnitIds.indexOf(selectedOrganisationUnit.id) >= 0) {
+                    if (
+                        userOrganisationUnitIds.indexOf(
+                            selectedOrganisationUnit.id
+                        ) >= 0
+                    ) {
                         organisationUnitList.add(selectedOrganisationUnit);
                     }
 
@@ -48,7 +66,9 @@ export default class OrganisationUnitList extends React.Component {
     }
 
     componentWillUnmount() {
-        this.subscription && this.subscription.unsubscribe && this.subscription.unsubscribe();
+        this.subscription &&
+            this.subscription.unsubscribe &&
+            this.subscription.unsubscribe();
     }
 
     render() {
@@ -57,7 +77,10 @@ export default class OrganisationUnitList extends React.Component {
         return (
             <List
                 {...otherProps}
-                params={Object.assign({ modelType: 'organisationUnit' }, params)}
+                params={Object.assign(
+                    { modelType: 'organisationUnit' },
+                    params
+                )}
             />
         );
     }

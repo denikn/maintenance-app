@@ -30,8 +30,12 @@ class IndicatorExtraFields extends React.Component {
         this.setNumerator = this.setNumerator.bind(this);
         this.setDenominator = this.setDenominator.bind(this);
         this.closeDialog = this.closeDialog.bind(this);
-        this.saveToModelAndCloseDialog = this.saveToModelAndCloseDialog.bind(this);
-        this.indicatorExpressionChanged = this.indicatorExpressionChanged.bind(this);
+        this.saveToModelAndCloseDialog = this.saveToModelAndCloseDialog.bind(
+            this
+        );
+        this.indicatorExpressionChanged = this.indicatorExpressionChanged.bind(
+            this
+        );
     }
 
     setNumerator() {
@@ -48,8 +52,12 @@ class IndicatorExtraFields extends React.Component {
 
     saveToModelAndCloseDialog() {
         if (this.state.expressionStatus.isValid) {
-            this.props.modelToEdit[this.state.type] = this.state.expressionFormula;
-            this.props.modelToEdit[`${this.state.type}Description`] = this.state.expressionDescription;
+            this.props.modelToEdit[
+                this.state.type
+            ] = this.state.expressionFormula;
+            this.props.modelToEdit[
+                `${this.state.type}Description`
+            ] = this.state.expressionDescription;
 
             modelToEditStore.setState(this.props.modelToEdit);
         }
@@ -67,7 +75,9 @@ class IndicatorExtraFields extends React.Component {
         }
 
         this.setState({
-            dialogValid: data.expressionStatus.isValid && Boolean(data.description.trim()),
+            dialogValid:
+                data.expressionStatus.isValid &&
+                Boolean(data.description.trim()),
             ...expressionValues,
         });
     }
@@ -77,7 +87,10 @@ class IndicatorExtraFields extends React.Component {
             <IndicatorExpressionManagerContainer
                 indicatorExpressionChanged={this.indicatorExpressionChanged}
                 formula={this.props.modelToEdit[this.state.type] || ''}
-                description={this.props.modelToEdit[`${this.state.type}Description`] || ''}
+                description={
+                    this.props.modelToEdit[`${this.state.type}Description`] ||
+                    ''
+                }
                 ref="expressionManagerContainer"
             />
         );
@@ -88,17 +101,33 @@ class IndicatorExtraFields extends React.Component {
 
         const dialogActions = [
             // TODO: This button should "commit" the change to the model where a cancel button will discard any changes made
-            <FlatButton label={d2.i18n.getTranslation('cancel')} onTouchTap={this.closeDialog} />,
-            <FlatButton label={d2.i18n.getTranslation('done')} onTouchTap={this.saveToModelAndCloseDialog} disabled={!this.state.dialogValid} />,
+            <FlatButton
+                label={d2.i18n.getTranslation('cancel')}
+                onTouchTap={this.closeDialog}
+            />,
+            <FlatButton
+                label={d2.i18n.getTranslation('done')}
+                onTouchTap={this.saveToModelAndCloseDialog}
+                disabled={!this.state.dialogValid}
+            />,
         ];
 
         return (
             <div>
                 <div style={{ marginTop: '2rem' }}>
-                    <RaisedButton label={d2.i18n.getTranslation('edit_numerator')} onClick={this.setNumerator} style={{ marginRight: '2rem' }} />
-                    <RaisedButton label={d2.i18n.getTranslation('edit_denominator')} onClick={this.setDenominator} />
+                    <RaisedButton
+                        label={d2.i18n.getTranslation('edit_numerator')}
+                        onClick={this.setNumerator}
+                        style={{ marginRight: '2rem' }}
+                    />
+                    <RaisedButton
+                        label={d2.i18n.getTranslation('edit_denominator')}
+                        onClick={this.setDenominator}
+                    />
                     <Dialog
-                        title={d2.i18n.getTranslation(`edit_${this.state.type}`)}
+                        title={d2.i18n.getTranslation(
+                            `edit_${this.state.type}`
+                        )}
                         open={this.state.dialogOpen}
                         modal
                         actions={dialogActions}
@@ -110,7 +139,9 @@ class IndicatorExtraFields extends React.Component {
                     </Dialog>
                 </div>
                 <div style={{ marginTop: '2rem' }}>
-                    <DataIndicatorGroupsAssignment source={this.props.modelToEdit} />
+                    <DataIndicatorGroupsAssignment
+                        source={this.props.modelToEdit}
+                    />
                 </div>
             </div>
         );

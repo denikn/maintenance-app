@@ -7,8 +7,7 @@ import DetailsBox from './DetailsBox.component';
 
 class DetailsBoxWithScroll extends Component {
     componentDidMount() {
-        this.subscription = Observable
-            .fromEvent(global, 'scroll')
+        this.subscription = Observable.fromEvent(global, 'scroll')
             .debounceTime(200)
             .map(() => document.querySelector('body').scrollTop)
             .subscribe(() => this.forceUpdate());
@@ -19,7 +18,11 @@ class DetailsBoxWithScroll extends Component {
     }
 
     render() {
-        const paperStyle = { maxWidth: 500, minWidth: 300, marginTop: document.querySelector('body').scrollTop };
+        const paperStyle = {
+            maxWidth: 500,
+            minWidth: 300,
+            marginTop: document.querySelector('body').scrollTop,
+        };
 
         return (
             <div style={this.props.style}>

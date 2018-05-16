@@ -25,16 +25,18 @@ const enhance = compose(
             (props, eventProgramState) => ({
                 ...props,
                 model: eventProgramState.program,
-            }),
-        ),
+            })
+        )
     ),
-    spinnerWhileLoading(props => props.isLoading),
+    spinnerWhileLoading(props => props.isLoading)
 );
 
 function EditProgram(props) {
-    return props.model.programType === 'WITH_REGISTRATION'
-        ? <EditTrackerProgram {...props} />
-        : <EditEventProgram {...props} />;
+    return props.model.programType === 'WITH_REGISTRATION' ? (
+        <EditTrackerProgram {...props} />
+    ) : (
+        <EditEventProgram {...props} />
+    );
 }
 
 export default enhance(EditProgram);

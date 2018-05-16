@@ -17,12 +17,15 @@ function Fn(props) {
 }
 
 export default new Map([
-    ['orgUnitLevel', {
-        component: DropDownAsyncGetter,
-        persisted: true,
-        fieldOptions: {
-            getter: getOrgUnitLevels,
-            useValueDotId: false,
+    [
+        'orgUnitLevel',
+        {
+            component: DropDownAsyncGetter,
+            persisted: true,
+            fieldOptions: {
+                getter: getOrgUnitLevels,
+                useValueDotId: false,
+            },
         },
-    }],
+    ],
 ]);

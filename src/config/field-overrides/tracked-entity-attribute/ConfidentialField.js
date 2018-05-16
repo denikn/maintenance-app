@@ -8,10 +8,13 @@ const ConfidentialField = switchOnBoolean(
     Checkbox,
     ({ d2 }) => (
         <div style={{ paddingTop: '0.25rem' }}>
-            <Checkbox disabled labelText={d2.i18n.getTranslation('confidential')} />
+            <Checkbox
+                disabled
+                labelText={d2.i18n.getTranslation('confidential')}
+            />
             <InfoMessage message="confidentiality_option_not_available_since_encryption_is_not_configured" />
         </div>
-    ),
+    )
 );
 
 export default ConfidentialField;

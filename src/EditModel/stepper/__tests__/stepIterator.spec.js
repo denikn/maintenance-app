@@ -37,7 +37,6 @@ describe('Step iterator', () => {
             expect(actualStep).toBe(GET_INGREDIENTS);
         });
 
-
         test('should return the same item when current item is first', () => {
             const actualStep = previous(bacalaoSteps, GET_INGREDIENTS);
             expect(actualStep).toBe(GET_INGREDIENTS);

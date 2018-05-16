@@ -58,7 +58,7 @@ const styles = {
 };
 
 const ActionButton = ({ onClick, icon }) => {
-    const noPropagation = (e) => {
+    const noPropagation = e => {
         if (e) e.stopPropagation();
         onClick();
     };
@@ -69,7 +69,9 @@ const ActionButton = ({ onClick, icon }) => {
             iconStyle={{ transition: 'none' }}
             onClick={noPropagation}
         >
-            <FontIcon color="gray" className="material-icons">{icon}</FontIcon>
+            <FontIcon color="gray" className="material-icons">
+                {icon}
+            </FontIcon>
         </IconButton>
     );
 };
@@ -111,9 +113,11 @@ class Section extends Component {
         });
     };
 
-    focusTitleInputField = (titleInput) => {
+    focusTitleInputField = titleInput => {
         if (titleInput) {
-            setTimeout(() => { titleInput.focus(); }, 20);
+            setTimeout(() => {
+                titleInput.focus();
+            }, 20);
         }
     };
 
@@ -151,18 +155,21 @@ class Section extends Component {
             />,
         ];
 
-        const sectionContent = (this.props.section.dataElements.length > 0) ?
-            (<div style={styles.sectionContent}>
-                <SortableSectionDataList
-                    distance={4}
-                    onSortEnd={this.onSortEnd}
-                    onDataElementRemoved={this.props.onDataElementRemoved}
-                    sectionDataElements={this.props.section.dataElements}
-                />
-            </div>) :
-            (<div style={styles.noDataElementsMessage}>
-                {this.getTranslation('no_data_elements')}
-            </div>);
+        const sectionContent =
+            this.props.section.dataElements.length > 0 ? (
+                <div style={styles.sectionContent}>
+                    <SortableSectionDataList
+                        distance={4}
+                        onSortEnd={this.onSortEnd}
+                        onDataElementRemoved={this.props.onDataElementRemoved}
+                        sectionDataElements={this.props.section.dataElements}
+                    />
+                </div>
+            ) : (
+                <div style={styles.noDataElementsMessage}>
+                    {this.getTranslation('no_data_elements')}
+                </div>
+            );
 
         return (
             <div
@@ -175,37 +182,54 @@ class Section extends Component {
                     <div style={{ ...styles.row, width: '100%' }}>
                         <DragHandle />
 
-                        { this.props.editing
-                            ? <ActionButton onClick={this.stopEditingName} icon="done" />
-                            : <ActionButton onClick={this.startEditingName} icon="mode_edit" />
-                        }
+                        {this.props.editing ? (
+                            <ActionButton
+                                onClick={this.stopEditingName}
+                                icon="done"
+                            />
+                        ) : (
+                            <ActionButton
+                                onClick={this.startEditingName}
+                                icon="mode_edit"
+                            />
+                        )}
 
-                        { this.props.editing
-                            ? <TextField
+                        {this.props.editing ? (
+                            <TextField
                                 ref={this.focusTitleInputField}
                                 inputStyle={{ transition: 'none' }}
                                 textareaStyle={{ flex: 1 }}
                                 style={this.getSectionNameStyle(true)}
                                 underlineShow={false}
-                                onClick={(e) => e.stopPropagation()}
+                                onClick={e => e.stopPropagation()}
                                 hintText={this.getTranslation('name')}
                                 defaultValue={this.props.section.displayName}
                                 onChange={this.onNameChanged}
                                 maxLength={maxNameLength}
                             />
-                            : <div style={this.getSectionNameStyle(false)}>{this.props.section.displayName}</div>
-                        }
+                        ) : (
+                            <div style={this.getSectionNameStyle(false)}>
+                                {this.props.section.displayName}
+                            </div>
+                        )}
                     </div>
                     <div style={styles.row}>
                         <ActionButton
                             onClick={this.props.onToggleOpen}
-                            icon={this.props.collapsed ? 'keyboard_arrow_down' : 'keyboard_arrow_up'}
+                            icon={
+                                this.props.collapsed
+                                    ? 'keyboard_arrow_down'
+                                    : 'keyboard_arrow_up'
+                            }
                         />
-                        <ActionButton onClick={this.openRemovalDialog} icon="clear" />
+                        <ActionButton
+                            onClick={this.openRemovalDialog}
+                            icon="clear"
+                        />
                     </div>
                 </div>
 
-                { !this.props.collapsed && sectionContent }
+                {!this.props.collapsed && sectionContent}
 
                 <Dialog
                     title={this.getTranslation('delete_section_message')}
@@ -213,7 +237,9 @@ class Section extends Component {
                     open={this.state.showRemovalDialog}
                     onRequestClose={this.closeRemovalDialog}
                 >
-                    <Heading level={2}>{this.props.section.displayName}</Heading>
+                    <Heading level={2}>
+                        {this.props.section.displayName}
+                    </Heading>
                 </Dialog>
             </div>
         );

@@ -15,7 +15,8 @@ import HelpText from './HelpText';
 import ExpressionStatusIcon, {
     ExpressionStatus,
     getColorForExpressionStatus,
-    getBackgroundColorForExpressionStatus } from './ExpressionStatusIcon';
+    getBackgroundColorForExpressionStatus,
+} from './ExpressionStatusIcon';
 
 const styles = {
     programIndicatorExpression: {
@@ -60,8 +61,19 @@ const styles = {
         whiteSpace: 'nowrap',
     },
 };
-function ProgramIndicatorExpression({ d2, onChange, status, model, value: formula = '', referenceProperty }) {
-    const programType = getOr('WITHOUT_REGISTRATION', 'program.programType', model);
+function ProgramIndicatorExpression({
+    d2,
+    onChange,
+    status,
+    model,
+    value: formula = '',
+    referenceProperty,
+}) {
+    const programType = getOr(
+        'WITHOUT_REGISTRATION',
+        'program.programType',
+        model
+    );
 
     const onFormulaChange = value => onChange({ target: { value } });
     const onSelect = value => onChange({ target: { value: formula + value } });
@@ -69,7 +81,6 @@ function ProgramIndicatorExpression({ d2, onChange, status, model, value: formul
     return (
         <div>
             <div style={styles.programIndicatorExpression.container}>
-
                 <Paper style={styles.programIndicatorExpression.formula}>
                     <HelpText
                         schema={model.modelDefinition.name}
@@ -82,13 +93,14 @@ function ProgramIndicatorExpression({ d2, onChange, status, model, value: formul
                     />
                     <OperatorButtons onClick={onSelect} />
 
-                    {status.status === ExpressionStatus.VALID &&
+                    {status.status === ExpressionStatus.VALID && (
                         <div style={styles.status.container(status.status)}>
                             <ExpressionStatusIcon status={status.status} />
                             <span style={styles.statusMessage}>
                                 {status.message}
                             </span>
-                        </div>}
+                        </div>
+                    )}
                 </Paper>
 
                 <div style={styles.programIndicatorExpression.options}>
@@ -112,7 +124,6 @@ function ProgramIndicatorExpression({ d2, onChange, status, model, value: formul
                         onSelect={onSelect}
                     />
                 </div>
-
             </div>
         </div>
     );

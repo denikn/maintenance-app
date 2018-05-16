@@ -1,6 +1,6 @@
 import React from 'react';
 import DropDown from './drop-down';
-import { isNil } from 'lodash/fp';
+import { isNil } from 'lodash/fp';
 
 class DropDownAsyncGetter extends React.Component {
     constructor(props, context) {
@@ -20,7 +20,6 @@ class DropDownAsyncGetter extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-
         this.getOptions(newProps.model);
     }
 
@@ -39,12 +38,16 @@ class DropDownAsyncGetter extends React.Component {
     render() {
         const { getter, shouldRender, useValueDotId, ...props } = this.props;
         if (shouldRender(this.props.model)) {
-            const eventIdWrapper = (event) => {
+            const eventIdWrapper = event => {
                 if (!isNil(event.target.value)) {
                     if (useValueDotId) {
-                        this.props.onChange({ target: { value: { id: event.target.value } } });
+                        this.props.onChange({
+                            target: { value: { id: event.target.value } },
+                        });
                     } else {
-                        this.props.onChange({ target: { value: event.target.value } });
+                        this.props.onChange({
+                            target: { value: event.target.value },
+                        });
                     }
                 } else {
                     this.props.onChange({ target: { value: null } });
@@ -54,7 +57,11 @@ class DropDownAsyncGetter extends React.Component {
             return (
                 <DropDown
                     {...props}
-                    value={useValueDotId ? this.props.value && this.props.value.id : this.props.value}
+                    value={
+                        useValueDotId
+                            ? this.props.value && this.props.value.id
+                            : this.props.value
+                    }
                     onChange={eventIdWrapper}
                     options={this.state.options}
                 />
@@ -66,11 +73,14 @@ class DropDownAsyncGetter extends React.Component {
 }
 
 DropDownAsyncGetter.contextTypes = { d2: React.PropTypes.any };
-DropDownAsyncGetter.propTypes = Object.assign({
-    getter: React.PropTypes.func.isRequired,
-    shouldRender: React.PropTypes.func.isRequired,
-    useValueDotId: React.PropTypes.bool,
-}, DropDown.propTypes);
+DropDownAsyncGetter.propTypes = Object.assign(
+    {
+        getter: React.PropTypes.func.isRequired,
+        shouldRender: React.PropTypes.func.isRequired,
+        useValueDotId: React.PropTypes.bool,
+    },
+    DropDown.propTypes
+);
 
 DropDownAsyncGetter.defaultProps = {
     shouldRender: () => true,

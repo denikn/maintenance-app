@@ -8,10 +8,11 @@ import { get } from 'lodash/fp';
 
 const extractValueFromEvent = get('target.value');
 
-const toggleBooleanOnModel = fieldName => event => actions.update({
-    fieldName,
-    value: extractValueFromEvent(event),
-});
+const toggleBooleanOnModel = fieldName => event =>
+    actions.update({
+        fieldName,
+        value: extractValueFromEvent(event),
+    });
 
 const styles = {
     field: {
@@ -34,18 +35,23 @@ const styles = {
     },
 };
 
-const onlyPropertiesEndingOnAttribute = propertyName => /Attribute$/.test(propertyName);
-const extractSchemaNameToSnakeCase = propertyName => camelCaseToUnderscores(propertyName.replace(/Attribute$/, ''));
+const onlyPropertiesEndingOnAttribute = propertyName =>
+    /Attribute$/.test(propertyName);
+const extractSchemaNameToSnakeCase = propertyName =>
+    camelCaseToUnderscores(propertyName.replace(/Attribute$/, ''));
 
 export default function AttributeAssignment({ model }) {
-    const attributeReceiverCheckBoxes = Object
-        .keys(model)
+    const attributeReceiverCheckBoxes = Object.keys(model)
         .filter(onlyPropertiesEndingOnAttribute)
         .sort()
         .map(propertyName => (
             <div key={propertyName} style={styles.item}>
                 <Checkbox
-                    labelText={<Translate>{extractSchemaNameToSnakeCase(propertyName)}</Translate>}
+                    labelText={
+                        <Translate>
+                            {extractSchemaNameToSnakeCase(propertyName)}
+                        </Translate>
+                    }
                     value={model[`${propertyName}`]}
                     onChange={toggleBooleanOnModel(propertyName)}
                 />
@@ -55,12 +61,12 @@ export default function AttributeAssignment({ model }) {
     return (
         <div style={styles.field}>
             <Heading level={5} style={styles.heading}>
-                <Translate>the_custom_attribute_will_be_applied_to_the_selected_objects</Translate>
+                <Translate>
+                    the_custom_attribute_will_be_applied_to_the_selected_objects
+                </Translate>
             </Heading>
 
-            <div style={styles.wrap}>
-                {attributeReceiverCheckBoxes}
-            </div>
+            <div style={styles.wrap}>{attributeReceiverCheckBoxes}</div>
         </div>
     );
 }

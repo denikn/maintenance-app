@@ -11,7 +11,12 @@ import mapPropsStream from 'recompose/mapPropsStream';
 import NotificationList from './NotificationList';
 import { getProgramStages, getProgramNotifications } from './selectors';
 import NotificationDeleteDialog from './NotificationDeleteDialog';
-import { removeStageNotification, removeProgramNotification, setEditModel, setAddModel } from './actions';
+import {
+    removeStageNotification,
+    removeProgramNotification,
+    setEditModel,
+    setAddModel,
+} from './actions';
 import NotificationDialog from './NotificationDialog';
 import eventProgramStore from '../eventProgramStore';
 const programStageTabIndex = 0;
@@ -157,12 +162,11 @@ const enhance = compose(
             modelToDelete,
         }) => () => {
             setOpen(false);
-            if(modelToDelete.programStage) {
+            if (modelToDelete.programStage) {
                 removeStageNotification(modelToDelete);
             } else {
                 removeProgramNotification(modelToDelete);
             }
-
         },
         askForConfirmation: ({ setOpen, setModelToDelete }) => model => {
             setModelToDelete(model);

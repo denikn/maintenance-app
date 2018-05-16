@@ -47,9 +47,11 @@ class AddNewSection extends Component {
         this.setState({ sectionName });
     };
 
-    focusOnSectionName = (input) => {
+    focusOnSectionName = input => {
         if (input) {
-            setTimeout(() => { input.focus(); }, 20);
+            setTimeout(() => {
+                input.focus();
+            }, 20);
         }
     };
 
@@ -87,7 +89,7 @@ class AddNewSection extends Component {
                 </Dialog>
             </div>
         );
-    }
+    };
 }
 
 AddNewSection.propTypes = {

@@ -18,8 +18,8 @@ export const withProgramStageFromProgramStage$ = mapPropsStream(props$ =>
         (props, programStage) => ({
             ...props,
             programStage,
-        }),
-    ),
+        })
+    )
 );
 
 /**
@@ -35,9 +35,9 @@ export const withProgramAndStages = compose(
                 ...props,
                 program,
                 programStages,
-            }),
-        ),
-    ),
+            })
+        )
+    )
 );
 
 export const getProgramStageById$ = stageId =>
@@ -51,7 +51,7 @@ export const getProgramStageOrFirstFromProps$ = props$ =>
         .take(1)
         .flatMap(
             props =>
-                (props.programStage$
+                props.programStage$
                     ? props.programStage$
-                    : programStore$.map(getFirstProgramStage)),
+                    : programStore$.map(getFirstProgramStage)
         );

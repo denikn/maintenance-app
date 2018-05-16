@@ -16,18 +16,11 @@ export function getSideBarConfig() {
         },
 
         dataElementSection: {
-            items: [
-                'dataElement',
-                'dataElementGroup',
-                'dataElementGroupSet',
-            ],
+            items: ['dataElement', 'dataElementGroup', 'dataElementGroupSet'],
         },
 
         dataSetSection: {
-            items: [
-                'dataSet',
-                'dataSetNotificationTemplate',
-            ],
+            items: ['dataSet', 'dataSetNotificationTemplate'],
         },
 
         indicatorSection: {
@@ -89,11 +82,12 @@ export function getSideBarConfig() {
 export function getSectionForType(modelType) {
     const config = getSideBarConfig();
 
-    return Object
-        .keys(config)
-        .find(section => config[section] &&
+    return Object.keys(config).find(
+        section =>
+            config[section] &&
             config[section].items &&
-            config[section].items.indexOf(modelType) >= 0);
+            config[section].items.indexOf(modelType) >= 0
+    );
 }
 
 /**
@@ -105,37 +99,74 @@ export function getSectionForType(modelType) {
 const typeDetails = {
     category: {
         filters: ['dataDimensionType'],
-        columns: ['displayName', 'dataDimensionType', 'publicAccess', 'lastUpdated'],
+        columns: [
+            'displayName',
+            'dataDimensionType',
+            'publicAccess',
+            'lastUpdated',
+        ],
     },
     categoryCombo: {
         filters: ['dataDimensionType'],
-        columns: ['displayName', 'dataDimensionType', 'publicAccess', 'lastUpdated'],
+        columns: [
+            'displayName',
+            'dataDimensionType',
+            'publicAccess',
+            'lastUpdated',
+        ],
     },
     categoryOptionGroup: {
         filters: ['dataDimensionType'],
-        columns: ['displayName', 'dataDimensionType', 'publicAccess', 'lastUpdated'],
+        columns: [
+            'displayName',
+            'dataDimensionType',
+            'publicAccess',
+            'lastUpdated',
+        ],
     },
     categoryOptionGroupSet: {
         filters: ['dataDimensionType'],
-        columns: ['displayName', 'dataDimensionType', 'publicAccess', 'lastUpdated'],
+        columns: [
+            'displayName',
+            'dataDimensionType',
+            'publicAccess',
+            'lastUpdated',
+        ],
     },
     dataElement: {
         filters: ['domainType', 'valueType', 'categoryCombo'],
-        columns: ['displayName', 'domainType', 'valueType', 'categoryCombo[displayName]', 'lastUpdated'],
+        columns: [
+            'displayName',
+            'domainType',
+            'valueType',
+            'categoryCombo[displayName]',
+            'lastUpdated',
+        ],
     },
     dataElementGroupSet: {
         columns: ['displayName', 'compulsory', 'publicAccess', 'lastUpdated'],
     },
     dataSet: {
         filters: ['formType'],
-        columns: ['displayName', 'formType', 'periodType', 'publicAccess', 'lastUpdated'],
+        columns: [
+            'displayName',
+            'formType',
+            'periodType',
+            'publicAccess',
+            'lastUpdated',
+        ],
     },
     dataSetNotificationTemplate: {
         columns: ['displayName', 'lastUpdated'],
     },
     indicator: {
         filters: ['indicatorType'],
-        columns: ['displayName', 'indicatorType[displayName]', 'publicAccess', 'lastUpdated'],
+        columns: [
+            'displayName',
+            'indicatorType[displayName]',
+            'publicAccess',
+            'lastUpdated',
+        ],
     },
     indicatorType: {
         columns: ['displayName', 'factor', 'publicAccess', 'lastUpdated'],
@@ -147,11 +178,24 @@ const typeDetails = {
         columns: ['displayName', 'level', 'lastUpdated'],
     },
     organisationUnitGroupSet: {
-        columns: ['displayName', 'compulsory', 'dataDimension', 'publicAccess', 'lastUpdated'],
+        columns: [
+            'displayName',
+            'compulsory',
+            'dataDimension',
+            'publicAccess',
+            'lastUpdated',
+        ],
     },
     trackedEntityAttribute: {
         filters: ['valueType', 'aggregationType'],
-        columns: ['displayName', 'valueType', 'aggregationType', 'unique', 'confidential', 'lastUpdated'],
+        columns: [
+            'displayName',
+            'valueType',
+            'aggregationType',
+            'unique',
+            'confidential',
+            'lastUpdated',
+        ],
     },
     program: {
         columns: ['displayName', 'programType', 'publicAccess', 'lastUpdated'],
@@ -167,31 +211,59 @@ const typeDetails = {
     },
     programRuleVariable: {
         filters: ['program', 'programRuleVariableSourceType'],
-        columns: ['displayName', 'program[displayName]', 'programRuleVariableSourceType', 'lastUpdated'],
+        columns: [
+            'displayName',
+            'program[displayName]',
+            'programRuleVariableSourceType',
+            'lastUpdated',
+        ],
     },
     programStage: {
         columns: ['displayName', 'lastUpdated'],
     },
     validationRule: {
-        columns: ['displayName', 'importance', 'periodType', 'publicAccess', 'lastUpdated'],
+        columns: [
+            'displayName',
+            'importance',
+            'periodType',
+            'publicAccess',
+            'lastUpdated',
+        ],
     },
     constant: {
         columns: ['displayName', 'value', 'lastUpdated'],
     },
     attribute: {
-        columns: ['displayName', 'valueType', 'mandatory', 'unique', 'publicAccess', 'lastUpdated'],
+        columns: [
+            'displayName',
+            'valueType',
+            'mandatory',
+            'unique',
+            'publicAccess',
+            'lastUpdated',
+        ],
     },
     optionSet: {
         columns: ['displayName', 'valueType', 'lastUpdated'],
     },
     predictor: {
-        columns: ['displayName', 'output[displayName]', 'periodType', 'lastUpdated'],
+        columns: [
+            'displayName',
+            'output[displayName]',
+            'periodType',
+            'lastUpdated',
+        ],
     },
     pushAnalysis: {
         columns: ['displayName', 'dashboard[displayName]', 'lastUpdated'],
     },
     externalMapLayer: {
-        columns: ['displayName', 'mapLayerPosition', 'mapService', 'lastUpdated'],
+        columns: [
+            'displayName',
+            'mapLayerPosition',
+            'mapService',
+            'lastUpdated',
+        ],
     },
     dataApprovalLevel: {
         columns: [
@@ -204,17 +276,15 @@ const typeDetails = {
         ],
     },
     dataApprovalWorkflow: {
-        columns: [
-            'displayName',
-            'periodType',
-            'publicAccess',
-            'lastUpdated',
-        ],
+        columns: ['displayName', 'periodType', 'publicAccess', 'lastUpdated'],
     },
 };
 
 export function getFilterFieldsForType(modelType) {
-    if (typeDetails.hasOwnProperty(modelType) && typeDetails[modelType].hasOwnProperty('filters')) {
+    if (
+        typeDetails.hasOwnProperty(modelType) &&
+        typeDetails[modelType].hasOwnProperty('filters')
+    ) {
         return typeDetails[modelType].filters;
     }
 
@@ -222,29 +292,38 @@ export function getFilterFieldsForType(modelType) {
 }
 
 export function getFiltersForType(modelType) {
-    if (typeDetails.hasOwnProperty(modelType) && typeDetails[modelType].hasOwnProperty('filters')) {
-        return typeDetails[modelType]
-            .filters
-            .reduce((f, filters) => {
-                f[filters] = null;
-                return f;
-            }, {});
+    if (
+        typeDetails.hasOwnProperty(modelType) &&
+        typeDetails[modelType].hasOwnProperty('filters')
+    ) {
+        return typeDetails[modelType].filters.reduce((f, filters) => {
+            f[filters] = null;
+            return f;
+        }, {});
     }
 
     return [];
 }
 
 export function getTableColumnsForType(modelType, preservePropNames = false) {
-    if (typeDetails.hasOwnProperty(modelType) && typeDetails[modelType].hasOwnProperty('columns')) {
-        return typeDetails[modelType].columns
-            .map(col => (preservePropNames ? col : col.replace(/(\w*)\[(\w*)]/, '$1___$2')));
+    if (
+        typeDetails.hasOwnProperty(modelType) &&
+        typeDetails[modelType].hasOwnProperty('columns')
+    ) {
+        return typeDetails[modelType].columns.map(
+            col =>
+                preservePropNames
+                    ? col
+                    : col.replace(/(\w*)\[(\w*)]/, '$1___$2')
+        );
     }
     // Default columns:
     return ['displayName', 'publicAccess', 'lastUpdated'];
 }
 
 export function getDefaultFiltersForType(modelType) {
-    if (typeDetails.hasOwnProperty(modelType) &&
+    if (
+        typeDetails.hasOwnProperty(modelType) &&
         typeDetails[modelType].hasOwnProperty('defaultFilters') &&
         Array.isArray(typeDetails[modelType].defaultFilters)
     ) {

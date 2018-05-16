@@ -4,10 +4,24 @@ import { hideSnackBarMessage, requestShowSnackBarMessage } from './actions';
 
 const snackActions = Action.createActionsFromNames(['show', 'hide']);
 
-snackActions.show.subscribe((actionConfig) => {
-    const { message, action, autoHideDuration, onActionTouchTap, translate } = actionConfig.data;
+snackActions.show.subscribe(actionConfig => {
+    const {
+        message,
+        action,
+        autoHideDuration,
+        onActionTouchTap,
+        translate,
+    } = actionConfig.data;
 
-    store.dispatch(requestShowSnackBarMessage({ message, action, autoHideDuration, onActionTouchTap, translate }));
+    store.dispatch(
+        requestShowSnackBarMessage({
+            message,
+            action,
+            autoHideDuration,
+            onActionTouchTap,
+            translate,
+        })
+    );
 });
 
 snackActions.hide.subscribe(() => {

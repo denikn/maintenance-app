@@ -1,4 +1,3 @@
-
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -27,17 +26,17 @@ function getDocsVersion({ major, minor, snapshot }) {
     return `${major}.${minor}`;
 }
 
-/** 
- * If ${placeholder} is found in mappingKey, it will be replaced with a matching name if 
- * present from variablesToReplace.  
- * 
+/**
+ * If ${placeholder} is found in mappingKey, it will be replaced with a matching name if
+ * present from variablesToReplace.
+ *
  * Eg. for the mappingKey "/edit/otherSection/${objectType}" the placeholder objectType
- * will be found. If an entry in variablesToReplace exists objectType will be replaced 
+ * will be found. If an entry in variablesToReplace exists objectType will be replaced
  * with the value to this entry, say constant. This will result in the new path  "/edit/otherSection/constant".
  * If no match is found, the path will return.
- * 
+ *
  * @param {string} mappingKey The mapping that may have a placeholder to replace
- * @param {Map} variablesToReplace The variables that are to be replaced with the placeholder 
+ * @param {Map} variablesToReplace The variables that are to be replaced with the placeholder
  *
  * @returns {string} The matched path with replaced placeholders if found
  */
@@ -52,26 +51,31 @@ function replacePlaceholder(mappingKey, variablesToReplace) {
     });
 }
 
-/** 
+/**
  * Checks if the mappingKeyPath with replaced placeholders matches the path were currently on.
- * 
- * @param {string} path The path to be matched with a mappingKey 
- * @param {Map} variablesToReplace The variables that are to be replaced with a placeholder 
+ *
+ * @param {string} path The path to be matched with a mappingKey
+ * @param {Map} variablesToReplace The variables that are to be replaced with a placeholder
  *
  * @returns {string} The matched mappingKey with replaced placeholders if found
  */
 function replaceMappingPathPlaceholder(path, variablesToReplace) {
-    return Object.keys(inlineHelpMapping)
-        .find((mappingKey) => {
-            const pathToMatch = replacePlaceholder(mappingKey, variablesToReplace);
-            return (new RegExp(pathToMatch)).test(path);
-        });
+    return Object.keys(inlineHelpMapping).find(mappingKey => {
+        const pathToMatch = replacePlaceholder(mappingKey, variablesToReplace);
+        return new RegExp(pathToMatch).test(path);
+    });
 }
 
 // Replaces the placeholders of the matched mappingKey url to create the complete partial help content path.
-function getPartialHelpContentPath(replacedMappingPath, variablesToReplaceCamel) {
+function getPartialHelpContentPath(
+    replacedMappingPath,
+    variablesToReplaceCamel
+) {
     if (mappingPathExists(replacedMappingPath)) {
-        return replacePlaceholder(inlineHelpMapping[replacedMappingPath], variablesToReplaceCamel);
+        return replacePlaceholder(
+            inlineHelpMapping[replacedMappingPath],
+            variablesToReplaceCamel
+        );
     }
 
     return '';
@@ -91,18 +95,28 @@ function getPartialHelpContentPath(replacedMappingPath, variablesToReplaceCamel)
  */
 function findHelpLinkForPath(path, schema) {
     const variablesToReplace = new Map([['objectType', schema]]);
-    const variablesToReplaceCamel = new Map([['objectType', camelCaseToUnderscores(schema)]]);
+    const variablesToReplaceCamel = new Map([
+        ['objectType', camelCaseToUnderscores(schema)],
+    ]);
 
-    const replacedMappingPath = replaceMappingPathPlaceholder(path, variablesToReplace);
+    const replacedMappingPath = replaceMappingPathPlaceholder(
+        path,
+        variablesToReplace
+    );
 
-    return getPartialHelpContentPath(replacedMappingPath, variablesToReplaceCamel);
+    return getPartialHelpContentPath(
+        replacedMappingPath,
+        variablesToReplaceCamel
+    );
 }
 
 export default function HelpLink({ schema }, { d2 }) {
     const path = window.location.hash
         .replace(/^#/, '') // Remove leading hash
         .replace(/\?.+?$/, ''); // Remove query param/cache breaker
-    const docsLink = `https://ci.dhis2.org/docs/${getDocsVersion(d2.system.version)}`;
+    const docsLink = `https://ci.dhis2.org/docs/${getDocsVersion(
+        d2.system.version
+    )}`;
     const helpLink = findHelpLinkForPath(path, schema);
 
     if (helpLink) {

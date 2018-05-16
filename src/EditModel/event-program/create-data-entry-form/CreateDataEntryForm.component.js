@@ -23,7 +23,7 @@ import {
     removeProgramStageSection,
     editProgramStageSectionName,
 } from './actions';
-import { getStageSectionsById } from "../tracker-program/program-stages/selectors";
+import { getStageSectionsById } from '../tracker-program/program-stages/selectors';
 
 const sectionFormIndex = 1;
 
@@ -45,13 +45,14 @@ class CreateDataEntryForm extends Component {
         );
     };
 
-    renderTab = (label, contentToRender) =>
+    renderTab = (label, contentToRender) => (
         <Tab style={styles.tab} label={label}>
             <div style={styles.tabContent}>
                 <HelpText />
                 {contentToRender}
             </div>
-        </Tab>;
+        </Tab>
+    );
 
     getTranslation = key => {
         return this.context.d2.i18n.getTranslation(key);
@@ -105,10 +106,11 @@ CreateDataEntryForm.contextTypes = {
     d2: PropTypes.object,
 };
 
-const HelpText = (_, { d2 }) =>
+const HelpText = (_, { d2 }) => (
     <div style={styles.helpText}>
         {d2.i18n.getTranslation('program_forms_help_text')}
-    </div>;
+    </div>
+);
 
 HelpText.contextTypes = {
     d2: PropTypes.object,
@@ -172,11 +174,12 @@ const enhance = compose(
                 programStage,
                 programStageSections,
                 trackerDataElements,
-                store,
+                store
             ) => ({
                 ...props,
                 programStage,
-                programStageSections: getStageSectionsById(store, programStage.id) || [],
+                programStageSections:
+                    getStageSectionsById(store, programStage.id) || [],
                 trackerDataElements,
             })
         )
@@ -249,13 +252,16 @@ const enhance = compose(
         }) => programStageSections => {
             changeProgramStageSectionOrder({
                 programStage: programStage.id,
-                programStageSections
+                programStageSections,
             });
         },
-        onSectionAdded: ({ programStage, addProgramStageSection }) => newSectionName => {
+        onSectionAdded: ({
+            programStage,
+            addProgramStageSection,
+        }) => newSectionName => {
             addProgramStageSection({
                 programStage: programStage.id,
-                newSectionName
+                newSectionName,
             });
         },
         onSectionRemoved: ({
@@ -264,7 +270,8 @@ const enhance = compose(
         }) => programStageSection => {
             removeProgramStageSection({
                 programStage: programStage.id,
-                programStageSection });
+                programStageSection,
+            });
         },
     })
 );

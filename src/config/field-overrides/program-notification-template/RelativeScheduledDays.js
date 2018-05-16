@@ -19,30 +19,47 @@ const relativeScheduledDaysStyle = {
 
 const enhance = compose(
     getContext({ d2: PropTypes.object }),
-    withState('beforeOrAfter', 'setBeforeOrAfter', ({ value }) => (value >= 0 ? 'after' : 'before')),
+    withState(
+        'beforeOrAfter',
+        'setBeforeOrAfter',
+        ({ value }) => (value >= 0 ? 'after' : 'before')
+    ),
     withHandlers({
-        onChangeBeforeAfter: ({ onChange, setBeforeOrAfter, value }) => (event, index, beforeOrAfter) => {
-            const days = beforeOrAfter === 'after' ? Number(value) : -1 * Number(value);
+        onChangeBeforeAfter: ({ onChange, setBeforeOrAfter, value }) => (
+            event,
+            index,
+            beforeOrAfter
+        ) => {
+            const days =
+                beforeOrAfter === 'after' ? Number(value) : -1 * Number(value);
             setBeforeOrAfter(beforeOrAfter);
             onChange({ target: { value: days } });
         },
         onChangeDays: ({ onChange, beforeOrAfter }) => (event, value) => {
-            const days = beforeOrAfter === 'after' ? Number(value) : -1 * Number(value);
+            const days =
+                beforeOrAfter === 'after' ? Number(value) : -1 * Number(value);
             if (!Number.isNaN(days)) {
                 onChange({ target: { value: days } });
             }
         },
-    }),
+    })
 );
 
-function RelativeScheduledDays({ onChangeBeforeAfter, beforeOrAfter, onChangeDays, d2, value, style }) {
+function RelativeScheduledDays({
+    onChangeBeforeAfter,
+    beforeOrAfter,
+    onChangeDays,
+    d2,
+    value,
+    style,
+}) {
     const t = d2.i18n.getTranslation.bind(d2.i18n);
 
     /* Because of bad alignment of material ui textfield and selectfield, the compoents becomes skewed when
        using the hide method EditModelForm.component (setting the display to none/block). The component 
        must instead chose to return on display:'none'
     */
-    if (style && (style.display === 'none')) {
+    if (style && style.display === 'none') {
         return null;
     }
 
@@ -54,7 +71,7 @@ function RelativeScheduledDays({ onChangeBeforeAfter, beforeOrAfter, onChangeDay
                 value={Math.abs(value || 0)}
                 onChange={onChangeDays}
             />
-            <span>{ t('days') }</span>
+            <span>{t('days')}</span>
             <SelectField value={beforeOrAfter} onChange={onChangeBeforeAfter}>
                 <MenuItem value="before" primaryText={t('before')} />
                 <MenuItem value="after" primaryText={t('after')} />
@@ -77,6 +94,5 @@ RelativeScheduledDays.defaultProps = {
     value: 0,
     style: {},
 };
-
 
 export default enhance(RelativeScheduledDays);

@@ -18,7 +18,7 @@ const SectionList = ({
     sortItems,
 }) => (
     <div>
-        { sections.map((section, index) => (
+        {sections.map((section, index) => (
             <Section
                 key={`section-${index}`}
                 index={index}
@@ -26,16 +26,30 @@ const SectionList = ({
                 selected={isEqual(section.id, selectedSectionId)}
                 collapsed={collapsedSections.includes(section.id)}
                 editing={isEqual(section.id, editingSectionId)}
-                onToggleEdit={() => { onToggleEditing(section.id); }}
-                onToggleOpen={() => { onToggleSection(section.id); }}
-                onSelect={() => { onSelectSection(section.id); }}
-                onNameChanged={(newName) => { onSectionNameChanged(section.id, newName); }}
-                onSectionRemoved={() => { onSectionRemoved(section); }}
-                onDataElementRemoved={(dataElementId) => { onDataElementRemoved(dataElementId, section.id); }}
-                sortItems={({ oldIndex, newIndex }) => { sortItems(index, oldIndex, newIndex); }}
+                onToggleEdit={() => {
+                    onToggleEditing(section.id);
+                }}
+                onToggleOpen={() => {
+                    onToggleSection(section.id);
+                }}
+                onSelect={() => {
+                    onSelectSection(section.id);
+                }}
+                onNameChanged={newName => {
+                    onSectionNameChanged(section.id, newName);
+                }}
+                onSectionRemoved={() => {
+                    onSectionRemoved(section);
+                }}
+                onDataElementRemoved={dataElementId => {
+                    onDataElementRemoved(dataElementId, section.id);
+                }}
+                sortItems={({ oldIndex, newIndex }) => {
+                    sortItems(index, oldIndex, newIndex);
+                }}
             />
-            ))}
+        ))}
     </div>
 );
 
-export default SortableContainer(SectionList);;
+export default SortableContainer(SectionList);

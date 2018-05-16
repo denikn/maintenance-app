@@ -23,7 +23,8 @@ class OperatorButtons extends Component {
                 label={label}
                 onClick={() => this.props.onClick(value || label)}
                 style={styles.operatorButton}
-            />);
+            />
+        );
     }
 
     render() {
@@ -49,7 +50,8 @@ class OperatorButtons extends Component {
                     {this.operatorButton('AND', ' && ')}
                     {this.operatorButton('OR', ' || ')}
                 </div>
-            </div>);
+            </div>
+        );
     }
 }
 

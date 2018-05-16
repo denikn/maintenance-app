@@ -24,8 +24,9 @@ const reportDateOptions = [
  *  or translateOptions through fieldOptions to the DropDown-component.
  */
 
-const ReportDateToUseDropDown = props =>
-    <DropDown {...props} options={reportDateOptions} translateOptions />;
+const ReportDateToUseDropDown = props => (
+    <DropDown {...props} options={reportDateOptions} translateOptions />
+);
 
 export default new Map([
     [

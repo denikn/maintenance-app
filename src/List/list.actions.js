@@ -8,11 +8,24 @@ import { getInstance } from 'd2/lib/d2';
 import listStore from './list.store';
 import detailsStore from './details.store';
 import appState from '../App/appStateStore';
-import { getDefaultFiltersForType, getFilterFieldsForType, getTableColumnsForType } from '../config/maintenance-models';
+import {
+    getDefaultFiltersForType,
+    getFilterFieldsForType,
+    getTableColumnsForType,
+} from '../config/maintenance-models';
 
 export const fieldFilteringForQuery = [
-    'displayName', 'shortName', 'id', 'lastUpdated', 'created', 'displayDescription',
-    'code', 'publicAccess', 'access', 'href', 'level',
+    'displayName',
+    'shortName',
+    'id',
+    'lastUpdated',
+    'created',
+    'displayDescription',
+    'code',
+    'publicAccess',
+    'access',
+    'href',
+    'level',
 ].join(',');
 
 const listActions = Action.createActionsFromNames([
@@ -33,19 +46,30 @@ function applyCurrentFilters(modelDefinitions, modelName) {
             // Remove empty filters
             .filter(prop => listStore.state.filters[prop])
             // Only include filters that apply to the current model type
-            .filter(prop => getFilterFieldsForType(modelDefinition.name).includes(prop))
+            .filter(prop =>
+                getFilterFieldsForType(modelDefinition.name).includes(prop)
+            )
             // Apply each filter to the model definition
-            .map(key => [modelDefinitions.hasOwnProperty(key) ? `${key}.id` : key, listStore.state.filters[key]])
+            .map(key => [
+                modelDefinitions.hasOwnProperty(key) ? `${key}.id` : key,
+                listStore.state.filters[key],
+            ])
             // Add the default filters for the modelType
             .concat(getDefaultFiltersForType(modelName))
             .reduce((out, [filterField, filter]) => {
                 const filterValue = filter.id || filter;
-                return out.filter().on(filterField).equals(filterValue);
+                return out
+                    .filter()
+                    .on(filterField)
+                    .equals(filterValue);
             }, modelDefinition);
 
         // Apply name search string, if any
         return listStore.state.searchString.trim().length > 0
-            ? filterModelDefinition.filter().on('displayName').ilike(listStore.state.searchString)
+            ? filterModelDefinition
+                  .filter()
+                  .on('displayName')
+                  .ilike(listStore.state.searchString)
             : filterModelDefinition;
     }
 
@@ -58,7 +82,10 @@ function getSchemaWithFilters(modelDefinitions, modelName) {
     ]);
 
     if (!schemasThatShouldHaveDefaultInTheList.has(modelName)) {
-        return applyCurrentFilters(modelDefinitions, modelName).filter().on('name').notEqual('default');
+        return applyCurrentFilters(modelDefinitions, modelName)
+            .filter()
+            .on('name')
+            .notEqual('default');
     }
     return applyCurrentFilters(modelDefinitions, modelName);
 }
@@ -77,12 +104,15 @@ function getOrderingForSchema(modelName) {
 
 function getQueryForSchema(modelName) {
     return {
-        fields: `${fieldFilteringForQuery},${getTableColumnsForType(modelName, true)}`,
+        fields: `${fieldFilteringForQuery},${getTableColumnsForType(
+            modelName,
+            true
+        )}`,
         order: getOrderingForSchema(modelName),
     };
 }
 
-listActions.setListSource.subscribe((action) => {
+listActions.setListSource.subscribe(action => {
     listStore.listSourceSubject.next(Observable.of(action.data));
 });
 
@@ -91,7 +121,10 @@ listActions.setListSource.subscribe((action) => {
 // ~
 listActions.loadList
     .filter(({ data }) => data !== 'organisationUnit')
-    .combineLatest(Observable.fromPromise(getInstance()), (action, d2) => ({ ...action, d2 }))
+    .combineLatest(Observable.fromPromise(getInstance()), (action, d2) => ({
+        ...action,
+        d2,
+    }))
     .flatMap(({ data: modelName, complete, error, d2 }) => {
         // We can not search for non existing models
         if (isUndefined(d2.models[modelName])) {
@@ -100,11 +133,16 @@ listActions.loadList
         }
 
         //Remember the searchString if its the same model
-        const searchString = listStore.state && listStore.state.modelType
-            && listStore.state.modelType === modelName ?
-                listStore.state.searchString : '';
+        const searchString =
+            listStore.state &&
+            listStore.state.modelType &&
+            listStore.state.modelType === modelName
+                ? listStore.state.searchString
+                : '';
 
-        listStore.setState(Object.assign(listStore.state || {}, { searchString }));
+        listStore.setState(
+            Object.assign(listStore.state || {}, { searchString })
+        );
         return Observable.of({
             schema: d2.models[modelName],
             query: getQueryForSchema(modelName),
@@ -114,14 +152,15 @@ listActions.loadList
         });
     })
     .subscribe(async ({ schema, query, complete, error, d2 }) => {
-        const listResultsCollection = await getSchemaWithFilters(d2.models, schema.name)
-            .list(Object.assign(query, getQueryForSchema(schema.name)));
+        const listResultsCollection = await getSchemaWithFilters(
+            d2.models,
+            schema.name
+        ).list(Object.assign(query, getQueryForSchema(schema.name)));
 
         listActions.setListSource(listResultsCollection);
 
         complete(`${schema.name} list loading`);
     }, log.error.bind(log));
-
 
 // ~
 // ~ Filter current OrganisationUnit list by name
@@ -136,20 +175,22 @@ listActions.searchByName
         // selected organisation unit.
         if (appState.state && appState.state.selectedOrganisationUnit) {
             organisationUnitModelDefinition = organisationUnitModelDefinition
-                .filter().on('parent.id').equals(appState.state.selectedOrganisationUnit.id);
+                .filter()
+                .on('parent.id')
+                .equals(appState.state.selectedOrganisationUnit.id);
         }
-        const organisationUnitsThatMatchQuery = await organisationUnitModelDefinition
-            .list(Object.assign(getQueryForSchema(data.modelType), {
+        const organisationUnitsThatMatchQuery = await organisationUnitModelDefinition.list(
+            Object.assign(getQueryForSchema(data.modelType), {
                 query: data.searchString,
                 withinUserHierarchy: true,
-            }));
+            })
+        );
 
         listActions.setListSource(organisationUnitsThatMatchQuery);
         complete();
     }, log.error.bind(log));
 
 const nonDefaultSearchSchemas = new Set(['organisationUnit']);
-
 
 // ~
 // ~ Filter current list by name (except OrganisationUnit - see above)
@@ -164,53 +205,80 @@ listActions.searchByName
         }
 
         if (data.searchString) {
-            listStore.setState(Object.assign(listStore.state, { searchString: data.searchString }));
+            listStore.setState(
+                Object.assign(listStore.state, {
+                    searchString: data.searchString,
+                })
+            );
         } else {
-            listStore.setState(Object.assign(listStore.state, { searchString: '' }));
+            listStore.setState(
+                Object.assign(listStore.state, { searchString: '' })
+            );
         }
 
-        const searchResultsCollection = await getSchemaWithFilters(d2.models, data.modelType)
-            .list(getQueryForSchema(data.modelType));
+        const searchResultsCollection = await getSchemaWithFilters(
+            d2.models,
+            data.modelType
+        ).list(getQueryForSchema(data.modelType));
 
         listActions.setListSource(searchResultsCollection);
 
-        complete(`${data.modelType} list with search on 'displayName' for '${data.searchString}' is loading`);
+        complete(
+            `${data.modelType} list with search on 'displayName' for '${
+                data.searchString
+            }' is loading`
+        );
     }, log.error.bind(log));
-
 
 // ~
 // ~ Filter current list by property
 // ~
-listActions.setFilterValue
-    .subscribe(async ({ data, complete, error }) => {
-        const d2 = await getInstance();
+listActions.setFilterValue.subscribe(async ({ data, complete, error }) => {
+    const d2 = await getInstance();
 
-        if (!d2.models[data.modelType]) {
-            error(`${data.modelType} is not a valid schema name`);
-        }
+    if (!d2.models[data.modelType]) {
+        error(`${data.modelType} is not a valid schema name`);
+    }
 
-        const filterField = d2.models.hasOwnProperty(data.filterField) ? `${data.filterField}.id` : data.filterField;
-        const filterValue = (!!data.filterValue && !!data.filterValue.hasOwnProperty('id'))
+    const filterField = d2.models.hasOwnProperty(data.filterField)
+        ? `${data.filterField}.id`
+        : data.filterField;
+    const filterValue =
+        !!data.filterValue && !!data.filterValue.hasOwnProperty('id')
             ? data.filterValue.id
             : data.filterValue;
 
-        if (filterField && filterValue) {
-            listStore.setState(Object.assign(listStore.state, {
-                filters: Object.assign(listStore.state.filters, { [data.filterField]: data.filterValue }),
-            }));
-        } else {
-            listStore.setState(Object.assign(listStore.state, {
-                filters: Object.assign(listStore.state.filters, { [data.filterField]: null }),
-            }));
-        }
+    if (filterField && filterValue) {
+        listStore.setState(
+            Object.assign(listStore.state, {
+                filters: Object.assign(listStore.state.filters, {
+                    [data.filterField]: data.filterValue,
+                }),
+            })
+        );
+    } else {
+        listStore.setState(
+            Object.assign(listStore.state, {
+                filters: Object.assign(listStore.state.filters, {
+                    [data.filterField]: null,
+                }),
+            })
+        );
+    }
 
-        const searchResultsCollection = await getSchemaWithFilters(d2.models, data.modelType)
-            .list(getQueryForSchema(data.modelType));
+    const searchResultsCollection = await getSchemaWithFilters(
+        d2.models,
+        data.modelType
+    ).list(getQueryForSchema(data.modelType));
 
-        listActions.setListSource(searchResultsCollection);
+    listActions.setListSource(searchResultsCollection);
 
-        complete(`${data.modelType} list with filter on '${filterField}' for '${filterValue}' is loading`);
-    }, log.error.bind(log));
+    complete(
+        `${
+            data.modelType
+        } list with filter on '${filterField}' for '${filterValue}' is loading`
+    );
+}, log.error.bind(log));
 
 // TODO: For simple action mapping like this we should be able to do something less boiler plate like
 listActions.getNextPage.subscribe(() => {

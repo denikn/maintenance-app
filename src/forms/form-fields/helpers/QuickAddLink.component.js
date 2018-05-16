@@ -35,7 +35,11 @@ export default function QuickAddLink(props) {
                     <AddCircleOutlineIcon />
                 </IconButton>
             </Link>
-            <IconButton tooltip="Refresh values" tooltipPosition="top-left" onClick={onRefreshClick}>
+            <IconButton
+                tooltip="Refresh values"
+                tooltipPosition="top-left"
+                onClick={onRefreshClick}
+            >
                 <RefreshIcon />
             </IconButton>
         </div>

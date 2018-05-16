@@ -20,7 +20,6 @@ const styles = {
         marginTop: 3,
         padding: 4,
     },
-
 };
 
 class TextEditorField extends React.Component {
@@ -31,7 +30,7 @@ class TextEditorField extends React.Component {
             value: props.value,
         };
 
-        this.onChange = (event) => {
+        this.onChange = event => {
             const value = event.target.value;
             this.setState({ value });
 
@@ -62,11 +61,17 @@ class TextEditorField extends React.Component {
             const selectionEnd = this.editor.selectionEnd;
             this.props.onChange({
                 target: {
-                    value: `${value.substr(0, selectionStart)}${text}${value.substr(selectionEnd)}`.trim(),
+                    value: `${value.substr(
+                        0,
+                        selectionStart
+                    )}${text}${value.substr(selectionEnd)}`.trim(),
                 },
             });
             window.setTimeout(() => {
-                this.editor.setSelectionRange(selectionStart + text.length, selectionStart + text.length);
+                this.editor.setSelectionRange(
+                    selectionStart + text.length,
+                    selectionStart + text.length
+                );
             });
         }
     }
@@ -99,6 +104,5 @@ TextEditorField.defaultProps = {
     disabled: false,
     onChange: null,
 };
-
 
 export default TextEditorField;

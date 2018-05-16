@@ -10,7 +10,16 @@ import LoadingMask from 'd2-ui/lib/loading-mask/LoadingMask.component';
 import Action from 'd2-ui/lib/action/Action';
 import pure from 'recompose/pure';
 import mapPropsStream from 'recompose/mapPropsStream';
-import { get, compose, first, getOr, noop, isEqual, find, curry } from 'lodash/fp';
+import {
+    get,
+    compose,
+    first,
+    getOr,
+    noop,
+    isEqual,
+    find,
+    curry,
+} from 'lodash/fp';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { dataEntryFormChanged, dataEntryFormRemove } from './actions';
@@ -18,15 +27,20 @@ import snackActions from '../../../Snackbar/snack.actions';
 import eventProgramStore from '../eventProgramStore';
 import CKEditor from './CKEditor';
 import '../../../../scss/EditModel/EditDataEntryFormProgramStage.scss';
-import { getProgramStageDataElementsByStageId } from "../notifications/selectors";
+import { getProgramStageDataElementsByStageId } from '../notifications/selectors';
 import PaletteSection from './PaletteSection';
-import { bindFuncsToKeys, moveEditorSelection, processFormData, insertElement as insElem } from "./dataEntryFormUtils";
+import {
+    bindFuncsToKeys,
+    moveEditorSelection,
+    processFormData,
+    insertElement as insElem,
+} from './dataEntryFormUtils';
 import PropTypes from 'prop-types';
 
 const programStageDataElementWithProgramStageId = programStageId => programStageDataElement => ({
     id: `${programStageId}.${programStageDataElement.id}`,
-    displayName: programStageDataElement.displayName
-})
+    displayName: programStageDataElement.displayName,
+});
 
 const PurePaletteSection = PaletteSection;
 
@@ -45,7 +59,7 @@ const styles = {
     },
     formSection: {
         display: 'flex',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
     },
     cancelButton: {
         marginLeft: '2rem',
@@ -82,15 +96,21 @@ class EditDataEntryForm extends React.Component {
         };
 
         this.disposables = new Set();
-        const { programStage, dataElements } = props;
+        const { programStage, dataElements } = props;
         // Load flags
-        this.disposables.add(Observable.fromPromise(context.d2.Api.getApi().get('system/flags'))
-            .subscribe(flags => {
+        this.disposables.add(
+            Observable.fromPromise(
+                context.d2.Api.getApi().get('system/flags')
+            ).subscribe(flags => {
                 // Operands with ID's that contain a dot ('.') are combined dataElementId's and categoryOptionId's
                 // The API returns "dataElementId.categoryOptionId", which are transformed to the format expected by
                 // custom forms: "dataElementId-categoryOptionId-val"
                 this.operands = dataElements
-                    .map(programStageDataElementWithProgramStageId(programStage.id))
+                    .map(
+                        programStageDataElementWithProgramStageId(
+                            programStage.id
+                        )
+                    )
                     .filter(op => op.id.indexOf('.') !== -1)
                     .reduce((out, op) => {
                         const id = `${op.id.split('.').join('-')}-val`;
@@ -105,11 +125,22 @@ class EditDataEntryForm extends React.Component {
 
                 // Create inserter functions for all insertable elements
                 // This avoids having to bind the functions during rendering
-                const boundOps = bindFuncsToKeys(this.operands, this.insertElement, this);
-                const boundFlags = bindFuncsToKeys(this.flags, this.insertFlag, this);
-                const insertFn = { ...boundOps, ...boundFlags}
+                const boundOps = bindFuncsToKeys(
+                    this.operands,
+                    this.insertElement,
+                    this
+                );
+                const boundFlags = bindFuncsToKeys(
+                    this.flags,
+                    this.insertFlag,
+                    this
+                );
+                const insertFn = { ...boundOps, ...boundFlags };
 
-                const { usedIds, outHtml } = processFormData(getOr('', 'htmlCode', dataEntryForm), this.operands);
+                const { usedIds, outHtml } = processFormData(
+                    getOr('', 'htmlCode', dataEntryForm),
+                    this.operands
+                );
                 const formHtml = dataEntryForm ? outHtml : '';
 
                 this.setState({
@@ -119,21 +150,28 @@ class EditDataEntryForm extends React.Component {
                     dataEntryForm,
                     formTitle: this.props.formTitle,
                 });
-            }));
+            })
+        );
 
         // Create element filtering action
         this.filterAction = Action.create('filter');
-        this.disposables.add(this.filterAction
-            .map(({ data, complete, error }) => ({ data: data[1], complete, error }))
-            .debounceTime(75)
-            .subscribe((args) => {
-                const filter = args.data
-                    .split(' ')
-                    .filter(x => x.length);
-                this.setState({ filter });
-            }));
+        this.disposables.add(
+            this.filterAction
+                .map(({ data, complete, error }) => ({
+                    data: data[1],
+                    complete,
+                    error,
+                }))
+                .debounceTime(75)
+                .subscribe(args => {
+                    const filter = args.data.split(' ').filter(x => x.length);
+                    this.setState({ filter });
+                })
+        );
 
-        this.getTranslation = this.context.d2.i18n.getTranslation.bind(this.context.d2.i18n);
+        this.getTranslation = this.context.d2.i18n.getTranslation.bind(
+            this.context.d2.i18n
+        );
         this.handleDeleteClick = this.handleDeleteClick.bind(this);
         this.handleStyleChange = this.handleStyleChange.bind(this);
         this.setEditorReference = this.setEditorReference.bind(this);
@@ -145,7 +183,7 @@ class EditDataEntryForm extends React.Component {
 
     //Used for when the form is deleted, to update the form
     componentWillReceiveProps({ dataEntryForm }) {
-        if (this.props.dataEntryForm && (!dataEntryForm || !dataEntryForm.id )) {
+        if (this.props.dataEntryForm && (!dataEntryForm || !dataEntryForm.id)) {
             this._editor.setData('');
         }
     }
@@ -160,21 +198,27 @@ class EditDataEntryForm extends React.Component {
         }
     }
 
-    handleEditorChanged = (editorData) => {
+    handleEditorChanged = editorData => {
         //prevent creation of new dataEntryForm when empty
-        if(!editorData && !this.props.dataEntryForm) {
+        if (!editorData && !this.props.dataEntryForm) {
             return;
         }
-        const { usedIds, outHtml} = processFormData(editorData, this.operands);
-        this.setState({
-            usedIds,
-        }, () => {
-            // Emit a value when the html changed
-            if (!this.props.dataEntryForm || this.props.dataEntryForm.htmlCode !== outHtml) {
-                this.props.onFormChange(outHtml);
+        const { usedIds, outHtml } = processFormData(editorData, this.operands);
+        this.setState(
+            {
+                usedIds,
+            },
+            () => {
+                // Emit a value when the html changed
+                if (
+                    !this.props.dataEntryForm ||
+                    this.props.dataEntryForm.htmlCode !== outHtml
+                ) {
+                    this.props.onFormChange(outHtml);
+                }
             }
-        });
-    }
+        );
+    };
 
     insertElement(id) {
         if (this.state.usedIds.indexOf(id) !== -1) {
@@ -184,7 +228,10 @@ class EditDataEntryForm extends React.Component {
     }
 
     insertFlag(img) {
-        this._editor.insertHtml(`<img src="../dhis-web-commons/flags/${img}" />`, 'unfiltered_html');
+        this._editor.insertHtml(
+            `<img src="../dhis-web-commons/flags/${img}" />`,
+            'unfiltered_html'
+        );
         const range = this._editor.getSelection().getRanges()[0];
         range.moveToElementEditablePosition(range.endContainer, true);
     }
@@ -195,7 +242,7 @@ class EditDataEntryForm extends React.Component {
 
     renderPalette() {
         return (
-            <div className="paletteContainer" style={{ }}>
+            <div className="paletteContainer" style={{}}>
                 <div className="palette">
                     <div style={styles.paletteFilter}>
                         <TextField
@@ -211,7 +258,9 @@ class EditDataEntryForm extends React.Component {
                             label="data_elements"
                             filter={this.state.filter}
                             expand={this.state.expand}
-                            expandClick={() => { this.setState({ expand: 'data_elements' }); }}
+                            expandClick={() => {
+                                this.setState({ expand: 'data_elements' });
+                            }}
                             usedIds={this.state.usedIds}
                             insertFn={this.state.insertFn}
                         />
@@ -220,7 +269,9 @@ class EditDataEntryForm extends React.Component {
                             label="flags"
                             filter={this.state.filter}
                             expand={this.state.expand}
-                            expandClick={() => { this.setState({ expand: 'flags' }); }}
+                            expandClick={() => {
+                                this.setState({ expand: 'flags' });
+                            }}
                             usedIds={this.state.usedIds}
                             insertFn={this.state.insertFn}
                         />
@@ -232,8 +283,10 @@ class EditDataEntryForm extends React.Component {
     render() {
         const props = this.props;
 
-        return this.state.formHtml === undefined ? <LoadingMask /> : (
-            <div style={Object.assign({}, styles.formContainer, { })}>
+        return this.state.formHtml === undefined ? (
+            <LoadingMask />
+        ) : (
+            <div style={Object.assign({}, styles.formContainer, {})}>
                 <div className="programStageEditForm">
                     <div className="left">
                         <CKEditor
@@ -244,31 +297,56 @@ class EditDataEntryForm extends React.Component {
                         <Paper style={styles.formPaper}>
                             <div style={styles.formSection}>
                                 <SelectField
-                                    value={getOr('NORMAL', 'style', props.dataEntryForm)}
+                                    value={getOr(
+                                        'NORMAL',
+                                        'style',
+                                        props.dataEntryForm
+                                    )}
                                     floatingLabelText="Form display style"
                                     onChange={this.handleStyleChange}
                                 >
-                                    <MenuItem value={'NORMAL'} primaryText={this.getTranslation('normal')} />
-                                    <MenuItem value={'COMFORTABLE'} primaryText={this.getTranslation('comfortable')} />
-                                    <MenuItem value={'COMPACT'} primaryText={this.getTranslation('compact')} />
-                                    <MenuItem value={'NONE'} primaryText={this.getTranslation('none')} />
+                                    <MenuItem
+                                        value={'NORMAL'}
+                                        primaryText={this.getTranslation(
+                                            'normal'
+                                        )}
+                                    />
+                                    <MenuItem
+                                        value={'COMFORTABLE'}
+                                        primaryText={this.getTranslation(
+                                            'comfortable'
+                                        )}
+                                    />
+                                    <MenuItem
+                                        value={'COMPACT'}
+                                        primaryText={this.getTranslation(
+                                            'compact'
+                                        )}
+                                    />
+                                    <MenuItem
+                                        value={'NONE'}
+                                        primaryText={this.getTranslation(
+                                            'none'
+                                        )}
+                                    />
                                 </SelectField>
                             </div>
                             <div style={styles.formSection}>
-                                {props.dataEntryForm && props.dataEntryForm.id ? (
+                                {props.dataEntryForm &&
+                                props.dataEntryForm.id ? (
                                     <FlatButton
                                         primary
                                         label={this.getTranslation('delete')}
                                         style={styles.deleteButton}
                                         onClick={this.handleDeleteClick}
                                     />
-                                ) : undefined}
+                                ) : (
+                                    undefined
+                                )}
                             </div>
                         </Paper>
                     </div>
-                    <div className="right">
-                        {this.renderPalette()}
-                    </div>
+                    <div className="right">{this.renderPalette()}</div>
                 </div>
             </div>
         );
@@ -293,22 +371,33 @@ EditDataEntryForm.contextTypes = {
     d2: PropTypes.any,
 };
 
-const mapDispatchToPropsForProgramStage = (dispatch, { programStage }) => bindActionCreators({
-    onFormChange: curry(dataEntryFormChanged)(programStage.id)('htmlCode'),
-    onStyleChange: curry(dataEntryFormChanged)(programStage.id)('style'),
-    onFormDelete: dataEntryFormRemove.bind(undefined, programStage.id),
-}, dispatch);
+const mapDispatchToPropsForProgramStage = (dispatch, { programStage }) =>
+    bindActionCreators(
+        {
+            onFormChange: curry(dataEntryFormChanged)(programStage.id)(
+                'htmlCode'
+            ),
+            onStyleChange: curry(dataEntryFormChanged)(programStage.id)(
+                'style'
+            ),
+            onFormDelete: dataEntryFormRemove.bind(undefined, programStage.id),
+        },
+        dispatch
+    );
 
 const programStageDataEntryForm = compose(
-    mapPropsStream(props$ => props$
-        .combineLatest(
+    mapPropsStream(props$ =>
+        props$.combineLatest(
             eventProgramStore,
-            ({programStage, ...props}, state) => ({
+            ({ programStage, ...props }, state) => ({
                 ...props,
                 programStage,
-                dataEntryForm: state.dataEntryFormForProgramStage[programStage.id],
-                dataElements: getProgramStageDataElementsByStageId(state)(programStage.id),
-                formTitle: programStage.displayName
+                dataEntryForm:
+                    state.dataEntryFormForProgramStage[programStage.id],
+                dataElements: getProgramStageDataElementsByStageId(state)(
+                    programStage.id
+                ),
+                formTitle: programStage.displayName,
             })
         )
     ),

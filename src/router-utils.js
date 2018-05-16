@@ -16,7 +16,7 @@ export function goBack() {
 /**
  * @param {Object} query
  */
-export const addQuery = (query) => {
+export const addQuery = query => {
     const location = Object.assign({}, hashHistory.getCurrentLocation());
     Object.assign(location.query, query);
     hashHistory.push(location);

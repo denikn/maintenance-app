@@ -45,7 +45,7 @@ const boundOnUpdate = dispatch =>
             onUpdate: ({ fieldName, value }) =>
                 setStageNotificationValue(fieldName, value),
         },
-        dispatch,
+        dispatch
     );
 
 const NotificationSubjectAndMessageTemplateFields = compose(
@@ -61,67 +61,71 @@ const NotificationSubjectAndMessageTemplateFields = compose(
 
         return {
             variableTypes: map(toVariableType, constantVariables).concat(
-                variables,
+                variables
             ),
         };
-    }),
+    })
 )(SubjectAndMessageTemplateFields);
 
 // Using dropdownasync-getter due to support for references
-const ProgramAttributeDropDown = compose(connect(undefined, boundOnUpdate))((props) => {
-    const attributesOpts = props.attributes
-        .filter(attr => attr.valueType === 'PHONE_NUMBER')
-        .map(attr => ({
-            text: attr.displayName,
-            value: attr.trackedEntityAttribute.id,
-        }));
+const ProgramAttributeDropDown = compose(connect(undefined, boundOnUpdate))(
+    props => {
+        const attributesOpts = props.attributes
+            .filter(attr => attr.valueType === 'PHONE_NUMBER')
+            .map(attr => ({
+                text: attr.displayName,
+                value: attr.trackedEntityAttribute.id,
+            }));
 
-    const getAttrs = () => Promise.resolve(attributesOpts);
-    return (
-        <DropDownAsyncGetter
-            labelText={props.labelText}
-            options={attributesOpts}
-            onChange={event =>
-                props.onUpdate({
-                    fieldName: 'recipientProgramAttribute',
-                    value: event.target.value,
-                })}
-            value={props.model.recipientProgramAttribute}
-            fullWidth
-            isRequired
-            model={props.model}
-            getter={getAttrs}
-        />
-    );
-});
+        const getAttrs = () => Promise.resolve(attributesOpts);
+        return (
+            <DropDownAsyncGetter
+                labelText={props.labelText}
+                options={attributesOpts}
+                onChange={event =>
+                    props.onUpdate({
+                        fieldName: 'recipientProgramAttribute',
+                        value: event.target.value,
+                    })
+                }
+                value={props.model.recipientProgramAttribute}
+                fullWidth
+                isRequired
+                model={props.model}
+                getter={getAttrs}
+            />
+        );
+    }
+);
 
-const DataElementDropDown = compose(
-    connect(undefined, boundOnUpdate),
-)((props) => {
-    const dataElementOpts = props.dataElements
-        .filter(de => de.valueType == 'PHONE_NUMBER')
-        .map(de => ({
-            text: de.displayName,
-            value: de.id,
-        }));
-    const getElems = () => Promise.resolve(dataElementOpts);
-    return (
-        <DropDownAsyncGetter
-            labelText={props.labelText}
-            options={dataElementOpts}
-            onChange={event =>
-                props.onUpdate({
-                    fieldName: 'recipientDataElement',
-                    value: event.target.value,
-                })}
-            value={props.model.recipientDataElement}
-            fullWidth
-            isRequired
-            model={props.model}
-            getter={getElems}
-        />
-    );
-});
+const DataElementDropDown = compose(connect(undefined, boundOnUpdate))(
+    props => {
+        const dataElementOpts = props.dataElements
+            .filter(de => de.valueType == 'PHONE_NUMBER')
+            .map(de => ({
+                text: de.displayName,
+                value: de.id,
+            }));
+        const getElems = () => Promise.resolve(dataElementOpts);
+        return (
+            <DropDownAsyncGetter
+                labelText={props.labelText}
+                options={dataElementOpts}
+                onChange={event =>
+                    props.onUpdate({
+                        fieldName: 'recipientDataElement',
+                        value: event.target.value,
+                    })
+                }
+                value={props.model.recipientDataElement}
+                fullWidth
+                isRequired
+                model={props.model}
+                getter={getElems}
+            />
+        );
+    }
+);
 
 /**
  * programNotificationTemplate are shared for both program notification and
@@ -144,7 +148,7 @@ const sharedOverrides = [
     [
         'recipientUserGroup',
         {
-            component: (props) => {
+            component: props => {
                 if (
                     !props.model ||
                     props.model.notificationRecipient !== 'USER_GROUP'
@@ -166,8 +170,9 @@ const sharedOverrides = [
     [
         'messageTemplate',
         {
-            component: props =>
-                <NotificationSubjectAndMessageTemplateFields {...props} />,
+            component: props => (
+                <NotificationSubjectAndMessageTemplateFields {...props} />
+            ),
         },
     ],
 ];

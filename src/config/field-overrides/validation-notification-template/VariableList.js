@@ -28,7 +28,9 @@ const VariableList = ({ onItemSelected, variableTypes }, { d2 }) => {
 
         const selectItem = () => onItemSelected(`${type}{${varName}}`);
 
-        return (<ListItem key={label} primaryText={label} onClick={selectItem} />);
+        return (
+            <ListItem key={label} primaryText={label} onClick={selectItem} />
+        );
     };
 
     const listItems = variableTypes.map(renderListItem);
@@ -39,9 +41,7 @@ const VariableList = ({ onItemSelected, variableTypes }, { d2 }) => {
                 Template variables
             </Heading>
             <div style={styles.listWrapper}>
-                <List>
-                    {listItems}
-                </List>
+                <List>{listItems}</List>
             </div>
         </div>
     );

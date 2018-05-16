@@ -16,25 +16,30 @@ let SnackBar = (props, { d2 }) => (
     <Snackbar
         style={{ maxWidth: 'auto', zIndex: 5 }}
         bodyStyle={{ maxWidth: 'auto', height: 'auto' }}
-        message={props.translate ? d2.i18n.getTranslation(props.message) : props.message}
+        message={
+            props.translate
+                ? d2.i18n.getTranslation(props.message)
+                : props.message
+        }
         action={props.action}
         autoHideDuration={props.autoHideDuration}
         open={!!props.message}
         // if no onActionTouchTap is provided, action will default to close
-        onActionTouchTap={props.actionHandler ? props.actionHandler : props.onRequestClose}
+        onActionTouchTap={
+            props.actionHandler ? props.actionHandler : props.onRequestClose
+        }
         onRequestClose={props.onRequestClose}
-    />);
+    />
+);
 SnackBar = addD2Context(SnackBar);
 
-const mapStateToProps = state => (
-    {
-        message: snackBarMessageSelector(state),
-        action: snackBarActionTextSelector(state),
-        autoHideDuration: snackBarActionAutoHideSelector(state),
-        actionHandler: snackBarActionHandlerSelector(state),
-        translate: snackBarTranslate(state),
-    }
-);
+const mapStateToProps = state => ({
+    message: snackBarMessageSelector(state),
+    action: snackBarActionTextSelector(state),
+    autoHideDuration: snackBarActionAutoHideSelector(state),
+    actionHandler: snackBarActionHandlerSelector(state),
+    translate: snackBarTranslate(state),
+});
 
 const mapDispatchToProps = dispatch => ({
     onRequestClose: (...args) => dispatch(hideSnackBarMessage({ ...args })),

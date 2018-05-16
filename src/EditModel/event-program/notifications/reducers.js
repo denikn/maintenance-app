@@ -8,13 +8,10 @@ import {
 export const initialState = {
     isDeleting: false,
     modelToEdit: null,
-    notificationType: null
-}
+    notificationType: null,
+};
 
-export function stageNotificationsReducer(
-    state = initialState,
-    action
-) {
+export function stageNotificationsReducer(state = initialState, action) {
     switch (action.type) {
         case NOTIFICATION_SET_VALUE: {
             const model = state.modelToEdit;
@@ -26,7 +23,6 @@ export function stageNotificationsReducer(
             };
         }
         case NOTIFICATION_SET_EDIT_MODEL: {
-
             return {
                 notificationType: action.payload.notificationType,
                 modelToEdit: action.payload.model,
@@ -43,7 +39,7 @@ export function stageNotificationsReducer(
             return {
                 ...state,
                 modelToEdit: model,
-            }
+            };
         }
     }
 

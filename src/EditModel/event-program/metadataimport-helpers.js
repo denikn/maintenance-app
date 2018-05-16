@@ -1,4 +1,16 @@
-import { get, getOr, first, map, compose, groupBy, concat, reduce, flatten, filter, identity } from 'lodash/fp';
+import {
+    get,
+    getOr,
+    first,
+    map,
+    compose,
+    groupBy,
+    concat,
+    reduce,
+    flatten,
+    filter,
+    identity,
+} from 'lodash/fp';
 
 const importStatus = {
     OK: 'OK',
@@ -7,15 +19,22 @@ const importStatus = {
 };
 
 const extractErrorReports = compose(flatten, map(getOr([], 'objectReports')));
-const fixUidIfNeeded = map((objectReport) => {
-    const getUidFromErrorReports = compose(get('mainId'), first, filter(get('mainId')), getOr([], 'errorReports'));
+const fixUidIfNeeded = map(objectReport => {
+    const getUidFromErrorReports = compose(
+        get('mainId'),
+        first,
+        filter(get('mainId')),
+        getOr([], 'errorReports')
+    );
 
     const id = getOr(getUidFromErrorReports(objectReport), 'uid', objectReport);
 
     return {
         ...objectReport,
         id,
-        errors: compose(groupBy('errorProperty'), getOr([], 'errorReports'))(objectReport),
+        errors: compose(groupBy('errorProperty'), getOr([], 'errorReports'))(
+            objectReport
+        ),
     };
 });
 

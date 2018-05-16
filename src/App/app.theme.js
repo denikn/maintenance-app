@@ -1,4 +1,14 @@
-import { blue500, blue700, blue100, orange500, grey100, darkBlack, white, grey500, grey400 } from 'material-ui/styles/colors';
+import {
+    blue500,
+    blue700,
+    blue100,
+    orange500,
+    grey100,
+    darkBlack,
+    white,
+    grey500,
+    grey400,
+} from 'material-ui/styles/colors';
 import { fade } from 'material-ui/utils/colorManipulator';
 import Spacing from 'material-ui/styles/spacing';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';

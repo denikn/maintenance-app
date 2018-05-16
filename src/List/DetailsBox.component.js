@@ -11,45 +11,61 @@ class DetailsBox extends Component {
 
     getDetailBoxContent = () => {
         if (!this.props.source) {
-            return (<div className="detail-box__status">Loading details...</div>);
+            return <div className="detail-box__status">Loading details...</div>;
         }
 
         return this.props.fields
             .filter(fieldName => this.props.source[fieldName])
-            .map((fieldName) => {
-                const valueToRender = this.getValueToRender(fieldName, this.props.source[fieldName]);
+            .map(fieldName => {
+                const valueToRender = this.getValueToRender(
+                    fieldName,
+                    this.props.source[fieldName]
+                );
 
                 return (
                     <div key={fieldName} className="detail-field">
-                        <div className={`detail-field__label detail-field__${fieldName}-label`}>
-                            {this.getTranslation(camelCaseToUnderscores(fieldName))}
+                        <div
+                            className={`detail-field__label detail-field__${fieldName}-label`}
+                        >
+                            {this.getTranslation(
+                                camelCaseToUnderscores(fieldName)
+                            )}
                         </div>
-                        <div className={`detail-field__value detail-field__${fieldName}`}>{valueToRender}</div>
+                        <div
+                            className={`detail-field__value detail-field__${fieldName}`}
+                        >
+                            {valueToRender}
+                        </div>
                     </div>
                 );
             });
-    }
+    };
 
-    getDateString = (dateValue) => {
+    getDateString = dateValue => {
         const stringifiedDate = new Date(dateValue).toString();
 
         return stringifiedDate === 'Invalid Date' ? dateValue : stringifiedDate;
     };
 
-    getNamesToDisplay = (value) => {
+    getNamesToDisplay = value => {
         const namesToDisplay = value
             .map(v => (v.displayName ? v.displayName : v.name))
             .filter(name => name);
         return (
-            <ul>
-                {namesToDisplay.map(name => <li key={name}>{name}</li>)}
-            </ul>
+            <ul>{namesToDisplay.map(name => <li key={name}>{name}</li>)}</ul>
         );
-    }
+    };
 
     // Suffix the url with the .json extension to always get the json representation of the api resource
-    getJsonApiResource = value =>
-        <a style={{ wordBreak: 'break-all' }} href={`${value}.json`} target="_blank">{value}</a>;
+    getJsonApiResource = value => (
+        <a
+            style={{ wordBreak: 'break-all' }}
+            href={`${value}.json`}
+            target="_blank"
+        >
+            {value}
+        </a>
+    );
 
     getValueToRender = (fieldName, value) => {
         if (Array.isArray(value) && value.length) {
@@ -65,7 +81,7 @@ class DetailsBox extends Component {
         }
 
         return value;
-    }
+    };
 
     render() {
         const classList = classes('details-box');
@@ -73,7 +89,9 @@ class DetailsBox extends Component {
             <FontIcon
                 className="details-box__close-button material-icons"
                 onClick={this.props.onClose}
-            >close</FontIcon>
+            >
+                close
+            </FontIcon>
         );
 
         if (this.props.showDetailBox === false) {
@@ -115,6 +133,5 @@ DetailsBox.defaultProps = {
 DetailsBox.contextTypes = {
     d2: PropTypes.object.isRequired,
 };
-
 
 export default DetailsBox;

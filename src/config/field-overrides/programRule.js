@@ -2,10 +2,16 @@ import ProgramRuleActionList from './program-rules/programRuleActionList.compone
 import ProgramRuleConditionField from './program-rules/programRuleConditionField.component';
 
 export default new Map([
-    ['condition', {
-        component: ProgramRuleConditionField,
-    }],
-    ['programRuleActions', {
-        component: ProgramRuleActionList,
-    }],
+    [
+        'condition',
+        {
+            component: ProgramRuleConditionField,
+        },
+    ],
+    [
+        'programRuleActions',
+        {
+            component: ProgramRuleActionList,
+        },
+    ],
 ]);

@@ -6,45 +6,48 @@ import searchForOrganisationUnitsWithinHierarchy from '../OrganisationUnitHierar
 
 export const onSectionChanged = Action.create('onSectionChanged', 'SideBar');
 
-onSectionChanged
-    .subscribe(({ data }) => {
-        if (data.section === 'organisationUnitSection' && data.subSection === 'hierarchy') {
-            return goToRoute(`${data.section}/${data.subSection}`);
-        }
+onSectionChanged.subscribe(({ data }) => {
+    if (
+        data.section === 'organisationUnitSection' &&
+        data.subSection === 'hierarchy'
+    ) {
+        return goToRoute(`${data.section}/${data.subSection}`);
+    }
 
-        if (data.section) {
-            setAppState({
-                sideBar: Object.assign({}, appState.state.sideBar, {
-                    currentSection: data.section,
-                    currentSubSection: data.subSection,
-                }),
-            });
-            return goToRoute(`/list/${data.section}/${data.subSection}`);
-        }
-
-        // When clicking a mainSection the subSection passed in is actually a mainSection.
-        // TODO: Make this code less confusing and reduce the duplication
+    if (data.section) {
         setAppState({
             sideBar: Object.assign({}, appState.state.sideBar, {
-                currentSection: data.subSection,
-                currentSubSection: undefined,
+                currentSection: data.section,
+                currentSubSection: data.subSection,
             }),
         });
-        return goToRoute(`/list/${data.subSection}`);
+        return goToRoute(`/list/${data.section}/${data.subSection}`);
+    }
+
+    // When clicking a mainSection the subSection passed in is actually a mainSection.
+    // TODO: Make this code less confusing and reduce the duplication
+    setAppState({
+        sideBar: Object.assign({}, appState.state.sideBar, {
+            currentSection: data.subSection,
+            currentSubSection: undefined,
+        }),
     });
+    return goToRoute(`/list/${data.subSection}`);
+});
 
 export const onBackToSections = Action.create('onSectionChanged', 'SideBar');
-onBackToSections
-    .subscribe(() => {
-        goToRoute('/');
-    });
+onBackToSections.subscribe(() => {
+    goToRoute('/');
+});
 
 export const onOrgUnitSearch = Action.create('onOrgUnitSearch', 'SideBar');
 onOrgUnitSearch
     .distinctUntilChanged()
     .debounceTime(400)
-    .map(({ complete, error, data }) => Observable.fromPromise(searchForOrganisationUnitsWithinHierarchy(data))
-        .map(organisationUnits => ({
+    .map(({ complete, error, data }) =>
+        Observable.fromPromise(
+            searchForOrganisationUnitsWithinHierarchy(data)
+        ).map(organisationUnits => ({
             complete,
             error,
             organisationUnits,
@@ -53,7 +56,10 @@ onOrgUnitSearch
     .concatAll()
     .subscribe(({ complete, organisationUnits }) => {
         setAppState({
-            sideBar: Object.assign({ ...appState.state.sideBar }, { organisationUnits }),
+            sideBar: Object.assign(
+                { ...appState.state.sideBar },
+                { organisationUnits }
+            ),
         });
         complete();
     });

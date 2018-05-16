@@ -15,7 +15,7 @@ class DropDownAsync extends Component {
     state = {
         options: [],
         isRefreshing: false,
-    }
+    };
 
     componentDidMount() {
         this.loadOptions();
@@ -25,10 +25,17 @@ class DropDownAsync extends Component {
     // This should probably be done in the objectActions, however there we currently do not have any knowledge of the
     // options.. It might be worth loading the categoryOption with name `default` just for this.
     componentWillReceiveProps(newProps) {
-        const defaultOption = this.state.options.find(option => option.model.name === 'default');
+        const defaultOption = this.state.options.find(
+            option => option.model.name === 'default'
+        );
 
-        if (newProps.value && defaultOption && defaultOption.model.id !== newProps.value.id &&
-            this.props.model && this.props.model.domainType === 'TRACKER') {
+        if (
+            newProps.value &&
+            defaultOption &&
+            defaultOption.model.id !== newProps.value.id &&
+            this.props.model &&
+            this.props.model.domainType === 'TRACKER'
+        ) {
             this.props.onChange({
                 target: {
                     value: defaultOption.model,
@@ -46,11 +53,10 @@ class DropDownAsync extends Component {
             isRefreshing: true,
         });
 
-        this.loadOptions()
-            .then(() => this.setState({ isRefreshing: false }));
-    }
+        this.loadOptions().then(() => this.setState({ isRefreshing: false }));
+    };
 
-    onChange = (event) => {
+    onChange = event => {
         if (event.target.value === null) {
             this.props.onChange({
                 target: {
@@ -60,7 +66,9 @@ class DropDownAsync extends Component {
             return;
         }
 
-        const option = this.state.options.find(opt => opt.model.id === event.target.value);
+        const option = this.state.options.find(
+            opt => opt.model.id === event.target.value
+        );
         if (option && option.model) {
             this.props.onChange({
                 target: {
@@ -68,7 +76,7 @@ class DropDownAsync extends Component {
                 },
             });
         }
-    }
+    };
 
     loadOptions() {
         let fieldsForReferenceType = 'id,displayName,name';
@@ -85,62 +93,83 @@ class DropDownAsync extends Component {
              * attributeselector to work when changing programs.
              */
 
-            fieldsForReferenceType = 'id,displayName,programType,programTrackedEntityAttributes[id,trackedEntityAttribute[id,displayName,valueType]]';
+            fieldsForReferenceType =
+                'id,displayName,programType,programTrackedEntityAttributes[id,trackedEntityAttribute[id,displayName,valueType]]';
         }
         // Need trackedEntityAttribute-ids for trackerProgram to assign programTrackedEntityAttributes
         if (this.props.referenceType === 'trackedEntityType') {
-            fieldsForReferenceType = fieldsForReferenceType
-                .concat(',trackedEntityTypeAttributes[trackedEntityAttribute]');
+            fieldsForReferenceType = fieldsForReferenceType.concat(
+                ',trackedEntityTypeAttributes[trackedEntityAttribute]'
+            );
         }
 
         const filter = this.props.queryParamFilter;
         let d2i = {};
 
         return getInstance()
-            .then((d2) => {
+            .then(d2 => {
                 d2i = d2;
                 if (d2.models.hasOwnProperty(this.props.referenceType)) {
-                    return d2.models[this.props.referenceType].list(Object.assign(
-                        {
-                            fields: fieldsForReferenceType,
-                            paging: false,
-                            filter,
-                        },
-                        filter && filter.length > 1
-                            ? { rootJunction: 'OR' }
-                            : {},
-                    ));
+                    return d2.models[this.props.referenceType].list(
+                        Object.assign(
+                            {
+                                fields: fieldsForReferenceType,
+                                paging: false,
+                                filter,
+                            },
+                            filter && filter.length > 1
+                                ? { rootJunction: 'OR' }
+                                : {}
+                        )
+                    );
                 } else if (this.props.referenceType.indexOf('.') !== -1) {
-                    const modelName = this.props.referenceType.substr(0, this.props.referenceType.indexOf('.'));
-                    const modelProp = this.props.referenceType.substr(modelName.length + 1);
-                    return d2.models[modelName].modelProperties[modelProp].constants
-                        .map(v => ({ displayName: d2.i18n.getTranslation(v.toLowerCase()), id: v }));
+                    const modelName = this.props.referenceType.substr(
+                        0,
+                        this.props.referenceType.indexOf('.')
+                    );
+                    const modelProp = this.props.referenceType.substr(
+                        modelName.length + 1
+                    );
+                    return d2.models[modelName].modelProperties[
+                        modelProp
+                    ].constants.map(v => ({
+                        displayName: d2.i18n.getTranslation(v.toLowerCase()),
+                        id: v,
+                    }));
                 }
             })
-            .then(modelCollection => (
-                modelCollection
-                    ? (modelCollection.toArray ? modelCollection.toArray() : modelCollection)
-                    : []
-            ))
-            .then(values => values.map(model => ({
-                text: model.displayName,
-                value: model.id,
-                model,
-            })))
-            .then((options) => {
+            .then(
+                modelCollection =>
+                    modelCollection
+                        ? modelCollection.toArray
+                            ? modelCollection.toArray()
+                            : modelCollection
+                        : []
+            )
+            .then(values =>
+                values.map(model => ({
+                    text: model.displayName,
+                    value: model.id,
+                    model,
+                }))
+            )
+            .then(options => {
                 // Behold the mother of all hacks
                 if (!this.omgLikeJustStop) {
                     this.setState({
                         // Behold the very special hack for renaming the very special 'default' cat combo to 'None'
-                        options: options.map(option => Object.assign(
-                            option,
-                            option.model &&
-                            option.model.modelDefinition &&
-                            option.model.modelDefinition.name === 'categoryCombo' &&
-                            option.text === 'default'
-                                ? { text: d2i.i18n.getTranslation('none') }
-                                : {},
-                        )),
+                        options: options.map(option =>
+                            Object.assign(
+                                option,
+                                option.model &&
+                                option.model.modelDefinition &&
+                                option.model.modelDefinition.name ===
+                                    'categoryCombo' &&
+                                option.text === 'default'
+                                    ? { text: d2i.i18n.getTranslation('none') }
+                                    : {}
+                            )
+                        ),
                     });
                 }
             });
@@ -183,15 +212,20 @@ class DropDownAsync extends Component {
                     errorText={this.props.errorText}
                     top={this.props.top}
                     options={this.state.options}
-                    value={this.props.value ? this.props.value.id : this.props.value}
+                    value={
+                        this.props.value
+                            ? this.props.value.id
+                            : this.props.value
+                    }
                     onChange={this.onChange}
                     fullWidth={fullWidth}
                 />
-                {quickAddLink &&
-                <QuickAddLink
-                    referenceType={this.props.referenceType}
-                    onRefreshClick={this.onRefreshClick}
-                />}
+                {quickAddLink && (
+                    <QuickAddLink
+                        referenceType={this.props.referenceType}
+                        onRefreshClick={this.onRefreshClick}
+                    />
+                )}
             </div>
         );
     }
@@ -240,4 +274,3 @@ DropDownAsync.defaultProps = {
 };
 
 export default DropDownAsync;
-

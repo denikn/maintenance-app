@@ -31,7 +31,9 @@ class EditOptionSet extends Component {
     render() {
         const context = this.context;
         const props = this.props;
-        const params = Object.assign({}, props.params, { modelType: 'optionSet' });
+        const params = Object.assign({}, props.params, {
+            modelType: 'optionSet',
+        });
         const styles = {
             tabItemContainerStyle: {
                 background: 'transparent',
@@ -44,22 +46,34 @@ class EditOptionSet extends Component {
                 background: 'rgba(0,0,0, 0.1)',
             },
         };
-        const activeTab = props.params.activeView ? props.params.activeView : '';
+        const activeTab = props.params.activeView
+            ? props.params.activeView
+            : '';
         const isAddOperation = params.modelId === 'add';
-        const onTabChanged = (tabsValue) => {
+        const onTabChanged = tabsValue => {
             // The following check prevents propagated change events to change the tabs. (https://jira.dhis2.org/browse/DHIS2-1059)
             // TODO: This has been fixed in material-ui 0.16. So this can be removed when upgraded. (https://github.com/callemall/material-ui/issues/2189)
-            if (typeof tabsValue !== 'string') { return; }
+            if (typeof tabsValue !== 'string') {
+                return;
+            }
 
             this.setState({
                 tabsValue,
             });
-            goToRoute(`/edit/${params.groupName}/${params.modelType}/${params.modelId}/${tabsValue}`);
+            goToRoute(
+                `/edit/${params.groupName}/${params.modelType}/${
+                    params.modelId
+                }/${tabsValue}`
+            );
         };
 
-        const successHandler = (model) => {
+        const successHandler = model => {
             if (isAddOperation) {
-                goToRoute(`/edit/${params.groupName}/${params.modelType}/${model.id}/options`);
+                goToRoute(
+                    `/edit/${params.groupName}/${params.modelType}/${
+                        model.id
+                    }/options`
+                );
             } else {
                 goToRoute(`/list/${params.groupName}/${params.modelType}`);
             }
@@ -67,7 +81,13 @@ class EditOptionSet extends Component {
 
         return (
             <div>
-                <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '1rem' }}>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        marginBottom: '1rem',
+                    }}
+                >
                     <FormHeading schema="optionSet" groupName="otherSection">
                         {camelCaseToUnderscores(params.modelType)}
                     </FormHeading>
@@ -80,22 +100,36 @@ class EditOptionSet extends Component {
                     >
                         <Tab
                             value=""
-                            label={context.d2.i18n.getTranslation('primary_details')}
+                            label={context.d2.i18n.getTranslation(
+                                'primary_details'
+                            )}
                             style={styles.tabStyle}
                         >
                             <EditModelForm
                                 {...props}
                                 {...params}
-                                onCancel={() => goToRoute(`/list/${params.groupName}/${params.modelType}`)}
+                                onCancel={() =>
+                                    goToRoute(
+                                        `/list/${params.groupName}/${
+                                            params.modelType
+                                        }`
+                                    )
+                                }
                                 onSaveSuccess={successHandler}
-                                onSaveError={errorMessage => onSaveError(errorMessage, params)}
+                                onSaveError={errorMessage =>
+                                    onSaveError(errorMessage, params)
+                                }
                             />
                         </Tab>
                         <Tab
                             value="options"
                             label={context.d2.i18n.getTranslation('options')}
                             disabled={isAddOperation}
-                            style={(isAddOperation ? styles.disabledTabStyle : styles.tabStyle)}
+                            style={
+                                isAddOperation
+                                    ? styles.disabledTabStyle
+                                    : styles.tabStyle
+                            }
                         >
                             <OptionManagement />
                         </Tab>

@@ -28,44 +28,54 @@ function getLabelText(labelText, fieldConfig = {}) {
 function createAttributeFieldConfigs(d2, schemaName) {
     const modelDefinition = d2.models[schemaName];
 
-    return Object
-        .keys(modelDefinition.attributeProperties)
-        .map((attributeName) => {
-            const attribute = modelDefinition.attributeProperties[attributeName];
-            return createFieldConfig({
-                name: attribute.name,
-                valueType: attribute.valueType,
-                type: typeToFieldMap.get(attribute.optionSet ? 'CONSTANT' : attribute.valueType),
-                required: Boolean(attribute.mandatory),
-                fieldOptions: {
-                    labelText: attribute.name,
-                    options: attribute.optionSet ? attribute.optionSet.options.map(option => ({
-                        name: option.displayName || option.name,
-                        value: option.code,
-                    })) : [],
+    return Object.keys(modelDefinition.attributeProperties).map(
+        attributeName => {
+            const attribute =
+                modelDefinition.attributeProperties[attributeName];
+            return createFieldConfig(
+                {
+                    name: attribute.name,
+                    valueType: attribute.valueType,
+                    type: typeToFieldMap.get(
+                        attribute.optionSet ? 'CONSTANT' : attribute.valueType
+                    ),
+                    required: Boolean(attribute.mandatory),
+                    fieldOptions: {
+                        labelText: attribute.name,
+                        options: attribute.optionSet
+                            ? attribute.optionSet.options.map(option => ({
+                                  name: option.displayName || option.name,
+                                  value: option.code,
+                              }))
+                            : [],
+                    },
                 },
-            }, modelDefinition, d2.models);
-        });
+                modelDefinition,
+                d2.models
+            );
+        }
+    );
 }
 
 // Translate the sync validator messages if there are any validators
 function translateValidators(fieldConfig, d2) {
     if (fieldConfig.validators) {
-        fieldConfig.validators = fieldConfig.validators
-            .map(validator => ({
-                ...validator,
-                message: d2.i18n.getTranslation(validator.message),
-            }));
+        fieldConfig.validators = fieldConfig.validators.map(validator => ({
+            ...validator,
+            message: d2.i18n.getTranslation(validator.message),
+        }));
     }
 }
 
 // Get the field's label with required indicator if the field is required
 // Save one translated label for validation messages
 function setRequiredFieldsLabelText(fieldConfig, d2) {
-    fieldConfig.translatedName = d2.i18n.getTranslation(fieldConfig.props.labelText);
+    fieldConfig.translatedName = d2.i18n.getTranslation(
+        fieldConfig.props.labelText
+    );
     fieldConfig.props.labelText = getLabelText(
         fieldConfig.translatedName,
-        fieldConfig,
+        fieldConfig
     );
 }
 
@@ -77,31 +87,51 @@ function setRequiredFieldsLabelText(fieldConfig, d2) {
  */
 function setRequiredFieldsStepName(fieldConfig, modelType, d2) {
     // TODO: Find way to fix programNotificationTemplate sending the correct modelType
-    if (fieldGroups.isGroupedFields(modelType) && modelType !== 'programNotificationTemplate') {
+    if (
+        fieldGroups.isGroupedFields(modelType) &&
+        modelType !== 'programNotificationTemplate'
+    ) {
         const stepNo = fieldGroups.groupNoByName(fieldConfig.name, modelType);
         const stepName = fieldGroups.groupNameByStep(stepNo, modelType);
         fieldConfig.step = `${stepNo + 1}: ${d2.i18n.getTranslation(stepName)}`;
     }
 }
 
-export async function createFieldConfigForModelTypes(modelType, forcedFieldOrderNames, includeAttributes = true, customFieldOrderName) {
+export async function createFieldConfigForModelTypes(
+    modelType,
+    forcedFieldOrderNames,
+    includeAttributes = true,
+    customFieldOrderName
+) {
     const d2 = await getInstance();
 
-    const formFieldsManager = new FormFieldsManager(new FormFieldsForModel(d2.models));
-    formFieldsManager.setFieldOrder(forcedFieldOrderNames || fieldOrderNames.for(modelType));
+    const formFieldsManager = new FormFieldsManager(
+        new FormFieldsForModel(d2.models)
+    );
+    formFieldsManager.setFieldOrder(
+        forcedFieldOrderNames || fieldOrderNames.for(modelType)
+    );
 
-    for (const [fieldName, overrideConfig] of fieldOverrides.for(customFieldOrderName || modelType)) {
+    for (const [fieldName, overrideConfig] of fieldOverrides.for(
+        customFieldOrderName || modelType
+    )) {
         formFieldsManager.addFieldOverrideFor(fieldName, overrideConfig);
     }
 
     return formFieldsManager
-        .getFormFieldsForModel({ modelDefinition: d2.models[modelType] }, customFieldOrderName)
-        .map((fieldConfig) => {
+        .getFormFieldsForModel(
+            { modelDefinition: d2.models[modelType] },
+            customFieldOrderName
+        )
+        .map(fieldConfig => {
             translateValidators(fieldConfig, d2);
             setRequiredFieldsStepName(fieldConfig, modelType, d2);
             setRequiredFieldsLabelText(fieldConfig, d2);
             return fieldConfig;
-        }).concat(includeAttributes ? createAttributeFieldConfigs(d2, modelType) : []);
+        })
+        .concat(
+            includeAttributes ? createAttributeFieldConfigs(d2, modelType) : []
+        );
 }
 
 function createUniqueValidator(fieldConfig, modelDefinition, uid) {
@@ -112,38 +142,50 @@ function createUniqueValidator(fieldConfig, modelDefinition, uid) {
         }
 
         let modelDefinitionWithFilter = modelDefinition
-            .filter().on(fieldConfig.fieldOptions.referenceProperty).equals(value);
+            .filter()
+            .on(fieldConfig.fieldOptions.referenceProperty)
+            .equals(value);
 
         if (uid) {
-            modelDefinitionWithFilter = modelDefinitionWithFilter.filter().on('id').notEqual(uid);
+            modelDefinitionWithFilter = modelDefinitionWithFilter
+                .filter()
+                .on('id')
+                .notEqual(uid);
         }
 
-        return modelDefinitionWithFilter
-            .list()
-            .then((collection) => {
-                if (collection.size !== 0) {
-                    return getInstance()
-                        .then(d2 => d2.i18n.getTranslation('value_not_unique'))
-                        .then(message => Promise.reject(message));
-                }
-                return Promise.resolve(true);
-            });
+        return modelDefinitionWithFilter.list().then(collection => {
+            if (collection.size !== 0) {
+                return getInstance()
+                    .then(d2 => d2.i18n.getTranslation('value_not_unique'))
+                    .then(message => Promise.reject(message));
+            }
+            return Promise.resolve(true);
+        });
     };
 }
 
 export function addUniqueValidatorWhenUnique(fieldConfig, modelToEdit) {
     if (fieldConfig.unique) {
-        fieldConfig.asyncValidators = [createUniqueValidator(fieldConfig, modelToEdit.modelDefinition, modelToEdit.id)];
+        fieldConfig.asyncValidators = [
+            createUniqueValidator(
+                fieldConfig,
+                modelToEdit.modelDefinition,
+                modelToEdit.id
+            ),
+        ];
     }
 
     return fieldConfig;
 }
 
 export function isAttribute(model, fieldConfig) {
-    return model.attributes && new Set(Object.keys(model.attributes)).has(fieldConfig.name);
+    return (
+        model.attributes &&
+        new Set(Object.keys(model.attributes)).has(fieldConfig.name)
+    );
 }
 
-const transformValuesUsingConverters = (fieldConfig) => {
+const transformValuesUsingConverters = fieldConfig => {
     if (fieldConfig.beforePassToFieldConverter) {
         return {
             ...fieldConfig,
@@ -161,18 +203,18 @@ const addModelToFieldConfigProps = model => fieldConfig => ({
 
 function addValuesToFieldConfigs(fieldConfigs, model) {
     return fieldConfigs
-        .map((fieldConfig) => {
+        .map(fieldConfig => {
             if (isAttribute(model, fieldConfig)) {
-                return ({
+                return {
                     ...fieldConfig,
                     value: model.attributes[fieldConfig.name],
-                });
+                };
             }
 
-            return ({
+            return {
                 ...fieldConfig,
                 value: model[fieldConfig.name],
-            });
+            };
         })
         .map(transformValuesUsingConverters)
         .map(addModelToFieldConfigProps(model));
@@ -188,44 +230,103 @@ function addValuesToFieldConfigs(fieldConfigs, model) {
  * @param customFieldOrderName - Custom name for the "schema", useful if the same schema has multiple purposes.
  * Ie. programNotificationTemplate, which are used in program Notification and programStage notifications.
  */
-export function createFieldConfigsFor(schema, fieldNames, filterFieldConfigs = identity, includeAttributes, runRules = true, customFieldOrderName) {
+export function createFieldConfigsFor(
+    schema,
+    fieldNames,
+    filterFieldConfigs = identity,
+    includeAttributes,
+    runRules = true,
+    customFieldOrderName
+) {
     filterFieldConfigs = filterFieldConfigs || identity;
-    return mapPropsStream(props$ => props$
-        .filter(({ model }) => model)
-        .combineLatest(
-            Observable.fromPromise(createFieldConfigForModelTypes(schema, fieldNames, includeAttributes, customFieldOrderName)),
-            (props, fieldConfigs) => {
-                const fieldConfigsWithValues = addValuesToFieldConfigs(fieldConfigs, props.model);
-                const fieldConfigsToUse = runRules ? applyRulesToFieldConfigs(getRulesForModelType(customFieldOrderName || schema),
-                    filterFieldConfigs(fieldConfigsWithValues), props.model)
-                    : fieldConfigsWithValues;
+    return mapPropsStream(props$ =>
+        props$
+            .filter(({ model }) => model)
+            .combineLatest(
+                Observable.fromPromise(
+                    createFieldConfigForModelTypes(
+                        schema,
+                        fieldNames,
+                        includeAttributes,
+                        customFieldOrderName
+                    )
+                ),
+                (props, fieldConfigs) => {
+                    const fieldConfigsWithValues = addValuesToFieldConfigs(
+                        fieldConfigs,
+                        props.model
+                    );
+                    const fieldConfigsToUse = runRules
+                        ? applyRulesToFieldConfigs(
+                              getRulesForModelType(
+                                  customFieldOrderName || schema
+                              ),
+                              filterFieldConfigs(fieldConfigsWithValues),
+                              props.model
+                          )
+                        : fieldConfigsWithValues;
 
-                return {
-                    ...props,
-                    fieldConfigs: fieldConfigsToUse,
-                };
-            }));
+                    return {
+                        ...props,
+                        fieldConfigs: fieldConfigsToUse,
+                    };
+                }
+            )
+    );
 }
 
-const convertValueUsingFieldConverter = (fieldConfigs, onChangeCallback) => (fieldName, value) => {
-    const fieldConfig = fieldConfigs.find(fieldConfig => fieldConfig.name === fieldName);
+const convertValueUsingFieldConverter = (fieldConfigs, onChangeCallback) => (
+    fieldName,
+    value
+) => {
+    const fieldConfig = fieldConfigs.find(
+        fieldConfig => fieldConfig.name === fieldName
+    );
     const converter = fieldConfig.beforeUpdateConverter || identity;
 
     return onChangeCallback(fieldName, converter(value));
 };
 
 // TODO: Refactor includeAttributes magic flag to separate method `createFormWithAttributesFor`
-export function createFormFor(source$, schema, properties, includeAttributes, customFieldOrderName) {
+export function createFormFor(
+    source$,
+    schema,
+    properties,
+    includeAttributes,
+    customFieldOrderName
+) {
     const enhance = compose(
-        mapPropsStream(props$ => props$
-            .combineLatest(source$, (props, model) => ({ ...props, model })),
+        mapPropsStream(props$ =>
+            props$.combineLatest(source$, (props, model) => ({
+                ...props,
+                model,
+            }))
         ),
-        createFieldConfigsFor(schema, properties, undefined, includeAttributes, false, customFieldOrderName),
+        createFieldConfigsFor(
+            schema,
+            properties,
+            undefined,
+            includeAttributes,
+            false,
+            customFieldOrderName
+        )
     );
 
-    function CreatedFormBuilderForm({ fieldConfigs, model, editFieldChanged, detailsFormStatusChange = noop }) {
-        const onUpdateField = convertValueUsingFieldConverter(fieldConfigs, editFieldChanged);
-        const fieldConfigsAfterRules = applyRulesToFieldConfigs(getRulesForModelType(customFieldOrderName || schema), fieldConfigs, model);
+    function CreatedFormBuilderForm({
+        fieldConfigs,
+        model,
+        editFieldChanged,
+        detailsFormStatusChange = noop,
+    }) {
+        const onUpdateField = convertValueUsingFieldConverter(
+            fieldConfigs,
+            editFieldChanged
+        );
+        const fieldConfigsAfterRules = applyRulesToFieldConfigs(
+            getRulesForModelType(customFieldOrderName || schema),
+            fieldConfigs,
+            model
+        );
         return (
             <FormBuilder
                 fields={fieldConfigsAfterRules}
@@ -251,6 +352,6 @@ export function createFormFor(source$, schema, properties, includeAttributes, cu
  * @returns {function(*): {props: {}}} fieldConfig with the props added.
  */
 export const addPropsToFieldConfig = (props, fieldNames = []) => fieldConfig =>
-    ((fieldNames.length < 1 || fieldNames.includes(fieldConfig.name))
+    fieldNames.length < 1 || fieldNames.includes(fieldConfig.name)
         ? { ...fieldConfig, props: { ...fieldConfig.props, ...props } }
-        : fieldConfig);
+        : fieldConfig;

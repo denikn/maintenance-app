@@ -4,11 +4,23 @@ import Action from 'd2-ui/lib/action/Action';
 
 export default class TextFormField extends Component {
     static getWantedProperties(props) {
-        const omitProps = ['translateOptions', 'model', 'modelDefinition', 'models',
-            'referenceType', 'referenceProperty', 'isInteger', 'isRequired', 'options'];
+        const omitProps = [
+            'translateOptions',
+            'model',
+            'modelDefinition',
+            'models',
+            'referenceType',
+            'referenceProperty',
+            'isInteger',
+            'isRequired',
+            'options',
+        ];
 
-        return Object.keys(props).reduce((acc, key) => { // eslint-disable-line arrow-body-style
-            return omitProps.indexOf(key) === -1 ? { ...acc, [key]: props[key] } : acc;
+        return Object.keys(props).reduce((acc, key) => {
+            // eslint-disable-line arrow-body-style
+            return omitProps.indexOf(key) === -1
+                ? { ...acc, [key]: props[key] }
+                : acc;
         }, {});
     }
 
@@ -28,7 +40,7 @@ export default class TextFormField extends Component {
             .debounceTime(300)
             .map(action => action.data)
             .distinctUntilChanged()
-            .subscribe((value) => {
+            .subscribe(value => {
                 this.props.onChange({
                     target: {
                         value,

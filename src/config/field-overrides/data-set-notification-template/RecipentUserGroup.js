@@ -1,17 +1,17 @@
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import DropDownAsync from '../../../forms/form-fields/drop-down-async';
 
-const RecipentUserGroup = (props) => {
+const RecipentUserGroup = props => {
     if (!props.model || props.model.notificationRecipient !== 'USER_GROUP') {
         return null;
     }
 
     return (
-        <div style={props.style} >
+        <div style={props.style}>
             <DropDownAsync {...props} />
-        </div>);
+        </div>
+    );
 };
 
 RecipentUserGroup.propTypes = {

@@ -23,7 +23,7 @@ class CustomRegistrationForm extends Component {
     };
 
     handleUseCustom = (e, checked) => {
-        if(!checked) {
+        if (!checked) {
             this.props.disableForm();
         }
         this.setState({ ...this.state, useCustom: checked });

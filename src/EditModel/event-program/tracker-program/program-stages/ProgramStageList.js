@@ -66,9 +66,12 @@ class ProgramStageList extends Component {
     };
 
     componentWillReceiveProps(nextProps) {
-        // shouldnt this be this.state.stages? 
+        // shouldnt this be this.state.stages?
         // Also any reason for the != instead of !==?
-        if (this.props.stages != nextProps.programStages && this.props.programStages != nextProps.programStages) {
+        if (
+            this.props.stages != nextProps.programStages &&
+            this.props.programStages != nextProps.programStages
+        ) {
             this.setState({
                 ...this.state,
                 stages: nextProps.programStages,
@@ -76,7 +79,7 @@ class ProgramStageList extends Component {
         }
     }
 
-    openSharing = (model) => {
+    openSharing = model => {
         this.setState({
             ...this.state,
             sharing: {
@@ -100,7 +103,7 @@ class ProgramStageList extends Component {
 
     closeDetails = () => this.setState({ detailsObject: null });
 
-    openTranslate = (model) => {
+    openTranslate = model => {
         this.setState({
             ...this.state,
             translate: {
@@ -115,79 +118,86 @@ class ProgramStageList extends Component {
             ...this.state,
             translate: { ...this.state.translate, model: null },
         });
-    }
+    };
 
     swapStages = (stageA, stageB) => {
-        this.setState((state) => {
+        this.setState(state => {
             const swapOrder = stageA.sortOrder;
             stageA.sortOrder = stageB.sortOrder;
             stageB.sortOrder = swapOrder;
             return {
-                sections: state.stages.sort((a, b) => a.sortOrder - b.sortOrder),
+                sections: state.stages.sort(
+                    (a, b) => a.sortOrder - b.sortOrder
+                ),
             };
         });
-    }
+    };
 
     contextActionChecker = (model, action) => {
         if (action === 'move_up') {
             return this.state.stages.indexOf(model) > 0;
         } else if (action === 'move_down') {
-            return this.state.stages.indexOf(model) < this.state.stages.length - 1;
+            return (
+                this.state.stages.indexOf(model) < this.state.stages.length - 1
+            );
         }
         return true;
     };
 
-    moveStageUp = (stage) => {
+    moveStageUp = stage => {
         const currentIndex = this.state.stages.indexOf(stage);
         if (currentIndex > 0) {
             const swapStage = this.state.stages[currentIndex - 1];
             this.swapStages(swapStage, stage);
         }
-    }
+    };
 
-    moveStageDown = (stage) => {
+    moveStageDown = stage => {
         const currentIndex = this.state.stages.indexOf(stage);
         if (currentIndex < this.state.stages.length - 1) {
             const swapStage = this.state.stages[currentIndex + 1];
             this.swapStages(swapStage, stage);
         }
-    }
+    };
 
-    renderSharing = () => (!!this.state.sharing.id &&
-        <SharingDialog
-            id={this.state.sharing.id}
-            type={this.state.modelType}
-            open={!!this.state.sharing.id}
-            onRequestClose={this.closeSharing}
-            bodyStyle={styles.sharingDialogBody}
-        />
-    );
-
-    renderTranslate = () => (!!this.state.translate.model &&
-        <TranslationDialog
-            objectToTranslate={this.state.translate.model}
-            objectTypeToTranslate={
-                this.state.translate.model.modelDefinition
-            }
-            open={!!this.state.translate.model}
-            onTranslationSaved={translationSaved}
-            onTranslationError={translationError}
-            onRequestClose={this.handleOnRequestClose}
-            fieldsToTranslate={getTranslatablePropertiesForModelType(
-                this.state.modelType,
-            )}
-        />
-    );
-
-    renderDetails = () => (!!this.state.detailsObject &&
-        <div style={styles.detailsBoxWrap}>
-            <DetailsBoxWithScroll
-                detailsObject={this.state.detailsObject}
-                onClose={this.closeDetails}
-                styles={styles.detailsBox}
+    renderSharing = () =>
+        !!this.state.sharing.id && (
+            <SharingDialog
+                id={this.state.sharing.id}
+                type={this.state.modelType}
+                open={!!this.state.sharing.id}
+                onRequestClose={this.closeSharing}
+                bodyStyle={styles.sharingDialogBody}
             />
-        </div>
-    );
+        );
+
+    renderTranslate = () =>
+        !!this.state.translate.model && (
+            <TranslationDialog
+                objectToTranslate={this.state.translate.model}
+                objectTypeToTranslate={
+                    this.state.translate.model.modelDefinition
+                }
+                open={!!this.state.translate.model}
+                onTranslationSaved={translationSaved}
+                onTranslationError={translationError}
+                onRequestClose={this.handleOnRequestClose}
+                fieldsToTranslate={getTranslatablePropertiesForModelType(
+                    this.state.modelType
+                )}
+            />
+        );
+
+    renderDetails = () =>
+        !!this.state.detailsObject && (
+            <div style={styles.detailsBoxWrap}>
+                <DetailsBoxWithScroll
+                    detailsObject={this.state.detailsObject}
+                    onClose={this.closeDetails}
+                    styles={styles.detailsBox}
+                />
+            </div>
+        );
 
     renderFAB = () => (
         <div style={styles.fab}>
@@ -252,6 +262,6 @@ export default connect(null, dispatch =>
             handleNewProgramStage: () => addProgramStage(),
             handleDeleteProgramStage: model => deleteProgramStage(model.id),
         },
-        dispatch,
-    ),
+        dispatch
+    )
 )(ProgramStageList);

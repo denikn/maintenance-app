@@ -4,8 +4,7 @@ import Heading from 'd2-ui/lib/headings/Heading.component';
 import menuCardsStore from './menuCardsStore';
 import withStateFrom from 'd2-ui/lib/component-helpers/withStateFrom';
 
-const sectionsForAllCards$ = menuCardsStore
-    .map(sections => ({ sections }));
+const sectionsForAllCards$ = menuCardsStore.map(sections => ({ sections }));
 
 function MenuCardsForAllSections(props) {
     return (

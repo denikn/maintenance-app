@@ -79,7 +79,9 @@ describe('Program Indicator', () => {
                     activeStep: expectedStepKey,
                 };
 
-                const actualState = reducer(initialState, { type: actions.PROGRAM_INDICATOR_STEP_NEXT });
+                const actualState = reducer(initialState, {
+                    type: actions.PROGRAM_INDICATOR_STEP_NEXT,
+                });
 
                 expect(iterator.next).toHaveBeenCalledTimes(1);
                 expect(iterator.previous).toHaveBeenCalledTimes(0);
@@ -94,7 +96,9 @@ describe('Program Indicator', () => {
                     activeStep: expectedStepKey,
                 };
 
-                const actualState = reducer(initialState, { type: actions.PROGRAM_INDICATOR_STEP_PREVIOUS });
+                const actualState = reducer(initialState, {
+                    type: actions.PROGRAM_INDICATOR_STEP_PREVIOUS,
+                });
 
                 expect(iterator.next).toHaveBeenCalledTimes(0);
                 expect(iterator.previous).toHaveBeenCalledTimes(1);
@@ -109,7 +113,9 @@ describe('Program Indicator', () => {
                     activeStep: expectedStepKey,
                 };
 
-                const actualState = reducer(initialState, { type: STEPPER_RESET_ACTIVE_STEP });
+                const actualState = reducer(initialState, {
+                    type: STEPPER_RESET_ACTIVE_STEP,
+                });
 
                 expect(iterator.next).toHaveBeenCalledTimes(0);
                 expect(iterator.previous).toHaveBeenCalledTimes(0);

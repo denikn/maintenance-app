@@ -36,8 +36,7 @@ export default React.createClass({
     },
 
     componentWillMount() {
-        d2lib.getInstance()
-            .then(d2 => this.setState({ models: d2.models }));
+        d2lib.getInstance().then(d2 => this.setState({ models: d2.models }));
     },
 
     _onChange(event, index, modelType) {
@@ -54,12 +53,18 @@ export default React.createClass({
                 .mapThroughDefinitions(v => v)
                 .filter(hasNameInArray(this.props.nameListFilter))
                 .map(value => ({
-                    text: this.getTranslation(camelCaseToUnderscores(value.plural)),
+                    text: this.getTranslation(
+                        camelCaseToUnderscores(value.plural)
+                    ),
                     payload: value,
                 }))
                 .map((option, index) => (
-                    <MenuItem key={index} primaryText={option.text} value={option.payload} />
-                    ));
+                    <MenuItem
+                        key={index}
+                        primaryText={option.text}
+                        value={option.payload}
+                    />
+                ));
         }
         return [];
     },

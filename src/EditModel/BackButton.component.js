@@ -5,13 +5,21 @@ import { config } from 'd2/lib/d2';
 import modelToEditStore from '../EditModel/modelToEditStore';
 
 function BackButton(props, context) {
-    const { tooltip, onClick, isDirtyHandler = modelToEditStore.getState.bind(modelToEditStore), ...otherProps } = props;
+    const {
+        tooltip,
+        onClick,
+        isDirtyHandler = modelToEditStore.getState.bind(modelToEditStore),
+        ...otherProps
+    } = props;
     const onClickWithConfirm = (...params) => {
-        const isDirty = isDirtyHandler && isDirtyHandler() && isDirtyHandler().dirty;
+        const isDirty =
+            isDirtyHandler && isDirtyHandler() && isDirtyHandler().dirty;
 
         if (!isDirty) {
             onClick(...params);
-        } else if (confirm(context.d2.i18n.getTranslation('abandon_unsaved_changes'))) {
+        } else if (
+            confirm(context.d2.i18n.getTranslation('abandon_unsaved_changes'))
+        ) {
             onClick(...params);
         }
     };

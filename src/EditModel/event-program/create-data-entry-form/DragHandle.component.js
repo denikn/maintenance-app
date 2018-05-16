@@ -20,7 +20,9 @@ const DragHandle = () => (
         hoverColor={styles.dragHandleHoverColor}
         className="material-icons"
         style={styles.dragHandle}
-    >reorder</FontIcon>
+    >
+        reorder
+    </FontIcon>
 );
 
 export default SortableHandle(DragHandle);

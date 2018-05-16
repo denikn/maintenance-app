@@ -2,7 +2,6 @@ import React from 'react';
 import ColorPicker from 'd2-ui/lib/legend/ColorPicker.component';
 import Divider from 'material-ui/Divider';
 
-
 const styles = {
     field: {
         display: 'inline-block',
@@ -27,9 +26,13 @@ export default function ColorPickerField(props) {
 
     return (
         <div>
-            <div style={styles.field} >
+            <div style={styles.field}>
                 <div style={styles.colorPickerLabel}> Color </div>
-                <ColorPicker color={'Select color'} {...props} onChange={transformChange} />
+                <ColorPicker
+                    color={'Select color'}
+                    {...props}
+                    onChange={transformChange}
+                />
             </div>
             <Divider />
         </div>

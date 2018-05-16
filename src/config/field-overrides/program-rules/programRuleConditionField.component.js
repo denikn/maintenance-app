@@ -85,7 +85,7 @@ class ProgramRuleConditionField extends React.Component {
     }
 
     componentDidMount() {
-        this.sub = modelToEditStore.subscribe((modelToEdit) => {
+        this.sub = modelToEditStore.subscribe(modelToEdit => {
             this.getProgramRuleVariablesForProgram(modelToEdit.program);
         });
     }
@@ -99,8 +99,9 @@ class ProgramRuleConditionField extends React.Component {
 
     getProgramRuleVariablesForProgram(program) {
         if (program) {
-            this.d2.models.programRuleVariables.list({ filter: `program.id:eq:${program.id}`, paging: false })
-                .then((list) => {
+            this.d2.models.programRuleVariables
+                .list({ filter: `program.id:eq:${program.id}`, paging: false })
+                .then(list => {
                     // If the component has been unmounted while the query was in progress,
                     // this.sub will have been deleted
                     if (this.sub) {
@@ -114,7 +115,7 @@ class ProgramRuleConditionField extends React.Component {
 
     makeTextPusher = text => () => this.pushText(text);
 
-    pushText = (text) => {
+    pushText = text => {
         if (this.editor) {
             this.editor.insertText(text);
         }
@@ -124,13 +125,16 @@ class ProgramRuleConditionField extends React.Component {
 
     isSectionExpanded = section => this.state.expand === section;
 
-    isSectionWithQuickButtons = section => (this.props.quickAddLink && section === 'variables');
+    isSectionWithQuickButtons = section =>
+        this.props.quickAddLink && section === 'variables';
 
     makeArrowStyle = section => ({
         display: 'inline-block',
         marginRight: 8,
         transition: 'all 175ms ease-out',
-        transform: this.isSectionExpanded(section) ? 'rotateZ(90deg)' : undefined,
+        transform: this.isSectionExpanded(section)
+            ? 'rotateZ(90deg)'
+            : undefined,
     });
 
     makeSectionListStyle = section =>
@@ -138,21 +142,29 @@ class ProgramRuleConditionField extends React.Component {
             {
                 maxHeight: this.isSectionExpanded(section) ? 350 : 0,
                 overflowY: this.isSectionExpanded(section) ? 'auto' : 'auto',
-                padding: this.isSectionExpanded(section) ? '0 4px 4px 2px' : '0 2px',
+                padding: this.isSectionExpanded(section)
+                    ? '0 4px 4px 2px'
+                    : '0 2px',
             },
-            styles.rightScroll,
+            styles.rightScroll
         );
 
-    refreshProgramRuleVariables = (e) => {
-        this.getProgramRuleVariablesForProgram(modelToEditStore.getState().program);
+    refreshProgramRuleVariables = e => {
+        this.getProgramRuleVariablesForProgram(
+            modelToEditStore.getState().program
+        );
         e.stopPropagation();
     };
 
     programRuleVariableButtonRenderer = (v, i) => {
-        const varSymbol = v.programRuleVariableSourceType === 'TEI_ATTRIBUTE' ? 'A' : '#';
+        const varSymbol =
+            v.programRuleVariableSourceType === 'TEI_ATTRIBUTE' ? 'A' : '#';
         const varLabel = (
             <span>
-                <span style={styles.varSyntax}>{varSymbol}{'{'}</span>
+                <span style={styles.varSyntax}>
+                    {varSymbol}
+                    {'{'}
+                </span>
                 {v.displayName}
                 <span style={styles.varSyntax}>{'}'}</span>
             </span>
@@ -167,7 +179,8 @@ class ProgramRuleConditionField extends React.Component {
             <IconButton
                 iconClassName="material-icons"
                 disabled={this.props.disabled}
-            >add_circle_outline
+            >
+                add_circle_outline
             </IconButton>
         );
 
@@ -176,7 +189,8 @@ class ProgramRuleConditionField extends React.Component {
                 iconClassName="material-icons"
                 onClick={this.refreshProgramRuleVariables}
                 disabled={this.props.disabled}
-            >refresh
+            >
+                refresh
             </IconButton>
         );
 
@@ -186,48 +200,55 @@ class ProgramRuleConditionField extends React.Component {
                     to="/edit/programSection/programRuleVariable/add"
                     target="_blank"
                     rel="noopener nofollow"
-                >{AddVariableButton}
+                >
+                    {AddVariableButton}
                 </Link>
                 {RefreshVariableButton}
             </div>
         );
-    }
+    };
 
     renderSection = (sectionName, sectionContent) => (
         <div>
             <div onClick={this.expander(sectionName)} style={styles.expand}>
                 <div style={this.makeArrowStyle(sectionName)}>&#9656;</div>
                 {this.getTranslation(sectionName)}
-                {this.isSectionWithQuickButtons(sectionName) && this.renderQuickAddButtons}
+                {this.isSectionWithQuickButtons(sectionName) &&
+                    this.renderQuickAddButtons}
             </div>
 
             <div style={this.makeSectionListStyle(sectionName)}>
                 {sectionContent}
             </div>
-            {this.isSectionExpanded(sectionName) && <Divider style={styles.dividerStyle} />}
+            {this.isSectionExpanded(sectionName) && (
+                <Divider style={styles.dividerStyle} />
+            )}
         </div>
-    )
+    );
 
     renderBuiltInVariablesMenu = () => {
         const sectionName = 'built_in_variables';
         const sectionContent = programRuleBuiltInVariables.map((varLabel, i) =>
-            this.renderRaisedButton(i, varLabel, varLabel));
+            this.renderRaisedButton(i, varLabel, varLabel)
+        );
         return this.renderSection(sectionName, sectionContent);
-    }
+    };
 
     renderVariablesMenu = () => {
         const sectionName = 'variables';
-        const sectionContent = this.state.programRuleVariables
-            .map(this.programRuleVariableButtonRenderer);
+        const sectionContent = this.state.programRuleVariables.map(
+            this.programRuleVariableButtonRenderer
+        );
         return this.renderSection(sectionName, sectionContent);
-    }
+    };
 
     renderFunctionsMenu = () => {
         const sectionName = 'functions';
         const sectionContent = programRuleFunctions.map((funcLabel, i) =>
-            this.renderRaisedButton(i, funcLabel, funcLabel));
+            this.renderRaisedButton(i, funcLabel, funcLabel)
+        );
         return this.renderSection(sectionName, sectionContent);
-    }
+    };
 
     renderRaisedButton = (key, label, text) => (
         <RaisedButton
@@ -242,7 +263,9 @@ class ProgramRuleConditionField extends React.Component {
     );
 
     render() {
-        const ref = (r) => { this.editor = r; };
+        const ref = r => {
+            this.editor = r;
+        };
         styles.outerWrap = {
             ...styles.outerWrap,
             ...{ color: this.props.disabled ? 'rgba(0,0,0,0.3)' : 'inherit' },

@@ -17,15 +17,15 @@ import {
 } from '../../stepper/stepper';
 
 const EventProgramStepperNavigationForward = createConnectedForwardButton(
-    nextTrackerStep,
+    nextTrackerStep
 );
 const EventProgramStepperNavigationBackward = createConnectedBackwardButton(
-    previousTrackerStep,
+    previousTrackerStep
 );
 
 const StepperNavigation = createStepperNavigation(
     EventProgramStepperNavigationBackward,
-    EventProgramStepperNavigationForward,
+    EventProgramStepperNavigationForward
 );
 
 const styles = {
@@ -54,22 +54,21 @@ function EditTrackerProgram(props) {
                 >
                     {`tracker_${camelCaseToUnderscores(schema)}`}
                 </FormHeading>
-                <FormSubHeading>
-                    {props.model.displayName}
-                </FormSubHeading>
+                <FormSubHeading>{props.model.displayName}</FormSubHeading>
             </div>
             <div>
                 <EventProgramStepper />
             </div>
             <TrackerProgramStepperContent schema={schema} {...props} />
-            {!props.isProgramStageStepperActive &&
+            {!props.isProgramStageStepperActive && (
                 <StepperNavigation>
                     <EventActionButtons
                         groupName={groupName}
                         schema={schema}
                         isDirtyHandler={isModelDirty}
                     />
-                </StepperNavigation>}
+                </StepperNavigation>
+            )}
         </div>
     );
 }

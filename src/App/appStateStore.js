@@ -3,7 +3,17 @@ import { getInstance } from 'd2/lib/d2';
 import camelCaseToUnderscores from 'd2-utilizr/lib/camelCaseToUnderscores';
 import isObject from 'd2-utilizr/lib/isObject';
 import snackActions from '../Snackbar/snack.actions';
-import { curry, map, contains, __, compose, get, filter, uniq, keys } from 'lodash/fp';
+import {
+    curry,
+    map,
+    contains,
+    __,
+    compose,
+    get,
+    filter,
+    uniq,
+    keys,
+} from 'lodash/fp';
 import maintenanceModels from '../config/maintenance-models';
 import systemSettingsStore from './systemSettingsStore';
 
@@ -11,7 +21,10 @@ const appState = Store.create();
 
 const requireAddToView = curry((d2, systemSettings, schemaName) => {
     if (systemSettings.keyRequireAddToView === true) {
-        return d2.currentUser.canUpdate(d2.models[schemaName]) || d2.currentUser.canCreate(d2.models[schemaName]);
+        return (
+            d2.currentUser.canUpdate(d2.models[schemaName]) ||
+            d2.currentUser.canCreate(d2.models[schemaName])
+        );
     }
 
     return true;
@@ -23,23 +36,28 @@ function getItemsForCategory(d2, items) {
 
     const onlyModelsThatExist = contains(__, modelDefinitionNames);
     const onlyAccessibleModels = requireAddToView(d2, systemSettings);
-    const onlyExistingAndAccessibleModels = value => onlyModelsThatExist(value) && onlyAccessibleModels(value);
+    const onlyExistingAndAccessibleModels = value =>
+        onlyModelsThatExist(value) && onlyAccessibleModels(value);
 
-    return items
-        .filter(onlyExistingAndAccessibleModels)
-        .map(key => ({
-            key,
-            label: d2.i18n.getTranslation(camelCaseToUnderscores(key)),
-        }));
+    return items.filter(onlyExistingAndAccessibleModels).map(key => ({
+        key,
+        label: d2.i18n.getTranslation(camelCaseToUnderscores(key)),
+    }));
 }
 
 async function mapSideBarConfigToSideBarItems(sideBarConfig) {
     const d2 = await getInstance();
 
-    return map(sideBarCategory => ({
-        name: sideBarCategory,
-        items: getItemsForCategory(d2, sideBarConfig[sideBarCategory].items),
-    }), Object.keys(sideBarConfig));
+    return map(
+        sideBarCategory => ({
+            name: sideBarCategory,
+            items: getItemsForCategory(
+                d2,
+                sideBarConfig[sideBarCategory].items
+            ),
+        }),
+        Object.keys(sideBarConfig)
+    );
 }
 
 async function loadSideBarState() {
@@ -47,31 +65,50 @@ async function loadSideBarState() {
     const sideBarConfig = maintenanceModels.getSideBarConfig();
     const sideBarState = await mapSideBarConfigToSideBarItems(sideBarConfig);
 
-    return sideBarState
-        .reduce((acc, sideBarCategory) => {
-            if (sideBarCategory.items.length || sideBarCategory.name === 'all') {
+    return sideBarState.reduce(
+        (acc, sideBarCategory) => {
+            if (
+                sideBarCategory.items.length ||
+                sideBarCategory.name === 'all'
+            ) {
                 acc[sideBarCategory.name] = sideBarCategory.items; // eslint-disable-line no-param-reassign
-                acc.mainSections = acc.mainSections.concat([{
-                    key: sideBarCategory.name,
-                    label: d2.i18n.getTranslation(camelCaseToUnderscores(sideBarCategory.name)),
-                }]);
+                acc.mainSections = acc.mainSections.concat([
+                    {
+                        key: sideBarCategory.name,
+                        label: d2.i18n.getTranslation(
+                            camelCaseToUnderscores(sideBarCategory.name)
+                        ),
+                    },
+                ]);
             }
             return acc;
-        }, {
+        },
+        {
             mainSections: [],
-        });
+        }
+    );
 }
 
 // TODO: Move the caching of these organisation units to d2.currentUser instead
 async function getCurrentUserOrganisationUnits(disableCache = false) {
-    if (!disableCache && getCurrentUserOrganisationUnits.currentUserOrganisationUnits) {
+    if (
+        !disableCache &&
+        getCurrentUserOrganisationUnits.currentUserOrganisationUnits
+    ) {
         return getCurrentUserOrganisationUnits.currentUserOrganisationUnits;
     }
 
     const d2 = await getInstance();
-    const organisationUnitsCollection = await d2.currentUser.getOrganisationUnits({ paging: false });
+    const organisationUnitsCollection = await d2.currentUser.getOrganisationUnits(
+        {
+            paging: false,
+        }
+    );
 
-    if (d2.currentUser.authorities.has('ALL') && !organisationUnitsCollection.size) {
+    if (
+        d2.currentUser.authorities.has('ALL') &&
+        !organisationUnitsCollection.size
+    ) {
         const rootLevelOrgUnits = await d2.models.organisationUnits.list({
             level: 1,
             paging: false,
@@ -103,11 +140,17 @@ async function loadSelectedOrganisationUnitState() {
         return appState.state.selectedOrganisationUnit;
     }
 
-    const organisationUnitsCollection = await getCurrentUserOrganisationUnits(true);
+    const organisationUnitsCollection = await getCurrentUserOrganisationUnits(
+        true
+    );
 
-    return organisationUnitsCollection.toArray()
+    return organisationUnitsCollection
+        .toArray()
         .reduce((selectedOU, orgUnit) => {
-            if (!selectedOU.path || (selectedOU.path.length > orgUnit.path.length)) {
+            if (
+                !selectedOU.path ||
+                selectedOU.path.length > orgUnit.path.length
+            ) {
                 return orgUnit;
             }
             return selectedOU;
@@ -124,7 +167,11 @@ export async function reloadUserOrganisationUnits() {
 }
 
 export async function initAppState(startState, disableCache) {
-    const [sideBar, selectedOrganisationUnit, userOrganisationUnits] = await Promise.all([
+    const [
+        sideBar,
+        selectedOrganisationUnit,
+        userOrganisationUnits,
+    ] = await Promise.all([
         loadSideBarState(),
         loadSelectedOrganisationUnitState(),
         getCurrentUserOrganisationUnits(disableCache),
@@ -144,17 +191,23 @@ export async function initAppState(startState, disableCache) {
         },
     };
 
-    const completeInitState = Object.keys(startState)
-        .reduce((newAppState, stateKey) => {
+    const completeInitState = Object.keys(startState).reduce(
+        (newAppState, stateKey) => {
             if (newAppState[stateKey]) {
                 if (isObject(newAppState[stateKey])) {
-                    newAppState[stateKey] = Object.assign({}, newAppState[stateKey], startState[stateKey]);  // eslint-disable-line no-param-reassign
+                    newAppState[stateKey] = Object.assign(
+                        {},
+                        newAppState[stateKey],
+                        startState[stateKey]
+                    ); // eslint-disable-line no-param-reassign
                 } else {
-                    newAppState[stateKey] = startState[stateKey];  // eslint-disable-line no-param-reassign
+                    newAppState[stateKey] = startState[stateKey]; // eslint-disable-line no-param-reassign
                 }
             }
             return newAppState;
-        }, loadedState);
+        },
+        loadedState
+    );
 
     appState.setState(completeInitState);
 }

@@ -11,28 +11,34 @@ const inputPattern = /<input.*?\/>/gi;
 export const elementPatterns = {
     programid: /attributeid="(\w*?)"/,
     attributeid: /programid="(\w*?)"/,
-    id: /id="(\w*?)-(\w*?)-val"/
-}
+    id: /id="(\w*?)-(\w*?)-val"/,
+};
 
 //When matching with exec, match[0] will be idString, including the ID. Ie: attributeid="someid"
-const allPatterns = /attributeid="(\w*?)"|programid="(\w*?)"|id="((\w*?)-(\w*?)-val)"/
+const allPatterns = /attributeid="(\w*?)"|programid="(\w*?)"|id="((\w*?)-(\w*?)-val)"/;
 
 //Map over the position of the match of the pattern in the allPattern.
 //matchIndexes[attributeid] will be the id of the element matched.
 const matchIndexes = {
-    'attributeid': 1,
-    'programid': 2,
-    'id': 3,
-}
+    attributeid: 1,
+    programid: 2,
+    id: 3,
+};
 
-export function generateHtmlForField(id, styleAttr, disabledAttr, label, nameAttr = "entryfield", fieldType='id') {
+export function generateHtmlForField(
+    id,
+    styleAttr,
+    disabledAttr,
+    label,
+    nameAttr = 'entryfield',
+    fieldType = 'id'
+) {
     const style = styleAttr ? ` style=${styleAttr}` : '';
     const disabled = disabledAttr ? ` disabled=${disabledAttr}` : '';
     const name = nameAttr ? `name="${nameAttr}"` : '';
 
     const attr = `${name} title="${label}" value="[ ${label} ]"${style}${disabled}`.trim();
     return `<input ${fieldType}="${id}" ${attr}/>`;
-
 }
 
 /* Operands with ID's that contain a dot ('.') are a combined IDs of two objects.
@@ -42,15 +48,12 @@ export function generateHtmlForField(id, styleAttr, disabledAttr, label, nameAtt
     And dataElementId-categoryOptionId for event-programs
  */
 export function transformElementsToCustomForm(elements) {
-    elements
-        .filter(op => op.id.indexOf('.') !== -1)
-        .reduce((out, op) => {
-            const id = `${op.id.split('.').join('-')}-val`;
-            out[id] = op.displayName; // eslint-disable-line
-            return out;
-        }, {});
+    elements.filter(op => op.id.indexOf('.') !== -1).reduce((out, op) => {
+        const id = `${op.id.split('.').join('-')}-val`;
+        out[id] = op.displayName; // eslint-disable-line
+        return out;
+    }, {});
 }
-
 
 /**
  * Gets the id and idString from a matched element.
@@ -63,16 +66,16 @@ export function transformElementsToCustomForm(elements) {
  * @returns {*} an object with idString, id and fieldType of the element.
  */
 function getFieldInfoFromMatch(match) {
-    for(let patternId in matchIndexes) {
+    for (let patternId in matchIndexes) {
         const index = matchIndexes[patternId];
         const elemId = match[index];
-        if(elemId) {
+        if (elemId) {
             let id = elemId;
             return {
                 idString: match[0],
                 id,
-                fieldType: patternId
-            }
+                fieldType: patternId,
+            };
         }
     }
     return null;
@@ -102,14 +105,21 @@ export function processFormData(formData, elements) {
         const inputDisabled = /disabled/.exec(inputHtml) !== null;
 
         const allMatch = allPatterns.exec(inputHtml);
-        const { idString, id, fieldType} = getFieldInfoFromMatch(allMatch)
+        const { idString, id, fieldType } = getFieldInfoFromMatch(allMatch);
 
         if (idString && id) {
-         //   console.log(idMatch);
+            //   console.log(idMatch);
             usedIds.push(id);
             const label = elements && elements[id];
-            const nameAttr = fieldType === "id" ? "entryfield" : null; //used for data-entry
-            outHtml += generateHtmlForField(id, inputStyle, inputDisabled, label, nameAttr, fieldType);
+            const nameAttr = fieldType === 'id' ? 'entryfield' : null; //used for data-entry
+            outHtml += generateHtmlForField(
+                id,
+                inputStyle,
+                inputDisabled,
+                label,
+                nameAttr,
+                fieldType
+            );
         } else {
             outHtml += inputHtml;
         }
@@ -120,8 +130,8 @@ export function processFormData(formData, elements) {
     //console.log(outHtml)
     return {
         usedIds,
-        outHtml
-    }
+        outHtml,
+    };
 }
 
 /**
@@ -136,15 +146,22 @@ export function processFormData(formData, elements) {
  */
 export function bindFuncsToKeys(obj, func, selfArg, extraArgs) {
     const boundFuncs = {};
-    Object.keys(obj).forEach((x) => {
+    Object.keys(obj).forEach(x => {
         boundFuncs[x] = func.bind(selfArg, x, extraArgs);
     });
     return boundFuncs;
 }
 
 export function insertElement(id, label, editor, fieldType = 'id') {
-    const nameAttr = fieldType === "id" ? "entryfield" : null; //used for data-entry
-    const elementHtml = generateHtmlForField(id, null, null, label, nameAttr, fieldType);
+    const nameAttr = fieldType === 'id' ? 'entryfield' : null; //used for data-entry
+    const elementHtml = generateHtmlForField(
+        id,
+        null,
+        null,
+        label,
+        nameAttr,
+        fieldType
+    );
     editor.insertHtml(elementHtml, 'unfiltered_html');
     // Move the current selection to just after the newly inserted element
     const range = editor.getSelection().getRanges()[0];
@@ -152,7 +169,10 @@ export function insertElement(id, label, editor, fieldType = 'id') {
 }
 
 export function insertFlag(img, editor) {
-    editor.insertHtml(`<img src="../dhis-web-commons/flags/${img}" />`, 'unfiltered_html');
+    editor.insertHtml(
+        `<img src="../dhis-web-commons/flags/${img}" />`,
+        'unfiltered_html'
+    );
     const range = editor.getSelection().getRanges()[0];
     range && range.moveToElementEditablePosition(range.endContainer, true);
 }

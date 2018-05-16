@@ -38,13 +38,18 @@ export default React.createClass({
         return (
             <div>
                 <ItemSelector
-                    value={this.state.modelToEdit || this.state.itemListStore.state[0]}
+                    value={
+                        this.state.modelToEdit ||
+                        this.state.itemListStore.state[0]
+                    }
                     itemListStore={this.state.itemListStore}
                     onItemSelected={this._workItemChanged}
                 />
                 <TextField
                     fullWidth
-                    hintText={this.getTranslation('search_available_selected_items')}
+                    hintText={this.getTranslation(
+                        'search_available_selected_items'
+                    )}
                     defaultValue={this.state.filterText}
                     onChange={this._setFilterText}
                 />
@@ -65,8 +70,13 @@ export default React.createClass({
         };
 
         const d2 = this.context.d2;
-        const accessibleModels = ['indicator', 'dataElement', 'categoryOption']
-            .filter(schemaName => d2.currentUser.canCreate(d2.models[`${schemaName}Group`]));
+        const accessibleModels = [
+            'indicator',
+            'dataElement',
+            'categoryOption',
+        ].filter(schemaName =>
+            d2.currentUser.canCreate(d2.models[`${schemaName}Group`])
+        );
 
         return (
             <div style={contentStyle}>
@@ -82,24 +92,42 @@ export default React.createClass({
     createUrls(items) {
         const { modelToEdit, itemDefinition } = this.state;
 
-        return items
-            .map(id => `${modelToEdit.modelDefinition.plural}/${modelToEdit.id}/${itemDefinition}/${id}`);
+        return items.map(
+            id =>
+                `${modelToEdit.modelDefinition.plural}/${
+                    modelToEdit.id
+                }/${itemDefinition}/${id}`
+        );
     },
 
     _assignItems(items) {
-        const requests = this.createUrls(items)
-            .map(url => d2lib.getInstance()
-                    .then(d2 => d2.Api.getApi())
-                    .then(api => api.post(url)));
+        const requests = this.createUrls(items).map(url =>
+            d2lib
+                .getInstance()
+                .then(d2 => d2.Api.getApi())
+                .then(api => api.post(url))
+        );
 
         return Promise.all(requests)
             .then(() => {
-                const itemDefinition = `${this.state.modelToEdit.modelDefinition.name}Group`;
+                const itemDefinition = `${
+                    this.state.modelToEdit.modelDefinition.name
+                }Group`;
 
-                return d2lib.getInstance()
-                    .then(d2 => Promise.all([d2, d2.models[this.state.modelToEdit.modelDefinition.name].get(this.state.modelToEdit.id)]))
+                return d2lib
+                    .getInstance()
+                    .then(d2 =>
+                        Promise.all([
+                            d2,
+                            d2.models[
+                                this.state.modelToEdit.modelDefinition.name
+                            ].get(this.state.modelToEdit.id),
+                        ])
+                    )
                     .then(([d2, fullModel]) => {
-                        this.state.assignedItemStore.setState(fullModel[d2.models[itemDefinition].plural]);
+                        this.state.assignedItemStore.setState(
+                            fullModel[d2.models[itemDefinition].plural]
+                        );
                         this.setState({
                             modelToEdit: fullModel,
                         });
@@ -109,19 +137,33 @@ export default React.createClass({
     },
 
     _removeItems(items) {
-        const requests = this.createUrls(items)
-            .map(url => d2lib.getInstance()
-                    .then(d2 => d2.Api.getApi())
-                    .then(api => api.delete(url)));
+        const requests = this.createUrls(items).map(url =>
+            d2lib
+                .getInstance()
+                .then(d2 => d2.Api.getApi())
+                .then(api => api.delete(url))
+        );
 
         return Promise.all(requests)
             .then(() => {
-                const itemDefinition = `${this.state.modelToEdit.modelDefinition.name}Group`;
+                const itemDefinition = `${
+                    this.state.modelToEdit.modelDefinition.name
+                }Group`;
 
-                return d2lib.getInstance()
-                    .then(d2 => Promise.all([d2, d2.models[this.state.modelToEdit.modelDefinition.name].get(this.state.modelToEdit.id)]))
+                return d2lib
+                    .getInstance()
+                    .then(d2 =>
+                        Promise.all([
+                            d2,
+                            d2.models[
+                                this.state.modelToEdit.modelDefinition.name
+                            ].get(this.state.modelToEdit.id),
+                        ])
+                    )
                     .then(([d2, fullModel]) => {
-                        this.state.assignedItemStore.setState(fullModel[d2.models[itemDefinition].plural]);
+                        this.state.assignedItemStore.setState(
+                            fullModel[d2.models[itemDefinition].plural]
+                        );
                         this.setState({
                             modelToEdit: fullModel,
                         });
@@ -131,7 +173,8 @@ export default React.createClass({
     },
 
     _typeChanged(modelDef) {
-        modelDef.list({ paging: false, fields: 'id,displayName,name' })
+        modelDef
+            .list({ paging: false, fields: 'id,displayName,name' })
             .then(modelCollection => modelCollection.toArray())
             .then(models => this.state.itemListStore.setState(models))
             .then(() => this.setState({ showGroupEditor: true }))
@@ -147,37 +190,61 @@ export default React.createClass({
     _workItemChanged(model) {
         const itemDefinition = `${model.modelDefinition.name}Group`;
 
-        d2lib.getInstance()
-            .then((d2) => {
+        d2lib
+            .getInstance()
+            .then(d2 => {
                 if (!d2.models[itemDefinition]) {
-                    return Promise.reject(`This groupType does not have a model named: ${itemDefinition}`);
+                    return Promise.reject(
+                        `This groupType does not have a model named: ${itemDefinition}`
+                    );
                 }
 
-                const availablePromise = d2.models[itemDefinition].list({ paging: false });
-                const modelPromise = d2.models[model.modelDefinition.name].get(model.id);
+                const availablePromise = d2.models[itemDefinition].list({
+                    paging: false,
+                });
+                const modelPromise = d2.models[model.modelDefinition.name].get(
+                    model.id
+                );
 
-                Promise.all([availablePromise, modelPromise])
-                    .then(([availableItems, fullModel]) => {
+                Promise.all([availablePromise, modelPromise]).then(
+                    ([availableItems, fullModel]) => {
                         this.state.itemStore.setState(availableItems);
-                        this.state.assignedItemStore.setState(fullModel[d2.models[itemDefinition].plural]);
+                        this.state.assignedItemStore.setState(
+                            fullModel[d2.models[itemDefinition].plural]
+                        );
                         this.setState({
                             modelToEdit: fullModel,
                             itemDefinition: d2.models[itemDefinition].plural,
                         });
-                    });
+                    }
+                );
             })
             .catch(message => log.error(message));
     },
 
     reset() {
-        if (!this.state.modelToEdit) { return; }
+        if (!this.state.modelToEdit) {
+            return;
+        }
 
-        const itemDefinition = `${this.state.modelToEdit.modelDefinition.name}Group`;
+        const itemDefinition = `${
+            this.state.modelToEdit.modelDefinition.name
+        }Group`;
 
-        d2lib.getInstance()
-            .then(d2 => Promise.all([d2, d2.models[this.state.modelToEdit.modelDefinition.name].get(this.state.modelToEdit.id)]))
+        d2lib
+            .getInstance()
+            .then(d2 =>
+                Promise.all([
+                    d2,
+                    d2.models[this.state.modelToEdit.modelDefinition.name].get(
+                        this.state.modelToEdit.id
+                    ),
+                ])
+            )
             .then(([d2, fullModel]) => {
-                this.state.assignedItemStore.setState(fullModel[d2.models[itemDefinition].plural]);
+                this.state.assignedItemStore.setState(
+                    fullModel[d2.models[itemDefinition].plural]
+                );
                 this.setState({
                     modelToEdit: fullModel,
                 });

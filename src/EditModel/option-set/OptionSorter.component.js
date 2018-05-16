@@ -7,7 +7,9 @@ import { Observable } from 'rxjs';
 import snackActions from '../../Snackbar/snack.actions';
 import addD2Context from 'd2-ui/lib/component-helpers/addD2Context';
 import { optionsForOptionSetStore } from './stores.js';
-import SortDialog, { setSortDialogOpenTo } from './sorting/SortDialog.component';
+import SortDialog, {
+    setSortDialogOpenTo,
+} from './sorting/SortDialog.component';
 
 class OptionSorter extends Component {
     constructor(props, context) {
@@ -21,7 +23,9 @@ class OptionSorter extends Component {
         };
 
         this._onSortBy = this._onSortBy.bind(this);
-        this.getTranslation = this.context.d2.i18n.getTranslation.bind(this.context.d2.i18n);
+        this.getTranslation = this.context.d2.i18n.getTranslation.bind(
+            this.context.d2.i18n
+        );
     }
 
     render() {
@@ -31,19 +35,25 @@ class OptionSorter extends Component {
                     style={this.props.buttonStyle}
                     onClick={() => this._onSortBy('displayName')}
                     disabled={this.state.isSorting}
-                    label={this.getTranslation(this.state.isSorting ? 'sorting' : 'sort_by_name')}
+                    label={this.getTranslation(
+                        this.state.isSorting ? 'sorting' : 'sort_by_name'
+                    )}
                 />
                 <RaisedButton
                     style={this.props.buttonStyle}
                     onClick={() => this._onSortBy('code')}
                     disabled={this.state.isSorting}
-                    label={this.getTranslation(this.state.isSorting ? 'sorting' : 'sort_by_code')}
+                    label={this.getTranslation(
+                        this.state.isSorting ? 'sorting' : 'sort_by_code'
+                    )}
                 />
                 <RaisedButton
                     style={this.props.buttonStyle}
                     onClick={() => setSortDialogOpenTo(true)}
                     disabled={this.state.isSorting}
-                    label={this.getTranslation(this.state.isSorting ? 'sorting' : 'sort_manually')}
+                    label={this.getTranslation(
+                        this.state.isSorting ? 'sorting' : 'sort_manually'
+                    )}
                 />
                 <SortDialog />
             </div>
@@ -51,53 +61,73 @@ class OptionSorter extends Component {
     }
 
     _onSortBy(propertyName) {
-        this.setState({
-            isSorting: true,
-        }, () => {
-            optionSorter(modelToEditStore.getState().options.toArray(), propertyName, this.state.sortedASC[propertyName] ? 'DESC' : 'ASC')
-                .flatMap(async (options) => {
-                    const d2 = await getInstance();
+        this.setState(
+            {
+                isSorting: true,
+            },
+            () => {
+                optionSorter(
+                    modelToEditStore.getState().options.toArray(),
+                    propertyName,
+                    this.state.sortedASC[propertyName] ? 'DESC' : 'ASC'
+                )
+                    .flatMap(async options => {
+                        const d2 = await getInstance();
 
-                    return modelToEditStore
-                        .take(1)
-                        .map(modelToEdit => ({
-                            options: options.map(optionData => d2.models.option.create(optionData)),
+                        return modelToEditStore.take(1).map(modelToEdit => ({
+                            options: options.map(optionData =>
+                                d2.models.option.create(optionData)
+                            ),
                             modelToEdit,
                         }));
-                })
-                .concatAll()
-                .map(({ options, modelToEdit }) => {
-                    modelToEdit.options.clear();
-                    options.forEach((option) => {
-                        modelToEdit.options.add(option);
-                    });
-
-                    modelToEditStore.setState(modelToEdit);
-                    optionsForOptionSetStore.setState({
-                        ...optionsForOptionSetStore.getState(),
-                        options,
-                    });
-                    options.map(v => v.displayName);
-
-                    snackActions.show({ message: 'options_sorted_locally_saving_to_server', translate: true });
-
-                    return Observable.fromPromise(modelToEdit.save());
-                })
-                .concatAll()
-                .subscribe(
-                    () => {
-                        this.setState({
-                            sortedASC: {
-                                ...this.state.sortedASC,
-                                [propertyName]: !this.state.sortedASC[propertyName],
-                            },
-                            isSorting: false,
+                    })
+                    .concatAll()
+                    .map(({ options, modelToEdit }) => {
+                        modelToEdit.options.clear();
+                        options.forEach(option => {
+                            modelToEdit.options.add(option);
                         });
-                        snackActions.show({ message: 'options_sorted_and_saved', translate: true });
-                    },
-                    () => snackActions.show({ message: 'options_not_sorted', action: 'ok', translate: true })
-                );
-        });
+
+                        modelToEditStore.setState(modelToEdit);
+                        optionsForOptionSetStore.setState({
+                            ...optionsForOptionSetStore.getState(),
+                            options,
+                        });
+                        options.map(v => v.displayName);
+
+                        snackActions.show({
+                            message: 'options_sorted_locally_saving_to_server',
+                            translate: true,
+                        });
+
+                        return Observable.fromPromise(modelToEdit.save());
+                    })
+                    .concatAll()
+                    .subscribe(
+                        () => {
+                            this.setState({
+                                sortedASC: {
+                                    ...this.state.sortedASC,
+                                    [propertyName]: !this.state.sortedASC[
+                                        propertyName
+                                    ],
+                                },
+                                isSorting: false,
+                            });
+                            snackActions.show({
+                                message: 'options_sorted_and_saved',
+                                translate: true,
+                            });
+                        },
+                        () =>
+                            snackActions.show({
+                                message: 'options_not_sorted',
+                                action: 'ok',
+                                translate: true,
+                            })
+                    );
+            }
+        );
     }
 }
 

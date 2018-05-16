@@ -3,23 +3,32 @@ import PropTypes from 'prop-types';
 import { negate } from 'lodash/fp';
 
 import ExpressionFormula from 'd2-ui/lib/expression-manager/ExpressionFormula';
-import { ExpressionStatus, getColorForExpressionStatus } from './ExpressionStatusIcon';
+import {
+    ExpressionStatus,
+    getColorForExpressionStatus,
+} from './ExpressionStatusIcon';
 
-
-function ExpressionFormulaWithErrorMessage({ formula, onFormulaChange, errorStatus }) {
-    const isExpressionInvalid = negate(expressionStatus => expressionStatus.status === ExpressionStatus.VALID);
+function ExpressionFormulaWithErrorMessage({
+    formula,
+    onFormulaChange,
+    errorStatus,
+}) {
+    const isExpressionInvalid = negate(
+        expressionStatus => expressionStatus.status === ExpressionStatus.VALID
+    );
     const color = getColorForExpressionStatus(errorStatus.status);
 
     const formulaWrapStyle = {
-        border: `2px solid ${isExpressionInvalid(errorStatus)
-            ? color
-            : 'transparent'}`,
+        border: `2px solid ${
+            isExpressionInvalid(errorStatus) ? color : 'transparent'
+        }`,
     };
 
-    const formulaDescriptionField = isExpressionInvalid(errorStatus) &&
+    const formulaDescriptionField = isExpressionInvalid(errorStatus) && (
         <span style={{ color, marginTop: '.25rem' }}>
             {errorStatus.message}
-        </span>;
+        </span>
+    );
 
     return (
         <div>

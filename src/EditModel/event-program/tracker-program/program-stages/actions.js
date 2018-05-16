@@ -49,6 +49,11 @@ export const cancelProgramStageEdit = () => ({
     type: PROGRAM_STAGE_EDIT_CANCEL,
 });
 
-export const deleteProgramStage = stageId => createActionCreator(PROGRAM_STAGE_DELETE)({ stageId });
-export const deleteProgramStageSuccess = createActionCreator(PROGRAM_STAGE_DELETE_SUCCESS);
-export const deleteProgramStageError = createActionCreator(PROGRAM_STAGE_DELETE_ERROR);
+export const deleteProgramStage = stageId =>
+    createActionCreator(PROGRAM_STAGE_DELETE)({ stageId });
+export const deleteProgramStageSuccess = createActionCreator(
+    PROGRAM_STAGE_DELETE_SUCCESS
+);
+export const deleteProgramStageError = createActionCreator(
+    PROGRAM_STAGE_DELETE_ERROR
+);
