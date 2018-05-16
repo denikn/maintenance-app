@@ -38,6 +38,13 @@
         "arrow-body-style": 0,
         "quote-props": 0,
         "no-confusing-arrow": 0,
-        "global-require": 0
+        "global-require": 0,
+        "comma-dangle": ["error", {
+            "arrays": "always-multiline",
+            "objects": "always-multiline",
+            "imports": "always-multiline",
+            "exports": "always-multiline",
+            "functions": "never"
+        }]
     }
 }
