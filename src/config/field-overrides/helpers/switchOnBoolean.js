@@ -12,7 +12,7 @@ class Empty extends Component {
 export default memoize(function switchOnBoolean(
     predicate,
     WhenTrue,
-    WhenFalse = Empty,
+    WhenFalse = Empty
 ) {
     const switchedComponent = (props, context) =>
         predicate(props, context) ? (
@@ -23,7 +23,7 @@ export default memoize(function switchOnBoolean(
 
     switchedComponent.displayName = wrapDisplayName(
         WhenTrue,
-        switchOnBoolean.name,
+        switchOnBoolean.name
     );
 
     return withD2Context(switchedComponent);

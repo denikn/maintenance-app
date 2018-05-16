@@ -18,7 +18,7 @@ export default class OrganisationUnitTreeMultiSelect extends React.Component {
         };
 
         this._searchOrganisationUnits = Action.create(
-            'searchOrganisationUnits',
+            'searchOrganisationUnits'
         );
 
         this._handleClick = this._handleClick.bind(this);
@@ -53,7 +53,7 @@ export default class OrganisationUnitTreeMultiSelect extends React.Component {
             const rootOrgUnits = orgUnits
                 .toArray()
                 .filter(ou =>
-                    new RegExp(`${this.state.searchValue}`).test(ou.displayName),
+                    new RegExp(`${this.state.searchValue}`).test(ou.displayName)
                 );
 
             this.setState({
@@ -141,7 +141,7 @@ export default class OrganisationUnitTreeMultiSelect extends React.Component {
             return (
                 <div>
                     {this.context.d2.i18n.getTranslation(
-                        'determining_your_root_orgunits',
+                        'determining_your_root_orgunits'
                     )}
                 </div>
             );
@@ -192,14 +192,14 @@ export default class OrganisationUnitTreeMultiSelect extends React.Component {
                         this._searchOrganisationUnits(event.target.value)
                     }
                     floatingLabelText={this.context.d2.i18n.getTranslation(
-                        'filter_organisation_units_by_name',
+                        'filter_organisation_units_by_name'
                     )}
                     fullWidth
                 />
                 <div className="organisation-unit-tree__selected">
                     {this.state.selectedOrgUnits.length}{' '}
                     {this.context.d2.i18n.getTranslation(
-                        'organisation_units_selected',
+                        'organisation_units_selected'
                     )}
                 </div>
                 {this.renderRoots()}
@@ -209,7 +209,7 @@ export default class OrganisationUnitTreeMultiSelect extends React.Component {
                             {this.state.currentRoot ? (
                                 <span>
                                     {this.context.d2.i18n.getTranslation(
-                                        'for_organisation_units_within',
+                                        'for_organisation_units_within'
                                     )}
                                     <span style={currentRootStyle}>
                                         {this.state.currentRoot.displayName}
@@ -218,7 +218,7 @@ export default class OrganisationUnitTreeMultiSelect extends React.Component {
                             ) : (
                                 <span>
                                     {this.context.d2.i18n.getTranslation(
-                                        'select_a_parent_organisation_unit',
+                                        'select_a_parent_organisation_unit'
                                     )}
                                 </span>
                             )}
@@ -252,7 +252,7 @@ export default class OrganisationUnitTreeMultiSelect extends React.Component {
         const d2 = this.context.d2;
 
         const selectedOrgUnitIds = selectedOrgUnitPaths.map(path =>
-            path.substr(path.lastIndexOf('/') + 1),
+            path.substr(path.lastIndexOf('/') + 1)
         );
         const modelOrgUnits = this.props.model.organisationUnits;
         const assigned = modelOrgUnits.toArray().map(ou => ou.id);
@@ -284,7 +284,7 @@ export default class OrganisationUnitTreeMultiSelect extends React.Component {
             this.setState(state => {
                 state.selectedOrgUnits.splice(
                     state.selectedOrgUnits.indexOf(orgUnit.path),
-                    1,
+                    1
                 );
 
                 this.props.model.organisationUnits.remove(orgUnit);

@@ -72,7 +72,7 @@ function ProgramIndicatorExpression({
     const programType = getOr(
         'WITHOUT_REGISTRATION',
         'program.programType',
-        model,
+        model
     );
 
     const onFormulaChange = value => onChange({ target: { value } });

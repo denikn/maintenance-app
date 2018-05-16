@@ -13,8 +13,8 @@ const sectionItemsForCurrentGroup$ = menuCardsStore
     // Filter the section based on the app's currentSection
     .flatMap(([metaDataSections, currentSection]) =>
         metaDataSections.filter(
-            metaDataSection => metaDataSection.key === currentSection,
-        ),
+            metaDataSection => metaDataSection.key === currentSection
+        )
     )
     // Map the section items onto the props for the MenuCards component
     .map(currentSection => ({ menuItems: currentSection.items }));

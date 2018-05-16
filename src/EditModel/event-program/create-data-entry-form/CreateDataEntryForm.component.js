@@ -37,11 +37,11 @@ class CreateDataEntryForm extends Component {
         this.props.onChangeDefaultOrder(
             arrayMove(
                 this.props.availableDataElements.map(
-                    dataElement => dataElement.id,
+                    dataElement => dataElement.id
                 ),
                 oldIndex,
-                newIndex,
-            ),
+                newIndex
+            )
         );
     };
 
@@ -69,7 +69,7 @@ class CreateDataEntryForm extends Component {
                                 this.props.availableDataElements
                             }
                             onChange={this.programDataElementOrderChanged}
-                        />,
+                        />
                     )}
 
                     {this.renderTab(
@@ -89,12 +89,12 @@ class CreateDataEntryForm extends Component {
                             }
                             onSectionAdded={this.props.onSectionAdded}
                             onSectionRemoved={this.props.onSectionRemoved}
-                        />,
+                        />
                     )}
 
                     {this.renderTab(
                         this.getTranslation('custom'),
-                        <CustomForm programStage={this.props.programStage} />,
+                        <CustomForm programStage={this.props.programStage} />
                     )}
                 </Tabs>
             </Paper>
@@ -131,9 +131,9 @@ CreateDataEntryForm.propTypes = {
                 PropTypes.shape({
                     id: PropTypes.string.isRequired,
                     displayName: PropTypes.string.isRequired,
-                }),
+                })
             ).isRequired,
-        }),
+        })
     ).isRequired,
 };
 
@@ -150,15 +150,15 @@ const mapDispatchToProps = dispatch =>
             removeProgramStageSection,
             editProgramStageSectionName,
         },
-        dispatch,
+        dispatch
     );
 
 const programStageSections$ = eventProgramStore.map(
-    getOr([], 'programStageSections'),
+    getOr([], 'programStageSections')
 );
 
 const trackerDataElements$ = eventProgramStore.map(
-    getOr([], 'availableDataElements'),
+    getOr([], 'availableDataElements')
 );
 
 const enhance = compose(
@@ -174,15 +174,15 @@ const enhance = compose(
                 programStage,
                 programStageSections,
                 trackerDataElements,
-                store,
+                store
             ) => ({
                 ...props,
                 programStage,
                 programStageSections:
                     getStageSectionsById(store, programStage.id) || [],
                 trackerDataElements,
-            }),
-        ),
+            })
+        )
     ),
     mapProps(({ trackerDataElements, ...props }) => {
         const getDisplayNameForDataElement = dataElement =>
@@ -192,8 +192,8 @@ const enhance = compose(
                 find(
                     trackerDataElement =>
                         dataElement.id === trackerDataElement.id,
-                    trackerDataElements,
-                ),
+                    trackerDataElements
+                )
             );
 
         const availableDataElements =
@@ -205,24 +205,24 @@ const enhance = compose(
                 ['sortOrder'],
                 props.programStageSections.map(section => {
                     section.dataElements = Array.from(
-                        section.dataElements.values(),
+                        section.dataElements.values()
                     ).map(dataElement => ({
                         id: dataElement.id,
                         displayName: getDisplayNameForDataElement(dataElement),
                     }));
 
                     return section;
-                }),
+                })
             ),
             availableDataElements: sortBy(
                 ['sortOrder'],
                 availableDataElements.map(programDataElement => ({
                     ...programDataElement.dataElement,
                     displayName: getDisplayNameForDataElement(
-                        programDataElement.dataElement,
+                        programDataElement.dataElement
                     ),
                     sortOrder: programDataElement.sortOrder,
-                })),
+                }))
             ),
         };
     }),
@@ -273,7 +273,7 @@ const enhance = compose(
                 programStageSection,
             });
         },
-    }),
+    })
 );
 
 export default enhance(CreateDataEntryForm);

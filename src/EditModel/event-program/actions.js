@@ -48,10 +48,10 @@ export const EVENT_PROGRAM_LOAD_ERROR = 'EVENT_PROGRAM_LOAD_ERROR';
 
 export const loadEventProgram = createActionCreator(EVENT_PROGRAM_LOAD);
 export const loadEventProgramSuccess = createActionCreator(
-    EVENT_PROGRAM_LOAD_SUCCESS,
+    EVENT_PROGRAM_LOAD_SUCCESS
 );
 export const loadEventProgramFailure = createActionCreator(
-    EVENT_PROGRAM_LOAD_ERROR,
+    EVENT_PROGRAM_LOAD_ERROR
 );
 
 export const EVENT_PROGRAM_SAVE = 'EVENT_PROGRAM_SAVE';
@@ -60,8 +60,8 @@ export const EVENT_PROGRAM_SAVE_ERROR = 'EVENT_PROGRAM_SAVE_ERROR';
 
 export const saveEventProgram = createActionCreator(EVENT_PROGRAM_SAVE);
 export const saveEventProgramSuccess = createActionCreator(
-    EVENT_PROGRAM_SAVE_SUCCESS,
+    EVENT_PROGRAM_SAVE_SUCCESS
 );
 export const saveEventProgramError = createActionCreator(
-    EVENT_PROGRAM_SAVE_ERROR,
+    EVENT_PROGRAM_SAVE_ERROR
 );

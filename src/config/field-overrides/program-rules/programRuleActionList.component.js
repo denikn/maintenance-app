@@ -27,7 +27,7 @@ class ProgramRuleActionsList extends React.Component {
             dialogOpen: true,
             currentRuleActionModel: Object.assign(
                 this.d2.models.programRuleActions.create(),
-                { programRule: { id: this.props.model.id } },
+                { programRule: { id: this.props.model.id } }
             ),
         });
     }
@@ -67,7 +67,7 @@ class ProgramRuleActionsList extends React.Component {
                         field = this.getTranslation('feedback_widget');
                     } else if (action.location === 'indicators') {
                         field = this.getTranslation(
-                            'program_indicator_widget',
+                            'program_indicator_widget'
                         );
                     }
                 }
@@ -82,7 +82,7 @@ class ProgramRuleActionsList extends React.Component {
                 actionDetails =
                         `${this.getTranslation(
                             programRuleActionTypes[action.programRuleActionType]
-                                .label,
+                                .label
                         )}: ` + `"${text}"${field}`;
                 break;
 
@@ -98,7 +98,7 @@ class ProgramRuleActionsList extends React.Component {
                     .join(', ');
                 actionDetails = `${this.getTranslation(
                     programRuleActionTypes[action.programRuleActionType]
-                        .label,
+                        .label
                 )}: ${field}`;
                 break;
 
@@ -106,7 +106,7 @@ class ProgramRuleActionsList extends React.Component {
                 actionDetails =
                         `${this.getTranslation(
                             programRuleActionTypes[action.programRuleActionType]
-                                .label,
+                                .label
                         )}: ` +
                         `"${action.programStageSection &&
                             action.programStageSection.displayName}"`;
@@ -116,7 +116,7 @@ class ProgramRuleActionsList extends React.Component {
                 actionDetails =
                         `${this.getTranslation(
                             programRuleActionTypes[action.programRuleActionType]
-                                .label,
+                                .label
                         )}: ` +
                         `"${action.programStage &&
                             action.programStage.displayName}"`;
@@ -134,10 +134,10 @@ class ProgramRuleActionsList extends React.Component {
                 actionDetails =
                         `${this.getTranslation(
                             programRuleActionTypes[action.programRuleActionType]
-                                .label,
+                                .label
                         )}: ` +
                         `"${action.data}" ${this.getTranslation(
-                            'to_field',
+                            'to_field'
                         )} ${field}`;
                 break;
 
@@ -145,7 +145,7 @@ class ProgramRuleActionsList extends React.Component {
                 actionDetails =
                         `${this.getTranslation(
                             programRuleActionTypes[action.programRuleActionType]
-                                .label,
+                                .label
                         )} ` +
                         `${this.getTranslation('in_program_stage')}: ` +
                         `${action.programStage &&
@@ -164,7 +164,7 @@ class ProgramRuleActionsList extends React.Component {
                     .join(', ');
                 actionDetails = `${this.getTranslation(
                     programRuleActionTypes[action.programRuleActionType]
-                        .label,
+                        .label
                 )}: ${field}`;
                 break;
 
@@ -175,12 +175,12 @@ class ProgramRuleActionsList extends React.Component {
                 const displayName = action.programNotificationTemplate
                     ? action.programNotificationTemplate.displayName
                     : this.getTranslation(
-                        'no_notification_template_specified',
+                        'no_notification_template_specified'
                     );
 
                 actionDetails = `${this.getTranslation(
                     programRuleActionTypes[action.programRuleActionType]
-                        .label,
+                        .label
                 )}: ${displayName} ${withDateString}`;
 
                 break;
@@ -191,11 +191,11 @@ class ProgramRuleActionsList extends React.Component {
 
             return Object.assign(action, {
                 action: programRuleActionTypes.hasOwnProperty(
-                    action.programRuleActionType,
+                    action.programRuleActionType
                 )
                     ? this.getTranslation(
                         programRuleActionTypes[action.programRuleActionType]
-                            .label,
+                            .label
                     )
                     : action.programRuleActionType,
                 actionDetails,
@@ -231,20 +231,20 @@ class ProgramRuleActionsList extends React.Component {
         const deleteAction = model => {
             snackActions.show({
                 message: this.getTranslation(
-                    'confirm_delete_program_rule_action',
+                    'confirm_delete_program_rule_action'
                 ),
                 action: 'confirm',
                 onActionTouchTap: () => {
                     this.props.onChange({
                         target: {
                             value: this.props.model.programRuleActions.remove(
-                                model,
+                                model
                             ),
                         },
                     });
                     snackActions.show({
                         message: this.getTranslation(
-                            'program_rule_action_deleted',
+                            'program_rule_action_deleted'
                         ),
                     });
                 },
@@ -259,7 +259,7 @@ class ProgramRuleActionsList extends React.Component {
                     position: 'relative',
                     width: '100%',
                 },
-                this.props.style,
+                this.props.style
             ),
             fab: {
                 position: 'absolute',
@@ -318,7 +318,7 @@ class ProgramRuleActionsList extends React.Component {
                             this.setState({
                                 programRuleAction: Object.assign(
                                     this.state.currentRuleActionModel,
-                                    { [field]: value },
+                                    { [field]: value }
                                 ),
                             })
                         }

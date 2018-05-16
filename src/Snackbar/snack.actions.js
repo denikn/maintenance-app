@@ -20,7 +20,7 @@ snackActions.show.subscribe(actionConfig => {
             autoHideDuration,
             onActionTouchTap,
             translate,
-        }),
+        })
     );
 });
 

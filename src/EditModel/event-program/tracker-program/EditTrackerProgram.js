@@ -17,15 +17,15 @@ import {
 } from '../../stepper/stepper';
 
 const EventProgramStepperNavigationForward = createConnectedForwardButton(
-    nextTrackerStep,
+    nextTrackerStep
 );
 const EventProgramStepperNavigationBackward = createConnectedBackwardButton(
-    previousTrackerStep,
+    previousTrackerStep
 );
 
 const StepperNavigation = createStepperNavigation(
     EventProgramStepperNavigationBackward,
-    EventProgramStepperNavigationForward,
+    EventProgramStepperNavigationForward
 );
 
 const styles = {

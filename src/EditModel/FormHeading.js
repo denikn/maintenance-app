@@ -9,7 +9,7 @@ import { goToAndScrollUp } from '../router-utils';
 
 function FormHeading(
     { level, schema, children, groupName, isDirtyHandler, ...props },
-    context,
+    context
 ) {
     return (
         <Heading {...props} level={level}>

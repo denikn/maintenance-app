@@ -53,7 +53,7 @@ const isProgramStageDirty = compose(some(checkIfDirty), programStagesSelector);
 const getIdForFirstProgramStage = compose(
     get('id'),
     first,
-    programStagesSelector,
+    programStagesSelector
 );
 
 // ___ hasDirtyProgramStageSections :: Object<StoreState> -> Boolean
@@ -62,7 +62,7 @@ const hasDirtyProgramStageSections = compose(
     some(checkIfDirty),
     flatten,
     values,
-    programStageSectionsSelector,
+    programStageSectionsSelector
 );
 
 const hasDirtyProgramNotifications = state =>
@@ -74,14 +74,14 @@ const hasDirtyNotificationTemplate = compose(
     some(checkIfDirty),
     flatten,
     values,
-    programStageNotificationsSelector,
+    programStageNotificationsSelector
 );
 
 // ___ hasDirtyDataEntryForms :: Object<StoreState> -> Object<{programStageId: Model.DataEntryForm}> -> Boolean
 const hasDirtyDataEntryForms = compose(
     some(checkIfDirty),
     values,
-    dataEntryFormsSelector,
+    dataEntryFormsSelector
 );
 
 // __ isProgramDirty :: Object<{program}> -> Boolean
@@ -98,7 +98,7 @@ export const isStoreStateDirty = compose(
         hasDirtyDataEntryForms,
         hasDirtyProgramNotifications,
     ]),
-    value => func => func(value),
+    value => func => func(value)
 );
 
 // getMetaDataToSend :: StoreState -> SaveState
@@ -134,11 +134,11 @@ export const getMetaDataToSend = state => {
 
     if (hasDirtyNotificationTemplate(state)) {
         const programStageNotifications = programStageNotificationsSelector(
-            state,
+            state
         );
 
         payload.programNotificationTemplates = Object.keys(
-            programStageNotifications,
+            programStageNotifications
         )
             .map(get(__, programStageNotifications))
             .reduce(concat)
@@ -153,7 +153,7 @@ export const getMetaDataToSend = state => {
         payload.programNotificationTemplates = payload.programNotificationTemplates.concat(
             programNotificationsSelector(state)
                 .toArray()
-                .map(modelToJson),
+                .map(modelToJson)
         );
     }
 
@@ -233,13 +233,13 @@ const storeSetState = eventProgramStore.setState.bind(eventProgramStore);
 eventProgramStore.setState = newState => {
     if (!isObject(newState)) {
         throw new Error(
-            'You are attempting to set a state that is a non object',
+            'You are attempting to set a state that is a non object'
         );
     }
 
     if (!isValidState(newState)) {
         throw new Error(
-            'You are attempting to set an invalid state onto the eventProgramStore',
+            'You are attempting to set an invalid state onto the eventProgramStore'
         );
     }
     storeSetState({

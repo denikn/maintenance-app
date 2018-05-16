@@ -68,7 +68,7 @@ const SortableSectionDataList = SortableContainer(
                 />
             ))}
         </div>
-    ),
+    )
 );
 
 export default SortableSectionDataList;

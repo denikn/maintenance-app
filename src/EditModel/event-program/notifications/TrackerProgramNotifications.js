@@ -27,7 +27,7 @@ import TrackerNotificationAddButton from './TrackerNotificationAddButton';
 
 const programStages$ = eventProgramStore.map(getProgramStages);
 const stageNotifications$ = eventProgramStore.map(
-    get('programStageNotifications'),
+    get('programStageNotifications')
 );
 
 const programNotifications$ = eventProgramStore
@@ -35,7 +35,7 @@ const programNotifications$ = eventProgramStore
     .map(n => n.toArray());
 
 const availableDataElements = eventProgramStore.map(
-    get('availableDataElements'),
+    get('availableDataElements')
 );
 
 const TrackerProgramNotifications = (
@@ -56,7 +56,7 @@ const TrackerProgramNotifications = (
         model,
         ...props
     },
-    { d2 },
+    { d2 }
 ) => {
     const stageNotificationsWithStageNames = [];
 
@@ -78,7 +78,7 @@ const TrackerProgramNotifications = (
             <Tabs initialSelectedIndex={programStageTabIndex}>
                 <Tab
                     label={d2.i18n.getTranslation(
-                        'program_stage_notifications',
+                        'program_stage_notifications'
                     )}
                 >
                     <NotificationList
@@ -147,7 +147,7 @@ const mapDispatchToProps = dispatch =>
                 setEditModel(model, 'PROGRAM_NOTIFICATION'),
             setAddModel,
         },
-        dispatch,
+        dispatch
     );
 
 const enhance = compose(
@@ -188,7 +188,7 @@ const enhance = compose(
                 programStageNotifications,
                 programNotifications,
                 availableDataElements,
-                store,
+                store
             ) => {
                 return {
                     ...props,
@@ -198,9 +198,9 @@ const enhance = compose(
                     availableDataElements,
                     getProgramStageById: getProgramStageById(store),
                 };
-            },
-        ),
-    ),
+            }
+        )
+    )
 );
 
 export default enhance(TrackerProgramNotifications);

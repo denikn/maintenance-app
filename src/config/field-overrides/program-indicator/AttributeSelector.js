@@ -6,7 +6,7 @@ const AttributeSelector = mapProps(({ program, onSelect = noop, ...props }) => {
     const programAttributeItems = getOr(
         [],
         'programTrackedEntityAttributes',
-        program,
+        program
     )
         .map(get('trackedEntityAttribute'))
         .filter(identity) // TODO: Also filter on valueType

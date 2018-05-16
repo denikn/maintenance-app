@@ -57,7 +57,7 @@ const mapDispatchToProps = dispatch =>
             editProgramAttributes,
             setAttributesOrder,
         },
-        dispatch,
+        dispatch
     );
 
 /**
@@ -77,10 +77,10 @@ export function tetAttributesNotInProgram(programModel) {
                 const hasAttribute = programModel.programTrackedEntityAttributes.find(
                     ptea =>
                         ptea.trackedEntityAttribute.id ===
-                        teta.trackedEntityAttribute.id,
+                        teta.trackedEntityAttribute.id
                 );
                 return !hasAttribute;
-            },
+            }
         );
     }
     return [];
@@ -102,14 +102,14 @@ const enhance = compose(
                 availableAttributes,
                 model: program,
                 assignedAttributes: program.programTrackedEntityAttributes,
-            }),
-        ),
+            })
+        )
     ),
     lifecycle({
         componentDidMount() {
             // Assign attributes for selected trackedEntityType
             const attributes = tetAttributesNotInProgram(this.props.model).map(
-                a => a.trackedEntityAttribute.id,
+                a => a.trackedEntityAttribute.id
             );
             this.props.addAttributesToProgram({ attributes });
         },
@@ -130,13 +130,13 @@ const enhance = compose(
             }),
         onAttributeFilter: ({ setAttributeFilter }) => e =>
             setAttributeFilter(e.target.value),
-    }),
+    })
 );
 
 function addDisplayProperties(attributes) {
     return ({ trackedEntityAttribute, ...other }) => {
         const { displayName, valueType, optionSet, unique } = attributes.find(
-            ({ id }) => id === trackedEntityAttribute.id,
+            ({ id }) => id === trackedEntityAttribute.id
         );
 
         return {
@@ -161,12 +161,12 @@ function AssignAttributes(props, { d2 }) {
             id: attribute.id,
             text: attribute.displayName,
             value: attribute.id,
-        })),
+        }))
     );
 
     // Assign existing attributes
     assignedItemStore.setState(
-        props.assignedAttributes.map(a => a.trackedEntityAttribute.id),
+        props.assignedAttributes.map(a => a.trackedEntityAttribute.id)
     );
 
     const onMoveAttributes = newAttributesOrderIds => {
@@ -200,12 +200,12 @@ function AssignAttributes(props, { d2 }) {
             <div style={styles.groupEditor}>
                 <div style={styles.fieldname}>
                     {d2.i18n.getTranslation(
-                        'program_tracked_entity_attributes',
+                        'program_tracked_entity_attributes'
                     )}
                 </div>
                 <TextField
                     hintText={d2.i18n.getTranslation(
-                        'search_available_program_tracked_entity_attributes',
+                        'search_available_program_tracked_entity_attributes'
                     )}
                     onChange={props.onAttributeFilter}
                     value={props.attributeFilter}

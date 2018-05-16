@@ -59,7 +59,7 @@ function saveFixture(url, response) {
 
                 console.log(`Fixture (${url}) updated`);
                 resolve();
-            },
+            }
         );
     });
 }
@@ -88,7 +88,7 @@ function getFixturePaths(rootPath = __dirname) {
 
 const getApiPathFromFixturePath = compose(
     replace('fixtures/', ''),
-    replace('.json', ''),
+    replace('.json', '')
 );
 
 function updateFixturesForFilePaths(files) {

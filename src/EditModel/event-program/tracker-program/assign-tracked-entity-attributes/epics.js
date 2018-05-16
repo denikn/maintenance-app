@@ -38,7 +38,7 @@ const addAttributeToProgram = store => action$ =>
             const programAttributes = getOr(
                 [],
                 'programTrackedEntityAttributes',
-                program,
+                program
             );
             const attributesIdsToAdd = getOr([], 'payload.attributes', action);
             const attributesToAdd = map(
@@ -48,11 +48,11 @@ const addAttributeToProgram = store => action$ =>
                         id,
                     },
                 }),
-                attributesIdsToAdd,
+                attributesIdsToAdd
             );
 
             program.programTrackedEntityAttributes = programAttributes.concat(
-                attributesToAdd,
+                attributesToAdd
             );
             store.setState({
                 ...store.getState(),
@@ -70,7 +70,7 @@ const removeAttributeFromProgram = store => action$ =>
             const programAttributes = getOr(
                 [],
                 'programTrackedEntityAttributes',
-                program,
+                program
             );
             let attributeIdsToRemove = getOr([], 'payload.attributes', action);
 
@@ -81,8 +81,8 @@ const removeAttributeFromProgram = store => action$ =>
                 const withoutTetAttrs = attributeIdsToRemove.filter(
                     a =>
                         !attributesInTet.find(
-                            teta => teta.trackedEntityAttribute.id === a,
-                        ),
+                            teta => teta.trackedEntityAttribute.id === a
+                        )
                 );
 
                 if (attributeIdsToRemove.length !== withoutTetAttrs.length) {
@@ -96,11 +96,11 @@ const removeAttributeFromProgram = store => action$ =>
             }
 
             const removeAttributes = keepProgramAttributesNotInUidList(
-                attributeIdsToRemove,
+                attributeIdsToRemove
             );
 
             program.programTrackedEntityAttributes = removeAttributes(
-                programAttributes,
+                programAttributes
             );
             store.setState({
                 ...store.getState(),
@@ -119,13 +119,13 @@ const editAttribute = store => action$ =>
             const programAttributes = getOr(
                 [],
                 'programTrackedEntityAttributes',
-                program,
+                program
             );
 
             const programAttributeId = get('payload.attribute.id', action);
 
             const programAttribute = programAttributes.find(
-                isObjectWithId(programAttributeId),
+                isObjectWithId(programAttributeId)
             );
 
             program.programTrackedEntityAttributes = programAttributes.map(
@@ -134,7 +134,7 @@ const editAttribute = store => action$ =>
                         return action.payload.attribute;
                     }
                     return attr;
-                },
+                }
             );
 
             store.setState({
@@ -155,12 +155,12 @@ const setAttributesOrder = store => action$ =>
             const programAttributes = getOr(
                 [],
                 'programTrackedEntityAttributes',
-                program,
+                program
             );
             const newAssignedAttributes = newOrderIds.map(teaId =>
                 programAttributes.find(
-                    attribute => attribute.trackedEntityAttribute.id === teaId,
-                ),
+                    attribute => attribute.trackedEntityAttribute.id === teaId
+                )
             );
             program.programTrackedEntityAttributes = newAssignedAttributes;
             store.setState({
@@ -175,6 +175,6 @@ export default function createEpicsForStore(store) {
         addAttributeToProgram(store),
         removeAttributeFromProgram(store),
         editAttribute(store),
-        setAttributesOrder(store),
+        setAttributesOrder(store)
     );
 }

@@ -27,7 +27,7 @@ const enhance = compose(
             } = this.props;
             const { status$, validate } = createExpressionValidator(
                 referenceProperty,
-                setStatus,
+                setStatus
             );
 
             this.validate = validate;
@@ -46,7 +46,7 @@ const enhance = compose(
         componentWillUnmount() {
             this.validatorStatusSubscription.unsubscribe();
         },
-    }),
+    })
 );
 
 export default new Map([

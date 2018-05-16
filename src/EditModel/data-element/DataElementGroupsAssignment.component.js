@@ -18,7 +18,7 @@ function findValue(optionList, model) {
         option =>
             Array.from(model.dataElementGroups.values())
                 .map(dataElementGroup => dataElementGroup.id)
-                .indexOf(option) !== -1,
+                .indexOf(option) !== -1
     );
 }
 
@@ -46,11 +46,11 @@ export default React.createClass({
                     fields: 'id,displayName,dataElementGroups[id,displayName]',
                     filter: ['compulsory:eq:true'],
                     paging: false,
-                }),
+                })
             )
             .then(response => response.dataElementGroupSets)
             .then(dataElementGroupSets =>
-                this.setState({ dataElementGroupSets }),
+                this.setState({ dataElementGroupSets })
             );
 
         this.subscription = store.subscribe(() => this.forceUpdate());
@@ -74,10 +74,10 @@ export default React.createClass({
                     [dataElementGroupSetId]: event.target.value
                         ? event.target.value
                         : null,
-                },
+                }
             ),
             remove: Array.from(
-                new Set(store.state.remove.concat([oldValue])).values(),
+                new Set(store.state.remove.concat([oldValue])).values()
             ),
         });
     },
@@ -94,12 +94,12 @@ export default React.createClass({
                         ig => ({
                             value: ig.id,
                             text: ig.displayName,
-                        }),
+                        })
                     );
 
                     const value = Object.prototype.hasOwnProperty.call(
                         store.state.dataElementGroupValues,
-                        dataElementGroupSet.id,
+                        dataElementGroupSet.id
                     )
                         ? store.state.dataElementGroupValues[
                             dataElementGroupSet.id
@@ -116,7 +116,7 @@ export default React.createClass({
                                 onChange={this._updateGroupStatus.bind(
                                     this,
                                     dataElementGroupSet.id,
-                                    findValue(optionList, this.props.source),
+                                    findValue(optionList, this.props.source)
                                 )}
                                 fullWidth
                             />

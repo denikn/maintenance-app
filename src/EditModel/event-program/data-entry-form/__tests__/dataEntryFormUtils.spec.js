@@ -40,7 +40,7 @@ describe('dataEntryFormUtils', () => {
             const { usedIds, outHtml } = utils.processFormData(
                 dataEntryForm,
                 elements,
-                utils.elementPatterns.combinedIdPattern,
+                utils.elementPatterns.combinedIdPattern
             );
             console.log(outHtml);
             expect(outHtml).toBe(initialHTML);

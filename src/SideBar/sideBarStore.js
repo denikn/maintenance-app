@@ -50,7 +50,7 @@ const sideBarState = appStateStore
             )
                 .map(v => v)
                 .map(section =>
-                    Object.assign({ icon: <DefaultSideBarIcon /> }, section),
+                    Object.assign({ icon: <DefaultSideBarIcon /> }, section)
                 )
                 .concat(getAdditionalSideBarFields(currentSection, d2)),
             currentSection,
@@ -67,7 +67,7 @@ export default sideBarState;
 const organisationUnitAdded$ = objectActions.saveObject
     .map(() => modelToEditStore.state)
     .filter(
-        modelToEdit => modelToEdit.modelDefinition.name === 'organisationUnit',
+        modelToEdit => modelToEdit.modelDefinition.name === 'organisationUnit'
     )
     .map(modelToEdit => modelToEdit.parent || modelToEdit);
 
@@ -78,5 +78,5 @@ const afterOrganisationUnitDeleted$ = afterDeleteHook$
 
 export const organisationUnitTreeChanged$ = Observable.merge(
     organisationUnitAdded$,
-    afterOrganisationUnitDeleted$,
+    afterOrganisationUnitDeleted$
 );

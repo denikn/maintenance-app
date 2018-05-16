@@ -4,13 +4,13 @@ describe('Event Program actions', () => {
     describe('for stepper', () => {
         test('should have defined the stepper constants', () => {
             expect(actions.EVENT_PROGRAM_STEP_PREVIOUS).toBe(
-                'EVENT_PROGRAM_STEP_PREVIOUS',
+                'EVENT_PROGRAM_STEP_PREVIOUS'
             );
             expect(actions.EVENT_PROGRAM_STEP_NEXT).toBe(
-                'EVENT_PROGRAM_STEP_NEXT',
+                'EVENT_PROGRAM_STEP_NEXT'
             );
             expect(actions.EVENT_PROGRAM_STEP_CHANGE).toBe(
-                'EVENT_PROGRAM_STEP_CHANGE',
+                'EVENT_PROGRAM_STEP_CHANGE'
             );
         });
 
@@ -45,10 +45,10 @@ describe('Event Program actions', () => {
         test('should have the event program load constants', () => {
             expect(actions.EVENT_PROGRAM_LOAD).toBe('EVENT_PROGRAM_LOAD');
             expect(actions.EVENT_PROGRAM_LOAD_SUCCESS).toBe(
-                'EVENT_PROGRAM_LOAD_SUCCESS',
+                'EVENT_PROGRAM_LOAD_SUCCESS'
             );
             expect(actions.EVENT_PROGRAM_LOAD_ERROR).toBe(
-                'EVENT_PROGRAM_LOAD_ERROR',
+                'EVENT_PROGRAM_LOAD_ERROR'
             );
         });
 
@@ -78,7 +78,7 @@ describe('Event Program actions', () => {
         test('should have defined the model constants', () => {
             expect(actions.MODEL_TO_EDIT_LOADED).toBe('MODEL_TO_EDIT_LOADED');
             expect(actions.MODEL_TO_EDIT_FIELD_CHANGED).toBe(
-                'MODEL_TO_EDIT_FIELD_CHANGED',
+                'MODEL_TO_EDIT_FIELD_CHANGED'
             );
         });
 
@@ -92,7 +92,7 @@ describe('Event Program actions', () => {
             };
 
             expect(actions.editFieldChanged('name', 'John')).toEqual(
-                expectedAction,
+                expectedAction
             );
         });
     });
@@ -101,10 +101,10 @@ describe('Event Program actions', () => {
         test('should have defined the constants', () => {
             expect(actions.EVENT_PROGRAM_SAVE).toBe('EVENT_PROGRAM_SAVE');
             expect(actions.EVENT_PROGRAM_SAVE_SUCCESS).toBe(
-                'EVENT_PROGRAM_SAVE_SUCCESS',
+                'EVENT_PROGRAM_SAVE_SUCCESS'
             );
             expect(actions.EVENT_PROGRAM_SAVE_ERROR).toBe(
-                'EVENT_PROGRAM_SAVE_ERROR',
+                'EVENT_PROGRAM_SAVE_ERROR'
             );
         });
 
@@ -133,7 +133,7 @@ describe('Event Program actions', () => {
             };
 
             expect(
-                actions.saveEventProgramError(new Error('Could not load')),
+                actions.saveEventProgramError(new Error('Could not load'))
             ).toEqual(expectedAction);
         });
     });

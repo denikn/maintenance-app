@@ -25,10 +25,10 @@ const enhance = compose(
             (props, eventProgramState) => ({
                 ...props,
                 model: eventProgramState.program,
-            }),
-        ),
+            })
+        )
     ),
-    spinnerWhileLoading(props => props.isLoading),
+    spinnerWhileLoading(props => props.isLoading)
 );
 
 function EditProgram(props) {

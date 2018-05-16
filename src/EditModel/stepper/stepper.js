@@ -44,7 +44,7 @@ function isActiveStep(activeStep, step, index) {
  */
 export const createStepperFromConfig = (
     stepperConfig,
-    orientation = 'horizontal',
+    orientation = 'horizontal'
 ) => ({ activeStep, stepperClicked, disabled, ...props }) => {
     const getStepChildren = step => {
         const stepChildren = [];
@@ -52,14 +52,14 @@ export const createStepperFromConfig = (
         stepChildren.push(
             <StepButton key="button" onClick={() => stepperClicked(step.key)}>
                 <Translate>{step.name}</Translate>
-            </StepButton>,
+            </StepButton>
         );
 
         if (step.content) {
             stepChildren.push(
                 <StepContent key="content">
                     <step.content {...props} />
-                </StepContent>,
+                </StepContent>
             );
         }
 
@@ -101,7 +101,7 @@ export const createStepperContentFromConfig = stepperConfig => ({
     ...props
 }) => {
     const step = stepperConfig.find(
-        stepConfig => stepConfig.key === activeStep,
+        stepConfig => stepConfig.key === activeStep
     );
 
     if (step && step.component) {
@@ -111,11 +111,11 @@ export const createStepperContentFromConfig = stepperConfig => ({
     if (activeStep) {
         log.warn(
             `Could not find a content component for a step with key (${activeStep}) in`,
-            stepperConfig,
+            stepperConfig
         );
     } else {
         log.warn(
-            'The `activeStep` prop is undefined, therefore the component created by `createStepperContentFromConfig` will render null',
+            'The `activeStep` prop is undefined, therefore the component created by `createStepperContentFromConfig` will render null'
         );
     }
 
@@ -168,10 +168,10 @@ const mapDispatchToProps = actionCreators => dispatch =>
 export const createConnectedForwardButton = nextStepActionCreator =>
     connect(
         undefined,
-        mapDispatchToProps({ onForwardClick: nextStepActionCreator }),
+        mapDispatchToProps({ onForwardClick: nextStepActionCreator })
     )(StepperNavigationForward);
 export const createConnectedBackwardButton = previousStepAcionCreator =>
     connect(
         undefined,
-        mapDispatchToProps({ onBackClick: previousStepAcionCreator }),
+        mapDispatchToProps({ onBackClick: previousStepAcionCreator })
     )(StepperNavigationBack);

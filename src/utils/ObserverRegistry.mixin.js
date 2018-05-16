@@ -5,7 +5,7 @@ const ObserverRegistry = {
 
     componentWillUnmount() {
         this.observerDisposables.forEach(disposable =>
-            disposable.unsubscribe(),
+            disposable.unsubscribe()
         );
     },
 

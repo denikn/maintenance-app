@@ -63,14 +63,14 @@ class TextEditorField extends React.Component {
                 target: {
                     value: `${value.substr(
                         0,
-                        selectionStart,
+                        selectionStart
                     )}${text}${value.substr(selectionEnd)}`.trim(),
                 },
             });
             window.setTimeout(() => {
                 this.editor.setSelectionRange(
                     selectionStart + text.length,
-                    selectionStart + text.length,
+                    selectionStart + text.length
                 );
             });
         }

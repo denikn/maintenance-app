@@ -14,7 +14,7 @@ function MaintenanceSideBar(props) {
                 currentSection={props.currentSection}
                 styles={Object.assign(
                     { leftBar: { overflowY: 'initial' } },
-                    props.style,
+                    props.style
                 )}
             />
             {props.children}

@@ -33,7 +33,7 @@ const dataEntryFormChangedEpic = action$ =>
                 storeState.dataEntryFormForProgramStage;
 
             const programStage = findProgramStageById(programStageId)(
-                storeState,
+                storeState
             );
             let dataEntryForm = dataEntryFormForProgramStage[programStageId];
 
@@ -67,13 +67,13 @@ const dataEntryFormRemoveEpic = action$ =>
             const storeState = eventProgramStore.getState();
             const programStageId = action.payload;
             const programStage = findProgramStageById(programStageId)(
-                storeState,
+                storeState
             );
             const dataEntryFormsForProgramStages =
                 storeState.dataEntryFormForProgramStage;
 
             return Observable.fromPromise(
-                dataEntryFormsForProgramStages[programStageId].delete(),
+                dataEntryFormsForProgramStages[programStageId].delete()
             )
                 .mergeMap(() => {
                     programStage.dataEntryForm = undefined;
@@ -175,5 +175,5 @@ export default combineEpics(
     dataEntryFormChangedEpic,
     dataEntryFormRemoveEpic,
     ProgramDataEntryFormChangedEpic,
-    ProgramDataEntryFormRemoveEpic,
+    ProgramDataEntryFormRemoveEpic
 );

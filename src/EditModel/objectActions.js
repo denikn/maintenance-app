@@ -26,7 +26,7 @@ const extractErrorMessagesFromResponse = compose(
     map('errorReports'),
     flatten,
     map('objectReports'),
-    get('typeReports'),
+    get('typeReports')
 );
 
 const objectActions = Action.createActionsFromNames([
@@ -45,17 +45,17 @@ const afterSaveHacks = {
             .filter(id => id)
             .map(
                 remove =>
-                    `dataElementGroups/${remove}/dataElements/${lastImportedId}`,
+                    `dataElementGroups/${remove}/dataElements/${lastImportedId}`
             );
         const uniqueRemoveUrls = Array.from(new Set(removeUrls).values());
         const saveUrls = Object.keys(
-            dataElementGroupStore.state.dataElementGroupValues,
+            dataElementGroupStore.state.dataElementGroupValues
         )
             .map(key => dataElementGroupStore.state.dataElementGroupValues[key])
             .filter(id => id)
             .map(
                 save =>
-                    `dataElementGroups/${save}/dataElements/${lastImportedId}`,
+                    `dataElementGroups/${save}/dataElements/${lastImportedId}`
             );
 
         const removePromises = getInstance().then(d2 => {
@@ -71,7 +71,7 @@ const afterSaveHacks = {
         });
 
         return Observable.fromPromise(
-            Promise.all([removePromises, savePromises]),
+            Promise.all([removePromises, savePromises])
         );
     },
     indicator: function indicatorAfterSave(model, lastImportedId) {
@@ -79,16 +79,16 @@ const afterSaveHacks = {
             .filter(id => id)
             .map(
                 remove =>
-                    `indicatorGroups/${remove}/indicators/${lastImportedId}`,
+                    `indicatorGroups/${remove}/indicators/${lastImportedId}`
             );
         const uniqueRemoveUrls = Array.from(new Set(removeUrls).values());
         const saveUrls = Object.keys(
-            indicatorGroupsStore.state.indicatorGroupValues,
+            indicatorGroupsStore.state.indicatorGroupValues
         )
             .map(key => indicatorGroupsStore.state.indicatorGroupValues[key])
             .filter(id => id)
             .map(
-                save => `indicatorGroups/${save}/indicators/${lastImportedId}`,
+                save => `indicatorGroups/${save}/indicators/${lastImportedId}`
             );
 
         const removePromises = getInstance().then(d2 => {
@@ -104,7 +104,7 @@ const afterSaveHacks = {
         });
 
         return Observable.fromPromise(
-            Promise.all([removePromises, savePromises]),
+            Promise.all([removePromises, savePromises])
         );
     },
 };
@@ -135,7 +135,7 @@ objectActions.getObjectOfTypeByIdAndClone.subscribe(
         modelToEditStore
             .getObjectOfTypeByIdAndClone(data)
             .subscribe(complete, error);
-    },
+    }
 );
 
 // Standard save handler
@@ -156,7 +156,7 @@ objectActions.saveObject
                     'Response was not a WebMessage with the expected format'
                 ) {
                     action.error(
-                        'Failed to save: Failed to provide proper error message: Everything is broken',
+                        'Failed to save: Failed to provide proper error message: Everything is broken'
                     );
                     return;
                 }
@@ -168,7 +168,7 @@ objectActions.saveObject
                     log.debug('Handling after save');
                     getAfterSave(
                         modelToEditStore.state,
-                        modelToEditStore.state.id,
+                        modelToEditStore.state.id
                     ).subscribe(() => action.complete('success'), errorHandler);
                 } else {
                     action.complete('success');
@@ -181,7 +181,7 @@ objectActions.saveObject
         },
         e => {
             log.error(e);
-        },
+        }
     );
 
 function on(property, func, object) {
@@ -223,22 +223,22 @@ objectActions.saveObject
                                 message: Array.isArray(error.messages)
                                     ? error.messages[0].message
                                     : d2.i18n.getTranslation(
-                                        'failed_to_save_organisation_unit',
+                                        'failed_to_save_organisation_unit'
                                     ),
                                 action: 'ok',
                             });
                             failAction(error);
-                        },
+                        }
                     )
                     .then(
                         () => completeAction('success'),
-                        error => failAction(error),
+                        error => failAction(error)
                     );
             }
         },
         e => {
             log.error(e);
-        },
+        }
     );
 
 // Legend set save handler - uses metadata endpoint instead of legendSets endpoint
@@ -261,7 +261,7 @@ objectActions.saveObject
                     complete('save_success');
                 } else {
                     const errorMessages = extractErrorMessagesFromResponse(
-                        response,
+                        response
                     );
 
                     error(
@@ -270,8 +270,8 @@ objectActions.saveObject
                             {
                                 message:
                                     head(errorMessages) || 'Unknown error!',
-                            },
-                        ),
+                            }
+                        )
                     );
                 }
             } catch (e) {
@@ -279,7 +279,7 @@ objectActions.saveObject
                 log.error(e);
             }
         },
-        e => log.error(e),
+        e => log.error(e)
     );
 
 // Data set save handler - fetches a UID from the API and saves dataSetElements as well
@@ -302,7 +302,7 @@ objectActions.saveObject
         const dataSetElements = Array.from(
             dataSetModel.dataSetElements
                 ? dataSetModel.dataSetElements.values()
-                : [],
+                : []
         ).map(({ dataSet, dataElement, ...other }) => ({
             dataSet: { ...dataSet, id: dataSet.id || dataSetPayload.id },
             ...other,
@@ -324,7 +324,7 @@ objectActions.saveObject
                 complete('save_success');
             } else {
                 const errorMessages = extractErrorMessagesFromResponse(
-                    response,
+                    response
                 );
 
                 error(
@@ -332,8 +332,8 @@ objectActions.saveObject
                         'could_not_save_data_set_($$message$$)',
                         {
                             message: head(errorMessages) || 'Unknown error!',
-                        },
-                    ),
+                        }
+                    )
                 );
             }
         } catch (e) {
@@ -352,8 +352,8 @@ objectActions.saveObject
         if (!modelToEditStore.getState().program) {
             error(
                 d2.i18n.getTranslation(
-                    'could_not_save_program_rule_no_program_specified',
-                ),
+                    'could_not_save_program_rule_no_program_specified'
+                )
             );
             return;
         }
@@ -375,7 +375,7 @@ objectActions.saveObject
                     programRule: { id: programRuleId },
                     id: generateUid(),
                     href: '<strip from clone>',
-                }),
+                })
             );
 
         const metadataPayload = {
@@ -386,11 +386,11 @@ objectActions.saveObject
                         program: { id: modelToEditStore.getState().program.id },
                         id: programRuleId,
                         programRuleActions: programRulesActionsWithNewUid,
-                    },
+                    }
                 ),
             ],
             programRuleActions: programRulesActionsWithNewUid.map(
-                getOwnedPropertyJSON,
+                getOwnedPropertyJSON
             ),
         };
 
@@ -401,7 +401,7 @@ objectActions.saveObject
                 complete('save_success');
             } else {
                 const errorMessages = extractErrorMessagesFromResponse(
-                    response,
+                    response
                 );
 
                 error(
@@ -409,8 +409,8 @@ objectActions.saveObject
                         'could_not_save_program_rule_($$message$$)',
                         {
                             message: head(errorMessages) || 'Unknown error!',
-                        },
-                    ),
+                        }
+                    )
                 );
             }
         } catch (e) {
@@ -429,8 +429,8 @@ objectActions.saveObject
             const d2 = await getInstance();
             error(
                 d2.i18n.getTranslation(
-                    'could_not_save_program_rule_variable_no_program_specified',
-                ),
+                    'could_not_save_program_rule_variable_no_program_specified'
+                )
             );
             return;
         }
@@ -466,7 +466,7 @@ objectActions.update.subscribe(action => {
             Object.keys(modelToEdit.attributes).indexOf(fieldName) >= 0
         ) {
             log.debug(
-                `${fieldName} is a custom attribute. Setting ${fieldName} to ${value}`,
+                `${fieldName} is a custom attribute. Setting ${fieldName} to ${value}`
             );
             modelToEdit.attributes[fieldName] = value;
             log.debug(`Value is now: ${modelToEdit.attributes[fieldName]}`);

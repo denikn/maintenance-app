@@ -54,7 +54,7 @@ const SortableDataList = SortableContainer(
                 />
             ))}
         </div>
-    ),
+    )
 );
 
 export default SortableDataList;

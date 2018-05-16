@@ -56,12 +56,12 @@ class AssignTrackedEntityTypeAttributes extends Component {
                         trackedEntityAttribute: {
                             id: attribute.id,
                         },
-                    })),
+                    }))
                 );
                 this.state.assignedAttributesStore.setState(
                     this.state.assignedAttributes.map(
-                        attribute => attribute.trackedEntityAttribute.id,
-                    ),
+                        attribute => attribute.trackedEntityAttribute.id
+                    )
                 );
                 this.setState({ isLoading: false });
             });
@@ -69,7 +69,7 @@ class AssignTrackedEntityTypeAttributes extends Component {
 
     onAssignAttributes = assignedAttributesIds => {
         const newAssignedAttributes = this.state.assignedAttributes.concat(
-            this.getAttributeModels(assignedAttributesIds),
+            this.getAttributeModels(assignedAttributesIds)
         );
         const newAssignedAttributesIds = this.state.assignedAttributesStore
             .getState()
@@ -84,13 +84,13 @@ class AssignTrackedEntityTypeAttributes extends Component {
             .getState()
             .filter(
                 assignedAttributeId =>
-                    !removedAttributesIds.includes(assignedAttributeId),
+                    !removedAttributesIds.includes(assignedAttributeId)
             );
         const newAssignedAttributes = this.state.assignedAttributes.filter(
             assignedAttribute =>
                 !removedAttributesIds.includes(
-                    assignedAttribute.trackedEntityAttribute.id,
-                ),
+                    assignedAttribute.trackedEntityAttribute.id
+                )
         );
 
         this.updateState(newAssignedAttributes, newAssignedAttributesIds);
@@ -103,7 +103,7 @@ class AssignTrackedEntityTypeAttributes extends Component {
                 attribute.trackedEntityAttribute.id ===
                 changedAttribute.trackedEntityAttribute.id
                     ? changedAttribute
-                    : attribute,
+                    : attribute
         );
         this.updateState(newAssignedAttributes);
     };
@@ -113,8 +113,8 @@ class AssignTrackedEntityTypeAttributes extends Component {
             attributeId =>
                 this.state.assignedAttributes.filter(
                     attribute =>
-                        attribute.trackedEntityAttribute.id === attributeId,
-                )[0],
+                        attribute.trackedEntityAttribute.id === attributeId
+                )[0]
         );
 
         this.updateState(newAssignedAttributes, newAttributesOrderIds);
@@ -126,7 +126,7 @@ class AssignTrackedEntityTypeAttributes extends Component {
         this.state.availableAttributesStore
             .getState()
             .filter(attribute =>
-                assignedAttributes.includes(attribute.trackedEntityAttribute.id),
+                assignedAttributes.includes(attribute.trackedEntityAttribute.id)
             );
 
     getTableRows = () =>
@@ -178,7 +178,7 @@ class AssignTrackedEntityTypeAttributes extends Component {
                     </div>
                     <TextField
                         hintText={this.getTranslation(
-                            'search_available_tracked_entity_type_attributes',
+                            'search_available_tracked_entity_type_attributes'
                         )}
                         onChange={this.setFilterText}
                         value={this.state.filterText}

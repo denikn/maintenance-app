@@ -3,7 +3,7 @@ import pure from 'recompose/pure';
 
 function PaletteSection(
     { keySet, label, filter, expand, expandClick, usedIds, insertFn, styles },
-    { d2 },
+    { d2 }
 ) {
     const filteredItems = Object.keys(keySet).filter(
         key =>
@@ -11,8 +11,8 @@ function PaletteSection(
             filter.every(
                 filter =>
                     keySet[key].toLowerCase().indexOf(filter.toLowerCase()) !==
-                    -1,
-            ),
+                    -1
+            )
     );
 
     const cellClass = label === expand ? 'cell expanded' : 'cell';
@@ -30,7 +30,7 @@ function PaletteSection(
                         (a, b) =>
                             keySet[a]
                                 ? keySet[a].localeCompare(keySet[b])
-                                : a.localeCompare(b),
+                                : a.localeCompare(b)
                     )
                     .map(key => {
                         // Active items are items that are not already added to the form

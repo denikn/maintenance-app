@@ -22,13 +22,13 @@ const enhance = compose(
     withState(
         'beforeOrAfter',
         'setBeforeOrAfter',
-        ({ value }) => (value >= 0 ? 'after' : 'before'),
+        ({ value }) => (value >= 0 ? 'after' : 'before')
     ),
     withHandlers({
         onChangeBeforeAfter: ({ onChange, setBeforeOrAfter, value }) => (
             event,
             index,
-            beforeOrAfter,
+            beforeOrAfter
         ) => {
             const days =
                 beforeOrAfter === 'after' ? Number(value) : -1 * Number(value);
@@ -42,7 +42,7 @@ const enhance = compose(
                 onChange({ target: { value: days } });
             }
         },
-    }),
+    })
 );
 
 function RelativeScheduledDays({

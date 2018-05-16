@@ -15,7 +15,7 @@ const SharingNotification = React.createClass({
 
     render() {
         const modelDef = this.props.getModelDefinitionByName(
-            this.props.modelType,
+            this.props.modelType
         );
         const createPublic = this.props
             .getCurrentUser()

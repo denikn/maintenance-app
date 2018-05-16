@@ -62,7 +62,7 @@ class GreyFieldDialog extends React.Component {
         this.handleSaveClick = this.handleSaveClick.bind(this);
 
         this.getTranslation = context.d2.i18n.getTranslation.bind(
-            context.d2.i18n,
+            context.d2.i18n
         );
     }
 
@@ -75,11 +75,11 @@ class GreyFieldDialog extends React.Component {
                 log.info(
                     `Section ${
                         props.sectionModel.displayName
-                    } contains no data elements`,
+                    } contains no data elements`
                 );
                 snackActions.show({
                     message: this.getTranslation(
-                        'this_section_has_no_data_elements',
+                        'this_section_has_no_data_elements'
                     ),
                     action: 'ok',
                 });
@@ -149,10 +149,10 @@ class GreyFieldDialog extends React.Component {
                             JSON.parse(
                                 JSON.stringify(
                                     categoryArrayToMap(
-                                        categoryCombo.categories.toArray(),
-                                    ),
-                                ),
-                            ),
+                                        categoryCombo.categories.toArray()
+                                    )
+                                )
+                            )
                         );
 
                         // Fill in the leaf nodes in the cocMap with the actual coc's
@@ -173,7 +173,7 @@ class GreyFieldDialog extends React.Component {
                         (prev, gf) => {
                             if (prev.hasOwnProperty(gf.dataElement.id)) {
                                 prev[gf.dataElement.id].push(
-                                    gf.categoryOptionCombo.id,
+                                    gf.categoryOptionCombo.id
                                 );
                                 return prev;
                             }
@@ -184,7 +184,7 @@ class GreyFieldDialog extends React.Component {
                             ];
                             return out;
                         },
-                        {},
+                        {}
                     );
 
                     this.setState({
@@ -257,13 +257,13 @@ class GreyFieldDialog extends React.Component {
                         .slice(catNum + 1)
                         .reduce(
                             (product, optionCount) => optionCount * product,
-                            1,
+                            1
                         );
 
                     const isLastHeader =
                         catNum ===
                         this.state.categoryCombos.get(
-                            this.state.currentCategoryCombo,
+                            this.state.currentCategoryCombo
                         ).categories.size -
                             1;
                     const row = (
@@ -287,7 +287,7 @@ class GreyFieldDialog extends React.Component {
                                                     ? ''
                                                     : opt.displayName}
                                             </th>
-                                        )),
+                                        ))
                                 )}
                         </tr>
                     );
@@ -317,7 +317,7 @@ class GreyFieldDialog extends React.Component {
             dataElementId,
             categoryOptionComboId,
             event,
-            disable,
+            disable
         ) => {
             this.setState(state => {
                 const greyedCocs = (
@@ -327,7 +327,7 @@ class GreyFieldDialog extends React.Component {
                     if (greyedCocs.includes(categoryOptionComboId)) {
                         greyedCocs.splice(
                             greyedCocs.indexOf(categoryOptionComboId),
-                            1,
+                            1
                         );
                     }
                 } else if (!greyedCocs.includes(categoryOptionComboId)) {
@@ -343,7 +343,7 @@ class GreyFieldDialog extends React.Component {
                                 : state.greyedFields[deId];
                         return out;
                     },
-                    {},
+                    {}
                 );
 
                 if (
@@ -404,21 +404,21 @@ class GreyFieldDialog extends React.Component {
         return this.state.currentCategoryCombo
             ? modelToEditStore.state.dataSetElements
                 .filter(dse =>
-                    currentSectionDataElementIds.includes(dse.dataElement.id),
+                    currentSectionDataElementIds.includes(dse.dataElement.id)
                 )
                 .filter(
                     dse =>
                         (dse.categoryCombo
                             ? dse.categoryCombo.id
                             : dse.dataElement.categoryCombo.id) ===
-                          this.state.currentCategoryCombo,
+                          this.state.currentCategoryCombo
                 )
                 .sort(
                     (a, b) =>
                         currentSectionDataElementIds.indexOf(
-                            a.dataElement.id,
+                            a.dataElement.id
                         ) -
-                          currentSectionDataElementIds.indexOf(b.dataElement.id),
+                          currentSectionDataElementIds.indexOf(b.dataElement.id)
                 )
                 .map((dse, deNum) => {
                     const cocFields = getCocFields();
@@ -437,8 +437,8 @@ class GreyFieldDialog extends React.Component {
                                 this.renderCheckbox(
                                     dse.dataElement,
                                     fields,
-                                    fieldNum,
-                                ),
+                                    fieldNum
+                                )
                             )}
                         </tr>
                     );
@@ -463,7 +463,7 @@ class GreyFieldDialog extends React.Component {
             // Get unique cat combos for data elements in current section
             categoryCombosForSection = modelToEditStore.state.dataSetElements
                 .filter(dse =>
-                    sectionDataElementIds.includes(dse.dataElement.id),
+                    sectionDataElementIds.includes(dse.dataElement.id)
                 )
                 .map(dse => dse.categoryCombo || dse.dataElement.categoryCombo)
                 .reduce((catCombos, catCombo) => {

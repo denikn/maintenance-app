@@ -12,7 +12,7 @@ class Dropdown extends Component {
         super(props, context);
 
         this.getTranslation = context.d2.i18n.getTranslation.bind(
-            context.d2.i18n,
+            context.d2.i18n
         );
 
         this.state = {
@@ -163,7 +163,7 @@ class Dropdown extends Component {
                     {!this.props.isRequired &&
                         this.renderDialogOption(
                             null,
-                            this.getTranslation('no_value'),
+                            this.getTranslation('no_value')
                         )}
                     {this.state.options
                         .filter(
@@ -176,8 +176,8 @@ class Dropdown extends Component {
                                     .every(f =>
                                         o.text
                                             .toLocaleLowerCase()
-                                            .includes(f.toLocaleLowerCase()),
-                                    ),
+                                            .includes(f.toLocaleLowerCase())
+                                    )
                         )
                         .map(o => this.renderDialogOption(o.value, o.text))}
                 </Dialog>

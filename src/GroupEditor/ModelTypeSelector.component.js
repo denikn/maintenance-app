@@ -54,7 +54,7 @@ export default React.createClass({
                 .filter(hasNameInArray(this.props.nameListFilter))
                 .map(value => ({
                     text: this.getTranslation(
-                        camelCaseToUnderscores(value.plural),
+                        camelCaseToUnderscores(value.plural)
                     ),
                     payload: value,
                 }))

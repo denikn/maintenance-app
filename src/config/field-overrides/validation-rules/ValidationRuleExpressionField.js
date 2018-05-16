@@ -64,7 +64,7 @@ const enhance = compose(
     withProps(({ toggleOpen }) => ({
         onButtonClick: () => toggleOpen(true),
         close: () => toggleOpen(false),
-    })),
+    }))
 );
 
 ValidationRuleExpressionField.propTypes = {

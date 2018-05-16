@@ -19,7 +19,7 @@ class DetailsBox extends Component {
             .map(fieldName => {
                 const valueToRender = this.getValueToRender(
                     fieldName,
-                    this.props.source[fieldName],
+                    this.props.source[fieldName]
                 );
 
                 return (
@@ -28,7 +28,7 @@ class DetailsBox extends Component {
                             className={`detail-field__label detail-field__${fieldName}-label`}
                         >
                             {this.getTranslation(
-                                camelCaseToUnderscores(fieldName),
+                                camelCaseToUnderscores(fieldName)
                             )}
                         </div>
                         <div

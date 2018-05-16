@@ -14,18 +14,18 @@ const getOptions = memoize(categoryCombos =>
         ({ displayName, id }) => (
             <MenuItem key={id} primaryText={displayName} value={id} />
         ),
-        categoryCombos,
-    ),
+        categoryCombos
+    )
 );
 
 const enhanceCategoryComboSelectField = withHandlers({
     onChange: ({ categoryCombos = new Map(), onChange }) => (
         event,
         index,
-        value,
+        value
     ) => {
         onChange(
-            categoryCombos.find(categoryCombo => categoryCombo.id === value),
+            categoryCombos.find(categoryCombo => categoryCombo.id === value)
         );
     },
 });
@@ -46,7 +46,7 @@ const CategoryComboSelectField = enhanceCategoryComboSelectField(
                 {options}
             </SelectField>
         );
-    },
+    }
 );
 
 const createGetCategoryCombosForSelect = (d2, categoryCombos) =>
@@ -62,11 +62,11 @@ const createGetCategoryCombosForSelect = (d2, categoryCombos) =>
 
             acc.push(categoryCombo);
             return acc;
-        }, []),
+        }, [])
     );
 function DataSetElementList(
     { dataSetElements, categoryCombos, onCategoryComboSelected },
-    { d2 },
+    { d2 }
 ) {
     const styles = {
         elementListItem: {
@@ -86,7 +86,7 @@ function DataSetElementList(
 
     const getCategoryCombosForSelect = createGetCategoryCombosForSelect(
         d2,
-        categoryCombos,
+        categoryCombos
     );
 
     const dataSetElementsRows = dataSetElements
@@ -94,12 +94,12 @@ function DataSetElementList(
             (left.dataElement
                 ? left.dataElement.displayName
                 : ''
-            ).localeCompare(right.dataElement && right.dataElement.displayName),
+            ).localeCompare(right.dataElement && right.dataElement.displayName)
         )
         .map(dataSetElement => {
             const { categoryCombo = {}, dataElement = {} } = dataSetElement;
             const categoryCombosForSelect = getCategoryCombosForSelect(
-                dataElement.categoryCombo.id,
+                dataElement.categoryCombo.id
             );
             const onChange = catCombo =>
                 onCategoryComboSelected(dataSetElement, catCombo);
@@ -130,7 +130,7 @@ function DataSetElementList(
         return (
             <div style={styles.noDataElementMessage}>
                 {d2.i18n.getTranslation(
-                    'select_a_data_element_before_applying_an_override',
+                    'select_a_data_element_before_applying_an_override'
                 )}
             </div>
         );

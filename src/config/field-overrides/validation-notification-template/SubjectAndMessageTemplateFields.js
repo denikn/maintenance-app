@@ -51,7 +51,7 @@ export default class SubjectAndMessageTemplateFields extends Component {
             fieldName: this.state.lastActiveField,
             value: `${currentValue.slice(
                 0,
-                lastIndex,
+                lastIndex
             )}${variable}${currentValue.slice(lastIndex)}`,
         });
     };
@@ -78,7 +78,7 @@ export default class SubjectAndMessageTemplateFields extends Component {
                                 label="subjectTemplate"
                                 fullWidth
                                 floatingLabelText={d2.i18n.getTranslation(
-                                    'subject_template',
+                                    'subject_template'
                                 )}
                                 onBlur={this.setActiveField('subjectTemplate')}
                                 value={this.props.model.subjectTemplate || ''}

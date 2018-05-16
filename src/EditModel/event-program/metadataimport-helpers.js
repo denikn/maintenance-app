@@ -24,7 +24,7 @@ const fixUidIfNeeded = map(objectReport => {
         get('mainId'),
         first,
         filter(get('mainId')),
-        getOr([], 'errorReports'),
+        getOr([], 'errorReports')
     );
 
     const id = getOr(getUidFromErrorReports(objectReport), 'uid', objectReport);
@@ -33,7 +33,7 @@ const fixUidIfNeeded = map(objectReport => {
         ...objectReport,
         id,
         errors: compose(groupBy('errorProperty'), getOr([], 'errorReports'))(
-            objectReport,
+            objectReport
         ),
     };
 });

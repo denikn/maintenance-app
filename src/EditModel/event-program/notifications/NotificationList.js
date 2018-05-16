@@ -31,8 +31,8 @@ export const hideIfNotAuthorizedToCreate = compose(
     getContext({ d2: PropTypes.object }),
     branch(
         ({ d2, modelType }) => !d2.currentUser.canCreate(d2.models[modelType]),
-        renderNothing,
-    ),
+        renderNothing
+    )
 );
 
 const AddButtonWithAuthCheck = hideIfNotAuthorizedToCreate(AddButton);

@@ -77,7 +77,7 @@ const styles = {
 // Filters out any actions `edit`, `clone` when the user can not update/edit this modelType
 function actionsThatRequireCreate(action) {
     const modelDef = this.props.getModelDefinitionByName(
-        this.props.params.modelType,
+        this.props.params.modelType
     );
     if (
         (action !== 'edit' && action !== 'clone') ||
@@ -91,7 +91,7 @@ function actionsThatRequireCreate(action) {
 // Filters out the `delete` when the user can not delete this modelType
 function actionsThatRequireDelete(action) {
     const modelDef = this.props.getModelDefinitionByName(
-        this.props.params.modelType,
+        this.props.params.modelType
     );
     if (
         action !== 'delete' ||
@@ -209,7 +209,7 @@ class List extends Component {
                 this.setState({
                     translation: translationState,
                 });
-            },
+            }
         );
 
         const dataElementOperandStoreDisposable = dataElementOperandStore.subscribe(
@@ -217,13 +217,13 @@ class List extends Component {
                 this.setState({
                     dataElementOperand: state,
                 });
-            },
+            }
         );
 
         const predictorDialogStoreDisposable = predictorDialogStore.subscribe(
             state => {
                 this.setState({ predictorDialog: state });
-            },
+            }
         );
 
         this.registerDisposable(sourceStoreDisposable);
@@ -247,7 +247,7 @@ class List extends Component {
 
     componentWillUnmount() {
         this.observerDisposables.forEach(disposable =>
-            disposable.unsubscribe(),
+            disposable.unsubscribe()
         );
     }
 
@@ -296,7 +296,7 @@ class List extends Component {
 
         if (action === 'runNow' && model.modelDefinition.name === 'predictor') {
             return this.context.d2.currentUser.authorities.has(
-                'F_PREDICTOR_RUN',
+                'F_PREDICTOR_RUN'
             );
         }
 
@@ -378,7 +378,7 @@ class List extends Component {
         translationStore.setState(
             Object.assign({}, translationStore.state, {
                 open: false,
-            }),
+            })
         );
     };
 
@@ -393,7 +393,7 @@ class List extends Component {
             Object.assign({}, sharingStore.state, {
                 model,
                 open: false,
-            }),
+            })
         );
     };
 
@@ -401,7 +401,7 @@ class List extends Component {
         dataElementOperandStore.setState(
             Object.assign({}, dataElementOperandStore.state, {
                 open: false,
-            }),
+            })
         );
     };
 
@@ -429,7 +429,7 @@ class List extends Component {
 
                         const isConstantField =
                             modelDefinition.modelProperties.hasOwnProperty(
-                                filterField,
+                                filterField
                             ) &&
                             modelDefinition.modelProperties[
                                 filterField
@@ -443,13 +443,13 @@ class List extends Component {
                                 text: getConstantDisplayNameOrOld(
                                     this.props.params.modelType,
                                     filterField,
-                                    c,
+                                    c
                                 ),
                                 value: c,
                             }));
 
                         const referenceType = this.context.d2.models.hasOwnProperty(
-                            filterField,
+                            filterField
                         )
                             ? filterField
                             : `${this.props.params.modelType}.${filterField}`;
@@ -459,7 +459,7 @@ class List extends Component {
                                 {isConstantField ? (
                                     <Dropdown
                                         labelText={this.getTranslation(
-                                            filterField,
+                                            filterField
                                         )}
                                         options={constants}
                                         onChange={makeFilterSetter(filterField)}
@@ -477,7 +477,7 @@ class List extends Component {
                                 ) : (
                                     <DropdownAsync
                                         labelText={this.getTranslation(
-                                            filterField,
+                                            filterField
                                         )}
                                         referenceType={referenceType}
                                         onChange={makeFilterSetter(filterField)}
@@ -497,7 +497,7 @@ class List extends Component {
                                 )}
                             </div>
                         );
-                    },
+                    }
                 )}
             </div>
         );
@@ -609,7 +609,7 @@ class List extends Component {
                     if (
                         isTranslatable(
                             row.modelDefinition.name,
-                            columnName,
+                            columnName
                         ) &&
                           row &&
                           row.modelDefinition &&
@@ -624,8 +624,8 @@ class List extends Component {
                                 getConstantDisplayNameOrOld(
                                     row.modelDefinition.name,
                                     columnName,
-                                    row[columnName],
-                                ).toLowerCase(),
+                                    row[columnName]
+                                ).toLowerCase()
                             );
                         }
                     }
@@ -652,8 +652,8 @@ class List extends Component {
                     <Heading>
                         {this.getTranslation(
                             `${camelCaseToUnderscores(
-                                this.props.params.modelType,
-                            )}_management`,
+                                this.props.params.modelType
+                            )}_management`
                         )}
                         <HelpLink schema={this.props.params.modelType} />
                     </Heading>
@@ -740,7 +740,7 @@ class List extends Component {
                         onTranslationError={this.translationError}
                         onRequestClose={this.closeTranslationDialog}
                         fieldsToTranslate={getTranslatablePropertiesForModelType(
-                            this.props.params.modelType,
+                            this.props.params.modelType
                         )}
                     />
                 )}

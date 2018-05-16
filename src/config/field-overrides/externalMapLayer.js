@@ -40,7 +40,7 @@ export default new Map([
                                 style={{ width: '97.5%' }}
                             />
                         </SubFieldWrap>
-                    ) : null,
+                    ) : null
             ),
         },
     ],

@@ -4,13 +4,13 @@ describe('Program indicator actions', () => {
     describe('for stepper', () => {
         test('should have defined the stepper constants', () => {
             expect(actions.PROGRAM_INDICATOR_STEP_PREVIOUS).toBe(
-                'PROGRAM_INDICATOR_STEP_PREVIOUS',
+                'PROGRAM_INDICATOR_STEP_PREVIOUS'
             );
             expect(actions.PROGRAM_INDICATOR_STEP_NEXT).toBe(
-                'PROGRAM_INDICATOR_STEP_NEXT',
+                'PROGRAM_INDICATOR_STEP_NEXT'
             );
             expect(actions.PROGRAM_INDICATOR_STEP_CHANGE).toBe(
-                'PROGRAM_INDICATOR_STEP_CHANGE',
+                'PROGRAM_INDICATOR_STEP_CHANGE'
             );
         });
 
@@ -44,13 +44,13 @@ describe('Program indicator actions', () => {
     describe('for loading a program indicator', () => {
         test('should have the program indicator load constants', () => {
             expect(actions.PROGRAM_INDICATOR_LOAD).toBe(
-                'PROGRAM_INDICATOR_LOAD',
+                'PROGRAM_INDICATOR_LOAD'
             );
             expect(actions.PROGRAM_INDICATOR_LOAD_SUCCESS).toBe(
-                'PROGRAM_INDICATOR_LOAD_SUCCESS',
+                'PROGRAM_INDICATOR_LOAD_SUCCESS'
             );
             expect(actions.PROGRAM_INDICATOR_LOAD_ERROR).toBe(
-                'PROGRAM_INDICATOR_LOAD_ERROR',
+                'PROGRAM_INDICATOR_LOAD_ERROR'
             );
         });
 
@@ -79,10 +79,10 @@ describe('Program indicator actions', () => {
     describe('for editing models', () => {
         test('should have defined the model constants', () => {
             expect(actions.PROGRAM_INDICATOR_LOAD).toBe(
-                'PROGRAM_INDICATOR_LOAD',
+                'PROGRAM_INDICATOR_LOAD'
             );
             expect(actions.PROGRAM_INDICATOR_TO_EDIT_FIELD_CHANGED).toBe(
-                'PROGRAM_INDICATOR_TO_EDIT_FIELD_CHANGED',
+                'PROGRAM_INDICATOR_TO_EDIT_FIELD_CHANGED'
             );
         });
 
@@ -96,7 +96,7 @@ describe('Program indicator actions', () => {
             };
 
             expect(actions.editFieldChanged('name', 'John')).toEqual(
-                expectedAction,
+                expectedAction
             );
         });
     });
@@ -104,13 +104,13 @@ describe('Program indicator actions', () => {
     describe('for saving an program indicator', () => {
         test('should have defined the constants', () => {
             expect(actions.PROGRAM_INDICATOR_SAVE).toBe(
-                'PROGRAM_INDICATOR_SAVE',
+                'PROGRAM_INDICATOR_SAVE'
             );
             expect(actions.PROGRAM_INDICATOR_SAVE_SUCCESS).toBe(
-                'PROGRAM_INDICATOR_SAVE_SUCCESS',
+                'PROGRAM_INDICATOR_SAVE_SUCCESS'
             );
             expect(actions.PROGRAM_INDICATOR_SAVE_ERROR).toBe(
-                'PROGRAM_INDICATOR_SAVE_ERROR',
+                'PROGRAM_INDICATOR_SAVE_ERROR'
             );
         });
 
@@ -130,7 +130,7 @@ describe('Program indicator actions', () => {
             };
 
             expect(actions.saveProgramIndicatorSuccess()).toEqual(
-                expectedAction,
+                expectedAction
             );
         });
 
@@ -141,7 +141,7 @@ describe('Program indicator actions', () => {
             };
 
             expect(
-                actions.saveProgramIndicatorError(new Error('Could not load')),
+                actions.saveProgramIndicatorError(new Error('Could not load'))
             ).toEqual(expectedAction);
         });
     });

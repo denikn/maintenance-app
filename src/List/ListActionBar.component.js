@@ -15,7 +15,7 @@ class ProgramSpeedDial extends React.Component {
                 {
                     id: 'WITHOUT_REGISTRATION',
                     primaryText: context.d2.i18n.getTranslation(
-                        'event_program',
+                        'event_program'
                     ),
                     rightAvatar: (
                         <Avatar
@@ -27,7 +27,7 @@ class ProgramSpeedDial extends React.Component {
                 {
                     id: 'WITH_REGISTRATION',
                     primaryText: context.d2.i18n.getTranslation(
-                        'tracker_program',
+                        'tracker_program'
                     ),
                     rightAvatar: (
                         <Avatar
@@ -44,7 +44,7 @@ class ProgramSpeedDial extends React.Component {
         goToRoute(
             `/edit/${this.props.groupName}/${this.props.modelType}/add?type=${
                 item.id
-            }`,
+            }`
         );
     }
 
@@ -88,7 +88,7 @@ const ListActionBar = React.createClass({
         };
 
         const modelDefinition = this.props.getModelDefinitionByName(
-            this.props.modelType,
+            this.props.modelType
         );
 
         if (!this.props.getCurrentUser().canCreate(modelDefinition)) {

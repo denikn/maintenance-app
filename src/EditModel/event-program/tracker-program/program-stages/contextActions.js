@@ -13,8 +13,8 @@ export async function deleteProgramStageWithSnackbar(model) {
         message: [
             d2.i18n.getTranslation(
                 `confirm_delete_${camelCaseToUnderscores(
-                    model.modelDefinition.name,
-                )}`,
+                    model.modelDefinition.name
+                )}`
             ),
             model.name,
         ].join(' '),

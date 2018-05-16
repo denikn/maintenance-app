@@ -33,7 +33,7 @@ const SearchBox = React.createClass({
                 event =>
                     event && event.target && event.target.value
                         ? event.target.value
-                        : '',
+                        : ''
             )
             .distinctUntilChanged();
 
@@ -42,7 +42,7 @@ const SearchBox = React.createClass({
         this.subscription = currentSubSection$.subscribe(currentSection =>
             this.setState({
                 showSearchField: !unsearchableSections.includes(currentSection),
-            }),
+            })
         );
     },
 
@@ -68,7 +68,7 @@ const SearchBox = React.createClass({
                     type="search"
                     onChange={this._onKeyUp}
                     floatingLabelText={`${this.getTranslation(
-                        'search_by_name',
+                        'search_by_name'
                     )}`}
                 />
             </div>

@@ -10,7 +10,7 @@ function CancelButton(
         isDirtyHandler = modelToEditStore.getState.bind(modelToEditStore),
         ...props
     },
-    context,
+    context
 ) {
     const shouldConfirm =
         isDirtyHandler && isDirtyHandler() && isDirtyHandler().dirty;

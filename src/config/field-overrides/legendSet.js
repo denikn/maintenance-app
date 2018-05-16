@@ -70,7 +70,7 @@ export default new Map([
                                     Number(nextLegend.startValue) >=
                                     Number(legend.endValue)
                                 );
-                            },
+                            }
                         );
                     },
                 },
@@ -89,7 +89,7 @@ export default new Map([
                                     Number(legend.endValue) >=
                                     Number(nextLegend.startValue)
                                 );
-                            },
+                            }
                         );
                     },
                 },

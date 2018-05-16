@@ -26,7 +26,7 @@ describe('Event Program Store', () => {
         program = ModelDefinition.createFromSchema(programSchema);
         programStage = ModelDefinition.createFromSchema(programStageSchema);
         programStageNotification = ModelDefinition.createFromSchema(
-            programNotificationTemplateSchema,
+            programNotificationTemplateSchema
         );
         dataEntryForm = ModelDefinition.createFromSchema(dataEntryFormSchema);
 
@@ -82,13 +82,13 @@ describe('Event Program Store', () => {
 
     test('should not accept invalid properties for the state', () => {
         expect(() => store.setState({ name: 'John' })).toThrowError(
-            'You are attempting to set an invalid state onto the eventProgramStore',
+            'You are attempting to set an invalid state onto the eventProgramStore'
         );
     });
 
     test('should throw if the passed state is not an object', () => {
         expect(() => store.setState()).toThrowError(
-            'You are attempting to set a state that is a non object',
+            'You are attempting to set a state that is a non object'
         );
     });
 
@@ -178,7 +178,7 @@ describe('Event Program Store', () => {
                 notification.name = 'Sms template';
 
                 mockState.programStages[0].notificationTemplates.add(
-                    notification,
+                    notification
                 );
                 mockState.programStageNotifications.selCNHPqm5g = [
                     notification,

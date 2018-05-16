@@ -23,11 +23,11 @@ import {
 const d2$ = Observable.fromPromise(getInstance());
 
 const getProgramStageById = curry((stageId, store) =>
-    store.programStages.find(stage => stage.id == stageId),
+    store.programStages.find(stage => stage.id == stageId)
 );
 
 const getProgramStageIndexById = curry((stageId, store) =>
-    store.programStages.findIndex(stage => stage.id == stageId),
+    store.programStages.findIndex(stage => stage.id == stageId)
 );
 
 /**
@@ -44,12 +44,12 @@ export const deleteProgramStageFromState = (stageId, shouldSetState = true) => {
     const index = getProgramStageIndexById(stageId, state);
     const program = state.program;
     const removedFromProgramStages = state.programStages.filter(
-        (p, i) => i !== index,
+        (p, i) => i !== index
     );
 
     program.programStages.remove(programStage);
     const setters = set('program', program)(
-        set('programStages', removedFromProgramStages, state),
+        set('programStages', removedFromProgramStages, state)
     );
     shouldSetState && programStore.setState(setters);
     return setters;
@@ -76,11 +76,11 @@ export const newTrackerProgramStage = action$ =>
                 });
                 try {
                     const newProgramStage = programStages.push(
-                        programStageModel,
+                        programStageModel
                     );
 
                     const newProgramStageCollection = store.program.programStages.add(
-                        programStageModel,
+                        programStageModel
                     );
                     program.programStages = newProgramStageCollection;
                     programStore.setState(
@@ -88,17 +88,17 @@ export const newTrackerProgramStage = action$ =>
                             set(
                                 'programStages',
                                 programStages,
-                                programStore.getState(),
-                            ),
-                        ),
+                                programStore.getState()
+                            )
+                        )
                     );
                 } catch (e) {
                     log.error(e);
                     throw new Error(e);
                 }
                 return editProgramStage(programStageUid);
-            }),
-        ),
+            })
+        )
     );
 
 /* Gets called when user starts to edit a TrackerProgramStage.
@@ -113,7 +113,7 @@ export const editTrackerProgramStage = action$ =>
                 .map(get('programStages'))
                 .map(programStages => {
                     const index = programStages.findIndex(
-                        stage => stage.id == stageId,
+                        stage => stage.id == stageId
                     );
                     const programStage = programStages[index];
 
@@ -121,11 +121,11 @@ export const editTrackerProgramStage = action$ =>
                     const setter = set(
                         'programStageToEditCopy',
                         model,
-                        programStore.getState(),
+                        programStore.getState()
                     );
 
                     programStore.setState(setter);
-                }),
+                })
         )
         .flatMapTo(Observable.of({ type: 'EMPTY' }));
 
@@ -136,7 +136,7 @@ export const saveTrackerProgramStage = action$ =>
             programStore.take(1).map(store => {
                 const stageId = store.programStageToEditCopy.id;
                 const index = store.programStages.findIndex(
-                    stage => stage.id == stageId,
+                    stage => stage.id == stageId
                 );
 
                 if (index < 0) {
@@ -149,7 +149,7 @@ export const saveTrackerProgramStage = action$ =>
                 } catch (e) {
                     log.error(e);
                 }
-            }),
+            })
         )
         .flatMapTo(Observable.of({ type: PROGRAM_STAGE_EDIT_RESET }));
 
@@ -164,32 +164,32 @@ export const cancelProgramStageEdit = action$ =>
 
                     if (index < 0) {
                         log.warn(
-                            `ProgramStage with id ${stageId} does not exist`,
+                            `ProgramStage with id ${stageId} does not exist`
                         );
                     }
                     const model = store.programStageToEditCopy;
                     let programStageSetter = set(
                         `programStages[${index}]`,
                         model,
-                        store,
+                        store
                     );
                     // If the programstage is new, remove it when cancelling
                     if (model.name === undefined) {
                         const removedFromProgramStages = store.programStages.filter(
-                            (p, i) => i !== index,
+                            (p, i) => i !== index
                         );
                         programStageSetter = deleteProgramStageFromState(
                             stageId,
-                            false,
+                            false
                         );
                     }
                     programStore.setState(
-                        set('programStageToEditCopy', null, programStageSetter),
+                        set('programStageToEditCopy', null, programStageSetter)
                     );
                 } catch (e) {
                     log.error(e);
                 }
-            }),
+            })
         )
         .flatMapTo(Observable.of({ type: PROGRAM_STAGE_EDIT_RESET }));
 
@@ -201,11 +201,11 @@ const deleteProgramStage = action$ =>
             programStore.take(1).map(store => {
                 try {
                     const ind = store.programStages.findIndex(
-                        stage => stage.id == action.stageId,
+                        stage => stage.id == action.stageId
                     );
 
                     const index = getProgramStageIndexById(action.stageId)(
-                        store,
+                        store
                     );
                     const model = store.programStages[index];
 
@@ -214,7 +214,7 @@ const deleteProgramStage = action$ =>
                 } catch (e) {
                     return deleteProgramStageError();
                 }
-            }),
+            })
         );
 
 export default combineEpics(
@@ -222,5 +222,5 @@ export default combineEpics(
     editTrackerProgramStage,
     saveTrackerProgramStage,
     cancelProgramStageEdit,
-    deleteProgramStage,
+    deleteProgramStage
 );

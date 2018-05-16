@@ -49,16 +49,16 @@ const IndicatorExpressionManagerContainer = React.createClass({
                 d2.models.organisationUnitGroup.list({
                     paging: false,
                     fields: 'id,displayName',
-                }),
+                })
             )
             .then(collection =>
                 collection.toArray().map(model => ({
                     value: model.id,
                     label: model.displayName,
-                })),
+                }))
             )
             .then(organisationUnitGroups =>
-                this.setState({ organisationUnitGroups }),
+                this.setState({ organisationUnitGroups })
             );
 
         getD2()
@@ -66,13 +66,13 @@ const IndicatorExpressionManagerContainer = React.createClass({
                 d2.models.constant.list({
                     paging: false,
                     fields: 'id,displayName',
-                }),
+                })
             )
             .then(collection =>
                 collection.toArray().map(model => ({
                     value: model.id,
                     label: model.displayName,
-                })),
+                }))
             )
             .then(constants => this.setState({ constants }));
 

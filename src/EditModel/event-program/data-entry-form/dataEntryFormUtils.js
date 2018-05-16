@@ -31,7 +31,7 @@ export function generateHtmlForField(
     disabledAttr,
     label,
     nameAttr = 'entryfield',
-    fieldType = 'id',
+    fieldType = 'id'
 ) {
     const style = styleAttr ? ` style=${styleAttr}` : '';
     const disabled = disabledAttr ? ` disabled=${disabledAttr}` : '';
@@ -118,7 +118,7 @@ export function processFormData(formData, elements) {
                 inputDisabled,
                 label,
                 nameAttr,
-                fieldType,
+                fieldType
             );
         } else {
             outHtml += inputHtml;
@@ -160,7 +160,7 @@ export function insertElement(id, label, editor, fieldType = 'id') {
         null,
         label,
         nameAttr,
-        fieldType,
+        fieldType
     );
     editor.insertHtml(elementHtml, 'unfiltered_html');
     // Move the current selection to just after the newly inserted element
@@ -171,7 +171,7 @@ export function insertElement(id, label, editor, fieldType = 'id') {
 export function insertFlag(img, editor) {
     editor.insertHtml(
         `<img src="../dhis-web-commons/flags/${img}" />`,
-        'unfiltered_html',
+        'unfiltered_html'
     );
     const range = editor.getSelection().getRanges()[0];
     range && range.moveToElementEditablePosition(range.endContainer, true);

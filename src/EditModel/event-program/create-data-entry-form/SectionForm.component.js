@@ -54,12 +54,12 @@ class SectionForm extends Component {
         this.state = {
             collapsedSections: [],
             activeDataElements: getActiveDataElements(
-                this.props.programStageSections,
+                this.props.programStageSections
             ),
             selectedSectionId: getOr(
                 -1,
                 'programStageSections[0].id',
-                this.props.programStageSections,
+                this.props.programStageSections
             ),
             editingSectionId: null,
             showNoSelectionSectionMessage: false,
@@ -70,13 +70,13 @@ class SectionForm extends Component {
         if (newProps.programStageSections !== this.props.programStageSections) {
             this.setState({
                 activeDataElements: getActiveDataElements(
-                    newProps.programStageSections,
+                    newProps.programStageSections
                 ),
             });
 
             const newSectionAdded = difference(
                 newProps.programStageSections,
-                this.props.programStageSections,
+                this.props.programStageSections
             )[0];
             if (newSectionAdded) {
                 this.selectSection(newSectionAdded.id);
@@ -152,21 +152,21 @@ class SectionForm extends Component {
 
     onSortEnd = ({ oldIndex, newIndex }) => {
         this.props.onSectionOrderChanged(
-            arrayMove(this.props.programStageSections, oldIndex, newIndex),
+            arrayMove(this.props.programStageSections, oldIndex, newIndex)
         );
     };
 
     onDataElementPicked = dataElementId => {
         const dataElementToAdd = find(
             dataElement => isEqual(dataElement.id, dataElementId),
-            this.props.availableDataElements,
+            this.props.availableDataElements
         );
 
         if (!dataElementToAdd) return;
 
         const currentSelectedSectionIndex = findIndex(
             section => isEqual(this.state.selectedSectionId, section.id),
-            this.props.programStageSections,
+            this.props.programStageSections
         );
 
         if (currentSelectedSectionIndex === -1) {
@@ -178,7 +178,7 @@ class SectionForm extends Component {
             currentSelectedSectionIndex
         ];
         const updatedProgramStageSectionDataElements = currentSelectedSection.dataElements.concat(
-            dataElementToAdd,
+            dataElementToAdd
         );
         const updatedSections = this.props.programStageSections;
 
@@ -193,7 +193,7 @@ class SectionForm extends Component {
     removeDataElementFromSection = (dataElementId, sectionId) => {
         const programStageSectionIndex = findIndex(
             section => isEqual(section.id, sectionId),
-            this.props.programStageSections,
+            this.props.programStageSections
         );
 
         const programStageSection = this.props.programStageSections[
@@ -201,7 +201,7 @@ class SectionForm extends Component {
         ];
         const updatedDataElements = filter(
             negate(dataElement => isEqual(dataElement.id, dataElementId)),
-            programStageSection.dataElements,
+            programStageSection.dataElements
         );
 
         const allSections = this.props.programStageSections;
@@ -216,7 +216,7 @@ class SectionForm extends Component {
         const dataElements = arrayMove(
             this.props.programStageSections[sectionIndex].dataElements,
             oldIndex,
-            newIndex,
+            newIndex
         );
         const sections = this.props.programStageSections;
         sections[sectionIndex].dataElements = dataElements;
@@ -248,7 +248,7 @@ class SectionForm extends Component {
                 <DataElementPicker
                     availableDataElements={sortBy(
                         ['displayName'],
-                        this.props.availableDataElements,
+                        this.props.availableDataElements
                     )}
                     activeDataElements={this.state.activeDataElements}
                     onElementPicked={this.onDataElementPicked}
@@ -279,9 +279,9 @@ SectionForm.PropTypes = {
                 PropTypes.shape({
                     id: PropTypes.string.isRequired,
                     displayName: PropTypes.string.isRequired,
-                }),
+                })
             ).isRequired,
-        }),
+        })
     ).isRequired,
 };
 

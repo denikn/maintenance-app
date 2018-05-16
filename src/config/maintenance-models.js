@@ -86,7 +86,7 @@ export function getSectionForType(modelType) {
         section =>
             config[section] &&
             config[section].items &&
-            config[section].items.indexOf(modelType) >= 0,
+            config[section].items.indexOf(modelType) >= 0
     );
 }
 
@@ -314,7 +314,7 @@ export function getTableColumnsForType(modelType, preservePropNames = false) {
             col =>
                 preservePropNames
                     ? col
-                    : col.replace(/(\w*)\[(\w*)]/, '$1___$2'),
+                    : col.replace(/(\w*)\[(\w*)]/, '$1___$2')
         );
     }
     // Default columns:

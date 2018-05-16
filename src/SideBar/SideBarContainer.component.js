@@ -27,7 +27,7 @@ class SideBarContainer extends React.Component {
                             organisationUnitToReload.id,
                         ],
                     },
-                    () => this.forceUpdate(),
+                    () => this.forceUpdate()
                 );
             });
     }
@@ -92,17 +92,17 @@ class SideBarContainer extends React.Component {
                     });
 
                 const initiallyExpanded = this.getExpandedItems(
-                    orgUnitSearchHits,
+                    orgUnitSearchHits
                 );
 
                 return (
                     <div style={styles.wrapperStyle}>
                         <OrganisationUnitTreeWithSingleSelectionAndSearch
                             onUpdateInput={this._searchOrganisationUnits.bind(
-                                this,
+                                this
                             )}
                             onAutoCompleteValueSelected={this._onAutoCompleteValueSelected.bind(
-                                this,
+                                this
                             )}
                             autoCompleteDataSource={(
                                 this.state.autoCompleteOrganisationUnits || []
@@ -115,14 +115,14 @@ class SideBarContainer extends React.Component {
                             }
                             initiallyExpanded={initiallyExpanded}
                             onSelectClick={this._onChangeSelectedOrgUnit.bind(
-                                this,
+                                this
                             )}
                             idsThatShouldBeReloaded={
                                 orgUnitSearchHits ||
                                 this.state.organisationUnitsToReload
                             }
                             noHitsLabel={this.context.d2.i18n.getTranslation(
-                                'no_matching_organisation_units',
+                                'no_matching_organisation_units'
                             )}
                             hideMemberCount
                             hideCheckboxes

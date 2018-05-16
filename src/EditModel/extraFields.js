@@ -31,10 +31,10 @@ class IndicatorExtraFields extends React.Component {
         this.setDenominator = this.setDenominator.bind(this);
         this.closeDialog = this.closeDialog.bind(this);
         this.saveToModelAndCloseDialog = this.saveToModelAndCloseDialog.bind(
-            this,
+            this
         );
         this.indicatorExpressionChanged = this.indicatorExpressionChanged.bind(
-            this,
+            this
         );
     }
 
@@ -126,7 +126,7 @@ class IndicatorExtraFields extends React.Component {
                     />
                     <Dialog
                         title={d2.i18n.getTranslation(
-                            `edit_${this.state.type}`,
+                            `edit_${this.state.type}`
                         )}
                         open={this.state.dialogOpen}
                         modal

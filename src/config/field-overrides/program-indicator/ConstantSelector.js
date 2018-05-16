@@ -7,7 +7,7 @@ import CollapsibleList from './CollapsibleList';
 const withConstantProps = mapPropsStream(props$ =>
     props$.combineLatest(
         Observable.fromPromise(getAllObjectsWithFields('constant')).startWith(
-            [],
+            []
         ),
         ({ onSelect = noop, ...props }, constants) => ({
             ...props,
@@ -16,8 +16,8 @@ const withConstantProps = mapPropsStream(props$ =>
                 label: constant.displayName,
             })),
             onItemClick: onSelect,
-        }),
-    ),
+        })
+    )
 );
 
 const ConstantSelector = withConstantProps(CollapsibleList);

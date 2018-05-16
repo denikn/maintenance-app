@@ -14,7 +14,7 @@ const ConfidentialField = switchOnBoolean(
             />
             <InfoMessage message="confidentiality_option_not_available_since_encryption_is_not_configured" />
         </div>
-    ),
+    )
 );
 
 export default ConfidentialField;

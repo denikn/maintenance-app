@@ -32,10 +32,10 @@ export const removeStageNotification = model => ({
     payload: model,
 });
 export const removeStageNotificationSuccess = createActionCreator(
-    NOTIFICATION_STAGE_REMOVE_SUCCESS,
+    NOTIFICATION_STAGE_REMOVE_SUCCESS
 );
 export const removeStageNotificationError = createActionCreator(
-    NOTIFICATION_STAGE_REMOVE_ERROR,
+    NOTIFICATION_STAGE_REMOVE_ERROR
 );
 
 export const removeProgramNotification = model => ({
@@ -43,7 +43,7 @@ export const removeProgramNotification = model => ({
     payload: model,
 });
 export const removeProgramNotificationSuccess = createActionCreator(
-    NOTIFICATION_PROGRAM_REMOVE_SUCCESS,
+    NOTIFICATION_PROGRAM_REMOVE_SUCCESS
 );
 
 /**
@@ -55,7 +55,7 @@ export const removeProgramNotificationSuccess = createActionCreator(
  */
 export const setEditModel = (
     model,
-    notificationType = 'PROGRAM_STAGE_NOTIFICATION',
+    notificationType = 'PROGRAM_STAGE_NOTIFICATION'
 ) =>
     createActionCreator(NOTIFICATION_SET_EDIT_MODEL)({
         model,
@@ -77,10 +77,10 @@ export const saveStageNotification = model => ({
 });
 
 export const saveStageNotificationSuccess = createActionCreator(
-    NOTIFICATION_STAGE_SAVE_SUCCESS,
+    NOTIFICATION_STAGE_SAVE_SUCCESS
 );
 export const saveStageNotificationError = createActionCreator(
-    NOTIFICATION_STAGE_SAVE_ERROR,
+    NOTIFICATION_STAGE_SAVE_ERROR
 );
 
 export const saveProgramNotification = model =>

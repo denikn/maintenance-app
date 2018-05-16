@@ -18,11 +18,11 @@ const mapDispatchToProps = dispatch =>
 
 const connectEditForm = compose(
     flattenRouterProps,
-    connect(null, mapDispatchToProps),
+    connect(null, mapDispatchToProps)
 );
 
 const EnrollmentDetailsForm = connectEditForm(
-    createFormFor(program$, 'program', enrollmentFields, true, 'enrollment'),
+    createFormFor(program$, 'program', enrollmentFields, true, 'enrollment')
 );
 
 const EnrollmentDetails = props => (

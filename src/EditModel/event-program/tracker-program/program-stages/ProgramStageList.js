@@ -127,7 +127,7 @@ class ProgramStageList extends Component {
             stageB.sortOrder = swapOrder;
             return {
                 sections: state.stages.sort(
-                    (a, b) => a.sortOrder - b.sortOrder,
+                    (a, b) => a.sortOrder - b.sortOrder
                 ),
             };
         });
@@ -183,7 +183,7 @@ class ProgramStageList extends Component {
                 onTranslationError={translationError}
                 onRequestClose={this.handleOnRequestClose}
                 fieldsToTranslate={getTranslatablePropertiesForModelType(
-                    this.state.modelType,
+                    this.state.modelType
                 )}
             />
         );
@@ -262,6 +262,6 @@ export default connect(null, dispatch =>
             handleNewProgramStage: () => addProgramStage(),
             handleDeleteProgramStage: model => deleteProgramStage(model.id),
         },
-        dispatch,
-    ),
+        dispatch
+    )
 )(ProgramStageList);

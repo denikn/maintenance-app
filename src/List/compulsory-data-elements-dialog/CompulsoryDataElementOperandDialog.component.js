@@ -49,7 +49,7 @@ function getOwnedPropertyJSON(model) {
 
                     // Transform an object collection to an array of objects with id properties
                     objectToSave[propertyName] = Array.from(
-                        model.dataValues[propertyName].values(),
+                        model.dataValues[propertyName].values()
                     )
                         .filter(value => value.id)
                         .map(childModel => {
@@ -62,7 +62,7 @@ function getOwnedPropertyJSON(model) {
                             ) {
                                 return getOwnedPropertyJSON.call(
                                     childModel.modelDefinition,
-                                    childModel,
+                                    childModel
                                 );
                             }
 
@@ -93,7 +93,7 @@ class CompulsoryDataElementOperandDialog extends Component {
                 props.dataElementOperands.map(operand => ({
                     text: operand.displayName,
                     value: `${operand.dataElementId}.${operand.optionComboId}`,
-                })),
+                }))
             );
 
             itemsSelectedStore.setState(
@@ -103,8 +103,8 @@ class CompulsoryDataElementOperandDialog extends Component {
                         deo =>
                             `${deo.dataElement.id}.${
                                 deo.categoryOptionCombo.id
-                            }`,
-                    ),
+                            }`
+                    )
             );
         }
     }
@@ -118,9 +118,9 @@ class CompulsoryDataElementOperandDialog extends Component {
                 props.dataElementOperands.map(operand => ({
                     text: operand.displayName,
                     value: [operand.dataElementId, operand.optionComboId].join(
-                        '.',
+                        '.'
                     ),
-                })),
+                }))
             );
 
             itemsSelectedStore.setState(
@@ -128,9 +128,9 @@ class CompulsoryDataElementOperandDialog extends Component {
                     .filter(deo => deo.dataElement && deo.categoryOptionCombo)
                     .map(deo =>
                         [deo.dataElement.id, deo.categoryOptionCombo.id].join(
-                            '.',
-                        ),
-                    ),
+                            '.'
+                        )
+                    )
             );
         }
     }
@@ -167,7 +167,7 @@ class CompulsoryDataElementOperandDialog extends Component {
                 <div style={{ marginBottom: '3.5rem' }}>
                     <Heading>
                         {this.i18n.getTranslation(
-                            'edit_compulsory_data_elements',
+                            'edit_compulsory_data_elements'
                         )}{' '}
                         - {this.props.model && this.props.model.displayName}
                     </Heading>
@@ -230,7 +230,7 @@ class CompulsoryDataElementOperandDialog extends Component {
         });
 
         const payload = getOwnedPropertyJSON.bind(
-            this.props.model.modelDefinition,
+            this.props.model.modelDefinition
         )(this.props.model);
         const d2 = this.context.d2;
 

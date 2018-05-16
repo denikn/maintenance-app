@@ -65,14 +65,14 @@ class ProgramRuleActionDialog extends React.Component {
                                 .toArray()
                                 .map(stage =>
                                     stage.programStageDataElements.map(
-                                        psde => psde.dataElement,
-                                    ),
+                                        psde => psde.dataElement
+                                    )
                                 )
                                 .reduce((a, s) => a.concat(s), [])
                                 .reduce((o, de) => {
                                     o[de.id] = de;
                                     return o;
-                                }, {}),
+                                }, {})
                         )
                             .map(toDisplay)
                             .sort((a, b) => a.text.localeCompare(b.text));
@@ -82,7 +82,7 @@ class ProgramRuleActionDialog extends React.Component {
                             .reduce(
                                 (a, s) =>
                                     a.concat(s.programStageSections.toArray()),
-                                [],
+                                []
                             )
                             .map(toDisplay)
                             .sort((a, b) => a.text.localeCompare(b.text));
@@ -109,7 +109,7 @@ class ProgramRuleActionDialog extends React.Component {
                             .reduce(
                                 (a, b) =>
                                     a.concat(b.notificationTemplates.toArray()),
-                                [],
+                                []
                             )
                             .map(toDisplay);
 
@@ -143,7 +143,7 @@ class ProgramRuleActionDialog extends React.Component {
                                 }),
                             notificationTemplates,
                         });
-                    },
+                    }
                 )
                 .catch(err => {
                     this.props.onRequestClose();
@@ -178,7 +178,7 @@ class ProgramRuleActionDialog extends React.Component {
         Object.keys(fieldRefs).forEach(field => {
             if (programRuleAction[field]) {
                 const ref = fieldRefs[field].filter(
-                    v => v.value === programRuleAction[field],
+                    v => v.value === programRuleAction[field]
                 )[0];
                 programRuleAction[field] = {
                     id: ref.value,
@@ -194,7 +194,7 @@ class ProgramRuleActionDialog extends React.Component {
             // TODO: Add support for modifying an existing member of a ModelCollectionProperty in d2
             this.props.parentModel.programRuleActions.set(
                 programRuleAction.id,
-                programRuleAction,
+                programRuleAction
             );
             this.props.parentModel.programRuleActions.dirty = true;
             // </hack>
@@ -206,7 +206,7 @@ class ProgramRuleActionDialog extends React.Component {
         } else {
             const newUid = await this.d2.Api.getApi().get('/system/id');
             this.props.parentModel.programRuleActions.add(
-                Object.assign(programRuleAction, { id: newUid.codes[0] }),
+                Object.assign(programRuleAction, { id: newUid.codes[0] })
             );
             this.props.onChange({
                 target: { value: this.props.parentModel.programRuleActions },
@@ -242,11 +242,11 @@ class ProgramRuleActionDialog extends React.Component {
                                 o !== 'CREATEEVENT' ||
                                 (ruleActionModel.id !== undefined &&
                                     ruleActionModel.programRuleActionType ===
-                                        'CREATEEVENT'),
+                                        'CREATEEVENT')
                         )
                         .map(o => ({
                             text: this.getTranslation(
-                                programRuleActionTypes[o].label,
+                                programRuleActionTypes[o].label
                             ),
                             value: o,
                         })),
@@ -267,7 +267,7 @@ class ProgramRuleActionDialog extends React.Component {
                         },
                         {
                             text: this.getTranslation(
-                                'program_indicator_widget',
+                                'program_indicator_widget'
                             ),
                             value: 'indicators',
                         },
@@ -357,7 +357,7 @@ class ProgramRuleActionDialog extends React.Component {
                 component: DropDown,
                 props: {
                     labelText: this.getTranslation(
-                        'program_notification_template',
+                        'program_notification_template'
                     ),
                     options:
                         (this.state && this.state.notificationTemplates) || [],
@@ -400,7 +400,7 @@ class ProgramRuleActionDialog extends React.Component {
                     fieldMapping.labelOverrides[field.name]
                 ) {
                     field.props.labelText = this.getTranslation(
-                        fieldMapping.labelOverrides[field.name],
+                        fieldMapping.labelOverrides[field.name]
                     );
                 }
 

@@ -40,7 +40,7 @@ class CustomRegistrationForm extends Component {
                     checked={this.state.useCustom}
                     onCheck={this.handleUseCustom}
                     label={this.context.d2.i18n.getTranslation(
-                        'use_custom_registration_form',
+                        'use_custom_registration_form'
                     )}
                     style={styles.checkbox}
                 />
@@ -57,5 +57,5 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(null, mapDispatchToProps)(
-    addD2Context(CustomRegistrationForm),
+    addD2Context(CustomRegistrationForm)
 );

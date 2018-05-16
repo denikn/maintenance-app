@@ -53,10 +53,10 @@ async function mapSideBarConfigToSideBarItems(sideBarConfig) {
             name: sideBarCategory,
             items: getItemsForCategory(
                 d2,
-                sideBarConfig[sideBarCategory].items,
+                sideBarConfig[sideBarCategory].items
             ),
         }),
-        Object.keys(sideBarConfig),
+        Object.keys(sideBarConfig)
     );
 }
 
@@ -76,7 +76,7 @@ async function loadSideBarState() {
                     {
                         key: sideBarCategory.name,
                         label: d2.i18n.getTranslation(
-                            camelCaseToUnderscores(sideBarCategory.name),
+                            camelCaseToUnderscores(sideBarCategory.name)
                         ),
                     },
                 ]);
@@ -85,7 +85,7 @@ async function loadSideBarState() {
         },
         {
             mainSections: [],
-        },
+        }
     );
 }
 
@@ -102,7 +102,7 @@ async function getCurrentUserOrganisationUnits(disableCache = false) {
     const organisationUnitsCollection = await d2.currentUser.getOrganisationUnits(
         {
             paging: false,
-        },
+        }
     );
 
     if (
@@ -141,7 +141,7 @@ async function loadSelectedOrganisationUnitState() {
     }
 
     const organisationUnitsCollection = await getCurrentUserOrganisationUnits(
-        true,
+        true
     );
 
     return organisationUnitsCollection
@@ -198,7 +198,7 @@ export async function initAppState(startState, disableCache) {
                     newAppState[stateKey] = Object.assign(
                         {},
                         newAppState[stateKey],
-                        startState[stateKey],
+                        startState[stateKey]
                     ); // eslint-disable-line no-param-reassign
                 } else {
                     newAppState[stateKey] = startState[stateKey]; // eslint-disable-line no-param-reassign
@@ -206,7 +206,7 @@ export async function initAppState(startState, disableCache) {
             }
             return newAppState;
         },
-        loadedState,
+        loadedState
     );
 
     appState.setState(completeInitState);

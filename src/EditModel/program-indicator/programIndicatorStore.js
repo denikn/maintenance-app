@@ -106,19 +106,19 @@ function isValidState(state) {
 const programIndicatorStore = Store.create();
 
 const storeSetState = programIndicatorStore.setState.bind(
-    programIndicatorStore,
+    programIndicatorStore
 );
 
 programIndicatorStore.setState = newState => {
     if (!isObject(newState)) {
         throw new Error(
-            'You are attempting to set a state that is a non object',
+            'You are attempting to set a state that is a non object'
         );
     }
 
     if (!isValidState(newState)) {
         throw new Error(
-            'You are attempting to set an invalid state onto the programIndicatorStore',
+            'You are attempting to set an invalid state onto the programIndicatorStore'
         );
     }
 

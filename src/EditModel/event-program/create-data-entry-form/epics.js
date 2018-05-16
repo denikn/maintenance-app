@@ -39,27 +39,27 @@ const changeProgramStageDataElementOrder = store => action$ =>
             const programStages = getOr([], 'programStages', state);
             const programStage = getProgramStageToModify(
                 get('payload.programStage', action),
-                programStages,
+                programStages
             );
             const programStageDataElements = getOr(
                 [],
                 'programStageDataElements',
-                programStage,
+                programStage
             );
 
             const newDataElementOrder = get(
                 'payload.newDataElementOrder',
-                action,
+                action
             );
             programStage.programStageDataElements = programStageDataElements.map(
                 dataElement => {
                     dataElement.sortOrder = findIndex(
                         id => id === get('dataElement.id', dataElement),
-                        newDataElementOrder,
+                        newDataElementOrder
                     );
 
                     return dataElement;
-                },
+                }
             );
 
             store.setState({
@@ -77,16 +77,16 @@ const changeProgramStageSectionName = store => action$ =>
 
             const programStageSectionId = get(
                 'payload.programStageSectionId',
-                action,
+                action
             );
             const newProgramStageSectionName = get(
                 'payload.newProgramStageSectionName',
-                action,
+                action
             );
 
             const programStageSections = getStageSectionsById(
                 state,
-                programStageId,
+                programStageId
             );
             state.programStageSections[
                 programStageId
@@ -122,7 +122,7 @@ const changeProgramStageSectionOrder = store => action$ =>
 
             const sortedSections = compose(
                 sortBy('sortOrder'),
-                setSortOrderToIndex,
+                setSortOrderToIndex
             )(newSections);
             state.programStageSections[programStageId] = sortedSections;
 
@@ -142,7 +142,7 @@ const addProgramStageSection = store => action$ =>
 
             let programStageSections = getStageSectionsById(
                 state,
-                programStageId,
+                programStageId
             );
             const sortOrder =
                 getOr(
@@ -150,8 +150,8 @@ const addProgramStageSection = store => action$ =>
                     'sortOrder',
                     maxBy(
                         section => get('sortOrder', section),
-                        programStageSections,
-                    ),
+                        programStageSections
+                    )
                 ) + 1;
 
             // Create new section model and set the properties we can
@@ -194,11 +194,11 @@ const removeProgramStageSection = store => action$ =>
 
             const programStageSections = getStageSectionsById(
                 state,
-                programStageId,
+                programStageId
             );
             const updatedProgramStageSections = filter(
                 section => !isEqual(sectionToDelete.id, section.id),
-                programStageSections,
+                programStageSections
             );
 
             // Remove section from programStage and normalized-store
@@ -216,6 +216,6 @@ export default function createEpicsForStore(store) {
         changeProgramStageSectionName(store),
         changeProgramStageSectionOrder(store),
         addProgramStageSection(store),
-        removeProgramStageSection(store),
+        removeProgramStageSection(store)
     );
 }

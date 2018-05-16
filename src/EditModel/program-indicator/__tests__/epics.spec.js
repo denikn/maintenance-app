@@ -24,7 +24,7 @@ describe('Program indicator epics', () => {
                         Promise.resolve({
                             id: 'pTo4uMt3xur',
                             name: 'Age at visit - calc from days',
-                        }),
+                        })
                     ),
                 },
             },
@@ -64,7 +64,7 @@ describe('Program indicator epics', () => {
                     'pTo4uMt3xur',
                     {
                         fields: fieldFilters,
-                    },
+                    }
                 );
 
                 done();
@@ -105,10 +105,10 @@ describe('Program indicator epics', () => {
                 });
 
                 expect(
-                    mockD2.models.programIndicator.get,
+                    mockD2.models.programIndicator.get
                 ).not.toHaveBeenCalled();
                 expect(
-                    mockD2.models.programIndicator.create,
+                    mockD2.models.programIndicator.create
                 ).toHaveBeenCalled();
 
                 done();

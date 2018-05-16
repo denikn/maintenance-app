@@ -11,7 +11,7 @@ import { next, previous, first } from '../../../stepper/stepIterator';
 
 export function programStageStepperReducer(
     state = { activeStep: first(steps), stageId: null },
-    action,
+    action
 ) {
     switch (action.type) {
     case PROGRAM_STAGE_STEP_CHANGE:

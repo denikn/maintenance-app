@@ -11,7 +11,7 @@ const mapStateToProps = state => ({
 });
 const EventActionButtons = createConnectedFormActionButtonsForSchema(
     mapDispatchToProps,
-    mapStateToProps,
+    mapStateToProps
 );
 
 export default EventActionButtons;

@@ -9,7 +9,7 @@ async function getProgramDataElements(model, d2) {
             {
                 fields:
                     'programStages[id,programStageDataElements[dataElement[id,displayName]]]',
-            },
+            }
         );
 
         return Object.values(
@@ -28,13 +28,13 @@ async function getProgramDataElements(model, d2) {
                     return true;
                 })
                 .map(stage =>
-                    stage.programStageDataElements.map(psde => psde.dataElement),
+                    stage.programStageDataElements.map(psde => psde.dataElement)
                 )
                 .reduce((a, stage) => a.concat(stage), [])
                 .reduce((o, de) => {
                     o[de.id] = de;
                     return o;
-                }, {}),
+                }, {})
         )
             .map(de => ({ text: de.displayName, value: de.id, model: de }))
             .sort((a, b) => a.text.localeCompare(b.text));
@@ -49,7 +49,7 @@ async function getProgramStages(model, d2) {
             ['programs', model.program.id].join('/'),
             {
                 fields: 'programStages[id,displayName]',
-            },
+            }
         );
 
         return list.programStages
@@ -67,7 +67,7 @@ async function getProgramTrackedEntityAttributes(model, d2) {
             {
                 fields:
                     'programTrackedEntityAttributes[displayName,trackedEntityAttribute[id]]',
-            },
+            }
         );
 
         return list.programTrackedEntityAttributes

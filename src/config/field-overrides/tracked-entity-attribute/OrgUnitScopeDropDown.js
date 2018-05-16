@@ -44,7 +44,7 @@ const OrgUnitScopeDropDown = props => {
             translateOptions
             isRequired
             value={getUniqueInDropDownValueFromTrackedEntityAttribute(
-                props.model,
+                props.model
             )}
             onChange={compose(value => {
                 if (value === 'organisation_unit') {

@@ -26,7 +26,7 @@ class DropDownAsync extends Component {
     // options.. It might be worth loading the categoryOption with name `default` just for this.
     componentWillReceiveProps(newProps) {
         const defaultOption = this.state.options.find(
-            option => option.model.name === 'default',
+            option => option.model.name === 'default'
         );
 
         if (
@@ -67,7 +67,7 @@ class DropDownAsync extends Component {
         }
 
         const option = this.state.options.find(
-            opt => opt.model.id === event.target.value,
+            opt => opt.model.id === event.target.value
         );
         if (option && option.model) {
             this.props.onChange({
@@ -99,7 +99,7 @@ class DropDownAsync extends Component {
         // Need trackedEntityAttribute-ids for trackerProgram to assign programTrackedEntityAttributes
         if (this.props.referenceType === 'trackedEntityType') {
             fieldsForReferenceType = fieldsForReferenceType.concat(
-                ',trackedEntityTypeAttributes[trackedEntityAttribute]',
+                ',trackedEntityTypeAttributes[trackedEntityAttribute]'
             );
         }
 
@@ -119,16 +119,16 @@ class DropDownAsync extends Component {
                             },
                             filter && filter.length > 1
                                 ? { rootJunction: 'OR' }
-                                : {},
-                        ),
+                                : {}
+                        )
                     );
                 } else if (this.props.referenceType.indexOf('.') !== -1) {
                     const modelName = this.props.referenceType.substr(
                         0,
-                        this.props.referenceType.indexOf('.'),
+                        this.props.referenceType.indexOf('.')
                     );
                     const modelProp = this.props.referenceType.substr(
-                        modelName.length + 1,
+                        modelName.length + 1
                     );
                     return d2.models[modelName].modelProperties[
                         modelProp
@@ -144,14 +144,14 @@ class DropDownAsync extends Component {
                         ? modelCollection.toArray
                             ? modelCollection.toArray()
                             : modelCollection
-                        : [],
+                        : []
             )
             .then(values =>
                 values.map(model => ({
                     text: model.displayName,
                     value: model.id,
                     model,
-                })),
+                }))
             )
             .then(options => {
                 // Behold the mother of all hacks
@@ -167,8 +167,8 @@ class DropDownAsync extends Component {
                                     'categoryCombo' &&
                                 option.text === 'default'
                                     ? { text: d2i.i18n.getTranslation('none') }
-                                    : {},
-                            ),
+                                    : {}
+                            )
                         ),
                     });
                 }

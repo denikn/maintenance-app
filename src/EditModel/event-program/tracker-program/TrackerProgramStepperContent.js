@@ -26,7 +26,7 @@ const stepperConfig = () => {
 
     const connectEditForm = compose(
         flattenRouterProps,
-        connect(null, mapDispatchToProps),
+        connect(null, mapDispatchToProps)
     );
     const trackerDetailsFields = fieldOrder.for('trackerProgram');
     const enrollmentFields = fieldOrder.for('enrollment');
@@ -39,11 +39,11 @@ const stepperConfig = () => {
                     'program',
                     trackerDetailsFields,
                     true,
-                    'trackerProgram',
-                ),
-            ),
+                    'trackerProgram'
+                )
+            )
         ),
-        Enrollment: EnrollmentDetails, /* connectEditForm(            wrapInPaper(createFormFor(program$, 'program', enrollmentFields, true, 'enrollment')),        ), */
+        Enrollment: EnrollmentDetails /* connectEditForm(            wrapInPaper(createFormFor(program$, 'program', enrollmentFields, true, 'enrollment')),        ), */,
         AssignAttributes,
         ProgramStage,
         EditDataEntryForm,
@@ -67,8 +67,8 @@ const TrackerProgramStepperContent = compose(
         props$.combineLatest(programStore, (props, { program }) => ({
             ...props,
             modelToEdit: program,
-        })),
-    ),
+        }))
+    )
 )(createStepperContentFromConfig(stepperConfig()));
 
 export default TrackerProgramStepperContent;

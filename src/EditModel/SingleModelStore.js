@@ -131,7 +131,7 @@ function cloneHandlerByObjectType(objectType, model) {
             a => ({
                 ...a,
                 id: undefined,
-            }),
+            })
         );
         break;
     }
@@ -144,7 +144,7 @@ function loadModelFromD2(objectType, objectId) {
         if (d2.models[objectType]) {
             return d2.models[objectType].get(
                 objectId,
-                requestParams.get(objectType),
+                requestParams.get(objectType)
             );
         }
         return Promise.reject('Invalid model');
@@ -156,7 +156,7 @@ const singleModelStoreConfig = {
         return Observable.fromPromise(loadModelFromD2(objectType, objectId)).do(
             model => {
                 this.setState(model);
-            },
+            }
         );
     },
 
@@ -193,7 +193,7 @@ const singleModelStoreConfig = {
                     response.response.errorReports.length > 0
                 ) {
                     return Promise.reject(
-                        response.response.errorReports[0].message,
+                        response.response.errorReports[0].message
                     );
                 }
 
@@ -213,7 +213,7 @@ export default {
         const storeConfig = Object.assign(
             {},
             singleModelStoreConfig,
-            config || {},
+            config || {}
         );
 
         return Store.create(storeConfig);

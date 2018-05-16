@@ -37,7 +37,7 @@ function createAttributeFieldConfigs(d2, schemaName) {
                     name: attribute.name,
                     valueType: attribute.valueType,
                     type: typeToFieldMap.get(
-                        attribute.optionSet ? 'CONSTANT' : attribute.valueType,
+                        attribute.optionSet ? 'CONSTANT' : attribute.valueType
                     ),
                     required: Boolean(attribute.mandatory),
                     fieldOptions: {
@@ -51,9 +51,9 @@ function createAttributeFieldConfigs(d2, schemaName) {
                     },
                 },
                 modelDefinition,
-                d2.models,
+                d2.models
             );
-        },
+        }
     );
 }
 
@@ -71,11 +71,11 @@ function translateValidators(fieldConfig, d2) {
 // Save one translated label for validation messages
 function setRequiredFieldsLabelText(fieldConfig, d2) {
     fieldConfig.translatedName = d2.i18n.getTranslation(
-        fieldConfig.props.labelText,
+        fieldConfig.props.labelText
     );
     fieldConfig.props.labelText = getLabelText(
         fieldConfig.translatedName,
-        fieldConfig,
+        fieldConfig
     );
 }
 
@@ -101,19 +101,19 @@ export async function createFieldConfigForModelTypes(
     modelType,
     forcedFieldOrderNames,
     includeAttributes = true,
-    customFieldOrderName,
+    customFieldOrderName
 ) {
     const d2 = await getInstance();
 
     const formFieldsManager = new FormFieldsManager(
-        new FormFieldsForModel(d2.models),
+        new FormFieldsForModel(d2.models)
     );
     formFieldsManager.setFieldOrder(
-        forcedFieldOrderNames || fieldOrderNames.for(modelType),
+        forcedFieldOrderNames || fieldOrderNames.for(modelType)
     );
 
     for (const [fieldName, overrideConfig] of fieldOverrides.for(
-        customFieldOrderName || modelType,
+        customFieldOrderName || modelType
     )) {
         formFieldsManager.addFieldOverrideFor(fieldName, overrideConfig);
     }
@@ -121,7 +121,7 @@ export async function createFieldConfigForModelTypes(
     return formFieldsManager
         .getFormFieldsForModel(
             { modelDefinition: d2.models[modelType] },
-            customFieldOrderName,
+            customFieldOrderName
         )
         .map(fieldConfig => {
             translateValidators(fieldConfig, d2);
@@ -130,7 +130,7 @@ export async function createFieldConfigForModelTypes(
             return fieldConfig;
         })
         .concat(
-            includeAttributes ? createAttributeFieldConfigs(d2, modelType) : [],
+            includeAttributes ? createAttributeFieldConfigs(d2, modelType) : []
         );
 }
 
@@ -170,7 +170,7 @@ export function addUniqueValidatorWhenUnique(fieldConfig, modelToEdit) {
             createUniqueValidator(
                 fieldConfig,
                 modelToEdit.modelDefinition,
-                modelToEdit.id,
+                modelToEdit.id
             ),
         ];
     }
@@ -236,7 +236,7 @@ export function createFieldConfigsFor(
     filterFieldConfigs = identity,
     includeAttributes,
     runRules = true,
-    customFieldOrderName,
+    customFieldOrderName
 ) {
     filterFieldConfigs = filterFieldConfigs || identity;
     return mapPropsStream(props$ =>
@@ -248,21 +248,21 @@ export function createFieldConfigsFor(
                         schema,
                         fieldNames,
                         includeAttributes,
-                        customFieldOrderName,
-                    ),
+                        customFieldOrderName
+                    )
                 ),
                 (props, fieldConfigs) => {
                     const fieldConfigsWithValues = addValuesToFieldConfigs(
                         fieldConfigs,
-                        props.model,
+                        props.model
                     );
                     const fieldConfigsToUse = runRules
                         ? applyRulesToFieldConfigs(
                             getRulesForModelType(
-                                customFieldOrderName || schema,
+                                customFieldOrderName || schema
                             ),
                             filterFieldConfigs(fieldConfigsWithValues),
-                            props.model,
+                            props.model
                         )
                         : fieldConfigsWithValues;
 
@@ -270,17 +270,17 @@ export function createFieldConfigsFor(
                         ...props,
                         fieldConfigs: fieldConfigsToUse,
                     };
-                },
-            ),
+                }
+            )
     );
 }
 
 const convertValueUsingFieldConverter = (fieldConfigs, onChangeCallback) => (
     fieldName,
-    value,
+    value
 ) => {
     const fieldConfig = fieldConfigs.find(
-        fieldConfig => fieldConfig.name === fieldName,
+        fieldConfig => fieldConfig.name === fieldName
     );
     const converter = fieldConfig.beforeUpdateConverter || identity;
 
@@ -293,14 +293,14 @@ export function createFormFor(
     schema,
     properties,
     includeAttributes,
-    customFieldOrderName,
+    customFieldOrderName
 ) {
     const enhance = compose(
         mapPropsStream(props$ =>
             props$.combineLatest(source$, (props, model) => ({
                 ...props,
                 model,
-            })),
+            }))
         ),
         createFieldConfigsFor(
             schema,
@@ -308,8 +308,8 @@ export function createFormFor(
             undefined,
             includeAttributes,
             false,
-            customFieldOrderName,
-        ),
+            customFieldOrderName
+        )
     );
 
     function CreatedFormBuilderForm({
@@ -320,12 +320,12 @@ export function createFormFor(
     }) {
         const onUpdateField = convertValueUsingFieldConverter(
             fieldConfigs,
-            editFieldChanged,
+            editFieldChanged
         );
         const fieldConfigsAfterRules = applyRulesToFieldConfigs(
             getRulesForModelType(customFieldOrderName || schema),
             fieldConfigs,
-            model,
+            model
         );
         return (
             <FormBuilder

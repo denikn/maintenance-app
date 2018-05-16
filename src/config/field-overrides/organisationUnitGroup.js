@@ -34,7 +34,7 @@ export default new Map([
                     for (; i <= 40; i++) {
                         const filename = i > 9 ? i : `0${i}`;
                         symbolUrls.push(
-                            `${filename}.${i > 25 ? 'svg' : 'png'}`,
+                            `${filename}.${i > 25 ? 'svg' : 'png'}`
                         );
                     }
 

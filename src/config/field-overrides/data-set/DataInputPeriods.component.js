@@ -35,7 +35,7 @@ class DataInputPeriods extends React.Component {
         };
 
         this.getTranslation = context.d2.i18n.getTranslation.bind(
-            context.d2.i18n,
+            context.d2.i18n
         );
         this.openDialog = this.openDialog.bind(this);
         this.closeDialog = this.closeDialog.bind(this);
@@ -51,7 +51,7 @@ class DataInputPeriods extends React.Component {
         this.setState({
             dialogOpen: true,
             dataInputPeriods: (this.props.value || []).sort((a, b) =>
-                a.period.id.localeCompare(b.period.id),
+                a.period.id.localeCompare(b.period.id)
             ),
         });
     }
@@ -176,14 +176,14 @@ class DataInputPeriods extends React.Component {
                             dataInputPeriod.openingDate &&
                                 new Date(dataInputPeriod.openingDate),
                             changeDateProxy($k, 'openingDate'),
-                            removeDateProxy($k, 'openingDate'),
+                            removeDateProxy($k, 'openingDate')
                         )}
                         {this.renderDatePicker(
                             this.getTranslation('closing_date'),
                             dataInputPeriod.closingDate &&
                                 new Date(dataInputPeriod.closingDate),
                             changeDateProxy($k, 'closingDate'),
-                            removeDateProxy($k, 'closingDate'),
+                            removeDateProxy($k, 'closingDate')
                         )}
                     </div>
                     <Divider style={styles.divider} />

@@ -24,7 +24,7 @@ class ProgramStage extends Component {
         const programStage$ =
             props.currentProgramStageId !== 'add' &&
             getProgramStageById$(props.currentProgramStageId).defaultIfEmpty(
-                firstProgramStage$,
+                firstProgramStage$
             );
 
         return (
@@ -64,5 +64,5 @@ ProgramStage.defaultProps = {
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
-    withProgramAndStages,
+    withProgramAndStages
 )(ProgramStage);

@@ -34,20 +34,20 @@ Observable
             .debounceTime(400),
         rightTreeSearch
             .map(action => ({ ...action, side: 'right' }))
-            .debounceTime(400),
+            .debounceTime(400)
     )
     // Only search when we have values
     .filter(action => action.data)
     // Do the actual search
     .map(({ complete, error, data, side }) =>
         Observable.fromPromise(
-            searchForOrganisationUnitsWithinHierarchy(data, 50),
+            searchForOrganisationUnitsWithinHierarchy(data, 50)
         ).map(organisationUnits => ({
             complete,
             error,
             organisationUnits,
             side,
-        })),
+        }))
     )
     // Make sure we only take the latest
     .concatAll()
@@ -58,8 +58,8 @@ Observable
             (result, hierarchy) => ({
                 result,
                 hierarchy,
-            }),
-        ),
+            })
+        )
     )
     // Update the app state with the result
     .subscribe(({ result, hierarchy }) => {
@@ -76,7 +76,7 @@ Observable.merge(
     // Emit for the empty left searchfield
     leftTreeSearch.filter(action => !action.data).map(() => 'left'),
     // Emit for the empty right searchfield
-    rightTreeSearch.filter(action => !action.data).map(() => 'right'),
+    rightTreeSearch.filter(action => !action.data).map(() => 'right')
 )
     .flatMap(side => appState.take(1).map(state => ({ side, state })))
     .subscribe(({ side, state }) => {
@@ -101,7 +101,7 @@ const organisationUnitHierarchy$ = appState.map(
         selectedRight: hierarchy.selectedRight || [],
         isProcessing: hierarchy.isProcessing,
         reload: hierarchy.reload,
-    }),
+    })
 );
 
 function onClickLeft(event, model) {
@@ -117,7 +117,7 @@ function onClickLeft(event, model) {
                 selectedLeft = hierarchy.selectedLeft
                     .slice(0, indexOfModelInSelected)
                     .concat(
-                        hierarchy.selectedLeft.slice(indexOfModelInSelected + 1),
+                        hierarchy.selectedLeft.slice(indexOfModelInSelected + 1)
                     );
             } else {
                 selectedLeft = hierarchy.selectedLeft.concat([model]);
@@ -170,7 +170,7 @@ function changeOrganisationUnitParentAndSave(organisationUnit) {
                 .then(() =>
                     d2.i18n.getTranslation('successfully_moved_$$ouName$$', {
                         ouName: organisationUnit.displayName,
-                    }),
+                    })
                 )
                 .catch(e =>
                     d2.i18n.getTranslation(
@@ -178,8 +178,8 @@ function changeOrganisationUnitParentAndSave(organisationUnit) {
                         {
                             ouName: organisationUnit.displayName,
                             errorMessage: e,
-                        },
-                    ),
+                        }
+                    )
                 );
 
             return Observable.fromPromise(movingStatus);
@@ -193,8 +193,8 @@ function moveOrganisationUnit() {
         .map(hierarchy => (hierarchy.selectedLeft || []).map(model => model.id))
         .flatMap(ouIds =>
             Observable.fromPromise(getOrganisationUnitByIds(ouIds)).flatMap(
-                identity,
-            ),
+                identity
+            )
         )
         .map(changeOrganisationUnitParentAndSave)
         .concatAll()
@@ -209,7 +209,7 @@ function moveOrganisationUnit() {
                         isProcessing: false,
                         reload: []
                             .concat(
-                                hierarchy.selectedRight.map(model => model.id),
+                                hierarchy.selectedRight.map(model => model.id)
                             )
                             .concat(
                                 hierarchy.selectedLeft.map(model => {
@@ -218,14 +218,14 @@ function moveOrganisationUnit() {
                                     }
                                     return appState.state.hierarchy.leftRoots
                                         .concat(
-                                            appState.state.hierarchy.rightRoots,
+                                            appState.state.hierarchy.rightRoots
                                         )
                                         .map(value => value.id)
                                         .filter(rootId =>
-                                            new RegExp(rootId).test(model.path),
+                                            new RegExp(rootId).test(model.path)
                                         )
                                         .reduce(value => value);
-                                }),
+                                })
                             ),
                     },
                 });
@@ -245,7 +245,7 @@ function moveOrganisationUnit() {
                         isProcessing: false,
                     },
                 });
-            },
+            }
         );
 }
 
@@ -259,7 +259,7 @@ function onClickRight(event, model) {
                     reload: [],
                     selectedRight: [model],
                 },
-            }),
+            })
         );
 }
 
@@ -307,7 +307,7 @@ SelectedOrganisationUnitList.defaultProps = {
 };
 
 const SelectedOrganisationUnitListWithContext = addD2Context(
-    SelectedOrganisationUnitList,
+    SelectedOrganisationUnitList
 );
 
 function hasEqualElement(left, right, selector) {
@@ -338,7 +338,7 @@ function sourceIsInPathOfTarget(source, target) {
 
     return source.some(
         sourceModel =>
-            splitOuPath(targetModel.path).indexOf(sourceModel.id) >= 0,
+            splitOuPath(targetModel.path).indexOf(sourceModel.id) >= 0
     );
 }
 
@@ -350,7 +350,7 @@ function moveButtonDisabled(props) {
         hasEqualElement(
             props.selectedLeft,
             props.selectedRight,
-            v => v && v.id,
+            v => v && v.id
         ) ||
         sourceIsInPathOfTarget(props.selectedLeft, props.selectedRight)
     );
@@ -408,11 +408,11 @@ function OrganisationUnitHierarchy(props, context) {
 
     const buttonLabel = context.d2.i18n.getTranslation(
         'move_$$ouCount$$_organisation_units',
-        { ouCount: (props.selectedLeft && props.selectedLeft.length) || 0 },
+        { ouCount: (props.selectedLeft && props.selectedLeft.length) || 0 }
     );
     const headingTitle = context.d2.i18n.getTranslation('hierarchy_operations');
     const warningForMovingWithinSubtree = context.d2.i18n.getTranslation(
-        'you_can_not_move_higher_level_organisation_units_to_its_descendants',
+        'you_can_not_move_higher_level_organisation_units_to_its_descendants'
     );
     return (
         <div>
@@ -427,7 +427,7 @@ function OrganisationUnitHierarchy(props, context) {
                         onUpdateInput={value => leftTreeSearch(value)}
                         idsThatShouldBeReloaded={props.reload}
                         noHitsLabel={context.d2.i18n.getTranslation(
-                            'no_matching_organisation_units',
+                            'no_matching_organisation_units'
                         )}
                     />
                 </Paper>
@@ -440,7 +440,7 @@ function OrganisationUnitHierarchy(props, context) {
                         onUpdateInput={value => rightTreeSearch(value)}
                         idsThatShouldBeReloaded={props.reload}
                         noHitsLabel={context.d2.i18n.getTranslation(
-                            'no_matching_organisation_units',
+                            'no_matching_organisation_units'
                         )}
                         hideCheckboxes
                         hideMemberCount
@@ -467,7 +467,7 @@ function OrganisationUnitHierarchy(props, context) {
             props.selectedRight.length &&
             sourceIsInPathOfTarget(
                 props.selectedLeft || [],
-                props.selectedRight || [],
+                props.selectedRight || []
             ) ? (
                 <div style={styles.errorMessage}>
                         <FontIcon
@@ -496,5 +496,5 @@ OrganisationUnitHierarchy.defaultProps = {
 
 export default withStateFrom(
     organisationUnitHierarchy$,
-    addD2Context(OrganisationUnitHierarchy),
+    addD2Context(OrganisationUnitHierarchy)
 );

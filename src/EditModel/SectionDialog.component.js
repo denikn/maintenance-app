@@ -33,7 +33,7 @@ class SectionDialog extends React.Component {
         assignedIndicatorStore.setState([]);
 
         this.getTranslation = context.d2.i18n.getTranslation.bind(
-            context.d2.i18n,
+            context.d2.i18n
         );
     }
 
@@ -42,7 +42,7 @@ class SectionDialog extends React.Component {
         this.subscriptions.push(
             assignedDataElementStore.subscribe(() => {
                 this.forceUpdate();
-            }),
+            })
         );
     }
 
@@ -54,7 +54,7 @@ class SectionDialog extends React.Component {
                 ? sections
                 : sections.toArray();
             const otherSections = sectionArray.filter(
-                s => s.id !== currentSectionId,
+                s => s.id !== currentSectionId
             );
             const filterDataElementIds = otherSections.reduce(
                 (elements, section) =>
@@ -62,9 +62,9 @@ class SectionDialog extends React.Component {
                         (Array.isArray(section.dataElements)
                             ? section.dataElements
                             : section.dataElements.toArray()
-                        ).map(de => de.id),
+                        ).map(de => de.id)
                     ),
-                [],
+                []
             );
 
             // Default category combo filter = no filter
@@ -73,19 +73,19 @@ class SectionDialog extends React.Component {
             assignedDataElementStore.setState(
                 props.sectionModel.dataElements
                     ? props.sectionModel.dataElements.toArray().map(de => de.id)
-                    : [],
+                    : []
             );
 
             indicatorStore.setState(
                 modelToEditStore.state.indicators
                     .toArray()
                     .map(i => ({ value: i.id, text: i.displayName }))
-                    .sort((a, b) => a.text.localeCompare(b.text)),
+                    .sort((a, b) => a.text.localeCompare(b.text))
             );
             assignedIndicatorStore.setState(
                 props.sectionModel.indicators
                     ? props.sectionModel.indicators.toArray().map(i => i.id)
-                    : [],
+                    : []
             );
 
             this.setState(
@@ -105,7 +105,7 @@ class SectionDialog extends React.Component {
                         target: { value: categoryComboId },
                     });
                     this.forceUpdate();
-                },
+                }
             );
         }
     }
@@ -125,15 +125,15 @@ class SectionDialog extends React.Component {
     removeIndicators = indicators => {
         assignedIndicatorStore.setState(
             assignedIndicatorStore.state.filter(
-                i => indicators.indexOf(i) === -1,
-            ),
+                i => indicators.indexOf(i) === -1
+            )
         );
         return Promise.resolve();
     };
 
     assignIndicators = indicators => {
         assignedIndicatorStore.setState(
-            assignedIndicatorStore.state.concat(indicators),
+            assignedIndicatorStore.state.concat(indicators)
         );
         return Promise.resolve();
     };
@@ -172,7 +172,7 @@ class SectionDialog extends React.Component {
             .filter(s => s.id !== this.props.sectionModel.id)
             .reduce(
                 (res, s) => res || (s.code && s.code === e.target.value),
-                false,
+                false
             );
 
         this.setState({
@@ -187,7 +187,7 @@ class SectionDialog extends React.Component {
 
     assignDataElements = dataElements => {
         assignedDataElementStore.setState(
-            assignedDataElementStore.state.concat(dataElements),
+            assignedDataElementStore.state.concat(dataElements)
         );
         return Promise.resolve();
     };
@@ -195,8 +195,8 @@ class SectionDialog extends React.Component {
     removeDataElements = dataElements => {
         assignedDataElementStore.setState(
             assignedDataElementStore.state.filter(
-                de => dataElements.indexOf(de) === -1,
-            ),
+                de => dataElements.indexOf(de) === -1
+            )
         );
         return Promise.resolve();
     };
@@ -220,15 +220,15 @@ class SectionDialog extends React.Component {
                         dse =>
                             this.state.filterDataElementIds
                                 ? !this.state.filterDataElementIds.includes(
-                                    dse.dataElement.id,
+                                    dse.dataElement.id
                                 )
-                                : true,
+                                : true
                     )
                     .map(dse => ({
                         value: dse.dataElement.id,
                         text: dse.dataElement.displayName,
                     }))
-                    .sort((a, b) => a.text.localeCompare(b.text)),
+                    .sort((a, b) => a.text.localeCompare(b.text))
             );
         }
 
@@ -297,8 +297,8 @@ class SectionDialog extends React.Component {
             { value: false, text: this.getTranslation('no_filter') },
         ].concat(
             this.props.categoryCombos.sort((a, b) =>
-                a.text.localeCompare(b.text),
-            ),
+                a.text.localeCompare(b.text)
+            )
         );
 
         return (
@@ -315,7 +315,7 @@ class SectionDialog extends React.Component {
                 <TextField
                     fullWidth
                     hintText={this.getTranslation(
-                        'search_available_selected_items',
+                        'search_available_selected_items'
                     )}
                     defaultValue={this.state.filterText}
                     onChange={this.handleFilterChange}

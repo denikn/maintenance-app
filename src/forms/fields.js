@@ -75,26 +75,26 @@ function addValidatorForType(type, modelValidation) {
     switch (type) {
     case NUMBER:
         validators.push(
-            createValidatorFromValidatorFunction(isNumberValidator),
+            createValidatorFromValidatorFunction(isNumberValidator)
         );
         break;
     case INTEGER:
         validators.push(
-            createValidatorFromValidatorFunction(isNumberValidator),
+            createValidatorFromValidatorFunction(isNumberValidator)
         );
         validators.push(
-            createValidatorFromValidatorFunction(isIntegerValidator),
+            createValidatorFromValidatorFunction(isIntegerValidator)
         );
 
         if (isNumber(modelValidation.max)) {
             validators.push(
-                createValidatorFromValidatorFunction(maxNumber),
+                createValidatorFromValidatorFunction(maxNumber)
             );
         }
 
         if (isNumber(modelValidation.min)) {
             validators.push(
-                createValidatorFromValidatorFunction(minNumber),
+                createValidatorFromValidatorFunction(minNumber)
             );
         }
         break;
@@ -102,13 +102,13 @@ function addValidatorForType(type, modelValidation) {
     case INPUT:
         if (isNumber(modelValidation.max)) {
             validators.push(
-                createValidatorFromValidatorFunction(maxTextOrArray),
+                createValidatorFromValidatorFunction(maxTextOrArray)
             );
         }
 
         if (isNumber(modelValidation.min)) {
             validators.push(
-                createValidatorFromValidatorFunction(minTextOrArray),
+                createValidatorFromValidatorFunction(minTextOrArray)
             );
         }
 
@@ -128,7 +128,7 @@ function addValidatorForType(type, modelValidation) {
 
 export function getValidatorsFromModelValidation(
     modelValidation,
-    modelDefinition,
+    modelDefinition
 ) {
     let validators = [];
 
@@ -141,8 +141,8 @@ export function getValidatorsFromModelValidation(
             addValidatorForType(
                 modelValidation.type,
                 modelValidation,
-                modelDefinition,
-            ),
+                modelDefinition
+            )
         );
     }
 
@@ -174,12 +174,12 @@ export function createFieldConfig(
     fieldConfig,
     modelDefinition,
     models,
-    customFieldOrderName,
+    customFieldOrderName
 ) {
     const fieldConstants = getOr(
         [],
         `modelProperties[${fieldConfig.name}].constants`,
-        modelDefinition,
+        modelDefinition
     );
     const basicFieldConfig = {
         name: fieldConfig.name,
@@ -209,11 +209,11 @@ export function createFieldConfig(
                         text: constantNameConverter(
                             customFieldOrderName || modelDefinition.name,
                             fieldConfig.name,
-                            constant,
+                            constant
                         ),
                         value: constant.toString(),
                     };
-                },
+                }
             ),
         }),
     };

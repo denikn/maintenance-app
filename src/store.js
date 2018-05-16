@@ -11,7 +11,7 @@ import { createLogger } from 'redux-logger';
 const epics = combineEpics(
     eventProgramEpics,
     programIndicatorEpics,
-    snackBarEpics,
+    snackBarEpics
 );
 const middlewares = [createEpicMiddleware(epics)];
 

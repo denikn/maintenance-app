@@ -151,14 +151,14 @@ function systemSettingIsFalseOperator(value, settingKey) {
 function ruleRunner(
     { whenFieldName, operatorFn, whenValue },
     fieldConfig,
-    model,
+    model
 ) {
     return operatorFn(
         model[whenFieldName],
         whenValue,
         fieldConfig,
         model,
-        whenFieldName,
+        whenFieldName
     );
 }
 
@@ -170,11 +170,11 @@ function rulesRunner(rules, rule, modelToEdit, fieldConfigs) {
                     getWhenOperator(whenRule.operator).name
                 }` +
                 ` ${whenRule.value || ''} ${rule.field} ${rules.length >
-                    index + 1 && 'then run'}`,
+                    index + 1 && 'then run'}`
         );
 
         const fieldConfigForRule = fieldConfigs.find(
-            fieldConfig => fieldConfig.name === (whenRule.field || rule.field),
+            fieldConfig => fieldConfig.name === (whenRule.field || rule.field)
         );
 
         const whenFieldName = whenRule.field ? whenRule.field : rule.field;
@@ -184,7 +184,7 @@ function rulesRunner(rules, rule, modelToEdit, fieldConfigs) {
         return ruleRunner(
             { whenFieldName, operatorFn, whenValue },
             fieldConfigForRule,
-            modelToEdit,
+            modelToEdit
         );
     });
 }
@@ -196,7 +196,7 @@ export function applyRulesToFieldConfigs(rules, fieldConfigs, modelToEdit) {
             rules,
             rule,
             modelToEdit,
-            fieldConfigs,
+            fieldConfigs
         ).some(result => result === true);
 
         log.debug('And the result is', rulePassed);
@@ -204,7 +204,7 @@ export function applyRulesToFieldConfigs(rules, fieldConfigs, modelToEdit) {
         (rule.operations || [rule.operation]).forEach(operation => {
             const fieldConfigForOperation = fieldConfigs.find(
                 fieldConfig =>
-                    fieldConfig.name === (operation.field || rule.field),
+                    fieldConfig.name === (operation.field || rule.field)
             );
 
             const { field, type, ...operationParams } = operation;
@@ -213,14 +213,14 @@ export function applyRulesToFieldConfigs(rules, fieldConfigs, modelToEdit) {
                 `---- For field ${field || rule.field} 
                         execute ${getOperation(type).name} 
                         with`,
-                operationParams,
+                operationParams
             );
 
             getOperation(type)(
                 fieldConfigForOperation,
                 operationParams,
                 rulePassed,
-                modelToEdit,
+                modelToEdit
             );
         });
     });
