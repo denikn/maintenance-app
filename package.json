@@ -21,7 +21,8 @@
     "manifest": "d2-manifest package.json build/manifest.webapp",
     "deploy": "npm run build && mvn clean deploy",
     "lint": "eslint ./src",
-    "profile": "yarn start -- --profile"
+    "profile": "yarn start -- --profile",
+    "prettify": "prettier \"src/{**/*,*}.js\" --write"
   },
   "devDependencies": {
     "babel": "^6.5.2",
@@ -54,6 +55,7 @@
     "node-pre-gyp": "^0.6.30",
     "node-sass": "^4.1.1",
     "precommit-hook": "^3.0.0",
+    "prettier": "^1.12.1",
     "react": "^15.3.1",
     "react-addons-create-fragment": "^15.5.4",
     "react-addons-css-transition-group": "^15.3.1",
