@@ -63,7 +63,9 @@ class ProgramRuleActionsList extends React.Component {
             case 'DISPLAYTEXT':
             case 'DISPLAYKEYVALUEPAIR':
                 if (!field && action.location) {
-                    if (action.location === 'feedback') { field = this.getTranslation('feedback_widget'); } else if (action.location === 'indicators') {
+                    if (action.location === 'feedback') {
+                        field = this.getTranslation('feedback_widget');
+                    } else if (action.location === 'indicators') {
                         field = this.getTranslation(
                             'program_indicator_widget',
                         );

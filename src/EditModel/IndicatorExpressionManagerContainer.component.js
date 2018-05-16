@@ -52,12 +52,10 @@ const IndicatorExpressionManagerContainer = React.createClass({
                 }),
             )
             .then(collection =>
-                collection
-                    .toArray()
-                    .map(model => ({
-                        value: model.id,
-                        label: model.displayName,
-                    })),
+                collection.toArray().map(model => ({
+                    value: model.id,
+                    label: model.displayName,
+                })),
             )
             .then(organisationUnitGroups =>
                 this.setState({ organisationUnitGroups }),
@@ -71,12 +69,10 @@ const IndicatorExpressionManagerContainer = React.createClass({
                 }),
             )
             .then(collection =>
-                collection
-                    .toArray()
-                    .map(model => ({
-                        value: model.id,
-                        label: model.displayName,
-                    })),
+                collection.toArray().map(model => ({
+                    value: model.id,
+                    label: model.displayName,
+                })),
             )
             .then(constants => this.setState({ constants }));
 

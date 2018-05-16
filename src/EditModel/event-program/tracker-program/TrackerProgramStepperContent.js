@@ -43,8 +43,7 @@ const stepperConfig = () => {
                 ),
             ),
         ),
-        Enrollment: EnrollmentDetails, /* connectEditForm(            wrapInPaper(createFormFor(program$, 'program', enrollmentFields, true, 'enrollment')),
-        ), */
+        Enrollment: EnrollmentDetails, /* connectEditForm(            wrapInPaper(createFormFor(program$, 'program', enrollmentFields, true, 'enrollment')),        ), */
         AssignAttributes,
         ProgramStage,
         EditDataEntryForm,

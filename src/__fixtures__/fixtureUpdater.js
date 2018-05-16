@@ -52,7 +52,7 @@ function saveFixture(url, response) {
         fs.writeFile(
             `${__dirname}/fixtures/${url}.json`,
             JSON.stringify(response, undefined, 2),
-            (err) => {
+            err => {
                 if (err) {
                     return reject(err);
                 }
