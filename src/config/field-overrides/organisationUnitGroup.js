@@ -27,7 +27,7 @@ export default new Map([
         {
             component: SymbolPickerField,
             fieldOptions: {
-                options: (function () {
+                options: (function() {
                     const symbolUrls = [];
                     let i = 1;
 
@@ -39,7 +39,7 @@ export default new Map([
                     }
 
                     return symbolUrls;
-                }()),
+                })(),
             },
         },
     ],

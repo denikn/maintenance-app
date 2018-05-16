@@ -44,9 +44,9 @@ function createAttributeFieldConfigs(d2, schemaName) {
                         labelText: attribute.name,
                         options: attribute.optionSet
                             ? attribute.optionSet.options.map(option => ({
-                                name: option.displayName || option.name,
-                                value: option.code,
-                            }))
+                                  name: option.displayName || option.name,
+                                  value: option.code,
+                              }))
                             : [],
                     },
                 },
@@ -258,12 +258,12 @@ export function createFieldConfigsFor(
                     );
                     const fieldConfigsToUse = runRules
                         ? applyRulesToFieldConfigs(
-                            getRulesForModelType(
-                                customFieldOrderName || schema
-                            ),
-                            filterFieldConfigs(fieldConfigsWithValues),
-                            props.model
-                        )
+                              getRulesForModelType(
+                                  customFieldOrderName || schema
+                              ),
+                              filterFieldConfigs(fieldConfigsWithValues),
+                              props.model
+                          )
                         : fieldConfigsWithValues;
 
                     return {

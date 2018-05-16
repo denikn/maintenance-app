@@ -19,24 +19,24 @@ export default Store.create({
                 filters:
                     this.state && this.state.filters
                         ? Object.assign(
-                            this.state.filters,
-                            getFilterFieldsForType(
-                                modelCollection.modelDefinition.name
-                            )
-                                .filter(
-                                    key =>
-                                        !Object.keys(
-                                            this.state.filters
-                                        ).includes(key)
-                                )
-                                .reduce((f, k) => {
-                                    f[k] = null;
-                                    return f;
-                                }, {})
-                        )
+                              this.state.filters,
+                              getFilterFieldsForType(
+                                  modelCollection.modelDefinition.name
+                              )
+                                  .filter(
+                                      key =>
+                                          !Object.keys(
+                                              this.state.filters
+                                          ).includes(key)
+                                  )
+                                  .reduce((f, k) => {
+                                      f[k] = null;
+                                      return f;
+                                  }, {})
+                          )
                         : getFiltersForType(
-                            modelCollection.modelDefinition.name
-                        ),
+                              modelCollection.modelDefinition.name
+                          ),
                 searchString: this.state ? this.state.searchString : '',
                 modelType: modelCollection.modelDefinition.name,
             });

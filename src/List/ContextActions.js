@@ -112,8 +112,8 @@ contextActions.delete.subscribe(({ data: model }) =>
                             message: response.message
                                 ? response.message
                                 : `${model.name} ${d2.i18n.getTranslation(
-                                    'was_not_deleted'
-                                )}`,
+                                      'was_not_deleted'
+                                  )}`,
                             action: 'ok',
                         });
                     });

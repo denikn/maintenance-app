@@ -335,14 +335,14 @@ class EditDataEntryForm extends React.Component {
                                 {props.dataEntryForm &&
                                 props.dataEntryForm.id ? (
                                     <FlatButton
-                                            primary
-                                            label={this.getTranslation('delete')}
-                                            style={styles.deleteButton}
-                                            onClick={this.handleDeleteClick}
-                                        />
-                                    ) : (
-                                        undefined
-                                    )}
+                                        primary
+                                        label={this.getTranslation('delete')}
+                                        style={styles.deleteButton}
+                                        onClick={this.handleDeleteClick}
+                                    />
+                                ) : (
+                                    undefined
+                                )}
                             </div>
                         </Paper>
                     </div>

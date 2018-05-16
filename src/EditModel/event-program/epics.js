@@ -71,13 +71,13 @@ function loadEventProgramMetadataByProgramId(programPayload) {
             programPayload.query.type == 'WITH_REGISTRATION'
                 ? []
                 : [
-                    {
-                        id: programStageUid,
-                        programStageDataElements: [],
-                        notificationTemplates: [],
-                        programStageSections: [],
-                    },
-                ];
+                      {
+                          id: programStageUid,
+                          programStageDataElements: [],
+                          notificationTemplates: [],
+                          programStageSections: [],
+                      },
+                  ];
         const newProgramMetadata = {
             programs: [
                 {

@@ -95,17 +95,17 @@ class App extends AppWithD2 {
                     {this.state.hasSection &&
                     !this.props.children.props.route.hideSidebar ? (
                         <TwoPanelLayout>
-                                <SideBar
+                            <SideBar
                                 activeGroupName={this.props.params.groupName}
                                 activeModelType={this.props.params.modelType}
                             />
-                                <MainContent>{this.props.children}</MainContent>
-                            </TwoPanelLayout>
-                        ) : (
-                            <SinglePanelLayout>
-                                <MainContent>{this.props.children}</MainContent>
-                            </SinglePanelLayout>
-                        )}
+                            <MainContent>{this.props.children}</MainContent>
+                        </TwoPanelLayout>
+                    ) : (
+                        <SinglePanelLayout>
+                            <MainContent>{this.props.children}</MainContent>
+                        </SinglePanelLayout>
+                    )}
                     <SnackbarContainer />
                 </div>
             </Provider>

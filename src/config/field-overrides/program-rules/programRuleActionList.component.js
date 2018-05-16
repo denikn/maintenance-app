@@ -42,96 +42,96 @@ class ProgramRuleActionsList extends React.Component {
             let field;
 
             switch (action.programRuleActionType) {
-            case 'SHOWWARNING':
-            case 'SHOWERROR':
-            case 'WARNINGONCOMPLETE':
-            case 'ERRORONCOMPLETE':
-                field = [
-                    action.dataElement &&
+                case 'SHOWWARNING':
+                case 'SHOWERROR':
+                case 'WARNINGONCOMPLETE':
+                case 'ERRORONCOMPLETE':
+                    field = [
+                        action.dataElement &&
                             `"${action.dataElement.displayName}"`,
-                    action.programRuleActionType !== 'WARNINGONCOMPLETE' &&
+                        action.programRuleActionType !== 'WARNINGONCOMPLETE' &&
                         action.programRuleActionType !== 'ERRORONCOMPLETE' &&
                         action.trackedEntityAttribute
-                        ? `"${action.trackedEntityAttribute.displayName}"`
-                        : '',
-                ]
-                    .filter(s => s)
-                    .map(s => s.trim())
-                    .join(', ');
+                            ? `"${action.trackedEntityAttribute.displayName}"`
+                            : '',
+                    ]
+                        .filter(s => s)
+                        .map(s => s.trim())
+                        .join(', ');
                 // NO BREAK!
 
-            case 'DISPLAYTEXT':
-            case 'DISPLAYKEYVALUEPAIR':
-                if (!field && action.location) {
-                    if (action.location === 'feedback') {
-                        field = this.getTranslation('feedback_widget');
-                    } else if (action.location === 'indicators') {
-                        field = this.getTranslation(
-                            'program_indicator_widget'
-                        );
+                case 'DISPLAYTEXT':
+                case 'DISPLAYKEYVALUEPAIR':
+                    if (!field && action.location) {
+                        if (action.location === 'feedback') {
+                            field = this.getTranslation('feedback_widget');
+                        } else if (action.location === 'indicators') {
+                            field = this.getTranslation(
+                                'program_indicator_widget'
+                            );
+                        }
                     }
-                }
-                field = field
-                    ? ` ${this.getTranslation('on')} ${field}`
-                    : '';
-                const text = action.content
-                    ? action.content.length > 25
-                        ? `${action.content.substr(0, 22)}...`
-                        : action.content
-                    : '';
-                actionDetails =
+                    field = field
+                        ? ` ${this.getTranslation('on')} ${field}`
+                        : '';
+                    const text = action.content
+                        ? action.content.length > 25
+                            ? `${action.content.substr(0, 22)}...`
+                            : action.content
+                        : '';
+                    actionDetails =
                         `${this.getTranslation(
                             programRuleActionTypes[action.programRuleActionType]
                                 .label
                         )}: ` + `"${text}"${field}`;
-                break;
+                    break;
 
-            case 'HIDEFIELD':
-                field = [
-                    action.dataElement &&
+                case 'HIDEFIELD':
+                    field = [
+                        action.dataElement &&
                             `"${action.dataElement.displayName}"`,
-                    action.trackedEntityAttribute &&
+                        action.trackedEntityAttribute &&
                             `"${action.trackedEntityAttribute.displayName}"`,
-                ]
-                    .filter(s => s)
-                    .map(s => s.trim())
-                    .join(', ');
-                actionDetails = `${this.getTranslation(
-                    programRuleActionTypes[action.programRuleActionType]
-                        .label
-                )}: ${field}`;
-                break;
+                    ]
+                        .filter(s => s)
+                        .map(s => s.trim())
+                        .join(', ');
+                    actionDetails = `${this.getTranslation(
+                        programRuleActionTypes[action.programRuleActionType]
+                            .label
+                    )}: ${field}`;
+                    break;
 
-            case 'HIDESECTION':
-                actionDetails =
+                case 'HIDESECTION':
+                    actionDetails =
                         `${this.getTranslation(
                             programRuleActionTypes[action.programRuleActionType]
                                 .label
                         )}: ` +
                         `"${action.programStageSection &&
                             action.programStageSection.displayName}"`;
-                break;
+                    break;
 
-            case 'HIDEPROGRAMSTAGE':
-                actionDetails =
+                case 'HIDEPROGRAMSTAGE':
+                    actionDetails =
                         `${this.getTranslation(
                             programRuleActionTypes[action.programRuleActionType]
                                 .label
                         )}: ` +
                         `"${action.programStage &&
                             action.programStage.displayName}"`;
-                break;
+                    break;
 
-            case 'ASSIGN':
-                field = [
-                    action.dataElement &&
+                case 'ASSIGN':
+                    field = [
+                        action.dataElement &&
                             `"${action.dataElement.displayName}"`,
-                    action.content && `"${action.content}"`,
-                ]
-                    .filter(s => s)
-                    .map(s => s.trim())
-                    .join(', ');
-                actionDetails =
+                        action.content && `"${action.content}"`,
+                    ]
+                        .filter(s => s)
+                        .map(s => s.trim())
+                        .join(', ');
+                    actionDetails =
                         `${this.getTranslation(
                             programRuleActionTypes[action.programRuleActionType]
                                 .label
@@ -139,10 +139,10 @@ class ProgramRuleActionsList extends React.Component {
                         `"${action.data}" ${this.getTranslation(
                             'to_field'
                         )} ${field}`;
-                break;
+                    break;
 
-            case 'CREATEEVENT':
-                actionDetails =
+                case 'CREATEEVENT':
+                    actionDetails =
                         `${this.getTranslation(
                             programRuleActionTypes[action.programRuleActionType]
                                 .label
@@ -150,43 +150,43 @@ class ProgramRuleActionsList extends React.Component {
                         `${this.getTranslation('in_program_stage')}: ` +
                         `${action.programStage &&
                             action.programStage.displayName}`;
-                break;
+                    break;
 
-            case 'SETMANDATORYFIELD':
-                field = [
-                    action.dataElement &&
+                case 'SETMANDATORYFIELD':
+                    field = [
+                        action.dataElement &&
                             `"${action.dataElement.displayName}"`,
-                    action.trackedEntityAttribute &&
+                        action.trackedEntityAttribute &&
                             `"${action.trackedEntityAttribute.displayName}"`,
-                ]
-                    .filter(s => s)
-                    .map(s => s.trim())
-                    .join(', ');
-                actionDetails = `${this.getTranslation(
-                    programRuleActionTypes[action.programRuleActionType]
-                        .label
-                )}: ${field}`;
-                break;
+                    ]
+                        .filter(s => s)
+                        .map(s => s.trim())
+                        .join(', ');
+                    actionDetails = `${this.getTranslation(
+                        programRuleActionTypes[action.programRuleActionType]
+                            .label
+                    )}: ${field}`;
+                    break;
 
-            case 'SENDMESSAGE':
-                const withDateString = action.data
-                    ? `${this.getTranslation('at_date')} "${action.data}"`
-                    : '';
-                const displayName = action.programNotificationTemplate
-                    ? action.programNotificationTemplate.displayName
-                    : this.getTranslation(
-                        'no_notification_template_specified'
-                    );
+                case 'SENDMESSAGE':
+                    const withDateString = action.data
+                        ? `${this.getTranslation('at_date')} "${action.data}"`
+                        : '';
+                    const displayName = action.programNotificationTemplate
+                        ? action.programNotificationTemplate.displayName
+                        : this.getTranslation(
+                              'no_notification_template_specified'
+                          );
 
-                actionDetails = `${this.getTranslation(
-                    programRuleActionTypes[action.programRuleActionType]
-                        .label
-                )}: ${displayName} ${withDateString}`;
+                    actionDetails = `${this.getTranslation(
+                        programRuleActionTypes[action.programRuleActionType]
+                            .label
+                    )}: ${displayName} ${withDateString}`;
 
-                break;
+                    break;
 
-            default:
-                actionDetails = action.programRuleActionType;
+                default:
+                    actionDetails = action.programRuleActionType;
             }
 
             return Object.assign(action, {
@@ -194,9 +194,9 @@ class ProgramRuleActionsList extends React.Component {
                     action.programRuleActionType
                 )
                     ? this.getTranslation(
-                        programRuleActionTypes[action.programRuleActionType]
-                            .label
-                    )
+                          programRuleActionTypes[action.programRuleActionType]
+                              .label
+                      )
                     : action.programRuleActionType,
                 actionDetails,
             });

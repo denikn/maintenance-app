@@ -223,8 +223,8 @@ objectActions.saveObject
                                 message: Array.isArray(error.messages)
                                     ? error.messages[0].message
                                     : d2.i18n.getTranslation(
-                                        'failed_to_save_organisation_unit'
-                                    ),
+                                          'failed_to_save_organisation_unit'
+                                      ),
                                 action: 'ok',
                             });
                             failAction(error);

@@ -84,12 +84,12 @@ class SideBarContainer extends React.Component {
                 const roots = Array.isArray(orgUnitSearchHits)
                     ? orgUnitSearchHits
                     : this.state.userOrganisationUnits.toArray().map(ou => {
-                        // Use the name as displayName if it has not been loaded
-                        if (!ou.displayName) {
-                            ou.displayName = ou.name;
-                        }
-                        return ou;
-                    });
+                          // Use the name as displayName if it has not been loaded
+                          if (!ou.displayName) {
+                              ou.displayName = ou.name;
+                          }
+                          return ou;
+                      });
 
                 const initiallyExpanded = this.getExpandedItems(
                     orgUnitSearchHits

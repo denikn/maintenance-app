@@ -111,12 +111,12 @@ export function getTranslatablePropertiesForModelType(modelType) {
     }
 
     switch (modelType) {
-    case 'dataElement':
-        return defaultTranslatableProperties.concat(['formName']);
-    case 'organisationUnitLevel':
-        return ['name'];
-    default:
-        break;
+        case 'dataElement':
+            return defaultTranslatableProperties.concat(['formName']);
+        case 'organisationUnitLevel':
+            return ['name'];
+        default:
+            break;
     }
 
     return defaultTranslatableProperties;
@@ -302,58 +302,58 @@ class List extends Component {
 
         // Switch action for special cases
         switch (action) {
-        case 'edit':
-            return model.access.write;
-        case 'clone':
-            return (
-                model.modelDefinition.name !== 'dataSet' &&
+            case 'edit':
+                return model.access.write;
+            case 'clone':
+                return (
+                    model.modelDefinition.name !== 'dataSet' &&
                     model.modelDefinition.name !== 'program' &&
                     model.access.write
-            );
-        case 'translate':
-            return (
-                model.access.read &&
+                );
+            case 'translate':
+                return (
+                    model.access.read &&
                     model.modelDefinition.identifiableObject
-            );
-        case 'details':
-            return model.access.read;
-        case 'share':
-            return (
-                model.modelDefinition.isShareable === true &&
+                );
+            case 'details':
+                return model.access.read;
+            case 'share':
+                return (
+                    model.modelDefinition.isShareable === true &&
                     model.access.write
-            );
-        case 'compulsoryDataElements':
-            return (
-                model.modelDefinition.name === 'dataSet' &&
+                );
+            case 'compulsoryDataElements':
+                return (
+                    model.modelDefinition.name === 'dataSet' &&
                     model.access.write
-            );
-        case 'sectionForm':
-            return (
-                model.modelDefinition.name === 'dataSet' &&
+                );
+            case 'sectionForm':
+                return (
+                    model.modelDefinition.name === 'dataSet' &&
                     model.access.write
-            );
-        case 'dataEntryForm':
-            return (
-                model.modelDefinition.name === 'dataSet' &&
+                );
+            case 'dataEntryForm':
+                return (
+                    model.modelDefinition.name === 'dataSet' &&
                     model.access.write
-            );
-        case 'pdfDataSetForm':
-            return (
-                model.modelDefinition.name === 'dataSet' &&
+                );
+            case 'pdfDataSetForm':
+                return (
+                    model.modelDefinition.name === 'dataSet' &&
                     model.access.read
-            );
-        case 'runNow':
-            return (
-                model.modelDefinition.name === 'pushAnalysis' &&
+                );
+            case 'runNow':
+                return (
+                    model.modelDefinition.name === 'pushAnalysis' &&
                     model.access.write
-            );
-        case 'preview':
-            return (
-                model.modelDefinition.name === 'pushAnalysis' &&
+                );
+            case 'preview':
+                return (
+                    model.modelDefinition.name === 'pushAnalysis' &&
                     model.access.write
-            );
-        default:
-            return true;
+                );
+            default:
+                return true;
         }
     };
 
@@ -385,8 +385,8 @@ class List extends Component {
     closeSharingDialog = sharingState => {
         const model = sharingState
             ? Object.assign(sharingStore.state.model, {
-                publicAccess: sharingState.publicAccess,
-            })
+                  publicAccess: sharingState.publicAccess,
+              })
             : sharingStore.state.model;
 
         sharingStore.setState(
@@ -466,8 +466,8 @@ class List extends Component {
                                         value={
                                             this.state.filters
                                                 ? this.state.filters[
-                                                    filterField
-                                                ]
+                                                      filterField
+                                                  ]
                                                 : null
                                         }
                                         translateOptions={
@@ -484,8 +484,8 @@ class List extends Component {
                                         value={
                                             this.state.filters
                                                 ? this.state.filters[
-                                                    filterField
-                                                ]
+                                                      filterField
+                                                  ]
                                                 : null
                                         }
                                         quickAddLink={false}
@@ -606,31 +606,31 @@ class List extends Component {
             return row.noMoreGottaTranslateCauseIsDone
                 ? row
                 : this.state.tableColumns.reduce((prow, columnName) => {
-                    if (
-                        isTranslatable(
-                            row.modelDefinition.name,
-                            columnName
-                        ) &&
+                      if (
+                          isTranslatable(
+                              row.modelDefinition.name,
+                              columnName
+                          ) &&
                           row &&
                           row.modelDefinition &&
                           row.modelDefinition.modelProperties[columnName] &&
                           row.modelDefinition.modelProperties[columnName]
                               .constants
-                    ) {
-                        // Hack it to fix another hack - sweeet
-                        row.noMoreGottaTranslateCauseIsDone = true;
-                        if (row[columnName]) {
-                            prow[columnName] = this.getTranslation(
-                                getConstantDisplayNameOrOld(
-                                    row.modelDefinition.name,
-                                    columnName,
-                                    row[columnName]
-                                ).toLowerCase()
-                            );
-                        }
-                    }
-                    return prow;
-                }, row);
+                      ) {
+                          // Hack it to fix another hack - sweeet
+                          row.noMoreGottaTranslateCauseIsDone = true;
+                          if (row[columnName]) {
+                              prow[columnName] = this.getTranslation(
+                                  getConstantDisplayNameOrOld(
+                                      row.modelDefinition.name,
+                                      columnName,
+                                      row[columnName]
+                                  ).toLowerCase()
+                              );
+                          }
+                      }
+                      return prow;
+                  }, row);
         };
 
         const primaryAction = model => {
@@ -684,23 +684,23 @@ class List extends Component {
                             {!!this.state.dataRows &&
                             !!this.state.dataRows.length ? (
                                 <DataTable
-                                        rows={this.state.dataRows
-                                            .map(magicallyUnwrapChildValues)
-                                            .map(defaultReallyMeansNone)
-                                            .map(translateConstants)}
-                                        columns={this.state.tableColumns}
-                                        contextMenuActions={availableActions}
-                                        contextMenuIcons={contextMenuIcons}
-                                        primaryAction={primaryAction}
-                                        isContextActionAllowed={
-                                            this.isContextActionAllowed
-                                        }
-                                    />
-                                ) : (
-                                    <div>
-                                        {this.getTranslation('no_results_found')}
-                                    </div>
-                                )}
+                                    rows={this.state.dataRows
+                                        .map(magicallyUnwrapChildValues)
+                                        .map(defaultReallyMeansNone)
+                                        .map(translateConstants)}
+                                    columns={this.state.tableColumns}
+                                    contextMenuActions={availableActions}
+                                    contextMenuIcons={contextMenuIcons}
+                                    primaryAction={primaryAction}
+                                    isContextActionAllowed={
+                                        this.isContextActionAllowed
+                                    }
+                                />
+                            ) : (
+                                <div>
+                                    {this.getTranslation('no_results_found')}
+                                </div>
+                            )}
                         </div>
                         {!!this.state.detailsObject && (
                             <DetailsBoxWithScroll

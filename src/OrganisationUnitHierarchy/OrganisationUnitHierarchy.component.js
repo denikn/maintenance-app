@@ -470,15 +470,15 @@ function OrganisationUnitHierarchy(props, context) {
                 props.selectedRight || []
             ) ? (
                 <div style={styles.errorMessage}>
-                        <FontIcon
+                    <FontIcon
                         style={styles.errorIcon}
                         className="material-icons"
                     >
                         warning
-                        </FontIcon>
-                        {warningForMovingWithinSubtree}
-                    </div>
-                ) : null}
+                    </FontIcon>
+                    {warningForMovingWithinSubtree}
+                </div>
+            ) : null}
             <RaisedButton
                 primary
                 style={styles.moveButton}

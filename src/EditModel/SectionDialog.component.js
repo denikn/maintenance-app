@@ -220,8 +220,8 @@ class SectionDialog extends React.Component {
                         dse =>
                             this.state.filterDataElementIds
                                 ? !this.state.filterDataElementIds.includes(
-                                    dse.dataElement.id
-                                )
+                                      dse.dataElement.id
+                                  )
                                 : true
                     )
                     .map(dse => ({

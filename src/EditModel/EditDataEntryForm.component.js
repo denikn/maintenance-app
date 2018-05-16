@@ -611,14 +611,14 @@ class EditDataEntryForm extends React.Component {
                         {modelToEditStore.state.dataEntryForm &&
                         modelToEditStore.state.dataEntryForm.id ? (
                             <FlatButton
-                                    primary
-                                    label={this.getTranslation('delete')}
-                                    style={styles.deleteButton}
-                                    onClick={this.handleDeleteClick}
-                                />
-                            ) : (
-                                undefined
-                            )}
+                                primary
+                                label={this.getTranslation('delete')}
+                                style={styles.deleteButton}
+                                onClick={this.handleDeleteClick}
+                            />
+                        ) : (
+                            undefined
+                        )}
                     </div>
                 </Paper>
             </div>

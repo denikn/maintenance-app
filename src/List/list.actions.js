@@ -67,9 +67,9 @@ function applyCurrentFilters(modelDefinitions, modelName) {
         // Apply name search string, if any
         return listStore.state.searchString.trim().length > 0
             ? filterModelDefinition
-                .filter()
-                .on('displayName')
-                .ilike(listStore.state.searchString)
+                  .filter()
+                  .on('displayName')
+                  .ilike(listStore.state.searchString)
             : filterModelDefinition;
     }
 

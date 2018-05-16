@@ -168,15 +168,15 @@ export default class OrganisationUnitTreeMultiSelect extends React.Component {
         const controlOverlayStyles = this.state.currentRoot
             ? {}
             : {
-                position: 'absolute',
-                width: 495,
-                height: 240,
-                marginLeft: -10,
-                marginTop: 4,
-                backgroundColor: 'rgba(230,230,230,0.3)',
-                zIndex: 2,
-                borderRadius: 8,
-            };
+                  position: 'absolute',
+                  width: 495,
+                  height: 240,
+                  marginLeft: -10,
+                  marginTop: 4,
+                  backgroundColor: 'rgba(230,230,230,0.3)',
+                  zIndex: 2,
+                  borderRadius: 8,
+              };
         const currentRootStyle = {
             border: '1px solid rgba(0,0,0,0.1)',
             borderRadius: 3,

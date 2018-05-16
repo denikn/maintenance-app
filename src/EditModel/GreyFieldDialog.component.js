@@ -273,22 +273,22 @@ class GreyFieldDialog extends React.Component {
                                     this.getTranslation('data_element')}
                             </th>
                             {// For each column in the previous row...
-                                Array(...Array(prevRowColCount)).map((e, rep) =>
+                            Array(...Array(prevRowColCount)).map((e, rep) =>
                                 // ... render the columns for this row
-                                    cat.categoryOptions
-                                        .toArray()
-                                        .map((opt, optNum) => (
-                                            <th
-                                                key={`${optNum}.${rep}`}
-                                                colSpan={colSpan}
-                                                style={styles.th}
-                                            >
-                                                {opt.displayName === 'default'
-                                                    ? ''
-                                                    : opt.displayName}
-                                            </th>
-                                        ))
-                                )}
+                                cat.categoryOptions
+                                    .toArray()
+                                    .map((opt, optNum) => (
+                                        <th
+                                            key={`${optNum}.${rep}`}
+                                            colSpan={colSpan}
+                                            style={styles.th}
+                                        >
+                                            {opt.displayName === 'default'
+                                                ? ''
+                                                : opt.displayName}
+                                        </th>
+                                    ))
+                            )}
                         </tr>
                     );
                     prevRowColCount *= cat.categoryOptions.size;
@@ -403,46 +403,46 @@ class GreyFieldDialog extends React.Component {
             .map(de => de.id);
         return this.state.currentCategoryCombo
             ? modelToEditStore.state.dataSetElements
-                .filter(dse =>
-                    currentSectionDataElementIds.includes(dse.dataElement.id)
-                )
-                .filter(
-                    dse =>
-                        (dse.categoryCombo
-                            ? dse.categoryCombo.id
-                            : dse.dataElement.categoryCombo.id) ===
+                  .filter(dse =>
+                      currentSectionDataElementIds.includes(dse.dataElement.id)
+                  )
+                  .filter(
+                      dse =>
+                          (dse.categoryCombo
+                              ? dse.categoryCombo.id
+                              : dse.dataElement.categoryCombo.id) ===
                           this.state.currentCategoryCombo
-                )
-                .sort(
-                    (a, b) =>
-                        currentSectionDataElementIds.indexOf(
-                            a.dataElement.id
-                        ) -
+                  )
+                  .sort(
+                      (a, b) =>
+                          currentSectionDataElementIds.indexOf(
+                              a.dataElement.id
+                          ) -
                           currentSectionDataElementIds.indexOf(b.dataElement.id)
-                )
-                .map((dse, deNum) => {
-                    const cocFields = getCocFields();
-                    return (
-                        <tr
-                            key={deNum}
-                            style={{
-                                background:
+                  )
+                  .map((dse, deNum) => {
+                      const cocFields = getCocFields();
+                      return (
+                          <tr
+                              key={deNum}
+                              style={{
+                                  background:
                                       deNum % 2 === 0 ? 'none' : '#f0f0f0',
-                            }}
-                        >
-                            <td style={styles.tdDataElement}>
-                                {dse.dataElement.displayName}
-                            </td>
-                            {cocFields.map((fields, fieldNum) =>
-                                this.renderCheckbox(
-                                    dse.dataElement,
-                                    fields,
-                                    fieldNum
-                                )
-                            )}
-                        </tr>
-                    );
-                })
+                              }}
+                          >
+                              <td style={styles.tdDataElement}>
+                                  {dse.dataElement.displayName}
+                              </td>
+                              {cocFields.map((fields, fieldNum) =>
+                                  this.renderCheckbox(
+                                      dse.dataElement,
+                                      fields,
+                                      fieldNum
+                                  )
+                              )}
+                          </tr>
+                      );
+                  })
             : null;
     }
 
@@ -503,24 +503,24 @@ class GreyFieldDialog extends React.Component {
                 this.props.sectionModel.categoryCombos &&
                 this.props.sectionModel.categoryCombos.size > 1 ? (
                     <DropDown
-                            options={categoryCombosForSection.map(cc => ({
-                                value: cc.id,
-                                text:
+                        options={categoryCombosForSection.map(cc => ({
+                            value: cc.id,
+                            text:
                                 cc.displayName === 'default'
                                     ? this.getTranslation('none')
                                     : cc.displayName,
-                            }))}
-                            labelText={this.getTranslation('category_combo')}
-                            value={this.state.currentCategoryCombo}
-                            onChange={e =>
-                                this.setState({
-                                    currentCategoryCombo: e.target.value,
-                                })
-                            }
-                            style={{ width: '33%' }}
-                            isRequired
-                        />
-                    ) : null}
+                        }))}
+                        labelText={this.getTranslation('category_combo')}
+                        value={this.state.currentCategoryCombo}
+                        onChange={e =>
+                            this.setState({
+                                currentCategoryCombo: e.target.value,
+                            })
+                        }
+                        style={{ width: '33%' }}
+                        isRequired
+                    />
+                ) : null}
                 <div style={styles.dialogDiv}>
                     <table style={styles.table}>
                         <tbody>

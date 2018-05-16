@@ -114,4 +114,4 @@ export default (function createEpicsForStore(store) {
         programIndicatorSave(store),
         programIndicatorModelSaveResponses
     );
-}(programIndicatorStore));
+})(programIndicatorStore);

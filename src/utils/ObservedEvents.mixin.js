@@ -33,7 +33,7 @@ const ObservedEvents = {
                 subject.next(event);
             };
         };
-    }()),
+    })(),
 
     componentWillUnmount() {
         // Complete any eventsSubjects

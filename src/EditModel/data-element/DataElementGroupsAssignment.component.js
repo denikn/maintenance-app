@@ -102,8 +102,8 @@ export default React.createClass({
                         dataElementGroupSet.id
                     )
                         ? store.state.dataElementGroupValues[
-                            dataElementGroupSet.id
-                        ]
+                              dataElementGroupSet.id
+                          ]
                         : findValue(optionList, this.props.source);
 
                     return (
