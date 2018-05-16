@@ -37,7 +37,7 @@ const ProgramStageVerticalStepper = connect(
     state => ({
         activeStep: getActiveProgramStageStep(state),
     }),
-    dispatch => bindActionCreators({ stepperClicked: changeStep }, dispatch)
+    dispatch => bindActionCreators({ stepperClicked: changeStep }, dispatch),
 )(createStepperFromConfig(stepperConfig(), 'vertical'));
 
 export const ProgramStageStepper = pure(props => (

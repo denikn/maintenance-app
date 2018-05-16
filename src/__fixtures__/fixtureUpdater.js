@@ -32,7 +32,7 @@ function getConfig() {
     return require(dhisConfigPath);
 }
 
-const initD2Api = memoize(async function() {
+const initD2Api = memoize(async () => {
     const config = getConfig();
 
     const initOptions = {
@@ -52,14 +52,14 @@ function saveFixture(url, response) {
         fs.writeFile(
             `${__dirname}/fixtures/${url}.json`,
             JSON.stringify(response, undefined, 2),
-            function(err) {
+            (err) => {
                 if (err) {
                     return reject(err);
                 }
 
                 console.log(`Fixture (${url}) updated`);
                 resolve();
-            }
+            },
         );
     });
 }
@@ -88,7 +88,7 @@ function getFixturePaths(rootPath = __dirname) {
 
 const getApiPathFromFixturePath = compose(
     replace('fixtures/', ''),
-    replace('.json', '')
+    replace('.json', ''),
 );
 
 function updateFixturesForFilePaths(files) {

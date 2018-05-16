@@ -27,7 +27,7 @@ function DropDownFieldForOfflineLevels(props) {
                 value: option,
                 text: option,
                 label: option,
-            }))
+            })),
         )
         .map((option, index) => (
             <MenuItem
@@ -84,7 +84,7 @@ function isNameUnique(name) {
         .map(fieldConfigs =>
             fieldConfigs
                 .filter(fieldConfig => fieldConfig.name === 'name')
-                .some(fieldConfig => fieldConfig.value === name)
+                .some(fieldConfig => fieldConfig.value === name),
         )
         .every(result => result === false);
 }
@@ -101,10 +101,10 @@ async function getOrganisationUnitLevelFormFields() {
             props: Object.assign(
                 {
                     floatingLabelText: d2.i18n.getTranslation(
-                        camelCaseToUnderscores(fieldName)
+                        camelCaseToUnderscores(fieldName),
                     ),
                 },
-                fieldOption.props
+                fieldOption.props,
             ),
             validators: [
                 {
@@ -117,16 +117,16 @@ async function getOrganisationUnitLevelFormFields() {
 }
 
 const organisationUnitLevelFormFields$ = Observable.fromPromise(
-    getOrganisationUnitLevelFormFields()
+    getOrganisationUnitLevelFormFields(),
 );
 
 function getFieldConfigsForAllFields(
     organisationUnitLevels,
-    organisationUnitLevelFormFields
+    organisationUnitLevelFormFields,
 ) {
     return organisationUnitLevels.map(ouLevel => {
         const result = organisationUnitLevelFormFields.map(fieldConfig =>
-            Object.assign({}, fieldConfig, { value: ouLevel[fieldConfig.name] })
+            Object.assign({}, fieldConfig, { value: ouLevel[fieldConfig.name] }),
         );
 
         result.organisationUnitLevel = ouLevel;
@@ -151,7 +151,7 @@ actions.updateFormStatus
         organisationUnitLevelsStore.setState(
             Object.assign({}, organisationUnitLevelsStore.getState(), {
                 formStatus: formStatusForAllLevels,
-            })
+            }),
         );
     });
 
@@ -163,13 +163,13 @@ actions.initOrgUnitLevels
             (organisationUnitLevels, organisationUnitLevelFormFields) => ({
                 organisationUnitLevels,
                 organisationUnitLevelFormFields,
-            })
-        )
+            }),
+        ),
     )
     .map(({ organisationUnitLevels, organisationUnitLevelFormFields }) => {
         const fieldConfigsForAllLevels = getFieldConfigsForAllFields(
             organisationUnitLevels,
-            organisationUnitLevelFormFields
+            organisationUnitLevelFormFields,
         );
 
         return {
@@ -197,7 +197,7 @@ Observable.combineLatest(
     (action, organisationUnitLevelFormFields) => ({
         action,
         organisationUnitLevelFormFields,
-    })
+    }),
 )
     .map(({ action, organisationUnitLevelFormFields }) => ({
         ...action.data,
@@ -213,7 +213,7 @@ Observable.combineLatest(
             organisationUnitLevelFormFields,
         }) => {
             const organisationUnitToChangeValueFor = storeState.organisationUnitLevels.find(
-                ouLevel => ouLevel === organisationUnitLevel
+                ouLevel => ouLevel === organisationUnitLevel,
             );
 
             if (organisationUnitToChangeValueFor && fieldName) {
@@ -225,11 +225,11 @@ Observable.combineLatest(
                     organisationUnitLevels: storeState.organisationUnitLevels,
                     fieldsForOrganisationUnitLevel: getFieldConfigsForAllFields(
                         storeState.organisationUnitLevels,
-                        organisationUnitLevelFormFields
+                        organisationUnitLevelFormFields,
                     ),
-                })
+                }),
             );
-        }
+        },
     );
 
 function saveOrganisationUnitLevels(action) {
@@ -241,8 +241,8 @@ function saveOrganisationUnitLevels(action) {
             api.post(
                 'filledOrganisationUnitLevels',
                 { organisationUnitLevels },
-                { dataType: 'text' }
-            )
+                { dataType: 'text' },
+            ),
         )
         .then(() => complete)
         .catch(() => error);
@@ -266,7 +266,7 @@ actions.saveOrganisationUnitLevels
         });
     })
     .flatMap(action =>
-        Observable.fromPromise(saveOrganisationUnitLevels(action))
+        Observable.fromPromise(saveOrganisationUnitLevels(action)),
     )
     .subscribe(callback => {
         callback.call();

@@ -22,7 +22,7 @@ export default React.createClass({
                     text: model.displayName,
                     payload: model.id,
                     model,
-                }))
+                })),
             )
             .subscribe(items => {
                 if (items.length) {

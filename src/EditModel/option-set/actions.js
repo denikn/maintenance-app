@@ -16,7 +16,7 @@ const actions = Action.createActionsFromNames(
         'deleteOption',
         'updateModel',
     ],
-    'optionSet'
+    'optionSet',
 );
 
 function processResponse(options) {
@@ -61,7 +61,7 @@ actions.updateModel.subscribe(({ data: [modelToEdit, field, value] }) => {
         log.debug(
             `Value for custom attribute '${field}' is now: ${
                 modelToEdit.attributes[field]
-            }`
+            }`,
         );
     } else {
         model[field] = value;
@@ -123,7 +123,7 @@ actions.saveOption.subscribe(
                     translate: true,
                 });
             });
-    }
+    },
 );
 
 actions.getOptionsFor.subscribe(async ({ data: model, complete }) => {
@@ -159,14 +159,14 @@ actions.deleteOption.subscribe(
             'option_$$name$$_deleted',
             {
                 name: modelToDelete.name,
-            }
+            },
         );
 
         return api
             .delete(
                 `${modelParent.modelDefinition.apiEndpoint}/${
                     modelParent.id
-                }/options/${modelToDelete.id}`
+                }/options/${modelToDelete.id}`,
             )
             .then(() => modelToDelete.delete())
             .then(() => snackActions.show({ message: deleteMessage }))
@@ -174,7 +174,7 @@ actions.deleteOption.subscribe(
             .then(() => modelParent.options.delete(modelToDelete.id))
             .then(complete)
             .catch(error);
-    }
+    },
 );
 
 export async function loadOptionsForOptionSet(optionSetId, paging) {

@@ -1,14 +1,14 @@
 /* Map to translate constants to something else in the UI.
 *  Structured so that the same constant in one model may be translated
 *  independently of others.
-*  The constant should map to the i18n translation key*/
+*  The constant should map to the i18n translation key */
 
 const constantDisplayNameMap = {
     program: {
-        //model
+        // model
         programType: {
-            //field
-            WITH_REGISTRATION: 'TRACKER_PROGRAM', //map model name to a new displayname
+            // field
+            WITH_REGISTRATION: 'TRACKER_PROGRAM', // map model name to a new displayname
             WITHOUT_REGISTRATION: 'EVENT_PROGRAM',
         },
     },

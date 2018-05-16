@@ -11,7 +11,7 @@ class FormFieldsManager {
         return this.fieldsForModelService.getFormFieldsForModel(
             model,
             this.fieldOverrides,
-            customFieldOrderName
+            customFieldOrderName,
         );
     }
 
@@ -22,13 +22,13 @@ class FormFieldsManager {
 
     getHeaderFieldsForModel(model) {
         return this.getFormFieldsForModel(model).filter(
-            fieldConfig => this.headerFields.indexOf(fieldConfig.key) !== -1
+            fieldConfig => this.headerFields.indexOf(fieldConfig.key) !== -1,
         );
     }
 
     getNonHeaderFieldsForModel(model) {
         return this.getFormFieldsForModel(model).filter(
-            fieldConfig => this.headerFields.indexOf(fieldConfig.key) === -1
+            fieldConfig => this.headerFields.indexOf(fieldConfig.key) === -1,
         );
     }
 

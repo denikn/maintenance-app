@@ -16,15 +16,15 @@ import { previousStep, nextStep } from './actions';
 import ProgramIndicatorActionButtons from './ProgramIndicatorActionButtons';
 
 const EventProgramStepperNavigationForward = createConnectedForwardButton(
-    nextStep
+    nextStep,
 );
 const EventProgramStepperNavigationBackward = createConnectedBackwardButton(
-    previousStep
+    previousStep,
 );
 
 const StepperNavigation = createStepperNavigation(
     EventProgramStepperNavigationBackward,
-    EventProgramStepperNavigationForward
+    EventProgramStepperNavigationForward,
 );
 
 const withPreLoadedModel = mapPropsStream(props$ =>
@@ -33,8 +33,8 @@ const withPreLoadedModel = mapPropsStream(props$ =>
         (props, programIndicatorState) => ({
             ...props,
             programIndicator: programIndicatorState.programIndicator,
-        })
-    )
+        }),
+    ),
 );
 
 const styles = {

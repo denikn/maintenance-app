@@ -73,54 +73,54 @@ function addValidatorForType(type, modelValidation) {
     const validators = [];
 
     switch (type) {
-        case NUMBER:
+    case NUMBER:
+        validators.push(
+            createValidatorFromValidatorFunction(isNumberValidator),
+        );
+        break;
+    case INTEGER:
+        validators.push(
+            createValidatorFromValidatorFunction(isNumberValidator),
+        );
+        validators.push(
+            createValidatorFromValidatorFunction(isIntegerValidator),
+        );
+
+        if (isNumber(modelValidation.max)) {
             validators.push(
-                createValidatorFromValidatorFunction(isNumberValidator)
+                createValidatorFromValidatorFunction(maxNumber),
             );
-            break;
-        case INTEGER:
+        }
+
+        if (isNumber(modelValidation.min)) {
             validators.push(
-                createValidatorFromValidatorFunction(isNumberValidator)
+                createValidatorFromValidatorFunction(minNumber),
             );
+        }
+        break;
+    case IDENTIFIER:
+    case INPUT:
+        if (isNumber(modelValidation.max)) {
             validators.push(
-                createValidatorFromValidatorFunction(isIntegerValidator)
+                createValidatorFromValidatorFunction(maxTextOrArray),
             );
+        }
 
-            if (isNumber(modelValidation.max)) {
-                validators.push(
-                    createValidatorFromValidatorFunction(maxNumber)
-                );
-            }
+        if (isNumber(modelValidation.min)) {
+            validators.push(
+                createValidatorFromValidatorFunction(minTextOrArray),
+            );
+        }
 
-            if (isNumber(modelValidation.min)) {
-                validators.push(
-                    createValidatorFromValidatorFunction(minNumber)
-                );
-            }
-            break;
-        case IDENTIFIER:
-        case INPUT:
-            if (isNumber(modelValidation.max)) {
-                validators.push(
-                    createValidatorFromValidatorFunction(maxTextOrArray)
-                );
-            }
-
-            if (isNumber(modelValidation.min)) {
-                validators.push(
-                    createValidatorFromValidatorFunction(minTextOrArray)
-                );
-            }
-
-            break;
-        case URL:
-            validators.push(createValidatorFromValidatorFunction(isUrl));
-            break;
-        case EMAIL:
-            validators.push(createValidatorFromValidatorFunction(isEmail));
-            break;
-        default:
-            break;
+        break;
+    case URL:
+        validators.push(createValidatorFromValidatorFunction(isUrl));
+        break;
+    case EMAIL:
+        validators.push(createValidatorFromValidatorFunction(isEmail));
+        break;
+    default:
+        break;
     }
 
     return validators;
@@ -128,7 +128,7 @@ function addValidatorForType(type, modelValidation) {
 
 export function getValidatorsFromModelValidation(
     modelValidation,
-    modelDefinition
+    modelDefinition,
 ) {
     let validators = [];
 
@@ -141,8 +141,8 @@ export function getValidatorsFromModelValidation(
             addValidatorForType(
                 modelValidation.type,
                 modelValidation,
-                modelDefinition
-            )
+                modelDefinition,
+            ),
         );
     }
 
@@ -151,21 +151,21 @@ export function getValidatorsFromModelValidation(
 
 export function getFieldUIComponent(type) {
     switch (type) {
-        case SELECT:
-            return DropDown;
-        case SELECTASYNC:
-            return DropDownAsync;
-        case CHECKBOX:
-            return CheckBox;
-        case MULTISELECT:
-            return MultiSelect;
-        case DATE:
-            return DateSelect;
-        case EMAIL:
-        case INPUT:
-        case IDENTIFIER:
-        default:
-            break;
+    case SELECT:
+        return DropDown;
+    case SELECTASYNC:
+        return DropDownAsync;
+    case CHECKBOX:
+        return CheckBox;
+    case MULTISELECT:
+        return MultiSelect;
+    case DATE:
+        return DateSelect;
+    case EMAIL:
+    case INPUT:
+    case IDENTIFIER:
+    default:
+        break;
     }
     return TextField;
 }
@@ -174,12 +174,12 @@ export function createFieldConfig(
     fieldConfig,
     modelDefinition,
     models,
-    customFieldOrderName
+    customFieldOrderName,
 ) {
     const fieldConstants = getOr(
         [],
         `modelProperties[${fieldConfig.name}].constants`,
-        modelDefinition
+        modelDefinition,
     );
     const basicFieldConfig = {
         name: fieldConfig.name,
@@ -209,11 +209,11 @@ export function createFieldConfig(
                         text: constantNameConverter(
                             customFieldOrderName || modelDefinition.name,
                             fieldConfig.name,
-                            constant
+                            constant,
                         ),
                         value: constant.toString(),
                     };
-                }
+                },
             ),
         }),
     };

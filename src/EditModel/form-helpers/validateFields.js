@@ -12,7 +12,7 @@ const validateField = (field, formRef, formRefStateClone) => {
     const validateResult = formRef.validateField(
         formRefStateClone,
         field.name,
-        field.value
+        field.value,
     );
     return {
         invalid: isInvalidField(validateResult),
@@ -41,7 +41,7 @@ const getFirstInvalidField = (fieldConfigs, formRef, formRefStateClone) =>
     fieldConfigs
         .filter(fieldConfig => isRequiredField(fieldConfig))
         .map(fieldConfig =>
-            validateField(fieldConfig, formRef, formRefStateClone)
+            validateField(fieldConfig, formRef, formRefStateClone),
         )
         .find(field => field.invalid);
 
@@ -63,7 +63,7 @@ export default function getFirstInvalidFieldMessage(fieldConfigs, formRef) {
     const firstInvalidField = getFirstInvalidField(
         fieldConfigs,
         formRef,
-        formRefStateClone
+        formRefStateClone,
     );
 
     if (!firstInvalidField) {

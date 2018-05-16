@@ -18,6 +18,7 @@ React.addons = {
 // Check this repo:
 // https://github.com/zilverline/react-tap-event-plugin
 import injectTapEventPlugin from 'react-tap-event-plugin';
+
 injectTapEventPlugin();
 
 global.React = React;

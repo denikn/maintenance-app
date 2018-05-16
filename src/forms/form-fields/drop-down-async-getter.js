@@ -79,7 +79,7 @@ DropDownAsyncGetter.propTypes = Object.assign(
         shouldRender: React.PropTypes.func.isRequired,
         useValueDotId: React.PropTypes.bool,
     },
-    DropDown.propTypes
+    DropDown.propTypes,
 );
 
 DropDownAsyncGetter.defaultProps = {

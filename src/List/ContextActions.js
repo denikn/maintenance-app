@@ -48,7 +48,7 @@ contextActions.edit.subscribe(action => {
             appStore.state.sideBar.currentSection,
             action.data.modelDefinition.name,
             action.data.id,
-        ].join('/')
+        ].join('/'),
     );
 });
 
@@ -60,7 +60,7 @@ contextActions.clone.subscribe(action => {
             appStore.state.sideBar.currentSection,
             action.data.modelDefinition.name,
             action.data.id,
-        ].join('/')
+        ].join('/'),
     );
 });
 
@@ -70,8 +70,8 @@ contextActions.delete.subscribe(({ data: model }) =>
             message: [
                 d2.i18n.getTranslation(
                     `confirm_delete_${camelCaseToUnderscores(
-                        model.modelDefinition.name
-                    )}`
+                        model.modelDefinition.name,
+                    )}`,
                 ),
                 model.name,
             ].join(' '),
@@ -89,7 +89,7 @@ contextActions.delete.subscribe(({ data: model }) =>
                                     .getState()
                                     .list.filter(
                                         modelToCheck =>
-                                            modelToCheck.id !== model.id
+                                            modelToCheck.id !== model.id,
                                     ),
                             });
                         }
@@ -112,14 +112,14 @@ contextActions.delete.subscribe(({ data: model }) =>
                             message: response.message
                                 ? response.message
                                 : `${model.name} ${d2.i18n.getTranslation(
-                                      'was_not_deleted'
-                                  )}`,
+                                    'was_not_deleted',
+                                )}`,
                             action: 'ok',
                         });
                     });
             },
         });
-    })
+    }),
 );
 
 contextActions.details.subscribe(({ data: model }) => {
@@ -129,7 +129,7 @@ contextActions.details.subscribe(({ data: model }) => {
 contextActions.share.subscribe(async ({ data: model }) => {
     const d2 = await getD2();
     const modelToShare = await d2.models[model.modelDefinition.name].get(
-        model.id
+        model.id,
     );
 
     sharingStore.setState({
@@ -141,7 +141,7 @@ contextActions.share.subscribe(async ({ data: model }) => {
 contextActions.translate.subscribe(async ({ data: model }) => {
     const d2 = await getD2();
     const modelToTranslate = await d2.models[model.modelDefinition.name].get(
-        model.id
+        model.id,
     );
 
     translateStore.setState({
@@ -184,7 +184,7 @@ contextActions.compulsoryDataElements.subscribe(async ({ data: model }) => {
     ]);
 
     const dataSetDataElementIds = modelItem.dataSetElements.map(
-        dataSetElement => dataSetElement.dataElement.id
+        dataSetElement => dataSetElement.dataElement.id,
     );
 
     const dataElementOperandsForDataSet = dataElementOperands
@@ -194,13 +194,13 @@ contextActions.compulsoryDataElements.subscribe(async ({ data: model }) => {
                 optionComboId:
                     dataElementOperand.categoryOptionCombo &&
                     dataElementOperand.categoryOptionCombo.id,
-            })
+            }),
         )
         .filter(
             dataElementOperand =>
                 dataSetDataElementIds.indexOf(
-                    dataElementOperand.dataElementId
-                ) >= 0
+                    dataElementOperand.dataElementId,
+                ) >= 0,
         );
 
     compulsoryDataElementStore.setState({
@@ -218,7 +218,7 @@ contextActions.sectionForm.subscribe(action => {
             action.data.modelDefinition.name,
             action.data.id,
             'sections',
-        ].join('/')
+        ].join('/'),
     );
 });
 
@@ -230,7 +230,7 @@ contextActions.dataEntryForm.subscribe(action => {
             action.data.modelDefinition.name,
             action.data.id,
             'dataEntryForm',
-        ].join('/')
+        ].join('/'),
     );
 });
 
@@ -238,7 +238,7 @@ contextActions.pdfDataSetForm.subscribe(({ data: model, complete, error }) => {
     getD2()
         .then(d2 => {
             window.open(
-                `${d2.Api.getApi().baseUrl}/pdfForm/dataSet/${model.id}`
+                `${d2.Api.getApi().baseUrl}/pdfForm/dataSet/${model.id}`,
             );
         })
         .then(complete)
@@ -257,7 +257,7 @@ contextActions.runNow.subscribe(
                 .then(() => {
                     snackActions.show({
                         message: d2.i18n.getTranslation(
-                            'report_queued_for_delivery'
+                            'report_queued_for_delivery',
                         ),
                     });
                     actionComplete();
@@ -265,14 +265,14 @@ contextActions.runNow.subscribe(
                 .catch(err => {
                     snackActions.show({
                         message: d2.i18n.getTranslation(
-                            'failed_to_schedule_report'
+                            'failed_to_schedule_report',
                         ),
                         action: 'ok',
                     });
                     actionFailed(err);
                 });
         }
-    }
+    },
 );
 
 contextActions.preview.subscribe(
@@ -284,20 +284,20 @@ contextActions.preview.subscribe(
                         model.modelDefinition.name,
                         model.id,
                         'render',
-                    ].join('/')}`
+                    ].join('/')}`,
                 );
             })
             .then(actionComplete)
             .catch(err => {
                 snackActions.show({
                     message: d2.i18n.getTranslation(
-                        'failed_to_open_report_preview'
+                        'failed_to_open_report_preview',
                     ),
                     action: 'ok',
                 });
                 actionFailed(err);
             });
-    }
+    },
 );
 
 export default contextActions;

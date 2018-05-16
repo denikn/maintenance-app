@@ -63,7 +63,7 @@ class EditOptionSet extends Component {
             goToRoute(
                 `/edit/${params.groupName}/${params.modelType}/${
                     params.modelId
-                }/${tabsValue}`
+                }/${tabsValue}`,
             );
         };
 
@@ -72,7 +72,7 @@ class EditOptionSet extends Component {
                 goToRoute(
                     `/edit/${params.groupName}/${params.modelType}/${
                         model.id
-                    }/options`
+                    }/options`,
                 );
             } else {
                 goToRoute(`/list/${params.groupName}/${params.modelType}`);
@@ -101,7 +101,7 @@ class EditOptionSet extends Component {
                         <Tab
                             value=""
                             label={context.d2.i18n.getTranslation(
-                                'primary_details'
+                                'primary_details',
                             )}
                             style={styles.tabStyle}
                         >
@@ -112,7 +112,7 @@ class EditOptionSet extends Component {
                                     goToRoute(
                                         `/list/${params.groupName}/${
                                             params.modelType
-                                        }`
+                                        }`,
                                     )
                                 }
                                 onSaveSuccess={successHandler}

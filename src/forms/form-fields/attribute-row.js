@@ -20,7 +20,7 @@ const AttributeRow = (
         hasOptionSet,
         columns,
     },
-    { d2 }
+    { d2 },
 ) => {
     const onChangeFlipBooleanForProperty = propertyName => () =>
         onEditAttribute(flipBooleanPropertyOn(attribute, propertyName));
@@ -36,7 +36,7 @@ const AttributeRow = (
                     <Checkbox
                         checked={isCheckedForProp('displayInList')}
                         onClick={onChangeFlipBooleanForProperty(
-                            'displayInList'
+                            'displayInList',
                         )}
                     />
                 </TableRowColumn>
@@ -57,7 +57,7 @@ const AttributeRow = (
                         <Checkbox
                             checked={isCheckedForProp('allowFutureDate')}
                             onClick={onChangeFlipBooleanForProperty(
-                                'allowFutureDate'
+                                'allowFutureDate',
                             )}
                         />
                     )}
@@ -70,7 +70,7 @@ const AttributeRow = (
                         <Checkbox
                             checked={isCheckedForProp('renderOptionsAsRadio')}
                             onClick={onChangeFlipBooleanForProperty(
-                                'renderOptionsAsRadio'
+                                'renderOptionsAsRadio',
                             )}
                         />
                     )}
@@ -84,7 +84,7 @@ const AttributeRow = (
                         disabled={isUnique}
                         onClick={onChangeFlipBooleanForProperty('searchable')}
                         title={d2.i18n.getTranslation(
-                            'unique_attributes_always_searchable'
+                            'unique_attributes_always_searchable',
                         )}
                     />
                 </TableRowColumn>

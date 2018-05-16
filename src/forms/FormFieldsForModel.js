@@ -15,12 +15,12 @@ const fieldNamesToIgnoreOnDisplay = [
 class FormFieldsForModel {
     constructor(
         models,
-        FIELDS_TO_IGNORE_ON_DISPLAY = fieldNamesToIgnoreOnDisplay
+        FIELDS_TO_IGNORE_ON_DISPLAY = fieldNamesToIgnoreOnDisplay,
     ) {
         if (!models) {
             log.warn(
                 'Warning: `models` passed to FormFieldsForModel is undefined, therefore async select boxes ' +
-                    'and references fields might not work.'
+                    'and references fields might not work.',
             );
         }
 
@@ -43,13 +43,13 @@ class FormFieldsForModel {
         ) {
             throw new TypeError(
                 'Passed model does not seem to adhere to the d2 model structure ' +
-                    '(model.modelDefinition.modelValidations is not available)'
+                    '(model.modelDefinition.modelValidations is not available)',
             );
         }
 
         const removeFieldsThatShouldNotBeDisplayed = modelValidation =>
             this.fieldNamesToIgnoreOnDisplay.indexOf(
-                modelValidation.fieldName
+                modelValidation.fieldName,
             ) === -1;
         const onlyUsableFieldTypes = modelValidation =>
             typeToFieldMap.get(modelValidation.type);
@@ -66,8 +66,8 @@ class FormFieldsForModel {
                     modelValidationForField,
                     fieldName === 'orgUnitLevel'
                         ? { persisted: true, required: true }
-                        : {}
-                )
+                        : {},
+                ),
             );
             // const fieldConfig = Object.create(modelValidationForField);
 
@@ -80,7 +80,7 @@ class FormFieldsForModel {
         };
 
         const fieldInstances = Object.keys(
-            model.modelDefinition.modelValidations
+            model.modelDefinition.modelValidations,
         )
             .map(toArrayOfFieldConfigurations)
             .filter(onlyWritableProperties)
@@ -90,8 +90,8 @@ class FormFieldsForModel {
             .map(modelValidation =>
                 getFieldClassInstance.bind(this)(
                     modelValidation,
-                    model.modelDefinition
-                )
+                    model.modelDefinition,
+                ),
             ) // eslint-disable-line no-use-before-define
             .filter(field => field);
 
@@ -106,7 +106,7 @@ class FormFieldsForModel {
                     this.fieldOrder.indexOf(left.name) >
                     this.fieldOrder.indexOf(right.name)
                         ? 1
-                        : -1
+                        : -1,
             );
 
         function getFieldClassInstance(modelValidation, modelDefinition) {
@@ -124,7 +124,7 @@ class FormFieldsForModel {
                         modelValidation[key] = Object.assign(
                             {},
                             modelValidation[key],
-                            overrideConfig[key]
+                            overrideConfig[key],
                         );
                     } else {
                         modelValidation[key] = overrideConfig[key];
@@ -136,7 +136,7 @@ class FormFieldsForModel {
                 modelValidation,
                 modelDefinition,
                 this.models,
-                customFieldOrderName
+                customFieldOrderName,
             );
         }
     }

@@ -48,7 +48,7 @@ export default React.createClass({
                 <TextField
                     fullWidth
                     hintText={this.getTranslation(
-                        'search_available_selected_items'
+                        'search_available_selected_items',
                     )}
                     defaultValue={this.state.filterText}
                     onChange={this._setFilterText}
@@ -75,7 +75,7 @@ export default React.createClass({
             'dataElement',
             'categoryOption',
         ].filter(schemaName =>
-            d2.currentUser.canCreate(d2.models[`${schemaName}Group`])
+            d2.currentUser.canCreate(d2.models[`${schemaName}Group`]),
         );
 
         return (
@@ -96,7 +96,7 @@ export default React.createClass({
             id =>
                 `${modelToEdit.modelDefinition.plural}/${
                     modelToEdit.id
-                }/${itemDefinition}/${id}`
+                }/${itemDefinition}/${id}`,
         );
     },
 
@@ -105,7 +105,7 @@ export default React.createClass({
             d2lib
                 .getInstance()
                 .then(d2 => d2.Api.getApi())
-                .then(api => api.post(url))
+                .then(api => api.post(url)),
         );
 
         return Promise.all(requests)
@@ -122,11 +122,11 @@ export default React.createClass({
                             d2.models[
                                 this.state.modelToEdit.modelDefinition.name
                             ].get(this.state.modelToEdit.id),
-                        ])
+                        ]),
                     )
                     .then(([d2, fullModel]) => {
                         this.state.assignedItemStore.setState(
-                            fullModel[d2.models[itemDefinition].plural]
+                            fullModel[d2.models[itemDefinition].plural],
                         );
                         this.setState({
                             modelToEdit: fullModel,
@@ -141,7 +141,7 @@ export default React.createClass({
             d2lib
                 .getInstance()
                 .then(d2 => d2.Api.getApi())
-                .then(api => api.delete(url))
+                .then(api => api.delete(url)),
         );
 
         return Promise.all(requests)
@@ -158,11 +158,11 @@ export default React.createClass({
                             d2.models[
                                 this.state.modelToEdit.modelDefinition.name
                             ].get(this.state.modelToEdit.id),
-                        ])
+                        ]),
                     )
                     .then(([d2, fullModel]) => {
                         this.state.assignedItemStore.setState(
-                            fullModel[d2.models[itemDefinition].plural]
+                            fullModel[d2.models[itemDefinition].plural],
                         );
                         this.setState({
                             modelToEdit: fullModel,
@@ -195,7 +195,7 @@ export default React.createClass({
             .then(d2 => {
                 if (!d2.models[itemDefinition]) {
                     return Promise.reject(
-                        `This groupType does not have a model named: ${itemDefinition}`
+                        `This groupType does not have a model named: ${itemDefinition}`,
                     );
                 }
 
@@ -203,20 +203,20 @@ export default React.createClass({
                     paging: false,
                 });
                 const modelPromise = d2.models[model.modelDefinition.name].get(
-                    model.id
+                    model.id,
                 );
 
                 Promise.all([availablePromise, modelPromise]).then(
                     ([availableItems, fullModel]) => {
                         this.state.itemStore.setState(availableItems);
                         this.state.assignedItemStore.setState(
-                            fullModel[d2.models[itemDefinition].plural]
+                            fullModel[d2.models[itemDefinition].plural],
                         );
                         this.setState({
                             modelToEdit: fullModel,
                             itemDefinition: d2.models[itemDefinition].plural,
                         });
-                    }
+                    },
                 );
             })
             .catch(message => log.error(message));
@@ -237,13 +237,13 @@ export default React.createClass({
                 Promise.all([
                     d2,
                     d2.models[this.state.modelToEdit.modelDefinition.name].get(
-                        this.state.modelToEdit.id
+                        this.state.modelToEdit.id,
                     ),
-                ])
+                ]),
             )
             .then(([d2, fullModel]) => {
                 this.state.assignedItemStore.setState(
-                    fullModel[d2.models[itemDefinition].plural]
+                    fullModel[d2.models[itemDefinition].plural],
                 );
                 this.setState({
                     modelToEdit: fullModel,

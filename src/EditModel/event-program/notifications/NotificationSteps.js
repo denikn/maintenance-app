@@ -76,7 +76,7 @@ class WhatToSendStep extends Component {
             dataElements,
             attributes,
         } = this.props;
-        let fieldsToUse =
+        const fieldsToUse =
             isTracker && !isProgram
                 ? [this.createProgramStageDropdown(), ...fieldConfigs]
                 : fieldConfigs;
@@ -85,7 +85,7 @@ class WhatToSendStep extends Component {
         return (
             <FormBuilder
                 fields={fieldsToUse.map(
-                    addPropsToFieldConfig(propsToField, ['messageTemplate'])
+                    addPropsToFieldConfig(propsToField, ['messageTemplate']),
                 )}
                 onUpdateField={onUpdateField}
             />
@@ -105,12 +105,12 @@ WhatToSendStep = compose(
             },
         }),
         undefined,
-        { pure: false }
+        { pure: false },
     ),
     createFieldConfigsFor(
         'programNotificationTemplate',
-        fieldGroups.for('programStageNotificationTemplate')[0].fields
-    )
+        fieldGroups.for('programStageNotificationTemplate')[0].fields,
+    ),
 )(WhatToSendStep);
 
 const stepToFormBuilder = ({
@@ -124,13 +124,13 @@ const stepToFormBuilder = ({
     const fieldProps = { dataElements, isTracker, isProgram, attributes };
     let fieldsToUse = fieldConfigs;
 
-    //TODO cleanup this
-    //Remove PROGRAM_ATTRIBUTE options when it's an event-program
+    // TODO cleanup this
+    // Remove PROGRAM_ATTRIBUTE options when it's an event-program
     if (!isTracker && !isProgram) {
         fieldsToUse = fieldsToUse.map(field => {
             if (field.name == 'notificationRecipient') {
                 const removedOptions = field.props.options.filter(
-                    opt => opt.value !== 'PROGRAM_ATTRIBUTE'
+                    opt => opt.value !== 'PROGRAM_ATTRIBUTE',
                 );
                 const propsWithRemovedRecipient = {
                     ...field.props,
@@ -147,7 +147,7 @@ const stepToFormBuilder = ({
                 addPropsToFieldConfig(fieldProps, [
                     'recipientDataElement',
                     'recipientProgramAttribute',
-                ])
+                ]),
             )}
             onUpdateField={onUpdateField}
         />
@@ -175,8 +175,8 @@ export const programStageSteps = [
                 undefined,
                 null,
                 true,
-                'programStageNotificationTemplate'
-            )
+                'programStageNotificationTemplate',
+            ),
         )(stepToFormBuilder),
     },
     {
@@ -190,8 +190,8 @@ export const programStageSteps = [
                 undefined,
                 null,
                 true,
-                'programStageNotificationTemplate'
-            )
+                'programStageNotificationTemplate',
+            ),
         )(stepToFormBuilder),
     },
 ];
@@ -209,8 +209,8 @@ export const programSteps = [
             connectSteps,
             createFieldConfigsFor(
                 'programNotificationTemplate',
-                fieldGroups.for('programNotificationTemplate')[1].fields
-            )
+                fieldGroups.for('programNotificationTemplate')[1].fields,
+            ),
         )(stepToFormBuilder),
     },
     {
@@ -220,8 +220,8 @@ export const programSteps = [
             connectSteps,
             createFieldConfigsFor(
                 'programNotificationTemplate',
-                fieldGroups.for('programNotificationTemplate')[2].fields
-            )
+                fieldGroups.for('programNotificationTemplate')[2].fields,
+            ),
         )(stepToFormBuilder),
     },
 ];

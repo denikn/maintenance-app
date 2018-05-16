@@ -16,6 +16,7 @@ import systemSettingsStore from './App/systemSettingsStore';
 import rxjsconfig from 'recompose/rxjsObservableConfig';
 import setObservableConfig from 'recompose/setObservableConfig';
 import periodTypeStore from './App/periodTypeStore';
+
 setObservableConfig(rxjsconfig);
 
 if (process.env.NODE_ENV !== 'production') {
@@ -60,7 +61,7 @@ function getSystemSettings(d2) {
             periodTypeDefs.periodTypes.map(p => ({
                 text: d2.i18n.getTranslation(p.name.toLocaleLowerCase()),
                 value: p.name,
-            }))
+            })),
         );
     });
 }
@@ -70,7 +71,7 @@ function startApp() {
         <MuiThemeProvider muiTheme={appTheme}>
             <div>{routes}</div>
         </MuiThemeProvider>,
-        document.getElementById('app')
+        document.getElementById('app'),
     );
 }
 
@@ -78,7 +79,7 @@ render(
     <MuiThemeProvider muiTheme={appTheme}>
         <LoadingMask />
     </MuiThemeProvider>,
-    document.getElementById('app')
+    document.getElementById('app'),
 );
 
 getManifest('./manifest.webapp')

@@ -30,66 +30,66 @@ export const initialState = {
     first(eventSteps) works just because the key of both steppers are "details". */
 function eventProgramStepperReducer(state = initialState, action) {
     switch (action.type) {
-        case EVENT_PROGRAM_STEP_CHANGE:
-            return {
-                ...state,
-                activeStep: action.payload,
-            };
+    case EVENT_PROGRAM_STEP_CHANGE:
+        return {
+            ...state,
+            activeStep: action.payload,
+        };
 
-        case EVENT_PROGRAM_STEP_NEXT:
-            return {
-                ...state,
-                activeStep: next(eventSteps, state.activeStep),
-            };
+    case EVENT_PROGRAM_STEP_NEXT:
+        return {
+            ...state,
+            activeStep: next(eventSteps, state.activeStep),
+        };
 
-        case EVENT_PROGRAM_STEP_PREVIOUS:
-            return {
-                ...state,
-                activeStep: previous(eventSteps, state.activeStep),
-            };
+    case EVENT_PROGRAM_STEP_PREVIOUS:
+        return {
+            ...state,
+            activeStep: previous(eventSteps, state.activeStep),
+        };
 
-        case TRACKER_PROGRAM_STEP_NEXT:
-            return {
-                ...state,
-                activeStep: next(trackerSteps, state.activeStep),
-            };
+    case TRACKER_PROGRAM_STEP_NEXT:
+        return {
+            ...state,
+            activeStep: next(trackerSteps, state.activeStep),
+        };
 
-        case TRACKER_PROGRAM_STEP_PREVIOUS:
-            return {
-                ...state,
-                activeStep: previous(trackerSteps, state.activeStep),
-            };
+    case TRACKER_PROGRAM_STEP_PREVIOUS:
+        return {
+            ...state,
+            activeStep: previous(trackerSteps, state.activeStep),
+        };
 
-        case STEPPER_RESET_ACTIVE_STEP:
-            return {
-                ...state,
-                activeStep: first(eventSteps),
-                isLoading: true,
-            };
-        case EVENT_PROGRAM_LOAD_SUCCESS:
-            return {
-                ...state,
-                isLoading: false,
-            };
-        case PROGRAM_STEPPER_SET_DISABLE:
-            return {
-                ...state,
-                disabled: action.payload.disabled,
-            };
-        case EVENT_PROGRAM_SAVE:
-            return {
-                ...state,
-                isSaving: true,
-            };
+    case STEPPER_RESET_ACTIVE_STEP:
+        return {
+            ...state,
+            activeStep: first(eventSteps),
+            isLoading: true,
+        };
+    case EVENT_PROGRAM_LOAD_SUCCESS:
+        return {
+            ...state,
+            isLoading: false,
+        };
+    case PROGRAM_STEPPER_SET_DISABLE:
+        return {
+            ...state,
+            disabled: action.payload.disabled,
+        };
+    case EVENT_PROGRAM_SAVE:
+        return {
+            ...state,
+            isSaving: true,
+        };
 
-        case EVENT_PROGRAM_SAVE_ERROR:
-        case EVENT_PROGRAM_SAVE_SUCCESS:
-            return {
-                ...state,
-                isSaving: false,
-            };
-        default:
-            break;
+    case EVENT_PROGRAM_SAVE_ERROR:
+    case EVENT_PROGRAM_SAVE_SUCCESS:
+        return {
+            ...state,
+            isSaving: false,
+        };
+    default:
+        break;
     }
 
     return state;

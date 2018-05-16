@@ -33,7 +33,7 @@ export default function FormActionButtons({
 
 export function createConnectedFormActionButtonsForSchema(
     mapDispatchToProps,
-    mapStateToProps = null
+    mapStateToProps = null,
 ) {
     const onCancelActionCreator = (groupName, schema) => () =>
         goToAndScrollUp(`/list/${groupName}/${schema}`);
@@ -42,7 +42,7 @@ export function createConnectedFormActionButtonsForSchema(
         withProps(({ groupName, schema }) => ({
             onCancelAction: onCancelActionCreator(groupName, schema),
         })),
-        connect(mapStateToProps, mapDispatchToProps)
+        connect(mapStateToProps, mapDispatchToProps),
     );
 
     return enhance(FormActionButtons);

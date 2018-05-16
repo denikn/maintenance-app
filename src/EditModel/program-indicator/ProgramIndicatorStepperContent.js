@@ -22,12 +22,12 @@ const stepperConfig = () => {
         bindActionCreators({ editFieldChanged }, dispatch);
 
     const programIndicator$ = programIndicatorStore.map(
-        get('programIndicator')
+        get('programIndicator'),
     );
 
     const connectEditForm = compose(
         flattenRouterProps,
-        connect(null, mapDispatchToProps)
+        connect(null, mapDispatchToProps),
     );
 
     const stepComponents = {
@@ -36,25 +36,25 @@ const stepperConfig = () => {
                 createFormFor(
                     programIndicator$,
                     'programIndicator',
-                    editDetailsFields
-                )
-            )
+                    editDetailsFields,
+                ),
+            ),
         ),
         DataExpressionForm: connectEditForm(
             createFormFor(
                 programIndicator$,
                 'programIndicator',
                 ['expression'],
-                false
-            )
+                false,
+            ),
         ),
         FilterExpressionForm: connectEditForm(
             createFormFor(
                 programIndicator$,
                 'programIndicator',
                 ['filter'],
-                false
-            )
+                false,
+            ),
         ),
     };
 
@@ -74,8 +74,8 @@ const ProgramIndicatorStepperContent = compose(
         props$.combineLatest(Observable.of({}), (props, { program }) => ({
             ...props,
             modelToEdit: program,
-        }))
-    )
+        })),
+    ),
 )(createStepperContentFromConfig(stepperConfig()));
 
 export default ProgramIndicatorStepperContent;

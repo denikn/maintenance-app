@@ -47,7 +47,7 @@ function applyCurrentFilters(modelDefinitions, modelName) {
             .filter(prop => listStore.state.filters[prop])
             // Only include filters that apply to the current model type
             .filter(prop =>
-                getFilterFieldsForType(modelDefinition.name).includes(prop)
+                getFilterFieldsForType(modelDefinition.name).includes(prop),
             )
             // Apply each filter to the model definition
             .map(key => [
@@ -67,9 +67,9 @@ function applyCurrentFilters(modelDefinitions, modelName) {
         // Apply name search string, if any
         return listStore.state.searchString.trim().length > 0
             ? filterModelDefinition
-                  .filter()
-                  .on('displayName')
-                  .ilike(listStore.state.searchString)
+                .filter()
+                .on('displayName')
+                .ilike(listStore.state.searchString)
             : filterModelDefinition;
     }
 
@@ -106,7 +106,7 @@ function getQueryForSchema(modelName) {
     return {
         fields: `${fieldFilteringForQuery},${getTableColumnsForType(
             modelName,
-            true
+            true,
         )}`,
         order: getOrderingForSchema(modelName),
     };
@@ -132,7 +132,7 @@ listActions.loadList
             throw new Error(`${modelName} is not a valid schema name`);
         }
 
-        //Remember the searchString if its the same model
+        // Remember the searchString if its the same model
         const searchString =
             listStore.state &&
             listStore.state.modelType &&
@@ -141,7 +141,7 @@ listActions.loadList
                 : '';
 
         listStore.setState(
-            Object.assign(listStore.state || {}, { searchString })
+            Object.assign(listStore.state || {}, { searchString }),
         );
         return Observable.of({
             schema: d2.models[modelName],
@@ -154,7 +154,7 @@ listActions.loadList
     .subscribe(async ({ schema, query, complete, error, d2 }) => {
         const listResultsCollection = await getSchemaWithFilters(
             d2.models,
-            schema.name
+            schema.name,
         ).list(Object.assign(query, getQueryForSchema(schema.name)));
 
         listActions.setListSource(listResultsCollection);
@@ -183,7 +183,7 @@ listActions.searchByName
             Object.assign(getQueryForSchema(data.modelType), {
                 query: data.searchString,
                 withinUserHierarchy: true,
-            })
+            }),
         );
 
         listActions.setListSource(organisationUnitsThatMatchQuery);
@@ -208,17 +208,17 @@ listActions.searchByName
             listStore.setState(
                 Object.assign(listStore.state, {
                     searchString: data.searchString,
-                })
+                }),
             );
         } else {
             listStore.setState(
-                Object.assign(listStore.state, { searchString: '' })
+                Object.assign(listStore.state, { searchString: '' }),
             );
         }
 
         const searchResultsCollection = await getSchemaWithFilters(
             d2.models,
-            data.modelType
+            data.modelType,
         ).list(getQueryForSchema(data.modelType));
 
         listActions.setListSource(searchResultsCollection);
@@ -226,7 +226,7 @@ listActions.searchByName
         complete(
             `${data.modelType} list with search on 'displayName' for '${
                 data.searchString
-            }' is loading`
+            }' is loading`,
         );
     }, log.error.bind(log));
 
@@ -254,7 +254,7 @@ listActions.setFilterValue.subscribe(async ({ data, complete, error }) => {
                 filters: Object.assign(listStore.state.filters, {
                     [data.filterField]: data.filterValue,
                 }),
-            })
+            }),
         );
     } else {
         listStore.setState(
@@ -262,13 +262,13 @@ listActions.setFilterValue.subscribe(async ({ data, complete, error }) => {
                 filters: Object.assign(listStore.state.filters, {
                     [data.filterField]: null,
                 }),
-            })
+            }),
         );
     }
 
     const searchResultsCollection = await getSchemaWithFilters(
         d2.models,
-        data.modelType
+        data.modelType,
     ).list(getQueryForSchema(data.modelType));
 
     listActions.setListSource(searchResultsCollection);
@@ -276,7 +276,7 @@ listActions.setFilterValue.subscribe(async ({ data, complete, error }) => {
     complete(
         `${
             data.modelType
-        } list with filter on '${filterField}' for '${filterValue}' is loading`
+        } list with filter on '${filterField}' for '${filterValue}' is loading`,
     );
 }, log.error.bind(log));
 

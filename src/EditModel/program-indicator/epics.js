@@ -37,10 +37,10 @@ function loadProgramIndicator(programIndicatorId) {
                 }
                 return d2.models.programIndicator.get(
                     programIndicatorId,
-                    requestParams.get('programIndicator')
+                    requestParams.get('programIndicator'),
                 );
             })
-            .then(programIndicator => ({ programIndicator }))
+            .then(programIndicator => ({ programIndicator })),
     );
 }
 
@@ -56,7 +56,7 @@ export const programIndicatorEdit = programIndicatorStore =>
     createModelToEditEpic(
         PROGRAM_INDICATOR_TO_EDIT_FIELD_CHANGED,
         programIndicatorStore,
-        'programIndicator'
+        'programIndicator',
     );
 
 export const programIndicatorSave = programIndicatorStore => action$ =>
@@ -68,21 +68,21 @@ export const programIndicatorSave = programIndicatorStore => action$ =>
             Observable.fromPromise(programIndicator.save())
                 .mapTo(saveProgramIndicatorSuccess())
                 .do(() =>
-                    goToAndScrollUp('/list/indicatorSection/programIndicator')
+                    goToAndScrollUp('/list/indicatorSection/programIndicator'),
                 )
-                .catch(error => Observable.of(saveProgramIndicatorError(error)))
+                .catch(error => Observable.of(saveProgramIndicatorError(error))),
         );
 
 const extractFirstMessageFromErrorReports = compose(
     get('message'),
     first,
     getOr([], 'errorReports'),
-    get('response')
+    get('response'),
 );
 const extractFirstMessageFromMessages = compose(
     get('message'),
     first,
-    get('messages')
+    get('messages'),
 );
 const firstNotUndefinedIn = compose(first, filter(identity));
 
@@ -104,7 +104,7 @@ export const programIndicatorModelSaveResponses = action$ =>
             const firstErrorMessage = extractFirstErrorMessage(action.payload);
 
             return notifyUser({ message: firstErrorMessage, translate: false });
-        })
+        }),
     );
 
 export default (function createEpicsForStore(store) {
@@ -112,6 +112,6 @@ export default (function createEpicsForStore(store) {
         programIndicatorLoad(store),
         programIndicatorEdit(store),
         programIndicatorSave(store),
-        programIndicatorModelSaveResponses
+        programIndicatorModelSaveResponses,
     );
-})(programIndicatorStore);
+}(programIndicatorStore));

@@ -15,7 +15,7 @@ class TrackerNotificationAddButton extends React.Component {
                 {
                     id: 'PROGRAM_NOTIFICATION',
                     primaryText: context.d2.i18n.getTranslation(
-                        'program_notification'
+                        'program_notification',
                     ),
                     rightAvatar: (
                         <Avatar
@@ -27,7 +27,7 @@ class TrackerNotificationAddButton extends React.Component {
                 {
                     id: 'PROGRAM_STAGE_NOTIFICATION',
                     primaryText: context.d2.i18n.getTranslation(
-                        'program_stage_notification'
+                        'program_stage_notification',
                     ),
                     rightAvatar: (
                         <Avatar
@@ -60,7 +60,7 @@ class TrackerNotificationAddButton extends React.Component {
     render() {
         return (
             <SpeedDial
-                hasBackdrop={true}
+                hasBackdrop
                 isOpen={this.state.open}
                 onChange={this.handleOpen}
             >
@@ -83,7 +83,7 @@ TrackerNotificationAddButton.propTypes = {
 };
 
 const TrackerNotificationAddButtonWithContext = hideIfNotAuthorizedToCreate(
-    addD2Context(TrackerNotificationAddButton)
+    addD2Context(TrackerNotificationAddButton),
 );
 
 export default TrackerNotificationAddButtonWithContext;

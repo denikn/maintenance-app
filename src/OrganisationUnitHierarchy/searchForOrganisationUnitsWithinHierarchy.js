@@ -3,7 +3,7 @@ import appState from '../App/appStateStore';
 
 export default async function searchForOrganisationUnitsWithinHierarchy(
     searchValue,
-    limit = 15
+    limit = 15,
 ) {
     const d2 = await getInstance();
 
@@ -16,7 +16,7 @@ export default async function searchForOrganisationUnitsWithinHierarchy(
                     id: ou.id,
                     path: ou.path,
                     displayName: ou.displayName,
-                })
+                }),
             );
     }
 
@@ -26,7 +26,7 @@ export default async function searchForOrganisationUnitsWithinHierarchy(
             query: searchValue,
             withinUserHierarchy: true,
             pageSize: limit,
-        }
+        },
     );
 
     return organisationUnitsThatMatchQuery.toArray();

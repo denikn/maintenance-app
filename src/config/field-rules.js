@@ -755,13 +755,13 @@ export default new Map([
                             if (fieldConfig) {
                                 fieldConfig.value = defaultAnalyticsPeriodBoundaries(
                                     'event',
-                                    fieldConfig.value
+                                    fieldConfig.value,
                                 );
                                 model[
                                     fieldConfig.name
                                 ] = defaultAnalyticsPeriodBoundaries(
                                     'event',
-                                    fieldConfig.value
+                                    fieldConfig.value,
                                 );
                             }
                         },
@@ -784,13 +784,13 @@ export default new Map([
                             if (fieldConfig) {
                                 fieldConfig.value = defaultAnalyticsPeriodBoundaries(
                                     'enrollment',
-                                    fieldConfig.value
+                                    fieldConfig.value,
                                 );
                                 model[
                                     fieldConfig.name
                                 ] = defaultAnalyticsPeriodBoundaries(
                                     'enrollment',
-                                    fieldConfig.value
+                                    fieldConfig.value,
                                 );
                             }
                         },

@@ -7,18 +7,18 @@ const inputPattern = /<input.*?\/>/gi;
         Fixed to incidentDate and enrollmentDate
 * id is used for combined-ids:
 *   - Event-programs data entry form (dataElementId-categoryOptionId)
-*   - Tracker-programs Data entry form (programStageId-dataElementId)*/
+*   - Tracker-programs Data entry form (programStageId-dataElementId) */
 export const elementPatterns = {
     programid: /attributeid="(\w*?)"/,
     attributeid: /programid="(\w*?)"/,
     id: /id="(\w*?)-(\w*?)-val"/,
 };
 
-//When matching with exec, match[0] will be idString, including the ID. Ie: attributeid="someid"
+// When matching with exec, match[0] will be idString, including the ID. Ie: attributeid="someid"
 const allPatterns = /attributeid="(\w*?)"|programid="(\w*?)"|id="((\w*?)-(\w*?)-val)"/;
 
-//Map over the position of the match of the pattern in the allPattern.
-//matchIndexes[attributeid] will be the id of the element matched.
+// Map over the position of the match of the pattern in the allPattern.
+// matchIndexes[attributeid] will be the id of the element matched.
 const matchIndexes = {
     attributeid: 1,
     programid: 2,
@@ -31,7 +31,7 @@ export function generateHtmlForField(
     disabledAttr,
     label,
     nameAttr = 'entryfield',
-    fieldType = 'id'
+    fieldType = 'id',
 ) {
     const style = styleAttr ? ` style=${styleAttr}` : '';
     const disabled = disabledAttr ? ` disabled=${disabledAttr}` : '';
@@ -66,11 +66,11 @@ export function transformElementsToCustomForm(elements) {
  * @returns {*} an object with idString, id and fieldType of the element.
  */
 function getFieldInfoFromMatch(match) {
-    for (let patternId in matchIndexes) {
+    for (const patternId in matchIndexes) {
         const index = matchIndexes[patternId];
         const elemId = match[index];
         if (elemId) {
-            let id = elemId;
+            const id = elemId;
             return {
                 idString: match[0],
                 id,
@@ -111,14 +111,14 @@ export function processFormData(formData, elements) {
             //   console.log(idMatch);
             usedIds.push(id);
             const label = elements && elements[id];
-            const nameAttr = fieldType === 'id' ? 'entryfield' : null; //used for data-entry
+            const nameAttr = fieldType === 'id' ? 'entryfield' : null; // used for data-entry
             outHtml += generateHtmlForField(
                 id,
                 inputStyle,
                 inputDisabled,
                 label,
                 nameAttr,
-                fieldType
+                fieldType,
             );
         } else {
             outHtml += inputHtml;
@@ -127,7 +127,7 @@ export function processFormData(formData, elements) {
         inputElement = inputPattern.exec(inHtml);
     }
     outHtml += inHtml.substr(inPos);
-    //console.log(outHtml)
+    // console.log(outHtml)
     return {
         usedIds,
         outHtml,
@@ -153,14 +153,14 @@ export function bindFuncsToKeys(obj, func, selfArg, extraArgs) {
 }
 
 export function insertElement(id, label, editor, fieldType = 'id') {
-    const nameAttr = fieldType === 'id' ? 'entryfield' : null; //used for data-entry
+    const nameAttr = fieldType === 'id' ? 'entryfield' : null; // used for data-entry
     const elementHtml = generateHtmlForField(
         id,
         null,
         null,
         label,
         nameAttr,
-        fieldType
+        fieldType,
     );
     editor.insertHtml(elementHtml, 'unfiltered_html');
     // Move the current selection to just after the newly inserted element
@@ -171,7 +171,7 @@ export function insertElement(id, label, editor, fieldType = 'id') {
 export function insertFlag(img, editor) {
     editor.insertHtml(
         `<img src="../dhis-web-commons/flags/${img}" />`,
-        'unfiltered_html'
+        'unfiltered_html',
     );
     const range = editor.getSelection().getRanges()[0];
     range && range.moveToElementEditablePosition(range.endContainer, true);

@@ -20,7 +20,7 @@ export default function OptionValue(props, context) {
                 }}
             >
                 {displayName} ({code})
-            </div>
-        )
+            </div>,
+        ),
     );
 }

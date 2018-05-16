@@ -146,12 +146,12 @@ class ProgramRuleConditionField extends React.Component {
                     ? '0 4px 4px 2px'
                     : '0 2px',
             },
-            styles.rightScroll
+            styles.rightScroll,
         );
 
     refreshProgramRuleVariables = e => {
         this.getProgramRuleVariablesForProgram(
-            modelToEditStore.getState().program
+            modelToEditStore.getState().program,
         );
         e.stopPropagation();
     };
@@ -229,7 +229,7 @@ class ProgramRuleConditionField extends React.Component {
     renderBuiltInVariablesMenu = () => {
         const sectionName = 'built_in_variables';
         const sectionContent = programRuleBuiltInVariables.map((varLabel, i) =>
-            this.renderRaisedButton(i, varLabel, varLabel)
+            this.renderRaisedButton(i, varLabel, varLabel),
         );
         return this.renderSection(sectionName, sectionContent);
     };
@@ -237,7 +237,7 @@ class ProgramRuleConditionField extends React.Component {
     renderVariablesMenu = () => {
         const sectionName = 'variables';
         const sectionContent = this.state.programRuleVariables.map(
-            this.programRuleVariableButtonRenderer
+            this.programRuleVariableButtonRenderer,
         );
         return this.renderSection(sectionName, sectionContent);
     };
@@ -245,7 +245,7 @@ class ProgramRuleConditionField extends React.Component {
     renderFunctionsMenu = () => {
         const sectionName = 'functions';
         const sectionContent = programRuleFunctions.map((funcLabel, i) =>
-            this.renderRaisedButton(i, funcLabel, funcLabel)
+            this.renderRaisedButton(i, funcLabel, funcLabel),
         );
         return this.renderSection(sectionName, sectionContent);
     };

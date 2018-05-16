@@ -37,7 +37,7 @@ const getFirstProgramStage = compose(first, get('programStages'));
 
 const firstProgramStage$ = programStore.map(getFirstProgramStage);
 
-//Use programStage$ prop if present, else use first programStage
+// Use programStage$ prop if present, else use first programStage
 const programStage$ = props$ =>
     props$
         .take(1)
@@ -45,7 +45,7 @@ const programStage$ = props$ =>
             props =>
                 props.programStage$
                     ? props.programStage$
-                    : programStore.map(getFirstProgramStage)
+                    : programStore.map(getFirstProgramStage),
         );
 
 const availableTrackerDataElements$ = programStore
@@ -59,7 +59,7 @@ const mapDispatchToProps = dispatch =>
             removeDataElementsFromStage,
             editProgramStageDataElement,
         },
-        dispatch
+        dispatch,
     );
 
 const enhance = compose(
@@ -80,8 +80,8 @@ const enhance = compose(
                 trackerDataElements,
                 model: programStage,
                 items: programStage.programStageDataElements,
-            })
-        )
+            }),
+        ),
     ),
     withHandlers({
         onAssignItems: props => dataElements => {
@@ -108,7 +108,7 @@ const enhance = compose(
                 programStageDataElement,
             }),
     }),
-    withState('dataElementFilter', 'setDataElementFilter', '')
+    withState('dataElementFilter', 'setDataElementFilter', ''),
     // withProgramStageFromProgramStage$,
 );
 
@@ -124,7 +124,7 @@ const ProgramStageDataElement = pure(
         const hasOptionSet = !!programStageDataElement.dataElement.optionSet;
         const onChangeFlipBooleanForProperty = propertyName => () =>
             onEditProgramStageDataElement(
-                flipBooleanPropertyOn(programStageDataElement, propertyName)
+                flipBooleanPropertyOn(programStageDataElement, propertyName),
             );
         const isCheckedForProp = getOr(false, __, programStageDataElement);
 
@@ -143,7 +143,7 @@ const ProgramStageDataElement = pure(
                     <Checkbox
                         checked={isCheckedForProp('allowProvidedElsewhere')}
                         onClick={onChangeFlipBooleanForProperty(
-                            'allowProvidedElsewhere'
+                            'allowProvidedElsewhere',
                         )}
                     />
                 </TableRowColumn>
@@ -153,7 +153,7 @@ const ProgramStageDataElement = pure(
                         checkedIcon={<Visibility />}
                         uncheckedIcon={<VisibilityOff />}
                         onClick={onChangeFlipBooleanForProperty(
-                            'displayInReports'
+                            'displayInReports',
                         )}
                     />
                 </TableRowColumn>
@@ -162,7 +162,7 @@ const ProgramStageDataElement = pure(
                         <Checkbox
                             checked={isCheckedForProp('allowFutureDate')}
                             onClick={onChangeFlipBooleanForProperty(
-                                'allowFutureDate'
+                                'allowFutureDate',
                             )}
                         />
                     ) : null}
@@ -172,20 +172,20 @@ const ProgramStageDataElement = pure(
                         <Checkbox
                             checked={isCheckedForProp('renderOptionsAsRadio')}
                             onClick={onChangeFlipBooleanForProperty(
-                                'renderOptionsAsRadio'
+                                'renderOptionsAsRadio',
                             )}
                         />
                     ) : null}
                 </TableRowColumn>
             </TableRow>
         );
-    }
+    },
 );
 
 function addDisplayProperties(dataElements) {
     return ({ dataElement, ...other }) => {
         const { displayName, valueType, optionSet } = dataElements.find(
-            ({ id }) => id === dataElement.id
+            ({ id }) => id === dataElement.id,
         );
 
         return {
@@ -209,11 +209,11 @@ function AssignDataElements(props, { d2 }) {
             id: dataElement.id,
             text: dataElement.displayName,
             value: dataElement.id,
-        }))
+        })),
     );
 
     assignedItemStore.setState(
-        props.model.programStageDataElements.map(v => v.dataElement.id)
+        props.model.programStageDataElements.map(v => v.dataElement.id),
     );
 
     const tableRows = props.model.programStageDataElements
@@ -235,11 +235,11 @@ function AssignDataElements(props, { d2 }) {
             <div style={{ padding: '2rem 3rem 4rem', ...props.outerDivStyle }}>
                 <TextField
                     hintText={d2.i18n.getTranslation(
-                        'search_available_selected_items'
+                        'search_available_selected_items',
                     )}
                     onChange={compose(
                         props.setDataElementFilter,
-                        getOr('', 'target.value')
+                        getOr('', 'target.value'),
                     )}
                     value={props.dataElementFilter}
                     fullWidth

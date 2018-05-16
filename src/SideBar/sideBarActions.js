@@ -46,19 +46,19 @@ onOrgUnitSearch
     .debounceTime(400)
     .map(({ complete, error, data }) =>
         Observable.fromPromise(
-            searchForOrganisationUnitsWithinHierarchy(data)
+            searchForOrganisationUnitsWithinHierarchy(data),
         ).map(organisationUnits => ({
             complete,
             error,
             organisationUnits,
-        }))
+        })),
     )
     .concatAll()
     .subscribe(({ complete, organisationUnits }) => {
         setAppState({
             sideBar: Object.assign(
                 { ...appState.state.sideBar },
-                { organisationUnits }
+                { organisationUnits },
             ),
         });
         complete();

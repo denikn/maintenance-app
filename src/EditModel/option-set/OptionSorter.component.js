@@ -24,7 +24,7 @@ class OptionSorter extends Component {
 
         this._onSortBy = this._onSortBy.bind(this);
         this.getTranslation = this.context.d2.i18n.getTranslation.bind(
-            this.context.d2.i18n
+            this.context.d2.i18n,
         );
     }
 
@@ -36,7 +36,7 @@ class OptionSorter extends Component {
                     onClick={() => this._onSortBy('displayName')}
                     disabled={this.state.isSorting}
                     label={this.getTranslation(
-                        this.state.isSorting ? 'sorting' : 'sort_by_name'
+                        this.state.isSorting ? 'sorting' : 'sort_by_name',
                     )}
                 />
                 <RaisedButton
@@ -44,7 +44,7 @@ class OptionSorter extends Component {
                     onClick={() => this._onSortBy('code')}
                     disabled={this.state.isSorting}
                     label={this.getTranslation(
-                        this.state.isSorting ? 'sorting' : 'sort_by_code'
+                        this.state.isSorting ? 'sorting' : 'sort_by_code',
                     )}
                 />
                 <RaisedButton
@@ -52,7 +52,7 @@ class OptionSorter extends Component {
                     onClick={() => setSortDialogOpenTo(true)}
                     disabled={this.state.isSorting}
                     label={this.getTranslation(
-                        this.state.isSorting ? 'sorting' : 'sort_manually'
+                        this.state.isSorting ? 'sorting' : 'sort_manually',
                     )}
                 />
                 <SortDialog />
@@ -69,14 +69,14 @@ class OptionSorter extends Component {
                 optionSorter(
                     modelToEditStore.getState().options.toArray(),
                     propertyName,
-                    this.state.sortedASC[propertyName] ? 'DESC' : 'ASC'
+                    this.state.sortedASC[propertyName] ? 'DESC' : 'ASC',
                 )
                     .flatMap(async options => {
                         const d2 = await getInstance();
 
                         return modelToEditStore.take(1).map(modelToEdit => ({
                             options: options.map(optionData =>
-                                d2.models.option.create(optionData)
+                                d2.models.option.create(optionData),
                             ),
                             modelToEdit,
                         }));
@@ -124,9 +124,9 @@ class OptionSorter extends Component {
                                 message: 'options_not_sorted',
                                 action: 'ok',
                                 translate: true,
-                            })
+                            }),
                     );
-            }
+            },
         );
     }
 }

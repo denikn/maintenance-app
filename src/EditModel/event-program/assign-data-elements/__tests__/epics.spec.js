@@ -79,7 +79,7 @@ describe('Assign data elements epics', () => {
 
             epic(createActionStreamFor(action)).subscribe(() => {
                 expect(
-                    store.getState().programStages[0].programStageDataElements
+                    store.getState().programStages[0].programStageDataElements,
                 ).toHaveLength(3);
                 const newlyAddedDataElement = store.getState().programStages[0]
                     .programStageDataElements[2];
@@ -103,7 +103,7 @@ describe('Assign data elements epics', () => {
 
             epic(createActionStreamFor(action)).subscribe(() => {
                 expect(
-                    store.getState().programStages[0].programStageDataElements
+                    store.getState().programStages[0].programStageDataElements,
                 ).toHaveLength(4);
                 const newlyAddedDataElementOne = store.getState()
                     .programStages[0].programStageDataElements[2];
@@ -154,7 +154,7 @@ describe('Assign data elements epics', () => {
 
             epic(createActionStreamFor(action)).subscribe(() => {
                 expect(
-                    store.getState().programStages[0].programStageDataElements
+                    store.getState().programStages[0].programStageDataElements,
                 ).toHaveLength(1);
                 const remainingDataElement = store.getState().programStages[0]
                     .programStageDataElements[0];
@@ -194,7 +194,7 @@ describe('Assign data elements epics', () => {
 
             epic(createActionStreamFor(action)).subscribe(() => {
                 expect(
-                    store.getState().programStages[0].programStageDataElements
+                    store.getState().programStages[0].programStageDataElements,
                 ).toHaveLength(0);
                 done();
             }, done);

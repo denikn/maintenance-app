@@ -20,7 +20,7 @@ import eventProgramStore from '../eventProgramStore';
 
 const notifications$ = eventProgramStore.map(getStageNotifications);
 const programStageDataElements$ = eventProgramStore.map(
-    getProgramStageDataElements
+    getProgramStageDataElements,
 );
 const programStages$ = eventProgramStore.map(getProgramStages);
 
@@ -80,7 +80,7 @@ const mapDispatchToProps = dispatch =>
                 setEditModel(model, 'PROGRAM_STAGE_NOTIFICATION'),
             setAddModel,
         },
-        dispatch
+        dispatch,
     );
 
 const enhance = compose(
@@ -113,9 +113,9 @@ const enhance = compose(
                 programStages,
                 notifications,
                 dataElements,
-            })
-        )
-    )
+            }),
+        ),
+    ),
 );
 
 export default enhance(EventProgramNotifications);

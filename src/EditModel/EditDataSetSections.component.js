@@ -44,7 +44,7 @@ class EditDataSetSections extends Component {
         Promise.all([
             context.d2.Api.getApi().get(
                 ['dataSets', props.params.modelId, 'categoryCombos'].join('/'),
-                { fields: 'id,displayName', paging: false }
+                { fields: 'id,displayName', paging: false },
             ),
         ]).then(([catComboList]) => {
             this.setState({
@@ -66,18 +66,18 @@ class EditDataSetSections extends Component {
         this.handleSectionSaved = this.handleSectionSaved.bind(this);
 
         this.handleDeleteSectionClick = this.handleDeleteSectionClick.bind(
-            this
+            this,
         );
         this.handleTranslateSectionClick = this.handleTranslateSectionClick.bind(
-            this
+            this,
         );
         this.handleTranslationSaved = this.handleTranslationSaved.bind(this);
         this.handleTranslationErrored = this.handleTranslationErrored.bind(
-            this
+            this,
         );
 
         this.handleSectionGreyFieldsClick = this.handleSectionGreyFieldsClick.bind(
-            this
+            this,
         );
 
         this.swapSections = this.swapSections.bind(this);
@@ -85,7 +85,7 @@ class EditDataSetSections extends Component {
         this.moveSectionDown = this.moveSectionDown.bind(this);
 
         this.getTranslation = context.d2.i18n.getTranslation.bind(
-            context.d2.i18n
+            context.d2.i18n,
         );
     }
 
@@ -97,7 +97,7 @@ class EditDataSetSections extends Component {
                 sortOrder:
                     state.sections.reduce(
                         (p, s) => Math.max(s.sortOrder, p),
-                        0
+                        0,
                     ) + 1,
             }),
         }));
@@ -125,7 +125,7 @@ class EditDataSetSections extends Component {
                 }
 
                 modelToEditStore.setState(
-                    Object.assign(modelToEditStore.state, { sections })
+                    Object.assign(modelToEditStore.state, { sections }),
                 );
                 return {
                     editSectionModel: false,
@@ -135,7 +135,7 @@ class EditDataSetSections extends Component {
             },
             () => {
                 this.forceUpdate();
-            }
+            },
         );
     }
 
@@ -156,7 +156,7 @@ class EditDataSetSections extends Component {
                                     ? newSections
                                     : newSections.toArray()
                                 ).filter(s => s.id !== section.id),
-                            })
+                            }),
                         );
 
                         snackActions.show({
@@ -164,14 +164,14 @@ class EditDataSetSections extends Component {
                         });
                         this.setState(state => ({
                             sections: state.sections.filter(
-                                s => s.id !== section.id
+                                s => s.id !== section.id,
                             ),
                         }));
                     })
                     .catch(err => {
                         snackActions.show({
                             message: this.getTranslation(
-                                'failed_to_delete_section'
+                                'failed_to_delete_section',
                             ),
                             action: 'ok',
                         });
@@ -226,7 +226,7 @@ class EditDataSetSections extends Component {
 
             return {
                 sections: state.sections.sort(
-                    (a, b) => a.sortOrder - b.sortOrder
+                    (a, b) => a.sortOrder - b.sortOrder,
                 ),
             };
         });

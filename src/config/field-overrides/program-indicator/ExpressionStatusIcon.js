@@ -16,15 +16,15 @@ import {
 
 const ExpressionInvalidIcon = nest(
     'span',
-    mapProps(() => ({ color: red500 }))(NotInterestedIcon)
+    mapProps(() => ({ color: red500 }))(NotInterestedIcon),
 );
 const ExpressionValidIcon = nest(
     'span',
-    mapProps(() => ({ color: green500 }))(CheckCircleIcon)
+    mapProps(() => ({ color: green500 }))(CheckCircleIcon),
 );
 const ExpressionPendingIcon = nest(
     'span',
-    mapProps(() => ({ color: orange500 }))(CheckCircleIcon)
+    mapProps(() => ({ color: orange500 }))(CheckCircleIcon),
 );
 
 export const ExpressionStatus = {
@@ -36,12 +36,12 @@ export const ExpressionStatus = {
 const ExpressionStatusIcon = compose(
     branch(
         props => props.status === ExpressionStatus.VALID,
-        renderComponent(ExpressionValidIcon)
+        renderComponent(ExpressionValidIcon),
     ),
     branch(
         props => props.status === ExpressionStatus.INVALID,
-        renderComponent(ExpressionInvalidIcon)
-    )
+        renderComponent(ExpressionInvalidIcon),
+    ),
 )(ExpressionPendingIcon);
 
 export function getColorForExpressionStatus(status) {

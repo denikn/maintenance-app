@@ -52,13 +52,13 @@ class App extends AppWithD2 {
                 // Check if the current section is in the list of mainSections
                 state.mainSections.some(
                     mainSection =>
-                        mainSection.key === state.sideBar.currentSection
-                )
+                        mainSection.key === state.sideBar.currentSection,
+                ),
             );
 
         this.subscription = Observable.merge(
             allSectionSelected$,
-            nonAllSectionSelected$
+            nonAllSectionSelected$,
         )
             // Do not emit the value more often than needed to prevent unnecessary react triggers
             .distinctUntilChanged()
@@ -66,7 +66,7 @@ class App extends AppWithD2 {
                 this.setState({
                     ...this.state,
                     hasSection,
-                })
+                }),
             );
     }
 
@@ -95,17 +95,17 @@ class App extends AppWithD2 {
                     {this.state.hasSection &&
                     !this.props.children.props.route.hideSidebar ? (
                         <TwoPanelLayout>
-                            <SideBar
+                                <SideBar
                                 activeGroupName={this.props.params.groupName}
                                 activeModelType={this.props.params.modelType}
                             />
-                            <MainContent>{this.props.children}</MainContent>
-                        </TwoPanelLayout>
-                    ) : (
-                        <SinglePanelLayout>
-                            <MainContent>{this.props.children}</MainContent>
-                        </SinglePanelLayout>
-                    )}
+                                <MainContent>{this.props.children}</MainContent>
+                            </TwoPanelLayout>
+                        ) : (
+                            <SinglePanelLayout>
+                                <MainContent>{this.props.children}</MainContent>
+                            </SinglePanelLayout>
+                        )}
                     <SnackbarContainer />
                 </div>
             </Provider>

@@ -10,30 +10,30 @@ import { next, previous, first } from '../stepper/stepIterator';
 
 export function programIndicatorStepperReducer(
     state = { activeStep: first(steps) },
-    action
+    action,
 ) {
     switch (action.type) {
-        case PROGRAM_INDICATOR_STEP_CHANGE:
-            return {
-                activeStep: action.payload,
-            };
+    case PROGRAM_INDICATOR_STEP_CHANGE:
+        return {
+            activeStep: action.payload,
+        };
 
-        case PROGRAM_INDICATOR_STEP_NEXT:
-            return {
-                activeStep: next(steps, state.activeStep),
-            };
+    case PROGRAM_INDICATOR_STEP_NEXT:
+        return {
+            activeStep: next(steps, state.activeStep),
+        };
 
-        case PROGRAM_INDICATOR_STEP_PREVIOUS:
-            return {
-                activeStep: previous(steps, state.activeStep),
-            };
+    case PROGRAM_INDICATOR_STEP_PREVIOUS:
+        return {
+            activeStep: previous(steps, state.activeStep),
+        };
 
-        case STEPPER_RESET_ACTIVE_STEP:
-            return {
-                activeStep: first(steps),
-            };
-        default:
-            break;
+    case STEPPER_RESET_ACTIVE_STEP:
+        return {
+            activeStep: first(steps),
+        };
+    default:
+        break;
     }
 
     return state;

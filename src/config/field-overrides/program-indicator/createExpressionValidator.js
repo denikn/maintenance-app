@@ -18,7 +18,7 @@ export default function createExpressionValidator(property) {
                             return Observable.of({
                                 status: ExpressionStatus.PENDING,
                                 message: d2.i18n.getTranslation(
-                                    'expression_is_empty'
+                                    'expression_is_empty',
                                 ),
                             });
                         }
@@ -34,7 +34,7 @@ export default function createExpressionValidator(property) {
                             .post(
                                 `programIndicators/${property}/description`,
                                 `${expression}`,
-                                requestOptions
+                                requestOptions,
                             )
                             .then(({ status, description, message }) => ({
                                 status:
@@ -60,14 +60,14 @@ export default function createExpressionValidator(property) {
                             Observable.of({
                                 status: ExpressionStatus.PENDING,
                                 message: d2.i18n.getTranslation(
-                                    'checking_expression_status'
+                                    'checking_expression_status',
                                 ),
                             }),
-                            Observable.fromPromise(validation$)
+                            Observable.fromPromise(validation$),
                         );
-                    })
-                )
-            )
+                    }),
+                ),
+            ),
         )
         .concatAll();
 

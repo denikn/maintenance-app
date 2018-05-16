@@ -69,12 +69,12 @@ function replaceMappingPathPlaceholder(path, variablesToReplace) {
 // Replaces the placeholders of the matched mappingKey url to create the complete partial help content path.
 function getPartialHelpContentPath(
     replacedMappingPath,
-    variablesToReplaceCamel
+    variablesToReplaceCamel,
 ) {
     if (mappingPathExists(replacedMappingPath)) {
         return replacePlaceholder(
             inlineHelpMapping[replacedMappingPath],
-            variablesToReplaceCamel
+            variablesToReplaceCamel,
         );
     }
 
@@ -101,12 +101,12 @@ function findHelpLinkForPath(path, schema) {
 
     const replacedMappingPath = replaceMappingPathPlaceholder(
         path,
-        variablesToReplace
+        variablesToReplace,
     );
 
     return getPartialHelpContentPath(
         replacedMappingPath,
-        variablesToReplaceCamel
+        variablesToReplaceCamel,
     );
 }
 
@@ -115,7 +115,7 @@ export default function HelpLink({ schema }, { d2 }) {
         .replace(/^#/, '') // Remove leading hash
         .replace(/\?.+?$/, ''); // Remove query param/cache breaker
     const docsLink = `https://ci.dhis2.org/docs/${getDocsVersion(
-        d2.system.version
+        d2.system.version,
     )}`;
     const helpLink = findHelpLinkForPath(path, schema);
 

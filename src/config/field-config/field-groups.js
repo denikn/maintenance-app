@@ -122,7 +122,7 @@ export default {
             const modelGroup = fieldGroupsForModelType.get(modelType);
             return findIndex(
                 group => group.fields.includes(fieldName),
-                modelGroup
+                modelGroup,
             );
         }
         return 0;

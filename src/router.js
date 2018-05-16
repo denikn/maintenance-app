@@ -40,7 +40,7 @@ function initStateOrgUnitList({ params }) {
                 currentSubSection: 'organisationUnit',
             },
         },
-        true
+        true,
     );
 }
 
@@ -100,13 +100,13 @@ function loadObject({ params }, replace, callback) {
                     .filter(fieldName => modelToEdit.hasOwnProperty(fieldName))
                     .filter(
                         fieldName =>
-                            listStore.getState().filters[fieldName] !== null
+                            listStore.getState().filters[fieldName] !== null,
                     )
                     .filter(
                         fieldName =>
                             modelToEdit.modelDefinition.modelValidations[
                                 fieldName
-                            ].writable
+                            ].writable,
                     )
                     .reduce((out, modelType) => {
                         out[modelType] = listStore.getState().filters[
@@ -130,7 +130,7 @@ function loadObject({ params }, replace, callback) {
                     replace(`/list/${params.modelType}`);
                     snackActions.show({ message: errorMessage, action: 'ok' });
                     callback();
-                }
+                },
             );
     }
 }
@@ -145,7 +145,7 @@ function loadOrgUnitObject({ params }, replace, callback) {
             },
         },
         replace,
-        callback
+        callback,
     );
 }
 
@@ -159,14 +159,14 @@ function loadOptionSetObject({ params }, replace, callback) {
             },
         },
         replace,
-        callback
+        callback,
     );
 }
 
 function createLoaderForSchema(
     schema,
     actionCreatorForLoadingObject,
-    resetActiveStep
+    resetActiveStep,
 ) {
     return ({ location: { query }, params }, replace, callback) => {
         initState({
@@ -178,7 +178,7 @@ function createLoaderForSchema(
         });
         // Fire load action for the event program program to be edited
         store.dispatch(
-            actionCreatorForLoadingObject({ schema, id: params.modelId, query })
+            actionCreatorForLoadingObject({ schema, id: params.modelId, query }),
         );
         store.dispatch(resetActiveStep());
 
@@ -209,12 +209,12 @@ function loadList({ params }, replace, callback) {
                 if (/^.+s$/.test(params.modelType)) {
                     const nonPluralAttempt = params.modelType.substring(
                         0,
-                        params.modelType.length - 1
+                        params.modelType.length - 1,
                     );
                     log.warn(
                         `Could not find requested model type '${
                             params.modelType
-                        }' attempting to redirect to '${nonPluralAttempt}'`
+                        }' attempting to redirect to '${nonPluralAttempt}'`,
                     );
                     replace(`list/${nonPluralAttempt}`);
                     callback();
@@ -222,14 +222,14 @@ function loadList({ params }, replace, callback) {
                     log.error(
                         'No clue where',
                         params.modelType,
-                        'comes from... Redirecting to app root'
+                        'comes from... Redirecting to app root',
                     );
                     log.error(message);
 
                     replace('/');
                     callback();
                 }
-            }
+            },
         );
 }
 
@@ -247,7 +247,7 @@ function cloneObject({ params }, replace, callback) {
                 replace(`/list/${params.modelType}`);
                 snackActions.show({ message: errorMessage, action: 'ok' });
                 callback();
-            }
+            },
         );
 }
 
@@ -328,7 +328,7 @@ const routes = (
                     onEnter={createLoaderForSchema(
                         'program',
                         loadEventProgram,
-                        resetActiveStep
+                        resetActiveStep,
                     )}
                     hideSidebar
                     disableTabs
@@ -342,7 +342,7 @@ const routes = (
                     onEnter={createLoaderForSchema(
                         'programIndicator',
                         loadProgramIndicator,
-                        resetActiveStep
+                        resetActiveStep,
                     )}
                     hideSidebar
                     disableTabs

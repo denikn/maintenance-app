@@ -19,22 +19,22 @@ function saveOrganisationUnitLevels(i18n) {
         () =>
             snackActions.show({
                 message: i18n.getTranslation(
-                    'organisation_unit_levels_save_success'
+                    'organisation_unit_levels_save_success',
                 ),
             }),
         () =>
             snackActions.show({
                 message: i18n.getTranslation(
-                    'organisation_unit_levels_save_failed'
+                    'organisation_unit_levels_save_failed',
                 ),
                 action: 'ok',
-            })
+            }),
     );
 }
 
 function OrganisationUnitLevels(props, context) {
     const canEdit = context.d2.currentUser.canUpdate(
-        context.d2.models.organisationUnitLevel
+        context.d2.models.organisationUnitLevel,
     );
 
     if (props.isLoading) {
@@ -80,7 +80,7 @@ function OrganisationUnitLevels(props, context) {
                             iconClassName="material-icons"
                             onClick={() =>
                                 props.onTranslateClick(
-                                    fieldsForLevel.organisationUnitLevel
+                                    fieldsForLevel.organisationUnitLevel,
                                 )
                             }
                         >
@@ -120,14 +120,14 @@ function OrganisationUnitLevels(props, context) {
                     {translateButton}
                 </div>
             );
-        }
+        },
     );
 
     return (
         <div>
             <Heading>
                 {context.d2.i18n.getTranslation(
-                    'organisation_unit_level_management'
+                    'organisation_unit_level_management',
                 )}
             </Heading>
             <Paper style={styles.paperWrap}>
@@ -166,7 +166,7 @@ const componentState$ = organisationUnitLevelsStore;
 
 const OrganisationUnitLevelsWithState = withStateFrom(
     componentState$,
-    addD2Context(OrganisationUnitLevels)
+    addD2Context(OrganisationUnitLevels),
 );
 
 export default addD2Context(
@@ -182,7 +182,7 @@ export default addD2Context(
 
             this._onTranslateClick = this._onTranslateClick.bind(this);
             this._closeTranslationDialog = this._closeTranslationDialog.bind(
-                this
+                this,
             );
             this._translationSaved = this._translationSaved.bind(this);
             this._translationErrored = this._translationErrored.bind(this);
@@ -218,7 +218,7 @@ export default addD2Context(
 
         _onTranslateClick(data) {
             const model = this.context.d2.models.organisationUnitLevel.create(
-                data
+                data,
             );
 
             this.setState({
@@ -232,7 +232,7 @@ export default addD2Context(
         _translationSaved() {
             snackActions.show({
                 message: this.context.d2.i18n.getTranslation(
-                    'translation_saved'
+                    'translation_saved',
                 ),
             });
         }
@@ -240,7 +240,7 @@ export default addD2Context(
         _translationErrored() {
             snackActions.show({
                 message: this.context.d2.i18n.getTranslation(
-                    'translation_save_error'
+                    'translation_save_error',
                 ),
                 action: 'ok',
             });
@@ -254,5 +254,5 @@ export default addD2Context(
                 },
             });
         }
-    }
+    },
 );

@@ -46,7 +46,7 @@ const pteaToAttributes = ({
     const out = {};
     programTrackedEntityAttributes.map(ptea => {
         const attr = availableAttributes.find(
-            attr => attr.id === ptea.trackedEntityAttribute.id
+            attr => attr.id === ptea.trackedEntityAttribute.id,
         );
         out[attr.id] = attr.displayName;
     });
@@ -97,7 +97,7 @@ class EditDataEntryForm extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.getTranslation = this.context.d2.i18n.getTranslation.bind(
-            this.context.d2.i18n
+            this.context.d2.i18n,
         );
 
         const dataEntryForm = props.dataEntryForm;
@@ -109,7 +109,7 @@ class EditDataEntryForm extends React.Component {
 
         const { usedIds, outHtml } = processFormData(
             getOr('', 'htmlCode', dataEntryForm),
-            { ...programElements, ...this.props.elements }
+            { ...programElements, ...this.props.elements },
         );
         const formHtml = dataEntryForm ? outHtml : '';
         this.state = {
@@ -121,7 +121,7 @@ class EditDataEntryForm extends React.Component {
                 ...bindFuncsToKeys(
                     programElements,
                     this.insertProgramElement,
-                    this
+                    this,
                 ),
             },
             formTitle: this.props.formTitle,
@@ -143,7 +143,7 @@ class EditDataEntryForm extends React.Component {
                 .subscribe(args => {
                     const filter = args.data.split(' ').filter(x => x.length);
                     this.setState({ filter });
-                })
+                }),
         );
 
         this.handleDeleteClick = this.handleDeleteClick.bind(this);
@@ -155,7 +155,7 @@ class EditDataEntryForm extends React.Component {
         this.disposables.forEach(disposable => disposable.unsubscribe());
     }
 
-    //Used for when the form is deleted, to update the form
+    // Used for when the form is deleted, to update the form
     componentWillReceiveProps({ dataEntryForm }) {
         if (this.props.dataEntryForm && !dataEntryForm) {
             this._editor.setData('');
@@ -173,7 +173,7 @@ class EditDataEntryForm extends React.Component {
     }
 
     handleEditorChanged = editorData => {
-        //prevent creation of new dataEntryForm when empty
+        // prevent creation of new dataEntryForm when empty
         if (!editorData && !this.props.dataEntryForm) {
             return;
         }
@@ -194,7 +194,7 @@ class EditDataEntryForm extends React.Component {
                 ) {
                     this.props.onFormChange(outHtml);
                 }
-            }
+            },
         );
     };
 
@@ -206,7 +206,7 @@ class EditDataEntryForm extends React.Component {
             id,
             this.props.elements[id],
             this._editor,
-            'attributeid'
+            'attributeid',
         );
     }
 
@@ -218,7 +218,7 @@ class EditDataEntryForm extends React.Component {
             id,
             this.state.programElements[id],
             this._editor,
-            'programid'
+            'programid',
         );
     }
 
@@ -286,7 +286,7 @@ class EditDataEntryForm extends React.Component {
                             <div style={styles.formSection}>
                                 <TextField
                                     floatingLabelText={this.getTranslation(
-                                        'form_name'
+                                        'form_name',
                                     )}
                                     defaultValue={
                                         this.props.program.displayName
@@ -297,7 +297,7 @@ class EditDataEntryForm extends React.Component {
                                     value={getOr(
                                         'NORMAL',
                                         'style',
-                                        props.dataEntryForm
+                                        props.dataEntryForm,
                                     )}
                                     floatingLabelText="Form display style"
                                     onChange={this.handleStyleChange}
@@ -305,25 +305,25 @@ class EditDataEntryForm extends React.Component {
                                     <MenuItem
                                         value={'NORMAL'}
                                         primaryText={this.getTranslation(
-                                            'normal'
+                                            'normal',
                                         )}
                                     />
                                     <MenuItem
                                         value={'COMFORTABLE'}
                                         primaryText={this.getTranslation(
-                                            'comfortable'
+                                            'comfortable',
                                         )}
                                     />
                                     <MenuItem
                                         value={'COMPACT'}
                                         primaryText={this.getTranslation(
-                                            'compact'
+                                            'compact',
                                         )}
                                     />
                                     <MenuItem
                                         value={'NONE'}
                                         primaryText={this.getTranslation(
-                                            'none'
+                                            'none',
                                         )}
                                     />
                                 </SelectField>
@@ -332,14 +332,14 @@ class EditDataEntryForm extends React.Component {
                                 {props.dataEntryForm &&
                                 props.dataEntryForm.id ? (
                                     <FlatButton
-                                        primary
-                                        label={this.getTranslation('delete')}
-                                        style={styles.deleteButton}
-                                        onClick={this.handleDeleteClick}
-                                    />
-                                ) : (
-                                    undefined
-                                )}
+                                            primary
+                                            label={this.getTranslation('delete')}
+                                            style={styles.deleteButton}
+                                            onClick={this.handleDeleteClick}
+                                        />
+                                    ) : (
+                                        undefined
+                                    )}
                             </div>
                         </Paper>
                     </div>
@@ -376,10 +376,10 @@ const mapDispatchToPropsForProgram = (dispatch, { program }) =>
             onStyleChange: curry(programDataEntryFormChanged)('style'),
             onFormDelete: programDataEntryFormRemove.bind(
                 undefined,
-                program.id
+                program.id,
             ),
         },
-        dispatch
+        dispatch,
     );
 
 const programDataEntryForm = compose(
@@ -394,14 +394,14 @@ const programDataEntryForm = compose(
                     programTrackedEntityAttributes:
                         program.programTrackedEntityAttributes,
                     availableAttributes,
-                }), //getProgramStageDataElementsByStageId(state)(programStage.id),
+                }), // getProgramStageDataElementsByStageId(state)(programStage.id),
                 formTitle: program.displayName,
-            })
-        )
+            }),
+        ),
     ),
-    connect(undefined, mapDispatchToPropsForProgram)
+    connect(undefined, mapDispatchToPropsForProgram),
 );
 
 export const CustomRegistrationDataEntryForm = programDataEntryForm(
-    EditDataEntryForm
+    EditDataEntryForm,
 );

@@ -14,7 +14,7 @@ function ExpressionFormulaWithErrorMessage({
     errorStatus,
 }) {
     const isExpressionInvalid = negate(
-        expressionStatus => expressionStatus.status === ExpressionStatus.VALID
+        expressionStatus => expressionStatus.status === ExpressionStatus.VALID,
     );
     const color = getColorForExpressionStatus(errorStatus.status);
 

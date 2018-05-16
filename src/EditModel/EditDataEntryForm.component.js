@@ -237,15 +237,15 @@ class EditDataEntryForm extends React.Component {
                         .subscribe(() => {
                             this.processFormData.call(
                                 this,
-                                this._editor.getData()
+                                this._editor.getData(),
                             );
                         });
-                }
+                },
             );
         });
 
         this.getTranslation = this.context.d2.i18n.getTranslation.bind(
-            this.context.d2.i18n
+            this.context.d2.i18n,
         );
         this.handleSaveClick = this.handleSaveClick.bind(this);
         this.handleCancelClick = this.handleCancelClick.bind(this);
@@ -271,7 +271,7 @@ class EditDataEntryForm extends React.Component {
         this.context.d2.Api.getApi()
             .post(
                 ['dataSets', this.props.params.modelId, 'form'].join('/'),
-                payload
+                payload,
             )
             .then(() => {
                 log.info('Form saved successfully');
@@ -305,7 +305,7 @@ class EditDataEntryForm extends React.Component {
                         [
                             'dataEntryForms',
                             modelToEditStore.state.dataEntryForm.id,
-                        ].join('/')
+                        ].join('/'),
                     )
                     .then(() => {
                         snackActions.show({
@@ -317,7 +317,7 @@ class EditDataEntryForm extends React.Component {
                         log.error('Failed to delete form:', err);
                         snackActions.show({
                             message: this.getTranslation(
-                                'failed_to_delete_form'
+                                'failed_to_delete_form',
                             ),
                             action: 'ok',
                         });
@@ -347,7 +347,7 @@ class EditDataEntryForm extends React.Component {
         e.preventDefault();
         e.stopPropagation();
         const width = clampPaletteWidth(
-            this._startWidth + (this._startPos - e.clientX)
+            this._startWidth + (this._startPos - e.clientX),
         );
         window.requestAnimationFrame(() => {
             this.setState({
@@ -445,7 +445,7 @@ class EditDataEntryForm extends React.Component {
     insertFlag(img) {
         this._editor.insertHtml(
             `<img src="../dhis-web-commons/flags/${img}" />`,
-            'unfiltered_html'
+            'unfiltered_html',
         );
         const range = this._editor.getSelection().getRanges()[0];
         range.moveToElementEditablePosition(range.endContainer, true);
@@ -459,8 +459,8 @@ class EditDataEntryForm extends React.Component {
                     filter =>
                         keySet[key]
                             .toLowerCase()
-                            .indexOf(filter.toLowerCase()) !== -1
-                )
+                            .indexOf(filter.toLowerCase()) !== -1,
+                ),
         );
 
         const cellClass =
@@ -487,7 +487,7 @@ class EditDataEntryForm extends React.Component {
                             (a, b) =>
                                 keySet[a]
                                     ? keySet[a].localeCompare(keySet[b])
-                                    : a.localeCompare(b)
+                                    : a.localeCompare(b),
                         )
                         .map(key => {
                             // Active items are items that are not already added to the form
@@ -527,7 +527,7 @@ class EditDataEntryForm extends React.Component {
                     <div style={styles.paletteFilter}>
                         <TextField
                             floatingLabelText={this.getTranslation(
-                                'filter_elements'
+                                'filter_elements',
                             )}
                             style={styles.paletteFilterField}
                             onChange={this.filterAction}
@@ -536,12 +536,12 @@ class EditDataEntryForm extends React.Component {
                     <div className="elements">
                         {this.renderPaletteSection(
                             this.operands,
-                            'data_elements'
+                            'data_elements',
                         )}
                         {this.renderPaletteSection(this.totals, 'totals')}
                         {this.renderPaletteSection(
                             this.indicators,
-                            'indicators'
+                            'indicators',
                         )}
                         {this.renderPaletteSection(this.flags, 'flags')}
                     </div>
@@ -611,14 +611,14 @@ class EditDataEntryForm extends React.Component {
                         {modelToEditStore.state.dataEntryForm &&
                         modelToEditStore.state.dataEntryForm.id ? (
                             <FlatButton
-                                primary
-                                label={this.getTranslation('delete')}
-                                style={styles.deleteButton}
-                                onClick={this.handleDeleteClick}
-                            />
-                        ) : (
-                            undefined
-                        )}
+                                    primary
+                                    label={this.getTranslation('delete')}
+                                    style={styles.deleteButton}
+                                    onClick={this.handleDeleteClick}
+                                />
+                            ) : (
+                                undefined
+                            )}
                     </div>
                 </Paper>
             </div>

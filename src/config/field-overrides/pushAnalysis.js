@@ -25,7 +25,7 @@ function createWeekOption(weekDayNr) {
 const daysInWeekOptions = map(createWeekOption, range(1, 7));
 const daysInMonthOptions = map(
     number => ({ text: number, value: number }),
-    range(1, 32)
+    range(1, 32),
 );
 
 const options = new Map([
@@ -38,7 +38,7 @@ function SchedulingDayOfFrequency({ model }, { d2 }) {
         <SubFieldWrap>
             <DropDown
                 labelText={d2.i18n.getTranslation(
-                    'day_on_which_to_run_the_task'
+                    'day_on_which_to_run_the_task',
                 )}
                 value={model.schedulingDayOfFrequency}
                 options={options.get(model.schedulingFrequency) || []}
@@ -48,7 +48,7 @@ function SchedulingDayOfFrequency({ model }, { d2 }) {
                             fieldName: 'schedulingDayOfFrequency',
                             value,
                         }),
-                    get('target.value')
+                    get('target.value'),
                 )}
                 isRequired
             />
@@ -66,7 +66,7 @@ export default new Map([
             component: withSkipLogic(
                 props => ['WEEKLY', 'MONTHLY'].indexOf(props.value) >= 0,
                 SchedulingDayOfFrequency,
-                DropDown
+                DropDown,
             ),
             required: true,
         },

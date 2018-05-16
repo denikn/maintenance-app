@@ -16,12 +16,12 @@ export default function EditModel(props) {
                 {...props}
                 onCancel={() =>
                     goToAndScrollUp(
-                        `/list/${props.groupName}/${props.modelType}`
+                        `/list/${props.groupName}/${props.modelType}`,
                     )
                 }
                 onSaveSuccess={() =>
                     goToAndScrollUp(
-                        `/list/${props.groupName}/${props.modelType}`
+                        `/list/${props.groupName}/${props.modelType}`,
                     )
                 }
                 onSaveError={errorMessage => onSaveError(errorMessage, props)}

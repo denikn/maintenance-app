@@ -30,11 +30,11 @@ const withStepper = compose(
     withProps(({ setActiveStep, dataElements }) => ({
         stepperClicked(stepKey) {
             setActiveStep(
-                programStageSteps.findIndex(step => step.key === stepKey)
+                programStageSteps.findIndex(step => step.key === stepKey),
             );
         },
         dataElements,
-    }))
+    })),
 );
 
 const stepperForSteps = steps =>
@@ -74,7 +74,7 @@ const NotificationDialog = (
         isProgram,
         ...props
     },
-    { d2 }
+    { d2 },
 ) => {
     const t = d2.i18n.getTranslation.bind(d2.i18n);
     const stepperProps = {
@@ -106,7 +106,7 @@ const NotificationDialog = (
             open={!!model}
             onRequestClose={onCancel}
             title={<DialogTitle title={title} subtitle={model.displayName} />}
-            autoDetectWindowHeight={true}
+            autoDetectWindowHeight
             repositionOnUpdate={false}
             autoScrollBodyContent
             contentStyle={notificationDialogStyle.content}
@@ -135,7 +135,7 @@ NotificationDialog.defaultProps = {
 
 const mapStateToProps = (
     state,
-    { model, availableDataElements, programStages, dataElements }
+    { model, availableDataElements, programStages, dataElements },
 ) => {
     const selectedPSId =
         (model && model.programStage && model.programStage.id) ||
@@ -158,7 +158,7 @@ const mapDispatchToPropsForDialog = dispatch =>
             onCancel: setEditModel.bind(null, null),
             onConfirm: saveStageNotification,
         },
-        dispatch
+        dispatch,
     );
 
 export const ProgramStageNotificationDialog = compose(
@@ -167,9 +167,9 @@ export const ProgramStageNotificationDialog = compose(
         {
             message: 'cannot_create_program_notification_without_program_stage',
             translate: true,
-        }
+        },
     ),
-    connect(mapStateToProps, mapDispatchToPropsForDialog)
+    connect(mapStateToProps, mapDispatchToPropsForDialog),
 )(NotificationDialog);
 
 export const ProgramNotificationDialog = connect(null, dispatch =>
@@ -178,8 +178,8 @@ export const ProgramNotificationDialog = connect(null, dispatch =>
             onCancel: setEditModel.bind(null, null),
             onConfirm: saveProgramNotification,
         },
-        dispatch
-    )
+        dispatch,
+    ),
 )(NotificationDialog);
 
 /* Chooses what dialog to display according to isProgram prop */
@@ -202,7 +202,7 @@ export const EnhancedDialog = compose(
         isProgram: isProgramNotification(state),
         model: modelToEditSelector(state),
     })),
-    branch(({ model }) => !model, renderNothing)
+    branch(({ model }) => !model, renderNothing),
 )(NotificationDialogChooser);
 
 export default EnhancedDialog;

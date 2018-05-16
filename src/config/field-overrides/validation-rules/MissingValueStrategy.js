@@ -8,20 +8,20 @@ function MissingValueStrategy({ value, onChange }, { d2 }) {
             <SelectField
                 value={value}
                 floatingLabelText={d2.i18n.getTranslation(
-                    'missing_value_strategy'
+                    'missing_value_strategy',
                 )}
                 onChange={(event, index, value) => onChange(value)}
                 fullWidth
             >
                 <MenuItem
                     primaryText={d2.i18n.getTranslation(
-                        'skip_if_any_value_is_missing'
+                        'skip_if_any_value_is_missing',
                     )}
                     value="SKIP_IF_ANY_VALUE_MISSING"
                 />
                 <MenuItem
                     primaryText={d2.i18n.getTranslation(
-                        'skip_if_all_values_are_missing'
+                        'skip_if_all_values_are_missing',
                     )}
                     value="SKIP_IF_ALL_VALUES_MISSING"
                 />

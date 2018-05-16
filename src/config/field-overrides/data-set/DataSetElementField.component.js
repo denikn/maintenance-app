@@ -19,7 +19,7 @@ import DataSetElementCategoryComboSelectionDialog from './DataSetElementCategory
 
 function getCategoryComboNameForDataElement(dses, de) {
     const dataSetElementForDataElement = Array.from(dses || []).find(
-        dse => dse.dataElement && dse.dataElement.id === de.id
+        dse => dse.dataElement && dse.dataElement.id === de.id,
     );
 
     if (
@@ -34,7 +34,7 @@ function getCategoryComboNameForDataElement(dses, de) {
 function getDataElementNameForGroupEditor(dataSetElements, dataElement) {
     const categoryComboName = getCategoryComboNameForDataElement(
         dataSetElements,
-        dataElement
+        dataElement,
     );
 
     if (categoryComboName) {
@@ -79,10 +79,10 @@ class DataSetElementField extends Component {
             props.dataElements.map(dataElement => ({
                 text: getDataElementNameForGroupEditor(
                     props.dataSet.dataSetElements,
-                    dataElement
+                    dataElement,
                 ),
                 value: dataElement.id,
-            }))
+            })),
         );
         this.state.assignedItemStore.setState(
             Array.from(props.dataSet.dataSetElements || [])
@@ -92,10 +92,10 @@ class DataSetElementField extends Component {
                         (left.dataElement && left.dataElement.displayName) ||
                         ''
                     ).localeCompare(
-                        right.dataElement && right.dataElement.displayName
-                    )
+                        right.dataElement && right.dataElement.displayName,
+                    ),
                 )
-                .map(dse => dse.dataElement.id)
+                .map(dse => dse.dataElement.id),
         );
     }
 
@@ -108,10 +108,10 @@ class DataSetElementField extends Component {
             props.dataElements.map(dataElement => ({
                 text: getDataElementNameForGroupEditor(
                     props.dataSet.dataSetElements,
-                    dataElement
+                    dataElement,
                 ),
                 value: dataElement.id,
-            }))
+            })),
         );
 
         this.state.assignedItemStore.setState(
@@ -122,10 +122,10 @@ class DataSetElementField extends Component {
                         (left.dataElement && left.dataElement.displayName) ||
                         ''
                     ).localeCompare(
-                        right.dataElement && right.dataElement.displayName
-                    )
+                        right.dataElement && right.dataElement.displayName,
+                    ),
                 )
-                .map(dse => dse.dataElement.id)
+                .map(dse => dse.dataElement.id),
         );
     }
 
@@ -149,14 +149,14 @@ class DataSetElementField extends Component {
                     dataSetElement.categoryCombo =
                         dataSetElement.dataElement.categoryCombo;
                 }
-            }
+            },
         );
     }
 
     _assignItems = items => {
         const updateGroupEditorState = () => {
             const uniqueItems = new Set(
-                this.state.assignedItemStore.getState().concat(items)
+                this.state.assignedItemStore.getState().concat(items),
             );
 
             this.state.assignedItemStore.setState(Array.from(uniqueItems));
@@ -172,8 +172,8 @@ class DataSetElementField extends Component {
         items
             .map(dataElementId =>
                 this.props.dataElements.find(
-                    dataElement => dataElement.id === dataElementId
-                )
+                    dataElement => dataElement.id === dataElementId,
+                ),
             )
             .filter(de => de)
             .forEach((dataElement, index) => {
@@ -198,7 +198,7 @@ class DataSetElementField extends Component {
     _removeItems = items => {
         const updateGroupEditorStore = () => {
             const uniqueItems = new Set(
-                this.state.assignedItemStore.getState()
+                this.state.assignedItemStore.getState(),
             );
 
             items.forEach(item => uniqueItems.delete(item));
@@ -211,14 +211,14 @@ class DataSetElementField extends Component {
         return Promise.resolve(true)
             .then(() => {
                 const dataSetElementsThatAreNotInItemsToRemove = (
-                    itemsToRemove = []
+                    itemsToRemove = [],
                 ) => ({ dataElement = {} }) =>
                     get('id', dataElement) &&
                     !itemsToRemove.includes(get('id', dataElement));
 
                 // Remove the items from the modelCollection
                 this.props.dataSet.dataSetElements = Array.from(
-                    this.props.dataSet.dataSetElements
+                    this.props.dataSet.dataSetElements,
                 )
                     // Only keep dataSetElements that do not exist in the `items` collection
                     .filter(dataSetElementsThatAreNotInItemsToRemove(items));
@@ -229,17 +229,17 @@ class DataSetElementField extends Component {
 
     _updateCategoryComboForDataSetElement = (
         selectedDataSetElement,
-        categoryCombo
+        categoryCombo,
     ) => {
         const dataSetElements = this.props.dataSet.dataSetElements;
 
         if (
             dataSetElements.some(
-                dataSetElement => dataSetElement === selectedDataSetElement
+                dataSetElement => dataSetElement === selectedDataSetElement,
             )
         ) {
             const dataSetElement = dataSetElements.find(
-                dataSetElement => dataSetElement === selectedDataSetElement
+                dataSetElement => dataSetElement === selectedDataSetElement,
             );
 
             dataSetElement.categoryCombo = categoryCombo;
@@ -254,7 +254,7 @@ class DataSetElementField extends Component {
 
     updateForm = newAssignedItems => {
         this.state.assignedItemStore.setState(
-            uniq([].concat(newAssignedItems))
+            uniq([].concat(newAssignedItems)),
         );
 
         this.props.onChange({
@@ -279,7 +279,7 @@ class DataSetElementField extends Component {
                         onChange={this.setFilterText}
                         fullWidth
                         hintText={this.context.d2.i18n.getTranslation(
-                            'search_available_selected_items'
+                            'search_available_selected_items',
                         )}
                     />
                     <DataSetElementCategoryComboSelectionDialog
@@ -334,7 +334,7 @@ const enhancedDataElementField$ = props$ =>
         (props, metadata) => ({
             ...metadata,
             ...props,
-        })
+        }),
     )
         .map(({ model, dataElements, categoryCombos, ...props }) => (
             <DataSetElementField

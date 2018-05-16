@@ -31,8 +31,8 @@ export const hideIfNotAuthorizedToCreate = compose(
     getContext({ d2: PropTypes.object }),
     branch(
         ({ d2, modelType }) => !d2.currentUser.canCreate(d2.models[modelType]),
-        renderNothing
-    )
+        renderNothing,
+    ),
 );
 
 const AddButtonWithAuthCheck = hideIfNotAuthorizedToCreate(AddButton);
@@ -49,7 +49,7 @@ export default function NotificationList({
     const columns = showProgramStage
         ? ['name', 'programStage', 'lastUpdated']
         : ['name', 'lastUpdated'];
-    const AddButtonToUse = addButton ? addButton : AddButtonWithAuthCheck;
+    const AddButtonToUse = addButton || AddButtonWithAuthCheck;
     return (
         <div>
             {showAddButton && (

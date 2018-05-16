@@ -7,7 +7,7 @@ const mapDispatchToProps = dispatch =>
     bindActionCreators({ onSaveAction: saveProgramIndicator }, dispatch);
 
 const ProgramIndicatorActionButtons = createConnectedFormActionButtonsForSchema(
-    mapDispatchToProps
+    mapDispatchToProps,
 );
 
 export default ProgramIndicatorActionButtons;

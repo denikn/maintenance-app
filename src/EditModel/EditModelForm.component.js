@@ -39,7 +39,7 @@ const currentSection$ = appState
     .distinctUntilChanged();
 
 const editFormFieldsForCurrentSection$ = currentSection$.flatMap(modelType =>
-    Observable.fromPromise(createFieldConfigForModelTypes(modelType))
+    Observable.fromPromise(createFieldConfigForModelTypes(modelType)),
 );
 
 const isAddOperation = model => model.id === undefined;
@@ -50,7 +50,7 @@ const modelToEditAndModelForm$ = Observable.combineLatest(
     modelToEditStore,
     editFormFieldsForCurrentSection$,
     currentSection$,
-    d2$
+    d2$,
 )
     .filter(([modelToEdit, formFields, currentType]) => {
         if (
@@ -81,7 +81,7 @@ const modelToEditAndModelForm$ = Observable.combineLatest(
                 // Check if value is an attribute
                 if (
                     Object.keys(modelToEdit.attributes || []).indexOf(
-                        fieldConfig.name
+                        fieldConfig.name,
                     ) >= 0
                 ) {
                     fieldConfig.value =
@@ -94,7 +94,7 @@ const modelToEditAndModelForm$ = Observable.combineLatest(
                 // value of the type Number.
                 if (fieldConfig.beforePassToFieldConverter) {
                     fieldConfig.value = fieldConfig.beforePassToFieldConverter(
-                        modelToEdit[fieldConfig.name]
+                        modelToEdit[fieldConfig.name],
                     );
                 } else {
                     fieldConfig.value = modelToEdit[fieldConfig.name];
@@ -106,7 +106,7 @@ const modelToEditAndModelForm$ = Observable.combineLatest(
         const fieldConfigsAfterRules = applyRulesToFieldConfigs(
             getRulesForModelType(modelToEdit.modelDefinition.name),
             fieldConfigs,
-            modelToEdit
+            modelToEdit,
         );
         const fieldConfigsWithAttributeFields = [].concat(
             fieldConfigsAfterRules,
@@ -115,11 +115,11 @@ const modelToEditAndModelForm$ = Observable.combineLatest(
                 config.props = config.props || {};
                 config.props.modelToEdit = modelToEdit;
                 return config;
-            })
+            }),
         );
         const fieldConfigsWithAttributeFieldsAndUniqueValidators = fieldConfigsWithAttributeFields.map(
             fieldConfig =>
-                addUniqueValidatorWhenUnique(fieldConfig, modelToEdit)
+                addUniqueValidatorWhenUnique(fieldConfig, modelToEdit),
         );
         return {
             fieldConfigs: fieldConfigsWithAttributeFieldsAndUniqueValidators,
@@ -164,7 +164,7 @@ export default React.createClass({
             },
             errorMessage => {
                 snackActions.show({ message: errorMessage, action: 'ok' });
-            }
+            },
         );
     },
 
@@ -285,7 +285,7 @@ export default React.createClass({
 
     _onUpdateField(fieldName, value) {
         const fieldConfig = this.state.fieldConfigs.find(
-            fieldConfig => fieldConfig.name === fieldName
+            fieldConfig => fieldConfig.name === fieldName,
         );
         if (fieldConfig && fieldConfig.beforeUpdateConverter) {
             return objectActions.update({
@@ -307,12 +307,12 @@ export default React.createClass({
 
         const invalidFieldMessage = getFirstInvalidFieldMessage(
             this.state.fieldConfigs,
-            this.formRef
+            this.formRef,
         );
         if (invalidFieldMessage) {
             snackActions.show({
                 message: `${this.getTranslation(
-                    'missing_required_property_field'
+                    'missing_required_property_field',
                 )} ${invalidFieldMessage}`,
                 action: 'ok',
             });
@@ -362,7 +362,7 @@ export default React.createClass({
                     }
 
                     this.props.onSaveError(errorMessage);
-                }
+                },
             );
     },
 

@@ -19,13 +19,15 @@ import {
 } from './actions';
 import NotificationDialog from './NotificationDialog';
 import eventProgramStore from '../eventProgramStore';
+
 const programStageTabIndex = 0;
 
 import { getProgramStageById } from '../tracker-program/program-stages/selectors';
 import TrackerNotificationAddButton from './TrackerNotificationAddButton';
+
 const programStages$ = eventProgramStore.map(getProgramStages);
 const stageNotifications$ = eventProgramStore.map(
-    get('programStageNotifications')
+    get('programStageNotifications'),
 );
 
 const programNotifications$ = eventProgramStore
@@ -33,7 +35,7 @@ const programNotifications$ = eventProgramStore
     .map(n => n.toArray());
 
 const availableDataElements = eventProgramStore.map(
-    get('availableDataElements')
+    get('availableDataElements'),
 );
 
 const TrackerProgramNotifications = (
@@ -54,13 +56,13 @@ const TrackerProgramNotifications = (
         model,
         ...props
     },
-    { d2 }
+    { d2 },
 ) => {
     const stageNotificationsWithStageNames = [];
 
-    //Flatten stageNotifications to be a list of notifications
-    //with reference to the programStage
-    for (let stageId in programStageNotifications) {
+    // Flatten stageNotifications to be a list of notifications
+    // with reference to the programStage
+    for (const stageId in programStageNotifications) {
         const notifications = programStageNotifications[stageId];
 
         const programStage = props.getProgramStageById(stageId);
@@ -76,7 +78,7 @@ const TrackerProgramNotifications = (
             <Tabs initialSelectedIndex={programStageTabIndex}>
                 <Tab
                     label={d2.i18n.getTranslation(
-                        'program_stage_notifications'
+                        'program_stage_notifications',
                     )}
                 >
                     <NotificationList
@@ -85,7 +87,7 @@ const TrackerProgramNotifications = (
                         onRemoveNotification={askForConfirmation}
                         onEditNotification={setEditProgramStageModel}
                         onAddNotification={setAddModel}
-                        showAddButton={true}
+                        showAddButton
                         addButton={TrackerNotificationAddButton}
                     />
                 </Tab>
@@ -145,7 +147,7 @@ const mapDispatchToProps = dispatch =>
                 setEditModel(model, 'PROGRAM_NOTIFICATION'),
             setAddModel,
         },
-        dispatch
+        dispatch,
     );
 
 const enhance = compose(
@@ -186,7 +188,7 @@ const enhance = compose(
                 programStageNotifications,
                 programNotifications,
                 availableDataElements,
-                store
+                store,
             ) => {
                 return {
                     ...props,
@@ -196,9 +198,9 @@ const enhance = compose(
                     availableDataElements,
                     getProgramStageById: getProgramStageById(store),
                 };
-            }
-        )
-    )
+            },
+        ),
+    ),
 );
 
 export default enhance(TrackerProgramNotifications);

@@ -1,7 +1,7 @@
 import * as utils from '../dataEntryFormUtils';
 
 describe('dataEntryFormUtils', () => {
-    let editor = {
+    const editor = {
         insertHtml: jest.fn(),
         getSelection: jest.fn(() => ({
             getRanges: jest.fn(() => [
@@ -40,7 +40,7 @@ describe('dataEntryFormUtils', () => {
             const { usedIds, outHtml } = utils.processFormData(
                 dataEntryForm,
                 elements,
-                utils.elementPatterns.combinedIdPattern
+                utils.elementPatterns.combinedIdPattern,
             );
             console.log(outHtml);
             expect(outHtml).toBe(initialHTML);

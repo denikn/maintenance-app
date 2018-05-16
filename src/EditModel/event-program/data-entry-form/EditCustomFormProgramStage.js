@@ -100,7 +100,7 @@ class EditDataEntryForm extends React.Component {
         // Load flags
         this.disposables.add(
             Observable.fromPromise(
-                context.d2.Api.getApi().get('system/flags')
+                context.d2.Api.getApi().get('system/flags'),
             ).subscribe(flags => {
                 // Operands with ID's that contain a dot ('.') are combined dataElementId's and categoryOptionId's
                 // The API returns "dataElementId.categoryOptionId", which are transformed to the format expected by
@@ -108,8 +108,8 @@ class EditDataEntryForm extends React.Component {
                 this.operands = dataElements
                     .map(
                         programStageDataElementWithProgramStageId(
-                            programStage.id
-                        )
+                            programStage.id,
+                        ),
                     )
                     .filter(op => op.id.indexOf('.') !== -1)
                     .reduce((out, op) => {
@@ -128,18 +128,18 @@ class EditDataEntryForm extends React.Component {
                 const boundOps = bindFuncsToKeys(
                     this.operands,
                     this.insertElement,
-                    this
+                    this,
                 );
                 const boundFlags = bindFuncsToKeys(
                     this.flags,
                     this.insertFlag,
-                    this
+                    this,
                 );
                 const insertFn = { ...boundOps, ...boundFlags };
 
                 const { usedIds, outHtml } = processFormData(
                     getOr('', 'htmlCode', dataEntryForm),
-                    this.operands
+                    this.operands,
                 );
                 const formHtml = dataEntryForm ? outHtml : '';
 
@@ -150,7 +150,7 @@ class EditDataEntryForm extends React.Component {
                     dataEntryForm,
                     formTitle: this.props.formTitle,
                 });
-            })
+            }),
         );
 
         // Create element filtering action
@@ -166,11 +166,11 @@ class EditDataEntryForm extends React.Component {
                 .subscribe(args => {
                     const filter = args.data.split(' ').filter(x => x.length);
                     this.setState({ filter });
-                })
+                }),
         );
 
         this.getTranslation = this.context.d2.i18n.getTranslation.bind(
-            this.context.d2.i18n
+            this.context.d2.i18n,
         );
         this.handleDeleteClick = this.handleDeleteClick.bind(this);
         this.handleStyleChange = this.handleStyleChange.bind(this);
@@ -181,7 +181,7 @@ class EditDataEntryForm extends React.Component {
         this.disposables.forEach(disposable => disposable.unsubscribe());
     }
 
-    //Used for when the form is deleted, to update the form
+    // Used for when the form is deleted, to update the form
     componentWillReceiveProps({ dataEntryForm }) {
         if (this.props.dataEntryForm && (!dataEntryForm || !dataEntryForm.id)) {
             this._editor.setData('');
@@ -199,7 +199,7 @@ class EditDataEntryForm extends React.Component {
     }
 
     handleEditorChanged = editorData => {
-        //prevent creation of new dataEntryForm when empty
+        // prevent creation of new dataEntryForm when empty
         if (!editorData && !this.props.dataEntryForm) {
             return;
         }
@@ -216,7 +216,7 @@ class EditDataEntryForm extends React.Component {
                 ) {
                     this.props.onFormChange(outHtml);
                 }
-            }
+            },
         );
     };
 
@@ -230,7 +230,7 @@ class EditDataEntryForm extends React.Component {
     insertFlag(img) {
         this._editor.insertHtml(
             `<img src="../dhis-web-commons/flags/${img}" />`,
-            'unfiltered_html'
+            'unfiltered_html',
         );
         const range = this._editor.getSelection().getRanges()[0];
         range.moveToElementEditablePosition(range.endContainer, true);
@@ -300,7 +300,7 @@ class EditDataEntryForm extends React.Component {
                                     value={getOr(
                                         'NORMAL',
                                         'style',
-                                        props.dataEntryForm
+                                        props.dataEntryForm,
                                     )}
                                     floatingLabelText="Form display style"
                                     onChange={this.handleStyleChange}
@@ -308,25 +308,25 @@ class EditDataEntryForm extends React.Component {
                                     <MenuItem
                                         value={'NORMAL'}
                                         primaryText={this.getTranslation(
-                                            'normal'
+                                            'normal',
                                         )}
                                     />
                                     <MenuItem
                                         value={'COMFORTABLE'}
                                         primaryText={this.getTranslation(
-                                            'comfortable'
+                                            'comfortable',
                                         )}
                                     />
                                     <MenuItem
                                         value={'COMPACT'}
                                         primaryText={this.getTranslation(
-                                            'compact'
+                                            'compact',
                                         )}
                                     />
                                     <MenuItem
                                         value={'NONE'}
                                         primaryText={this.getTranslation(
-                                            'none'
+                                            'none',
                                         )}
                                     />
                                 </SelectField>
@@ -335,14 +335,14 @@ class EditDataEntryForm extends React.Component {
                                 {props.dataEntryForm &&
                                 props.dataEntryForm.id ? (
                                     <FlatButton
-                                        primary
-                                        label={this.getTranslation('delete')}
-                                        style={styles.deleteButton}
-                                        onClick={this.handleDeleteClick}
-                                    />
-                                ) : (
-                                    undefined
-                                )}
+                                            primary
+                                            label={this.getTranslation('delete')}
+                                            style={styles.deleteButton}
+                                            onClick={this.handleDeleteClick}
+                                        />
+                                    ) : (
+                                        undefined
+                                    )}
                             </div>
                         </Paper>
                     </div>
@@ -375,14 +375,14 @@ const mapDispatchToPropsForProgramStage = (dispatch, { programStage }) =>
     bindActionCreators(
         {
             onFormChange: curry(dataEntryFormChanged)(programStage.id)(
-                'htmlCode'
+                'htmlCode',
             ),
             onStyleChange: curry(dataEntryFormChanged)(programStage.id)(
-                'style'
+                'style',
             ),
             onFormDelete: dataEntryFormRemove.bind(undefined, programStage.id),
         },
-        dispatch
+        dispatch,
     );
 
 const programStageDataEntryForm = compose(
@@ -395,13 +395,13 @@ const programStageDataEntryForm = compose(
                 dataEntryForm:
                     state.dataEntryFormForProgramStage[programStage.id],
                 dataElements: getProgramStageDataElementsByStageId(state)(
-                    programStage.id
+                    programStage.id,
                 ),
                 formTitle: programStage.displayName,
-            })
-        )
+            }),
+        ),
     ),
-    connect(undefined, mapDispatchToPropsForProgramStage)
+    connect(undefined, mapDispatchToPropsForProgramStage),
 );
 
 export default programStageDataEntryForm(EditDataEntryForm);

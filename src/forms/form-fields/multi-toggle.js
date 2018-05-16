@@ -12,7 +12,7 @@ export default React.createClass({
                 name: React.PropTypes.string.isRequired,
                 value: React.PropTypes.bool,
                 text: React.PropTypes.string.isRequired,
-            })
+            }),
         ),
         style: React.PropTypes.object,
     },
@@ -36,7 +36,7 @@ export default React.createClass({
         const style = Object.assign(
             {},
             this.context.muiTheme.forms,
-            this.props.style
+            this.props.style,
         );
         return (
             <div>
@@ -73,7 +73,7 @@ export default React.createClass({
             },
             () => {
                 this.props.onChange({ target: { value: this.state.values } });
-            }
+            },
         );
     },
 });

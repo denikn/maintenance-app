@@ -18,9 +18,9 @@ const getAvailableDataElementsForProgram = memoize(program =>
                 .list({
                     fields:
                         'id,displayName,programStageDataElements[id,dataElement[id,displayName]',
-                })
-        )
-    )
+                }),
+        ),
+    ),
 );
 
 const DataElementSelectors = componentFromStream(props$ =>
@@ -34,7 +34,7 @@ const DataElementSelectors = componentFromStream(props$ =>
                         programStage => {
                             const programStageDataElements = compose(
                                 values,
-                                getOr([], 'programStageDataElements')
+                                getOr([], 'programStageDataElements'),
                             )(programStage);
 
                             return {
@@ -45,21 +45,21 @@ const DataElementSelectors = componentFromStream(props$ =>
                                         value: `#{${programStage.id}.${
                                             dataElement.id
                                         }}`,
-                                    })
+                                    }),
                                 ),
                             };
-                        }
+                        },
                     );
 
                     return {
                         ...props,
                         listSources: availableDataElements,
                     };
-                }
-            )
+                },
+            ),
         )
         .map(props => <CollapsibleLists {...props} />)
-        .startWith(<CircularProgress />)
+        .startWith(<CircularProgress />),
 );
 
 const hasMissingProgram = compose(isNil, get('program'));

@@ -14,7 +14,7 @@ function isAttributeValue(model, fieldName) {
 
 function updateAttributeValue(model, fieldName, value) {
     log.debug(
-        `${fieldName} is a custom attribute. Setting ${fieldName} to ${value}`
+        `${fieldName} is a custom attribute. Setting ${fieldName} to ${value}`,
     );
     model.attributes[fieldName] = value;
     log.debug(`Value is now: ${model.attributes[fieldName]}`);
@@ -23,7 +23,7 @@ function updateAttributeValue(model, fieldName, value) {
 
 function updateRegularValue(model, fieldName, value) {
     log.debug(
-        `${fieldName} is a regular field. Setting ${fieldName} to ${value}`
+        `${fieldName} is a regular field. Setting ${fieldName} to ${value}`,
     );
     model[fieldName] = value;
     log.debug(`Value is now: ${model[fieldName]}`);
@@ -67,9 +67,9 @@ export function createModelToEditEpic(actionType, store, storeProp) {
 
                         // Write back the state to the store
                         store.setState(
-                            storePropSetter(model, { ...store.getState() })
+                            storePropSetter(model, { ...store.getState() }),
                         );
-                    })
+                    }),
             )
             .flatMapTo(emptyAction$);
 }
@@ -77,7 +77,7 @@ export function createModelToEditEpic(actionType, store, storeProp) {
 export function createModelToEditProgramStageEpic(
     actionType,
     store,
-    storeProp
+    storeProp,
 ) {
     const storePropGetter = get(storeProp);
 
@@ -91,7 +91,7 @@ export function createModelToEditProgramStageEpic(
                     .map(storePropGetter)
                     .map(programStages => {
                         const index = programStages.findIndex(
-                            stage => stage.id == stageId
+                            stage => stage.id == stageId,
                         );
                         const model = programStages[index];
                         const storePropSetter = set(`${storeProp}[${index}]`);
@@ -110,9 +110,9 @@ export function createModelToEditProgramStageEpic(
                         }
                         // Write back the state to the store
                         store.setState(
-                            storePropSetter(model, store.getState())
+                            storePropSetter(model, store.getState()),
                         );
-                    })
+                    }),
             )
             .flatMapTo(emptyAction$);
 }

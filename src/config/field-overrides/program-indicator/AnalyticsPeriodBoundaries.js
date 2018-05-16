@@ -79,7 +79,7 @@ function AnalyticsPeriodBoundary(props) {
             >
                 <DropDown
                     labelText={getTranslation('analytics_boundary_target')}
-                    translateOptions={true}
+                    translateOptions
                     options={boundaryTargets}
                     onChange={e => props.onChange(e, 'boundaryTarget')}
                     value={props.boundaryTarget}
@@ -94,7 +94,7 @@ function AnalyticsPeriodBoundary(props) {
             >
                 <DropDown
                     labelText={getTranslation('analytics_period_boundary_type')}
-                    translateOptions={true}
+                    translateOptions
                     options={boundaryTypes}
                     onChange={e =>
                         props.onChange(e, 'analyticsPeriodBoundaryType')
@@ -227,4 +227,4 @@ function AnalyticsPeriodBoundaryList({ d2, model, onChange }) {
 
 const enhance = compose(getContext({ d2: PropTypes.object }));
 
-export let AnalyticsPeriodBoundaries = enhance(AnalyticsPeriodBoundaryList);
+export const AnalyticsPeriodBoundaries = enhance(AnalyticsPeriodBoundaryList);

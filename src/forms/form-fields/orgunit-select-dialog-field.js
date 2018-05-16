@@ -32,7 +32,7 @@ class OrgUnitSelectDialog extends React.Component {
         }
 
         this.getTranslation = context.d2.i18n.getTranslation.bind(
-            context.d2.i18n
+            context.d2.i18n,
         );
         this.handleSelectClick = this.handleSelectClick.bind(this);
         this.save = this.save.bind(this);
@@ -45,13 +45,13 @@ class OrgUnitSelectDialog extends React.Component {
                 this.setState({
                     roots: appState.userOrganisationUnits.toArray(),
                 });
-            })
+            }),
         );
     }
 
     componentWillUnmount() {
         this.subscriptions.forEach(
-            disposable => disposable.unsubscribe && disposable.unsubscribe()
+            disposable => disposable.unsubscribe && disposable.unsubscribe(),
         );
     }
 

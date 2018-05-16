@@ -21,7 +21,7 @@ const TrackedEntityField = withD2Context((props, { d2 }) => (
             value={props.model.trackedEntity}
             onChange={compose(
                 value => actions.update({ fieldName: 'trackedEntity', value }),
-                get('target.value')
+                get('target.value'),
             )}
         />
     </SubFieldWrap>
@@ -50,7 +50,7 @@ export default new Map([
             component: withSkipLogic(
                 props => props.value === 'TRACKER_ASSOCIATE',
                 TrackedEntityField,
-                DropDown
+                DropDown,
             ),
         },
     ],

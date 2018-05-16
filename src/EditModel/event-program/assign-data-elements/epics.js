@@ -25,7 +25,7 @@ import programStore from '../eventProgramStore';
 // getProgramStageToModify :: String -> ProgramStage[] -> ProgramStage
 export const getProgramStageToModify = (
     programStageIdToModify,
-    programStages
+    programStages,
 ) => find(compose(isEqual(programStageIdToModify), get('id')), programStages);
 
 const programStageDataElementExistsInDataElementUidList = uids =>
@@ -46,18 +46,18 @@ const addDataElementsToStage = store => action$ =>
             const state = store.getState();
             const programStageToEdit = getProgramStageByIdFromAction(
                 store,
-                action
+                action,
             );
 
             const programStageDataElements = getOr(
                 [],
                 'programStageDataElements',
-                programStageToEdit
+                programStageToEdit,
             );
             const dataElementIdsToAdd = getOr(
                 [],
                 'payload.dataElements',
-                action
+                action,
             );
             const programStageDataElementsToAdd = map(
                 id => ({
@@ -66,11 +66,11 @@ const addDataElementsToStage = store => action$ =>
                         id,
                     },
                 }),
-                dataElementIdsToAdd
+                dataElementIdsToAdd,
             );
 
             programStageToEdit.programStageDataElements = programStageDataElements.concat(
-                programStageDataElementsToAdd
+                programStageDataElementsToAdd,
             );
             const programStages = getOr([], 'programStages', store.getState());
             store.setState({
@@ -87,26 +87,26 @@ const removeDataElementFromStage = store => action$ =>
             const state = store.getState();
             const programStageToEdit = getProgramStageByIdFromAction(
                 store,
-                action
+                action,
             );
 
             const programStageDataElements = getOr(
                 [],
                 'programStageDataElements',
-                programStageToEdit
+                programStageToEdit,
             );
             const dataElementIdsToRemove = getOr(
                 [],
                 'payload.dataElements',
-                action
+                action,
             );
 
             const removeDataElements = keepProgramStageDataElementsNotInUidList(
-                dataElementIdsToRemove
+                dataElementIdsToRemove,
             );
 
             programStageToEdit.programStageDataElements = removeDataElements(
-                programStageDataElements
+                programStageDataElements,
             );
             const programStages = getOr([], 'programStages', store.getState());
             store.setState({
@@ -124,20 +124,20 @@ const editProgramStageDataElement = store => action$ =>
         .map(action => {
             const programStageDataElementId = get(
                 'payload.programStageDataElement.id',
-                action
+                action,
             );
             const programStageToEdit = getProgramStageByIdFromAction(
                 store,
-                action
+                action,
             );
 
             const programStageDataElements = getOr(
                 [],
                 'programStageDataElements',
-                programStageToEdit
+                programStageToEdit,
             );
             const programStageDataElement = programStageDataElements.find(
-                isObjectHasId(programStageDataElementId)
+                isObjectHasId(programStageDataElementId),
             );
 
             programStageToEdit.programStageDataElements = programStageDataElements.map(
@@ -146,7 +146,7 @@ const editProgramStageDataElement = store => action$ =>
                         return action.payload.programStageDataElement;
                     }
                     return value;
-                }
+                },
             );
             const programStages = getOr([], 'programStages', store.getState());
             store.setState({
@@ -160,6 +160,6 @@ export default function createEpicsForStore(store) {
     return combineEpics(
         addDataElementsToStage(store),
         removeDataElementFromStage(store),
-        editProgramStageDataElement(store)
+        editProgramStageDataElement(store),
     );
 }

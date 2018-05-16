@@ -17,6 +17,7 @@ import fieldOrder from '../../../config/field-config/field-order';
 import AssignAttributes from './assign-tracked-entity-attributes/AssignAttributes';
 import ProgramStage from './program-stages/ProgramStage';
 import EnrollmentDetails from './EnrollmentStep';
+
 const stepperConfig = () => {
     const program$ = programStore.map(get('program'));
 
@@ -25,7 +26,7 @@ const stepperConfig = () => {
 
     const connectEditForm = compose(
         flattenRouterProps,
-        connect(null, mapDispatchToProps)
+        connect(null, mapDispatchToProps),
     );
     const trackerDetailsFields = fieldOrder.for('trackerProgram');
     const enrollmentFields = fieldOrder.for('enrollment');
@@ -38,13 +39,12 @@ const stepperConfig = () => {
                     'program',
                     trackerDetailsFields,
                     true,
-                    'trackerProgram'
-                )
-            )
+                    'trackerProgram',
+                ),
+            ),
         ),
-        Enrollment: EnrollmentDetails /*connectEditForm(
-            wrapInPaper(createFormFor(program$, 'program', enrollmentFields, true, 'enrollment')),
-        ), */,
+        Enrollment: EnrollmentDetails, /* connectEditForm(            wrapInPaper(createFormFor(program$, 'program', enrollmentFields, true, 'enrollment')),
+        ), */
         AssignAttributes,
         ProgramStage,
         EditDataEntryForm,
@@ -68,8 +68,8 @@ const TrackerProgramStepperContent = compose(
         props$.combineLatest(programStore, (props, { program }) => ({
             ...props,
             modelToEdit: program,
-        }))
-    )
+        })),
+    ),
 )(createStepperContentFromConfig(stepperConfig()));
 
 export default TrackerProgramStepperContent;

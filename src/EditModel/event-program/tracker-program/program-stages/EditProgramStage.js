@@ -45,8 +45,8 @@ export default compose(
                 cancelProgramStageEdit,
                 editProgramStageReset,
             },
-            dispatch
-        )
+            dispatch,
+        ),
     ),
     lifecycle({
         componentWillMount() {
@@ -70,5 +70,5 @@ export default compose(
             return nextProps !== this.props;
         },
     }),
-    withProgramStageFromProgramStage$
+    withProgramStageFromProgramStage$,
 )(EditProgramStage);

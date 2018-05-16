@@ -57,11 +57,11 @@ const removeProgramStageNotification = action$ =>
                     const { programStageNotifications } = eventProgramState;
                     const programStage = getProgramStageFromModel(
                         eventProgramState,
-                        model
+                        model,
                     );
                     const stageNotifications = getStageNotificationsForProgramStageId(
                         eventProgramState,
-                        programStage.id
+                        programStage.id,
                     );
 
                     // Remove the model from both the lists (store and programStage property collection)
@@ -71,8 +71,8 @@ const removeProgramStageNotification = action$ =>
                     ] = stageNotifications.filter(notEqualTo(model));
 
                     eventProgramStore.setState(eventProgramState);
-                })
-            )
+                }),
+            ),
         )
         .flatMapTo(Observable.never());
 
@@ -95,18 +95,18 @@ const saveProgramStageNotification = (action$, store) =>
                     } = eventProgramState;
                     const programStage = getProgramStageFromModel(
                         eventProgramState,
-                        model
+                        model,
                     );
 
                     let stageNotifications = getStageNotificationsForProgramStageId(
                         eventProgramState,
-                        programStage.id
+                        programStage.id,
                     );
                     // If we're dealing with a new model we have to add it to the notification lists
                     // Both on the notification list on the programStage and on the eventStore
                     if (negate(find(equals(model)))(stageNotifications)) {
                         programStage.notificationTemplates.add(model);
-                        //Add empty stageNotifications if its a new programStage
+                        // Add empty stageNotifications if its a new programStage
                         if (!stageNotifications) {
                             stageNotifications = eventProgramState.programStageNotifications[
                                 programStage.id
@@ -118,18 +118,18 @@ const saveProgramStageNotification = (action$, store) =>
                     return Observable.of(eventProgramState);
                 })
                 .map(eventProgramState =>
-                    eventProgramStore.setState(eventProgramState)
+                    eventProgramStore.setState(eventProgramState),
                 )
                 .mapTo(
                     Observable.of(
                         saveStageNotificationSuccess(),
-                        setEditModel(null)
-                    )
+                        setEditModel(null),
+                    ),
                 )
                 .mergeAll()
                 .catch(error =>
-                    Observable.of(saveStageNotificationError(error))
-                )
+                    Observable.of(saveStageNotificationError(error)),
+                ),
         );
 
 const setProgramStageNotificationAddModel = (action$, store) =>
@@ -141,7 +141,7 @@ const setProgramStageNotificationAddModel = (action$, store) =>
                 model: payload.model,
                 notificationType: payload.notificationType,
                 d2,
-            })
+            }),
         )
         .map(({ d2, notificationType }) => {
             const model = d2.models.programNotificationTemplate.create();
@@ -164,7 +164,7 @@ const setProgramStageNotificationAddModel = (action$, store) =>
                 };
             }
 
-            //set default to first programStage
+            // set default to first programStage
             model.programStage = pick('id', first(psStore.programStages));
 
             return setEditModel(model);
@@ -193,18 +193,18 @@ const saveProgramNotification = (action$, store) =>
                     return Observable.of(eventProgramState);
                 })
                 .map(eventProgramState =>
-                    eventProgramStore.setState(eventProgramState)
+                    eventProgramStore.setState(eventProgramState),
                 )
                 .mapTo(
                     Observable.of(
                         saveStageNotificationSuccess(),
-                        setEditModel(null)
-                    )
+                        setEditModel(null),
+                    ),
                 )
                 .mergeAll()
                 .catch(error =>
-                    Observable.of(saveStageNotificationError(error))
-                )
+                    Observable.of(saveStageNotificationError(error)),
+                ),
         );
 
 const removeProgramNotification = action$ =>
@@ -217,8 +217,8 @@ const removeProgramNotification = action$ =>
                     program.notificationTemplates.remove(model);
 
                     eventProgramStore.setState(eventProgramState);
-                })
-            )
+                }),
+            ),
         )
         .mapTo(removeProgramNotificationSuccess());
 
@@ -227,5 +227,5 @@ export default combineEpics(
     setProgramStageNotificationAddModel,
     saveProgramStageNotification,
     saveProgramNotification,
-    removeProgramNotification
+    removeProgramNotification,
 );

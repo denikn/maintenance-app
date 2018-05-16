@@ -9,6 +9,7 @@ import programStore from '../eventProgramStore';
 import fieldOrder from '../../../config/field-config/field-order';
 import { editFieldChanged } from '../actions';
 import CustomRegistrationForm from './CustomRegistrationForm';
+
 const program$ = programStore.map(get('program'));
 const enrollmentFields = fieldOrder.for('enrollment');
 
@@ -17,11 +18,11 @@ const mapDispatchToProps = dispatch =>
 
 const connectEditForm = compose(
     flattenRouterProps,
-    connect(null, mapDispatchToProps)
+    connect(null, mapDispatchToProps),
 );
 
 const EnrollmentDetailsForm = connectEditForm(
-    createFormFor(program$, 'program', enrollmentFields, true, 'enrollment')
+    createFormFor(program$, 'program', enrollmentFields, true, 'enrollment'),
 );
 
 const EnrollmentDetails = props => (

@@ -17,7 +17,7 @@ export default new Map([
                     validator(value, formState) {
                         return isStartDateBeforeEndDate(
                             value,
-                            formState.fields.endDate.value
+                            formState.fields.endDate.value,
                         );
                     },
                     message: 'end_date_cannot_be_before_start_date',
@@ -33,7 +33,7 @@ export default new Map([
                     validator(value, formState) {
                         return isStartDateBeforeEndDate(
                             formState.fields.startDate.value,
-                            value
+                            value,
                         );
                     },
                     message: 'end_date_cannot_be_before_start_date',

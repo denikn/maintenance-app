@@ -36,12 +36,12 @@ const optionList$ = Observable.combineLatest(
         rows: options,
         pager,
         columns,
-    })
+    }),
 );
 
 const optionForm$ = Observable.combineLatest(
     Observable.fromPromise(createFieldConfigForModelTypes('option')),
-    modelToEditStore
+    modelToEditStore,
 ).flatMap(async ([fieldConfigs, modelToEdit]) => {
     const d2 = await getInstance();
 
@@ -53,14 +53,14 @@ const optionForm$ = Observable.combineLatest(
         ) {
             // Get the correct matching Ui component
             fieldConfig.component = getFieldUIComponent(
-                typeToFieldMap.get(modelToEdit.valueType)
+                typeToFieldMap.get(modelToEdit.valueType),
             );
             // Copy the optionSet value type onto the code field
             fieldConfig.type = typeToFieldMap.get(modelToEdit.valueType);
             // Generate the validator and pre-translate their messages
             fieldConfig.validators = getValidatorsFromModelValidation(
                 fieldConfig,
-                d2.models.option
+                d2.models.option,
             ).map(validator => {
                 validator.message = d2.i18n.getTranslation(validator.message);
 
@@ -80,7 +80,7 @@ const optionFormData$ = Observable.combineLatest(
         model: optionDialogState.model,
         isAdd: !optionDialogState.model.id,
         isDialogOpen: optionDialogState.isDialogOpen,
-    })
+    }),
 )
     .flatMap(async ({ fieldConfigs, model, isAdd, ...other }) => {
         const d2 = await getInstance();
@@ -172,7 +172,7 @@ class AddOptionDialog extends Component {
                 this.setState({
                     isSaving: false,
                 });
-            }
+            },
         );
     }
 }
@@ -360,7 +360,7 @@ class OptionManagement extends Component {
                 <AlertIcon color="orange" />
                 <div style={textStyle}>
                     {this.i18n.getTranslation(
-                        'list_might_not_represent_the_accurate_order_of_options_due_the_availability_of_pagination'
+                        'list_might_not_represent_the_accurate_order_of_options_due_the_availability_of_pagination',
                     )}
                 </div>
             </div>
@@ -407,7 +407,7 @@ const stateForOptionManagement$ = Observable.combineLatest(
     (modelToEdit, optionList) => ({
         ...optionList,
         model: modelToEdit,
-    })
+    }),
 );
 
 export default withStateFrom(stateForOptionManagement$, OptionManagement);

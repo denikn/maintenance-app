@@ -34,7 +34,7 @@ function ValidationRuleExpressionDialog(
         onMissingStrategyChanged,
         onSlidingWindowChanged,
     },
-    { d2 }
+    { d2 },
 ) {
     return (
         <Dialog
@@ -125,8 +125,8 @@ const enhanceExpressionDialog = compose(
                         slidingWindow,
                     }),
             };
-        }
-    )
+        },
+    ),
 );
 
 export default enhanceExpressionDialog(ValidationRuleExpressionDialog);

@@ -8,7 +8,7 @@ export const getStageNotifications = ({
     programStageNotifications,
 }) =>
     compose(get(__, programStageNotifications), get('id'), first)(
-        programStages
+        programStages,
     );
 
 export const getStageNotificationsForProgramStageId = curry((state, id) => {
@@ -25,11 +25,11 @@ export const getProgramStageDataElements = ({
     availableDataElements,
 }) => {
     const programStageDataElements = programStages[0].programStageDataElements.map(
-        psde => psde.dataElement.id
+        psde => psde.dataElement.id,
     );
 
     return availableDataElements.filter(de =>
-        programStageDataElements.includes(de.id)
+        programStageDataElements.includes(de.id),
     );
 };
 
@@ -49,28 +49,28 @@ export const getProgramStageDataElementsByStageId = state => id => {
     ].programStageDataElements.map(psde => psde.dataElement.id);
 
     return availableDataElements.filter(de =>
-        programStageDataElements.includes(de.id)
+        programStageDataElements.includes(de.id),
     );
 };
 
 export const isDeletingSelector = get(
-    'eventProgram.stageNotifications.isDeleting'
+    'eventProgram.stageNotifications.isDeleting',
 );
 export const objectNameToBeDeletedSelector = get(
-    'eventProgram.stageNotifications.objectNameToBeDeleted'
+    'eventProgram.stageNotifications.objectNameToBeDeleted',
 );
 export const modelToEditSelector = get(
-    'eventProgram.stageNotifications.modelToEdit'
+    'eventProgram.stageNotifications.modelToEdit',
 );
 
 export const getSelectedProgramStageId = get(
-    'eventProgram.stageNotifications.selectedProgramStage'
+    'eventProgram.stageNotifications.selectedProgramStage',
 );
 
 export const getNotificationType = get(
-    'eventProgram.stageNotifications.notificationType'
+    'eventProgram.stageNotifications.notificationType',
 );
 
 export const isProgramNotification = state =>
-    'PROGRAM_NOTIFICATION' ==
-    get('eventProgram.stageNotifications.notificationType')(state);
+    get('eventProgram.stageNotifications.notificationType')(state) ==
+    'PROGRAM_NOTIFICATION';

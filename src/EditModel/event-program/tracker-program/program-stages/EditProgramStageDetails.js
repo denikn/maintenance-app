@@ -19,8 +19,8 @@ export const EditProgramStageDetails = props => {
                 editFieldChanged: (field, value) =>
                     editProgramStageField(props.programStage.id, field, value),
             },
-            dispatch
-        )
+            dispatch,
+        ),
     );
     const ProgramStageDetailsForm = pure(
         connectedEditForm(
@@ -28,10 +28,10 @@ export const EditProgramStageDetails = props => {
                 createFormFor(
                     props.programStage$,
                     'programStage',
-                    programStageFields
-                )
-            )
-        )
+                    programStageFields,
+                ),
+            ),
+        ),
     );
     return <ProgramStageDetailsForm {...props} />;
 };

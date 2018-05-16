@@ -38,7 +38,7 @@ const enhance = compose(
         t: d2.i18n.getTranslation.bind(d2.i18n),
         question: `${d2.i18n.getTranslation('delete')} ${name}?`,
         ...props,
-    }))
+    })),
 );
 
 export default enhance(DeleteDialog);

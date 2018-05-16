@@ -25,7 +25,7 @@ const DataSetNotificationSubjectAndMessageTemplateFields = compose(
     mapProps(props => ({
         ...props,
         onUpdate: actions.update,
-    }))
+    })),
 )(SubjectAndMessageTemplateFields);
 
 export default DataSetNotificationSubjectAndMessageTemplateFields;

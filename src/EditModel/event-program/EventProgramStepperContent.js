@@ -32,7 +32,7 @@ ProgramForm = createFieldConfigsFor(
     undefined,
     null,
     true,
-    'eventProgram'
+    'eventProgram',
 )(ProgramForm);
 
 let ProgramStageForm = props => (
@@ -47,7 +47,7 @@ ProgramStageForm = createFieldConfigsFor(
     undefined,
     null,
     true,
-    'eventProgramStage'
+    'eventProgramStage',
 )(ProgramStageForm);
 let EditProgramDetailsForm = props => (
     <div>
@@ -69,15 +69,15 @@ const mapDispatchToProps = (dispatch, ownProps) =>
             editProgramStageFieldChange: (field, value) =>
                 editProgramStageField(ownProps.programStage.id, field, value),
         },
-        dispatch
+        dispatch,
     );
 EditProgramDetailsForm = connect(null, mapDispatchToProps)(
-    wrapInPaper(EditProgramDetailsForm)
+    wrapInPaper(EditProgramDetailsForm),
 );
 
 const stepperConfig = () => {
     const stepComponents = {
-        EditProgramDetailsForm: EditProgramDetailsForm,
+        EditProgramDetailsForm,
         AssignDataElements,
         EditDataEntryForm,
         AssignOrganisationUnits,
@@ -103,9 +103,9 @@ const EventProgramStepperContent = compose(
                 ...props,
                 modelToEdit: program,
                 programStage: first(programStages),
-            })
-        )
-    )
+            }),
+        ),
+    ),
 )(createStepperContentFromConfig(stepperConfig()));
 
 export default EventProgramStepperContent;

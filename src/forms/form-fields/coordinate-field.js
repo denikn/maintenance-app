@@ -49,7 +49,7 @@ class CoordinateField extends React.Component {
         this.updateLongitude = this.updateLongitude.bind(this);
 
         this.getTranslation = context.d2.i18n.getTranslation.bind(
-            context.d2.i18n
+            context.d2.i18n,
         );
     }
 
@@ -75,7 +75,7 @@ class CoordinateField extends React.Component {
                 } else {
                     this.props.onChange({ target: { value: '' } });
                 }
-            }
+            },
         );
     }
 
@@ -146,7 +146,7 @@ class CoordinateField extends React.Component {
                 {...this.props}
                 labelText={this.getTranslation('coordinates')}
                 value={this.getTranslation(
-                    'polygon_coordinates_are_not_editable'
+                    'polygon_coordinates_are_not_editable',
                 )}
                 disabled
             />

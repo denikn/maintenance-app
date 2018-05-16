@@ -21,7 +21,7 @@ class PredictorDialog extends React.Component {
         };
 
         this.getTranslation = this.context.d2.i18n.getTranslation.bind(
-            this.context.d2.i18n
+            this.context.d2.i18n,
         );
 
         this.setStartDate = this.setStartDate.bind(this);
@@ -32,19 +32,19 @@ class PredictorDialog extends React.Component {
     componentDidMount() {
         this.subscriptions = [];
         this.subscriptions.push(
-            predictorDialogStore.subscribe(state => this.setState(state))
+            predictorDialogStore.subscribe(state => this.setState(state)),
         );
     }
 
     componentWillUnmount() {
         this.subscriptions.forEach(
-            disposable => disposable.unsubscribe && disposable.unsubscribe()
+            disposable => disposable.unsubscribe && disposable.unsubscribe(),
         );
     }
 
     requestClose() {
         predictorDialogStore.setState(
-            Object.assign({}, predictorDialogStore.state, { open: false })
+            Object.assign({}, predictorDialogStore.state, { open: false }),
         );
     }
 
@@ -87,7 +87,7 @@ class PredictorDialog extends React.Component {
             .catch(err => {
                 snackActions.show({
                     message: `${this.getTranslation(
-                        'failed_to_start_predictor'
+                        'failed_to_start_predictor',
                     )}: ${err.message}`,
                     action: 'ok',
                 });
@@ -144,14 +144,14 @@ class PredictorDialog extends React.Component {
                         <DatePicker
                             autoOk
                             floatingLabelText={`${this.getTranslation(
-                                'start_date'
+                                'start_date',
                             )} (*)`}
                             onChange={this.setStartDate}
                         />
                         <DatePicker
                             autoOk
                             floatingLabelText={`${this.getTranslation(
-                                'end_date'
+                                'end_date',
                             )} (*)`}
                             onChange={this.setEndDate}
                         />

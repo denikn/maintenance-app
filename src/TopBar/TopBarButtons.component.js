@@ -40,7 +40,7 @@ const GroupEditorButton = compose(
         toolTipText: 'metadata_group_editor',
         onClick: goToGroupEditor,
     }),
-    addD2Context
+    addD2Context,
 )(TopBarButton);
 
 function TopBarButtons(props, { d2 }) {

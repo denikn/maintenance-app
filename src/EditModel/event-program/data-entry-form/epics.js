@@ -29,11 +29,11 @@ const dataEntryFormChangedEpic = action$ =>
             const value = get('payload.value', action);
             const programStageId = get('payload.programStage', action);
             const storeState = eventProgramStore.getState();
-            let dataEntryFormForProgramStage =
+            const dataEntryFormForProgramStage =
                 storeState.dataEntryFormForProgramStage;
 
             const programStage = findProgramStageById(programStageId)(
-                storeState
+                storeState,
             );
             let dataEntryForm = dataEntryFormForProgramStage[programStageId];
 
@@ -67,13 +67,13 @@ const dataEntryFormRemoveEpic = action$ =>
             const storeState = eventProgramStore.getState();
             const programStageId = action.payload;
             const programStage = findProgramStageById(programStageId)(
-                storeState
+                storeState,
             );
             const dataEntryFormsForProgramStages =
                 storeState.dataEntryFormForProgramStage;
 
             return Observable.fromPromise(
-                dataEntryFormsForProgramStages[programStageId].delete()
+                dataEntryFormsForProgramStages[programStageId].delete(),
             )
                 .mergeMap(() => {
                     programStage.dataEntryForm = undefined;
@@ -91,7 +91,7 @@ const dataEntryFormRemoveEpic = action$ =>
                     ];
                 })
                 .catch(v => {
-                    //probably not saved to server, clear local and ignore
+                    // probably not saved to server, clear local and ignore
                     if (v.httpStatusCode === 404) {
                         programStage.dataEntryForm = undefined;
                         dataEntryFormsForProgramStages[
@@ -101,13 +101,13 @@ const dataEntryFormRemoveEpic = action$ =>
                         eventProgramStore.setState({});
                         return Observable.empty();
                     }
-                    //actual error
+                    // actual error
                     log.error(v);
                     return [notifyUser({ message: v.message })];
                 });
         });
 
-//Used for custom registration form. On the program object
+// Used for custom registration form. On the program object
 
 const ProgramDataEntryFormChangedEpic = action$ =>
     action$
@@ -175,5 +175,5 @@ export default combineEpics(
     dataEntryFormChangedEpic,
     dataEntryFormRemoveEpic,
     ProgramDataEntryFormChangedEpic,
-    ProgramDataEntryFormRemoveEpic
+    ProgramDataEntryFormRemoveEpic,
 );

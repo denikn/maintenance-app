@@ -12,7 +12,7 @@ export default React.createClass({
             React.PropTypes.shape({
                 name: React.PropTypes.string,
                 description: React.PropTypes.string,
-            })
+            }),
         ),
     },
 
@@ -66,7 +66,7 @@ export default React.createClass({
                     onClick={details.add}
                 >
                     &#xE145;
-                </IconButton>
+                </IconButton>,
             );
         }
 
@@ -79,7 +79,7 @@ export default React.createClass({
                 onClick={details.list}
             >
                 &#xE8EF;
-            </IconButton>
+            </IconButton>,
         );
 
         return (

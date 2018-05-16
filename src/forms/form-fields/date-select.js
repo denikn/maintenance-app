@@ -60,14 +60,14 @@ export default React.createClass({
                 this.props.value !== undefined &&
                 this.props.value !== '' ? (
                     <IconButton
-                        iconClassName="material-icons"
-                        style={styles.closeButton}
-                        iconStyle={styles.closeIcon}
-                        onClick={this._clearDate}
-                    >
+                            iconClassName="material-icons"
+                            style={styles.closeButton}
+                            iconStyle={styles.closeIcon}
+                            onClick={this._clearDate}
+                        >
                         close
-                    </IconButton>
-                ) : null}
+                        </IconButton>
+                    ) : null}
                 {this.renderDatePicker()}
             </div>
         );

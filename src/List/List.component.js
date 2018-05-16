@@ -77,7 +77,7 @@ const styles = {
 // Filters out any actions `edit`, `clone` when the user can not update/edit this modelType
 function actionsThatRequireCreate(action) {
     const modelDef = this.props.getModelDefinitionByName(
-        this.props.params.modelType
+        this.props.params.modelType,
     );
     if (
         (action !== 'edit' && action !== 'clone') ||
@@ -91,7 +91,7 @@ function actionsThatRequireCreate(action) {
 // Filters out the `delete` when the user can not delete this modelType
 function actionsThatRequireDelete(action) {
     const modelDef = this.props.getModelDefinitionByName(
-        this.props.params.modelType
+        this.props.params.modelType,
     );
     if (
         action !== 'delete' ||
@@ -111,12 +111,12 @@ export function getTranslatablePropertiesForModelType(modelType) {
     }
 
     switch (modelType) {
-        case 'dataElement':
-            return defaultTranslatableProperties.concat(['formName']);
-        case 'organisationUnitLevel':
-            return ['name'];
-        default:
-            break;
+    case 'dataElement':
+        return defaultTranslatableProperties.concat(['formName']);
+    case 'organisationUnitLevel':
+        return ['name'];
+    default:
+        break;
     }
 
     return defaultTranslatableProperties;
@@ -209,7 +209,7 @@ class List extends Component {
                 this.setState({
                     translation: translationState,
                 });
-            }
+            },
         );
 
         const dataElementOperandStoreDisposable = dataElementOperandStore.subscribe(
@@ -217,13 +217,13 @@ class List extends Component {
                 this.setState({
                     dataElementOperand: state,
                 });
-            }
+            },
         );
 
         const predictorDialogStoreDisposable = predictorDialogStore.subscribe(
             state => {
                 this.setState({ predictorDialog: state });
-            }
+            },
         );
 
         this.registerDisposable(sourceStoreDisposable);
@@ -247,7 +247,7 @@ class List extends Component {
 
     componentWillUnmount() {
         this.observerDisposables.forEach(disposable =>
-            disposable.unsubscribe()
+            disposable.unsubscribe(),
         );
     }
 
@@ -296,64 +296,64 @@ class List extends Component {
 
         if (action === 'runNow' && model.modelDefinition.name === 'predictor') {
             return this.context.d2.currentUser.authorities.has(
-                'F_PREDICTOR_RUN'
+                'F_PREDICTOR_RUN',
             );
         }
 
         // Switch action for special cases
         switch (action) {
-            case 'edit':
-                return model.access.write;
-            case 'clone':
-                return (
-                    model.modelDefinition.name !== 'dataSet' &&
+        case 'edit':
+            return model.access.write;
+        case 'clone':
+            return (
+                model.modelDefinition.name !== 'dataSet' &&
                     model.modelDefinition.name !== 'program' &&
                     model.access.write
-                );
-            case 'translate':
-                return (
-                    model.access.read &&
+            );
+        case 'translate':
+            return (
+                model.access.read &&
                     model.modelDefinition.identifiableObject
-                );
-            case 'details':
-                return model.access.read;
-            case 'share':
-                return (
-                    model.modelDefinition.isShareable === true &&
+            );
+        case 'details':
+            return model.access.read;
+        case 'share':
+            return (
+                model.modelDefinition.isShareable === true &&
                     model.access.write
-                );
-            case 'compulsoryDataElements':
-                return (
-                    model.modelDefinition.name === 'dataSet' &&
+            );
+        case 'compulsoryDataElements':
+            return (
+                model.modelDefinition.name === 'dataSet' &&
                     model.access.write
-                );
-            case 'sectionForm':
-                return (
-                    model.modelDefinition.name === 'dataSet' &&
+            );
+        case 'sectionForm':
+            return (
+                model.modelDefinition.name === 'dataSet' &&
                     model.access.write
-                );
-            case 'dataEntryForm':
-                return (
-                    model.modelDefinition.name === 'dataSet' &&
+            );
+        case 'dataEntryForm':
+            return (
+                model.modelDefinition.name === 'dataSet' &&
                     model.access.write
-                );
-            case 'pdfDataSetForm':
-                return (
-                    model.modelDefinition.name === 'dataSet' &&
+            );
+        case 'pdfDataSetForm':
+            return (
+                model.modelDefinition.name === 'dataSet' &&
                     model.access.read
-                );
-            case 'runNow':
-                return (
-                    model.modelDefinition.name === 'pushAnalysis' &&
+            );
+        case 'runNow':
+            return (
+                model.modelDefinition.name === 'pushAnalysis' &&
                     model.access.write
-                );
-            case 'preview':
-                return (
-                    model.modelDefinition.name === 'pushAnalysis' &&
+            );
+        case 'preview':
+            return (
+                model.modelDefinition.name === 'pushAnalysis' &&
                     model.access.write
-                );
-            default:
-                return true;
+            );
+        default:
+            return true;
         }
     };
 
@@ -378,22 +378,22 @@ class List extends Component {
         translationStore.setState(
             Object.assign({}, translationStore.state, {
                 open: false,
-            })
+            }),
         );
     };
 
     closeSharingDialog = sharingState => {
         const model = sharingState
             ? Object.assign(sharingStore.state.model, {
-                  publicAccess: sharingState.publicAccess,
-              })
+                publicAccess: sharingState.publicAccess,
+            })
             : sharingStore.state.model;
 
         sharingStore.setState(
             Object.assign({}, sharingStore.state, {
                 model,
                 open: false,
-            })
+            }),
         );
     };
 
@@ -401,7 +401,7 @@ class List extends Component {
         dataElementOperandStore.setState(
             Object.assign({}, dataElementOperandStore.state, {
                 open: false,
-            })
+            }),
         );
     };
 
@@ -429,7 +429,7 @@ class List extends Component {
 
                         const isConstantField =
                             modelDefinition.modelProperties.hasOwnProperty(
-                                filterField
+                                filterField,
                             ) &&
                             modelDefinition.modelProperties[
                                 filterField
@@ -443,13 +443,13 @@ class List extends Component {
                                 text: getConstantDisplayNameOrOld(
                                     this.props.params.modelType,
                                     filterField,
-                                    c
+                                    c,
                                 ),
                                 value: c,
                             }));
 
                         const referenceType = this.context.d2.models.hasOwnProperty(
-                            filterField
+                            filterField,
                         )
                             ? filterField
                             : `${this.props.params.modelType}.${filterField}`;
@@ -459,15 +459,15 @@ class List extends Component {
                                 {isConstantField ? (
                                     <Dropdown
                                         labelText={this.getTranslation(
-                                            filterField
+                                            filterField,
                                         )}
                                         options={constants}
                                         onChange={makeFilterSetter(filterField)}
                                         value={
                                             this.state.filters
                                                 ? this.state.filters[
-                                                      filterField
-                                                  ]
+                                                    filterField
+                                                ]
                                                 : null
                                         }
                                         translateOptions={
@@ -477,15 +477,15 @@ class List extends Component {
                                 ) : (
                                     <DropdownAsync
                                         labelText={this.getTranslation(
-                                            filterField
+                                            filterField,
                                         )}
                                         referenceType={referenceType}
                                         onChange={makeFilterSetter(filterField)}
                                         value={
                                             this.state.filters
                                                 ? this.state.filters[
-                                                      filterField
-                                                  ]
+                                                    filterField
+                                                ]
                                                 : null
                                         }
                                         quickAddLink={false}
@@ -497,7 +497,7 @@ class List extends Component {
                                 )}
                             </div>
                         );
-                    }
+                    },
                 )}
             </div>
         );
@@ -606,31 +606,31 @@ class List extends Component {
             return row.noMoreGottaTranslateCauseIsDone
                 ? row
                 : this.state.tableColumns.reduce((prow, columnName) => {
-                      if (
-                          isTranslatable(
-                              row.modelDefinition.name,
-                              columnName
-                          ) &&
+                    if (
+                        isTranslatable(
+                            row.modelDefinition.name,
+                            columnName,
+                        ) &&
                           row &&
                           row.modelDefinition &&
                           row.modelDefinition.modelProperties[columnName] &&
                           row.modelDefinition.modelProperties[columnName]
                               .constants
-                      ) {
-                          // Hack it to fix another hack - sweeet
-                          row.noMoreGottaTranslateCauseIsDone = true;
-                          if (row[columnName]) {
-                              prow[columnName] = this.getTranslation(
-                                  getConstantDisplayNameOrOld(
-                                      row.modelDefinition.name,
-                                      columnName,
-                                      row[columnName]
-                                  ).toLowerCase()
-                              );
-                          }
-                      }
-                      return prow;
-                  }, row);
+                    ) {
+                        // Hack it to fix another hack - sweeet
+                        row.noMoreGottaTranslateCauseIsDone = true;
+                        if (row[columnName]) {
+                            prow[columnName] = this.getTranslation(
+                                getConstantDisplayNameOrOld(
+                                    row.modelDefinition.name,
+                                    columnName,
+                                    row[columnName],
+                                ).toLowerCase(),
+                            );
+                        }
+                    }
+                    return prow;
+                }, row);
         };
 
         const primaryAction = model => {
@@ -652,8 +652,8 @@ class List extends Component {
                     <Heading>
                         {this.getTranslation(
                             `${camelCaseToUnderscores(
-                                this.props.params.modelType
-                            )}_management`
+                                this.props.params.modelType,
+                            )}_management`,
                         )}
                         <HelpLink schema={this.props.params.modelType} />
                     </Heading>
@@ -684,23 +684,23 @@ class List extends Component {
                             {!!this.state.dataRows &&
                             !!this.state.dataRows.length ? (
                                 <DataTable
-                                    rows={this.state.dataRows
-                                        .map(magicallyUnwrapChildValues)
-                                        .map(defaultReallyMeansNone)
-                                        .map(translateConstants)}
-                                    columns={this.state.tableColumns}
-                                    contextMenuActions={availableActions}
-                                    contextMenuIcons={contextMenuIcons}
-                                    primaryAction={primaryAction}
-                                    isContextActionAllowed={
-                                        this.isContextActionAllowed
-                                    }
-                                />
-                            ) : (
-                                <div>
-                                    {this.getTranslation('no_results_found')}
-                                </div>
-                            )}
+                                        rows={this.state.dataRows
+                                            .map(magicallyUnwrapChildValues)
+                                            .map(defaultReallyMeansNone)
+                                            .map(translateConstants)}
+                                        columns={this.state.tableColumns}
+                                        contextMenuActions={availableActions}
+                                        contextMenuIcons={contextMenuIcons}
+                                        primaryAction={primaryAction}
+                                        isContextActionAllowed={
+                                            this.isContextActionAllowed
+                                        }
+                                    />
+                                ) : (
+                                    <div>
+                                        {this.getTranslation('no_results_found')}
+                                    </div>
+                                )}
                         </div>
                         {!!this.state.detailsObject && (
                             <DetailsBoxWithScroll
@@ -740,7 +740,7 @@ class List extends Component {
                         onTranslationError={this.translationError}
                         onRequestClose={this.closeTranslationDialog}
                         fieldsToTranslate={getTranslatablePropertiesForModelType(
-                            this.props.params.modelType
+                            this.props.params.modelType,
                         )}
                     />
                 )}

@@ -45,7 +45,7 @@ const boundOnUpdate = dispatch =>
             onUpdate: ({ fieldName, value }) =>
                 setStageNotificationValue(fieldName, value),
         },
-        dispatch
+        dispatch,
     );
 
 const NotificationSubjectAndMessageTemplateFields = compose(
@@ -61,10 +61,10 @@ const NotificationSubjectAndMessageTemplateFields = compose(
 
         return {
             variableTypes: map(toVariableType, constantVariables).concat(
-                variables
+                variables,
             ),
         };
-    })
+    }),
 )(SubjectAndMessageTemplateFields);
 
 // Using dropdownasync-getter due to support for references
@@ -95,7 +95,7 @@ const ProgramAttributeDropDown = compose(connect(undefined, boundOnUpdate))(
                 getter={getAttrs}
             />
         );
-    }
+    },
 );
 
 const DataElementDropDown = compose(connect(undefined, boundOnUpdate))(
@@ -124,7 +124,7 @@ const DataElementDropDown = compose(connect(undefined, boundOnUpdate))(
                 getter={getElems}
             />
         );
-    }
+    },
 );
 
 /**

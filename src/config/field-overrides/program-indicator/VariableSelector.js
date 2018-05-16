@@ -31,7 +31,7 @@ const additionalTrackerProgramsVariables = [
 const getProgramVariablesForProgramType = programType => {
     if (programType === 'WITH_REGISTRATION') {
         return programIndicatorVariables.concat(
-            additionalTrackerProgramsVariables
+            additionalTrackerProgramsVariables,
         );
     }
 
@@ -60,7 +60,7 @@ const withVariablePropsForProgramType = mapPropsStream(props$ =>
                 label,
             })),
             onItemClick: onSelect,
-        }))
+        })),
 );
 
 const VariableSelector = withVariablePropsForProgramType(CollapsibleList);

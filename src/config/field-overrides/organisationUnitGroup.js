@@ -27,19 +27,19 @@ export default new Map([
         {
             component: SymbolPickerField,
             fieldOptions: {
-                options: (function() {
+                options: (function () {
                     const symbolUrls = [];
                     let i = 1;
 
                     for (; i <= 40; i++) {
                         const filename = i > 9 ? i : `0${i}`;
                         symbolUrls.push(
-                            `${filename}.${i > 25 ? 'svg' : 'png'}`
+                            `${filename}.${i > 25 ? 'svg' : 'png'}`,
                         );
                     }
 
                     return symbolUrls;
-                })(),
+                }()),
             },
         },
     ],

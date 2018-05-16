@@ -10,12 +10,12 @@ async function createCardsFromMetaDataSections(metaDataSections) {
     return metaDataSections.map(metaDataSection => ({
         key: metaDataSection.name,
         name: d2.i18n.getTranslation(
-            camelCaseToUnderscores(metaDataSection.name)
+            camelCaseToUnderscores(metaDataSection.name),
         ),
         items: metaDataSection.items.map(({ key, label }) => ({
             name: label,
             description: d2.i18n.getTranslation(
-                `intro_${camelCaseToUnderscores(key)}`
+                `intro_${camelCaseToUnderscores(key)}`,
             ),
             canCreate: d2.currentUser.canCreate(d2.models[key]),
             add: () => goToRoute(`/edit/${metaDataSection.name}/${key}/add`),
@@ -34,7 +34,7 @@ export default appStateStore
                         items: appState.sideBar[mainSectionName] || [],
                     },
                 ]),
-            []
+            [],
         );
 
         return cardState;
@@ -42,7 +42,7 @@ export default appStateStore
     .take(1)
     .map(metaDataSections =>
         Observable.fromPromise(
-            createCardsFromMetaDataSections(metaDataSections)
-        )
+            createCardsFromMetaDataSections(metaDataSections),
+        ),
     )
     .concatAll();

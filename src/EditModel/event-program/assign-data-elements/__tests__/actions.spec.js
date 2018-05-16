@@ -4,7 +4,7 @@ describe('Assignment of data elements', () => {
     describe('adding data elements', () => {
         test('should have the constant PROGRAM_STAGE_DATA_ELEMENTS_REMOVE', () => {
             expect(actions.PROGRAM_STAGE_DATA_ELEMENTS_ADD).toBe(
-                'PROGRAM_STAGE_DATA_ELEMENTS_ADD'
+                'PROGRAM_STAGE_DATA_ELEMENTS_ADD',
             );
         });
 
@@ -17,7 +17,7 @@ describe('Assignment of data elements', () => {
                 actions.addDataElementsToStage({
                     programStage: 'd9wIqlzSMgE',
                     dataElements: ['pTo4uMt3xur', 'qrur9Dvnyt5'],
-                })
+                }),
             ).toEqual({
                 type: 'PROGRAM_STAGE_DATA_ELEMENTS_ADD',
                 payload: {
@@ -31,7 +31,7 @@ describe('Assignment of data elements', () => {
     describe('removing data elements', () => {
         test('should have the constant PROGRAM_STAGE_DATA_ELEMENTS_REMOVE', () => {
             expect(actions.PROGRAM_STAGE_DATA_ELEMENTS_REMOVE).toBe(
-                'PROGRAM_STAGE_DATA_ELEMENTS_REMOVE'
+                'PROGRAM_STAGE_DATA_ELEMENTS_REMOVE',
             );
         });
 
@@ -44,7 +44,7 @@ describe('Assignment of data elements', () => {
                 actions.removeDataElementsFromStage([
                     'pTo4uMt3xur',
                     'qrur9Dvnyt5',
-                ])
+                ]),
             ).toEqual({
                 type: 'PROGRAM_STAGE_DATA_ELEMENTS_REMOVE',
                 payload: ['pTo4uMt3xur', 'qrur9Dvnyt5'],
@@ -54,17 +54,17 @@ describe('Assignment of data elements', () => {
 
     test('should have the constant PROGRAM_STAGE_DATA_ELEMENTS_ADDREMOVE_COMPLETE', () => {
         expect(actions.PROGRAM_STAGE_DATA_ELEMENTS_ADDREMOVE_COMPLETE).toBe(
-            'PROGRAM_STAGE_DATA_ELEMENTS_ADDREMOVE_COMPLETE'
+            'PROGRAM_STAGE_DATA_ELEMENTS_ADDREMOVE_COMPLETE',
         );
     });
 
     describe('editing of program stage data element', () => {
         test('should have the required constants', () => {
             expect(actions.PROGRAM_STAGE_DATA_ELEMENT_EDIT).toBe(
-                'PROGRAM_STAGE_DATA_ELEMENT_EDIT'
+                'PROGRAM_STAGE_DATA_ELEMENT_EDIT',
             );
             expect(actions.PROGRAM_STAGE_DATA_ELEMENT_EDIT_COMPLETE).toBe(
-                'PROGRAM_STAGE_DATA_ELEMENTS_EDIT_COMPLETE'
+                'PROGRAM_STAGE_DATA_ELEMENTS_EDIT_COMPLETE',
             );
         });
 
@@ -90,7 +90,7 @@ describe('Assignment of data elements', () => {
             };
 
             expect(
-                actions.editProgramStageDataElement(programStageDataElement)
+                actions.editProgramStageDataElement(programStageDataElement),
             ).toEqual({
                 type: actions.PROGRAM_STAGE_DATA_ELEMENT_EDIT,
                 payload: {

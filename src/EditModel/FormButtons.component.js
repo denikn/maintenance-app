@@ -21,7 +21,7 @@ export default function FormButtons(props) {
                 React.cloneElement(child, {
                     style: buttonStyle,
                     key: index,
-                })
+                }),
             )}
         </div>
     );

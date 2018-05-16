@@ -6,7 +6,7 @@ async function getRelationshipTypes(model, d2) {
         return [];
     }
     const relationship = await d2.models.relationshipTypes.get(
-        model.relationshipType.id
+        model.relationshipType.id,
     );
     const relationshipOptions = [
         {
@@ -50,7 +50,7 @@ const sharedOverrides = new Map([
 
 export const eventProgram = new Map([...sharedOverrides]);
 
-//Enrollment is used as customFieldOrderName for enrollment-stepper
+// Enrollment is used as customFieldOrderName for enrollment-stepper
 export const enrollment = new Map([
     ...sharedOverrides,
     // Translate relationShipFromA to a drop-down consisting of the relationships

@@ -33,17 +33,17 @@ const styles = {
 
 const DataElementPicker = (
     { availableDataElements, activeDataElements, onElementPicked },
-    { d2 }
+    { d2 },
 ) => (
     <div style={styles.dataElementPicker}>
         <div style={styles.header}>{`${d2.i18n.getTranslation(
-            'available_data_elements'
+            'available_data_elements',
         )}:`}</div>
         <div style={styles.dataElementList}>
             {availableDataElements.map(element => {
                 const elementIsActive = find(
                     active => isEqual(get('id', active), get('id', element)),
-                    activeDataElements
+                    activeDataElements,
                 );
 
                 return (

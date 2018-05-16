@@ -18,7 +18,7 @@ function findValue(optionList, model) {
         option =>
             Array.from(model.indicatorGroups.values())
                 .map(indicatorGroup => indicatorGroup.id)
-                .indexOf(option) !== -1
+                .indexOf(option) !== -1,
     );
 }
 
@@ -46,7 +46,7 @@ export default React.createClass({
                     fields: 'id,displayName,indicatorGroups[id,displayName]',
                     filter: ['compulsory:eq:true'],
                     paging: false,
-                })
+                }),
             )
             .then(response => response.indicatorGroupSets)
             .then(indicatorGroupSets => this.setState({ indicatorGroupSets }));
@@ -72,12 +72,12 @@ export default React.createClass({
                         ig => ({
                             value: ig.id,
                             text: ig.displayName,
-                        })
+                        }),
                     );
 
                     const value = Object.prototype.hasOwnProperty.call(
                         store.state.indicatorGroupValues,
-                        indicatorGroupSet.id
+                        indicatorGroupSet.id,
                     )
                         ? store.state.indicatorGroupValues[indicatorGroupSet.id]
                         : findValue(optionList, this.props.source);
@@ -93,7 +93,7 @@ export default React.createClass({
                                 onChange={this._updateGroupStatus.bind(
                                     this,
                                     indicatorGroupSet.id,
-                                    findValue(optionList, this.props.source)
+                                    findValue(optionList, this.props.source),
                                 )}
                                 fullWidth
                             />
@@ -116,10 +116,10 @@ export default React.createClass({
                     [indicatorGroupSetId]: event.target.value
                         ? event.target.value
                         : null,
-                }
+                },
             ),
             remove: Array.from(
-                new Set(store.state.remove.concat([oldValue])).values()
+                new Set(store.state.remove.concat([oldValue])).values(),
             ),
         });
     },

@@ -52,7 +52,7 @@ const cardTarget = {
 
         // Determine rectangle on screen
         const hoverBoundingRect = findDOMNode(
-            component
+            component,
         ).getBoundingClientRect();
 
         // Get vertical middle
@@ -86,14 +86,14 @@ const cardTarget = {
 };
 
 const OptionValueWithDrag = DragSource(ItemTypes.OPTION, cardSource, collect)(
-    OptionValue
+    OptionValue,
 );
 const OptionValueWithDragAndDrop = DropTarget(
     ItemTypes.OPTION,
     cardTarget,
     connect => ({
         connectDropTarget: connect.dropTarget(),
-    })
+    }),
 )(OptionValueWithDrag);
 
 const SortableList = DragDropContext(HTML5Backend)(
@@ -114,12 +114,12 @@ const SortableList = DragDropContext(HTML5Backend)(
                 </div>
             );
         }
-    }
+    },
 );
 
 const sortDialogState$ = Observable.combineLatest(
     sortDialogStore,
-    optionsForOptionSetStore
+    optionsForOptionSetStore,
 ).map(([state, optionState]) => ({
     ...state,
     ...optionState,
@@ -156,10 +156,10 @@ class SortDialog extends Component {
 
     moveOption = (dragId, targetId) => {
         const dragIndex = this.state.options.findIndex(
-            option => option.id === dragId
+            option => option.id === dragId,
         );
         const targetIndex = this.state.options.findIndex(
-            option => option.id === targetId
+            option => option.id === targetId,
         );
         const dragOption = this.state.options[dragIndex];
 
@@ -192,7 +192,7 @@ class SortDialog extends Component {
                             onClick={this._saveOptionOrder}
                             primary
                             label={this.i18n.getTranslation(
-                                this.props.isSaving ? 'saving' : 'save'
+                                this.props.isSaving ? 'saving' : 'save',
                             )}
                         />
                     ) : (
@@ -222,7 +222,7 @@ class SortDialog extends Component {
             return (
                 <div style={{ padding: '1rem 0' }}>
                     {this.i18n.getTranslation(
-                        'manual_sorting_is_not_available_for_option_sets_with_more_than_50_options'
+                        'manual_sorting_is_not_available_for_option_sets_with_more_than_50_options',
                     )}
                 </div>
             );

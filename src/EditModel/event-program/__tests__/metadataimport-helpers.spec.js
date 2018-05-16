@@ -143,56 +143,56 @@ describe('MetaDataImport helpers', () => {
 
     test('should return an object', () => {
         expect(typeof getImportStatus(successfullImportResponse)).toBe(
-            'object'
+            'object',
         );
     });
 
     test('should retain the original properties on success', () => {
         expect(getImportStatus(successfullImportResponse).typeReports).toEqual(
-            successfullImportResponse.typeReports
+            successfullImportResponse.typeReports,
         );
         expect(getImportStatus(successfullImportResponse).stats).toEqual(
-            successfullImportResponse.stats
+            successfullImportResponse.stats,
         );
         expect(getImportStatus(successfullImportResponse).importParams).toEqual(
-            successfullImportResponse.importParams
+            successfullImportResponse.importParams,
         );
         expect(getImportStatus(successfullImportResponse).status).toEqual(
-            successfullImportResponse.status
+            successfullImportResponse.status,
         );
     });
 
     test('should retain the original properties on failure', () => {
         expect(
-            getImportStatus(unsuccessfullImportResponse).typeReports
+            getImportStatus(unsuccessfullImportResponse).typeReports,
         ).toEqual(unsuccessfullImportResponse.typeReports);
         expect(getImportStatus(unsuccessfullImportResponse).stats).toEqual(
-            unsuccessfullImportResponse.stats
+            unsuccessfullImportResponse.stats,
         );
         expect(
-            getImportStatus(unsuccessfullImportResponse).importParams
+            getImportStatus(unsuccessfullImportResponse).importParams,
         ).toEqual(unsuccessfullImportResponse.importParams);
         expect(getImportStatus(unsuccessfullImportResponse).status).toEqual(
-            unsuccessfullImportResponse.status
+            unsuccessfullImportResponse.status,
         );
     });
 
     describe('isOk', () => {
         test('should be a function', () => {
             expect(typeof getImportStatus(successfullImportResponse).isOk).toBe(
-                'function'
+                'function',
             );
         });
 
         test('should return true when the import is successful', () => {
             expect(getImportStatus(successfullImportResponse).isOk()).toBe(
-                true
+                true,
             );
         });
 
         test('should return false when the import errored', () => {
             expect(getImportStatus(unsuccessfullImportResponse).isOk()).toBe(
-                false
+                false,
             );
         });
     });
@@ -200,13 +200,13 @@ describe('MetaDataImport helpers', () => {
     describe('typeReports', () => {
         test('should have a type report for each object on success', () => {
             expect(
-                getImportStatus(successfullImportResponse).typeReports
+                getImportStatus(successfullImportResponse).typeReports,
             ).toHaveLength(1);
         });
 
         test('should have a type report for each object on failure', () => {
             expect(
-                getImportStatus(unsuccessfullImportResponse).typeReports
+                getImportStatus(unsuccessfullImportResponse).typeReports,
             ).toHaveLength(2);
         });
     });
@@ -214,20 +214,20 @@ describe('MetaDataImport helpers', () => {
     describe('errorsPerObject', () => {
         test('should be an empty array on successful import', () => {
             expect(
-                getImportStatus(successfullImportResponse).errorsPerObject
+                getImportStatus(successfullImportResponse).errorsPerObject,
             ).toEqual([]);
         });
 
         test('should contain an object for each object that has errors', () => {
             expect(
-                getImportStatus(unsuccessfullImportResponse).errorsPerObject
+                getImportStatus(unsuccessfullImportResponse).errorsPerObject,
             ).toHaveLength(2);
         });
 
         test('should have the id for the program object', () => {
             expect(
                 getImportStatus(unsuccessfullImportResponse).errorsPerObject[0]
-                    .id
+                    .id,
             ).toBe('MslrqljzDcW');
         });
 
@@ -235,14 +235,14 @@ describe('MetaDataImport helpers', () => {
         xit('should have the id for the categoryOption object', () => {
             expect(
                 getImportStatus(unsuccessfullImportResponse).errorsPerObject[1]
-                    .id
+                    .id,
             ).toBe('Jg6u9usyKgl');
         });
 
         test('should have the errors group by property', () => {
             expect(
                 getImportStatus(unsuccessfullImportResponse).errorsPerObject[1]
-                    .errors
+                    .errors,
             ).toEqual({
                 code: [
                     {

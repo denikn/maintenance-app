@@ -12,7 +12,7 @@ export default class OrganisationUnitList extends React.Component {
             // Only do this is we're actually about to show organisation units
             .filter(
                 appState =>
-                    appState.sideBar.currentSubSection === 'organisationUnit'
+                    appState.sideBar.currentSubSection === 'organisationUnit',
             )
             .map(({ selectedOrganisationUnit, userOrganisationUnits }) => ({
                 selectedOrganisationUnit,
@@ -31,7 +31,7 @@ export default class OrganisationUnitList extends React.Component {
 
                     if (!selectedOrganisationUnit.id) {
                         return listActions.setListSource(
-                            ModelCollection.create(d2.models.organisationUnit)
+                            ModelCollection.create(d2.models.organisationUnit),
                         );
                     }
 
@@ -53,7 +53,7 @@ export default class OrganisationUnitList extends React.Component {
                     // of available organisation units to pick from
                     if (
                         userOrganisationUnitIds.indexOf(
-                            selectedOrganisationUnit.id
+                            selectedOrganisationUnit.id,
                         ) >= 0
                     ) {
                         organisationUnitList.add(selectedOrganisationUnit);
@@ -61,7 +61,7 @@ export default class OrganisationUnitList extends React.Component {
 
                     listActions.setListSource(organisationUnitList);
                 },
-                error => log.error(error)
+                error => log.error(error),
             );
     }
 
@@ -79,7 +79,7 @@ export default class OrganisationUnitList extends React.Component {
                 {...otherProps}
                 params={Object.assign(
                     { modelType: 'organisationUnit' },
-                    params
+                    params,
                 )}
             />
         );
