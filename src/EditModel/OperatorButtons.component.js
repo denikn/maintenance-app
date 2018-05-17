@@ -43,7 +43,7 @@ class OperatorButtons extends Component {
                     {this.operatorButton(' >= ')}
                     {this.operatorButton(' < ')}
                     {this.operatorButton(' <= ')}
-                    {this.operatorButton(' === ')}
+                    {this.operatorButton(' == ')}
                     {this.operatorButton(' != ')}
                 </div>
                 <div style={styles.operatorButtonSeparator}>
