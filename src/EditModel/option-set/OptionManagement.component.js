@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Observable } from 'rxjs';
 import DataTable from 'd2-ui/lib/data-table/DataTable.component';
@@ -13,6 +14,7 @@ import snackActions from '../../Snackbar/snack.actions';
 import withStateFrom from 'd2-ui/lib/component-helpers/withStateFrom';
 import CancelButton from '../CancelButton.component';
 import modelToEditStore from '../modelToEditStore';
+import log from 'loglevel';
 import OptionSorter from './OptionSorter.component';
 import {
     typeToFieldMap,
@@ -28,7 +30,7 @@ import LinearProgress from 'material-ui/LinearProgress/LinearProgress';
 import AlertIcon from 'material-ui/svg-icons/alert/warning';
 import TranslationDialog from 'd2-ui/lib/i18n/TranslationDialog.component';
 
-const optionList$ = Observable.combineLatest(
+export const optionList$ = Observable.combineLatest(
     optionsForOptionSetStore,
     Observable.of(['name', 'code']),
     ({ options, pager, ...other }, columns) => ({
@@ -393,7 +395,7 @@ class OptionManagement extends Component {
     }
 }
 OptionManagement.contextTypes = {
-    d2: React.PropTypes.object,
+    d2: PropTypes.object,
 };
 OptionManagement.defaultProps = {
     rows: [],

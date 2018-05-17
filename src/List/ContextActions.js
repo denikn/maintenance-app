@@ -290,9 +290,11 @@ contextActions.preview.subscribe(
             .then(actionComplete)
             .catch(err => {
                 snackActions.show({
-                    message: d2.i18n.getTranslation(
-                        'failed_to_open_report_preview'
-                    ),
+                    //TODO: d2 is not available in the catch clause. Showing a static message for now.
+                    // message: d2.i18n.getTranslation(
+                    //     'failed_to_open_report_preview'
+                    // ),
+                    message: 'Failed to open report preview',
                     action: 'ok',
                 });
                 actionFailed(err);

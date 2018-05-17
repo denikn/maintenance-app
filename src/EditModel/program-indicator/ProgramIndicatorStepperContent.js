@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Observable } from 'rxjs';
 import { get, difference } from 'lodash/fp';
 import compose from 'recompose/compose';
 import mapPropsStream from 'recompose/mapPropsStream';

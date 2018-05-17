@@ -217,10 +217,8 @@ class ProgramRuleActionDialog extends React.Component {
     }
 
     update(fieldName, value) {
-        this.state.programRuleAction[fieldName] = value;
-
         this.setState({
-            programRuleAction: this.state.programRuleAction,
+            programRuleAction: {...this.state.programRuleAction, [fieldName]: value},
         });
     }
 

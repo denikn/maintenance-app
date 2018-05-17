@@ -60,7 +60,7 @@ class ProgramRuleActionsList extends React.Component {
                         .map(s => s.trim())
                         .join(', ');
                 // NO BREAK!
-
+                // eslint-disable-next-line no-fallthrough
                 case 'DISPLAYTEXT':
                 case 'DISPLAYKEYVALUEPAIR':
                     if (!field && action.location) {
@@ -84,7 +84,7 @@ class ProgramRuleActionsList extends React.Component {
                         `${this.getTranslation(
                             programRuleActionTypes[action.programRuleActionType]
                                 .label
-                        )}: ` + `"${text}"${field}`;
+                        )}: "${text}"${field}`;
                     break;
 
                 case 'HIDEFIELD':

@@ -135,6 +135,9 @@ function cloneHandlerByObjectType(objectType, model) {
             );
             break;
         }
+        
+        default:
+            break;
     }
     return model;
 }

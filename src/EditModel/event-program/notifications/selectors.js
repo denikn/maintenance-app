@@ -72,5 +72,5 @@ export const getNotificationType = get(
 );
 
 export const isProgramNotification = state =>
-    get('eventProgram.stageNotifications.notificationType')(state) ==
+    get('eventProgram.stageNotifications.notificationType')(state) ===
     'PROGRAM_NOTIFICATION';
