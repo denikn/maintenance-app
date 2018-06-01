@@ -1,10 +1,10 @@
-import React, { PropTypes } from 'react';
-import withProps from 'recompose/withProps';
-import mapProps from 'recompose/mapProps';
-import compose from 'recompose/compose';
-import SubjectAndMessageTemplateFields from './validation-notification-template/SubjectAndMessageTemplateFields';
-import { map } from 'lodash/fp';
-import actions from '../../EditModel/objectActions';
+import React, { PropTypes } from 'react'
+import withProps from 'recompose/withProps'
+import mapProps from 'recompose/mapProps'
+import compose from 'recompose/compose'
+import SubjectAndMessageTemplateFields from './validation-notification-template/SubjectAndMessageTemplateFields'
+import { map } from 'lodash/fp'
+import actions from '../../EditModel/objectActions'
 
 const VALIDATION_RULE_VARIABLES = [
     'rule_name',
@@ -17,24 +17,27 @@ const VALIDATION_RULE_VARIABLES = [
     'right_side_value',
     'org_unit_name',
     'period',
-    'current_date',
-];
+    'current_date'
+]
 
-const toVariableType = name => ['V', name];
-const toAttributeType = name => ['A', name];
+const toVariableType = name => ['V', name]
+const toAttributeType = name => ['A', name]
 
 const ValidationNotificationSubjectAndMessageTemplateFields = compose(
     withProps({
-        variableTypes: map(toVariableType, VALIDATION_RULE_VARIABLES),
+        variableTypes: map(toVariableType, VALIDATION_RULE_VARIABLES)
     }),
     mapProps(props => ({
         ...props,
-        onUpdate: actions.update,
-    })),
-)(SubjectAndMessageTemplateFields);
+        onUpdate: actions.update
+    }))
+)(SubjectAndMessageTemplateFields)
 
 export default new Map([
-    ['messageTemplate', {
-        component: ValidationNotificationSubjectAndMessageTemplateFields,
-    }],
-]);
+    [
+        'messageTemplate',
+        {
+            component: ValidationNotificationSubjectAndMessageTemplateFields
+        }
+    ]
+])

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const styles = {
     formFieldSubFields: {
@@ -11,19 +11,15 @@ const styles = {
         paddingBottom: '0.5rem',
         marginLeft: '-0.5rem',
         marginBottom: '1rem',
-        boxShadow: 'rgba(0, 0, 0, 0.15) 0px 2px 5px -1px inset',
-    },
-};
+        boxShadow: 'rgba(0, 0, 0, 0.15) 0px 2px 5px -1px inset'
+    }
+}
 
 export default function SubFieldWrap({ children, style = {} }) {
     const subfieldWrapStyle = {
         ...styles.formFieldSubFields,
-        ...style,
-    };
+        ...style
+    }
 
-    return (
-        <div style={subfieldWrapStyle}>
-            {children}
-        </div>
-    );
+    return <div style={subfieldWrapStyle}>{children}</div>
 }

@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { get, compose } from 'lodash/fp';
-import Checkbox from 'material-ui/Checkbox';
-import addD2Context from 'd2-ui/lib/component-helpers/addD2Context';
-import { CustomRegistrationDataEntryForm } from "../data-entry-form/EditCustomRegistrationForm";
+import React, { Component } from 'react'
+import { get, compose } from 'lodash/fp'
+import Checkbox from 'material-ui/Checkbox'
+import addD2Context from 'd2-ui/lib/component-helpers/addD2Context'
+import { CustomRegistrationDataEntryForm } from '../data-entry-form/EditCustomRegistrationForm'
 
 const styles = {
     outer: {
-        marginTop: '24px',
+        marginTop: '24px'
     },
     checkbox: {
         marginBottom: '24px'
@@ -15,16 +15,18 @@ const styles = {
 
 class CustomRegistrationForm extends Component {
     state = {
-        useCustom: !!this.props.model.dataEntryForm && !!this.props.model.dataEntryForm.id,
-    };
+        useCustom:
+            !!this.props.model.dataEntryForm &&
+            !!this.props.model.dataEntryForm.id
+    }
 
     handleUseCustom = (e, checked) => {
-        this.setState({ ...this.state, useCustom: checked });
-    };
+        this.setState({ ...this.state, useCustom: checked })
+    }
 
     renderCustomForm = () => {
         return <CustomRegistrationDataEntryForm />
-    };
+    }
 
     render() {
         return (
@@ -39,8 +41,8 @@ class CustomRegistrationForm extends Component {
                 />
                 {this.state.useCustom && this.renderCustomForm()}
             </div>
-        );
+        )
     }
 }
 
-export default addD2Context(CustomRegistrationForm);
+export default addD2Context(CustomRegistrationForm)

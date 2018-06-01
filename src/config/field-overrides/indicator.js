@@ -1,5 +1,3 @@
-import { decimals } from './sharedFields';
+import { decimals } from './sharedFields'
 
-export default new Map([
-    decimals,
-]);
+export default new Map([decimals])

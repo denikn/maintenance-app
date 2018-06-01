@@ -1,57 +1,59 @@
-import React, { Component, PropTypes } from 'react';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
+import React, { Component, PropTypes } from 'react'
+import Dialog from 'material-ui/Dialog'
+import FlatButton from 'material-ui/FlatButton'
+import TextField from 'material-ui/TextField'
+import FloatingActionButton from 'material-ui/FloatingActionButton'
+import ContentAdd from 'material-ui/svg-icons/content/add'
 
 const styles = {
     container: {
         textAlign: 'right',
-        width: '100%',
-    },
-};
+        width: '100%'
+    }
+}
 
 class AddNewSection extends Component {
     constructor(props, context) {
-        super(props, context);
+        super(props, context)
         this.state = {
             dialogOpen: false,
-            sectionName: '',
-        };
+            sectionName: ''
+        }
     }
 
     getTranslation = key => {
-        return this.context.d2.i18n.getTranslation(key);
-    };
+        return this.context.d2.i18n.getTranslation(key)
+    }
 
     openDialog = () => {
-        this.setState({ dialogOpen: true });
-    };
+        this.setState({ dialogOpen: true })
+    }
 
     closeDialog = () => {
-        this.setState({ dialogOpen: false });
-    };
+        this.setState({ dialogOpen: false })
+    }
 
     clearName = () => {
-        this.setState({ sectionName: '' });
-    };
+        this.setState({ sectionName: '' })
+    }
 
     confirmAddNewSection = () => {
-        this.closeDialog();
-        this.props.onSectionAdded(this.state.sectionName);
-        this.clearName();
-    };
+        this.closeDialog()
+        this.props.onSectionAdded(this.state.sectionName)
+        this.clearName()
+    }
 
     onNameChanged = (event, sectionName) => {
-        this.setState({ sectionName });
-    };
+        this.setState({ sectionName })
+    }
 
-    focusOnSectionName = (input) => {
+    focusOnSectionName = input => {
         if (input) {
-            setTimeout(() => { input.focus(); }, 20);
+            setTimeout(() => {
+                input.focus()
+            }, 20)
         }
-    };
+    }
 
     render = () => {
         const actions = [
@@ -65,8 +67,8 @@ class AddNewSection extends Component {
                 label={this.getTranslation('add')}
                 disabled={!this.state.sectionName}
                 onTouchTap={this.confirmAddNewSection}
-            />,
-        ];
+            />
+        ]
 
         return (
             <div style={styles.container}>
@@ -86,16 +88,16 @@ class AddNewSection extends Component {
                     />
                 </Dialog>
             </div>
-        );
+        )
     }
 }
 
 AddNewSection.propTypes = {
-    onSectionAdded: PropTypes.func.isRequired,
-};
+    onSectionAdded: PropTypes.func.isRequired
+}
 
 AddNewSection.contextTypes = {
-    d2: PropTypes.object,
-};
+    d2: PropTypes.object
+}
 
-export default AddNewSection;
+export default AddNewSection

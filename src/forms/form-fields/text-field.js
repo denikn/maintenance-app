@@ -1,25 +1,37 @@
-import React, { Component } from 'react';
-import TextField from 'material-ui/TextField/TextField';
-import Action from 'd2-ui/lib/action/Action';
+import React, { Component } from 'react'
+import TextField from 'material-ui/TextField/TextField'
+import Action from 'd2-ui/lib/action/Action'
 
 export default class TextFormField extends Component {
     static getWantedProperties(props) {
-        const omitProps = ['translateOptions', 'model', 'modelDefinition', 'models',
-            'referenceType', 'referenceProperty', 'isInteger', 'isRequired', 'options'];
+        const omitProps = [
+            'translateOptions',
+            'model',
+            'modelDefinition',
+            'models',
+            'referenceType',
+            'referenceProperty',
+            'isInteger',
+            'isRequired',
+            'options'
+        ]
 
-        return Object.keys(props).reduce((acc, key) => { // eslint-disable-line arrow-body-style
-            return omitProps.indexOf(key) === -1 ? { ...acc, [key]: props[key] } : acc;
-        }, {});
+        return Object.keys(props).reduce((acc, key) => {
+            // eslint-disable-line arrow-body-style
+            return omitProps.indexOf(key) === -1
+                ? { ...acc, [key]: props[key] }
+                : acc
+        }, {})
     }
 
     constructor(props, ...args) {
-        super(props, ...args);
+        super(props, ...args)
         this.state = {
-            fieldValue: props.value || props.value === 0 ? props.value : '',
-        };
+            fieldValue: props.value || props.value === 0 ? props.value : ''
+        }
 
-        this.updateOnChange = Action.create(`updateOnKeyUp - ${props.name}`);
-        this.onValueChanged = this.onValueChanged.bind(this);
+        this.updateOnChange = Action.create(`updateOnKeyUp - ${props.name}`)
+        this.onValueChanged = this.onValueChanged.bind(this)
     }
 
     componentDidMount() {
@@ -28,62 +40,56 @@ export default class TextFormField extends Component {
             .debounceTime(300)
             .map(action => action.data)
             .distinctUntilChanged()
-            .subscribe((value) => {
+            .subscribe(value => {
                 this.props.onChange({
                     target: {
-                        value,
-                    },
-                });
-            });
+                        value
+                    }
+                })
+            })
     }
 
     componentWillReceiveProps(newProps) {
         // Keep local state in sync with the passed in value
         if (newProps.value !== this.props.value) {
             this.setState({
-                fieldValue: newProps.value ? newProps.value : '',
-            });
+                fieldValue: newProps.value ? newProps.value : ''
+            })
         }
     }
 
     componentWillUnmount() {
         if (this.subscription && this.subscription.unsubscribe) {
-            this.subscription.unsubscribe();
+            this.subscription.unsubscribe()
         }
     }
 
     onValueChanged(event) {
-        event.preventDefault();
-        event.stopPropagation();
+        event.preventDefault()
+        event.stopPropagation()
         // Keep local state to keep the field responsiveness
         this.setState({
-            fieldValue: event.currentTarget.value,
-        });
+            fieldValue: event.currentTarget.value
+        })
 
         // Fire the update handler
-        this.updateOnChange(event.currentTarget.value);
+        this.updateOnChange(event.currentTarget.value)
     }
 
     render() {
-        const {
-            label,
-            labelText,
-            multiLine,
-            style,
-            ...rest
-        } = this.props;
+        const { label, labelText, multiLine, style, ...rest } = this.props
 
-        const restProps = TextFormField.getWantedProperties(rest);
+        const restProps = TextFormField.getWantedProperties(rest)
 
         const styles = {
             errorStyle: {
                 lineHeight: multiLine ? '48px' : '12px',
-                marginTop: multiLine ? -16 : -12,
+                marginTop: multiLine ? -16 : -12
             },
             fieldWrap: {
-                position: 'relative',
-            },
-        };
+                position: 'relative'
+            }
+        }
 
         return (
             <div style={{ ...styles.fieldWrap, ...style }}>
@@ -97,7 +103,7 @@ export default class TextFormField extends Component {
                     onChange={this.onValueChanged}
                 />
             </div>
-        );
+        )
     }
 }
 
@@ -108,8 +114,8 @@ TextFormField.propTypes = {
     labelText: React.PropTypes.string.isRequired,
     onChange: React.PropTypes.func,
     multiLine: React.PropTypes.bool,
-    style: React.PropTypes.any,
-};
+    style: React.PropTypes.any
+}
 
 TextFormField.defaultProps = {
     name: '',
@@ -117,5 +123,5 @@ TextFormField.defaultProps = {
     value: null,
     label: '',
     onChange: () => {},
-    multiLine: false,
-};
+    multiLine: false
+}

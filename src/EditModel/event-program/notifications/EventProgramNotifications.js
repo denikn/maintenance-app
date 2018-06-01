@@ -1,28 +1,28 @@
-import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { __, first, get } from 'lodash/fp';
-import withState from 'recompose/withState';
-import compose from 'recompose/compose';
-import withHandlers from 'recompose/withHandlers';
-import mapPropsStream from 'recompose/mapPropsStream';
+import React, { PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { __, first, get } from 'lodash/fp'
+import withState from 'recompose/withState'
+import compose from 'recompose/compose'
+import withHandlers from 'recompose/withHandlers'
+import mapPropsStream from 'recompose/mapPropsStream'
 
-import NotificationList from './NotificationList';
+import NotificationList from './NotificationList'
 import {
     getStageNotifications,
     getProgramStageDataElements,
     getProgramStages
-} from './selectors';
-import NotificationDeleteDialog from './NotificationDeleteDialog';
-import { removeStageNotification, setEditModel, setAddModel } from './actions';
-import NotificationDialog from './NotificationDialog';
-import eventProgramStore from '../eventProgramStore';
+} from './selectors'
+import NotificationDeleteDialog from './NotificationDeleteDialog'
+import { removeStageNotification, setEditModel, setAddModel } from './actions'
+import NotificationDialog from './NotificationDialog'
+import eventProgramStore from '../eventProgramStore'
 
-const notifications$ = eventProgramStore.map(getStageNotifications);
+const notifications$ = eventProgramStore.map(getStageNotifications)
 const programStageDataElements$ = eventProgramStore.map(
     getProgramStageDataElements
-);
-const programStages$ = eventProgramStore.map(getProgramStages);
+)
+const programStages$ = eventProgramStore.map(getProgramStages)
 
 function EventProgramNotifications({
     notifications,
@@ -45,7 +45,10 @@ function EventProgramNotifications({
                 onEditNotification={setEditModel}
                 onAddNotification={setAddModel}
             />
-            <NotificationDialog dataElements={dataElements} programStages={programStages}/>
+            <NotificationDialog
+                dataElements={dataElements}
+                programStages={programStages}
+            />
             <NotificationDeleteDialog
                 setOpen={setOpen}
                 open={open}
@@ -54,7 +57,7 @@ function EventProgramNotifications({
                 name={modelToDelete && modelToDelete.name}
             />
         </div>
-    );
+    )
 }
 EventProgramNotifications.propTypes = {
     notifications: PropTypes.any.isRequired,
@@ -66,8 +69,8 @@ EventProgramNotifications.propTypes = {
     modelToDelete: PropTypes.any,
     setEditModel: PropTypes.any.isRequired,
     setAddModel: PropTypes.any.isRequired,
-    dataElements: PropTypes.any.isRequired,
-};
+    dataElements: PropTypes.any.isRequired
+}
 
 const mapDispatchToProps = dispatch =>
     bindActionCreators(
@@ -75,14 +78,19 @@ const mapDispatchToProps = dispatch =>
             removeStageNotification,
             setEditModel: model =>
                 setEditModel(model, 'PROGRAM_STAGE_NOTIFICATION'),
-            setAddModel,
+            setAddModel
         },
         dispatch
-    );
+    )
 
 const enhance = compose(
     // TODO: Impure connect when the reducer is fixed to emit a pure model this can be a pure action
-    connect(undefined, mapDispatchToProps, undefined, { pure: false }),
+    connect(
+        undefined,
+        mapDispatchToProps,
+        undefined,
+        { pure: false }
+    ),
     withState('open', 'setOpen', false),
     withState('modelToDelete', 'setModelToDelete', null),
     withHandlers({
@@ -90,15 +98,15 @@ const enhance = compose(
         onDelete: ({
             setOpen,
             removeStageNotification,
-            modelToDelete,
+            modelToDelete
         }) => () => {
-            setOpen(false);
-            removeStageNotification(modelToDelete);
+            setOpen(false)
+            removeStageNotification(modelToDelete)
         },
         askForConfirmation: ({ setOpen, setModelToDelete }) => model => {
-            setModelToDelete(model);
-            setOpen(true);
-        },
+            setModelToDelete(model)
+            setOpen(true)
+        }
     }),
     mapPropsStream(props$ =>
         props$.combineLatest(
@@ -109,10 +117,10 @@ const enhance = compose(
                 ...props,
                 programStages,
                 notifications,
-                dataElements,
+                dataElements
             })
         )
     )
-);
+)
 
-export default enhance(EventProgramNotifications);
+export default enhance(EventProgramNotifications)

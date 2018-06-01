@@ -1,17 +1,17 @@
-import React from 'react';
-import PeriodTypeDropDown from '../../forms/form-fields/period-type-drop-down';
-import DropDown from '../../forms/form-fields/drop-down';
+import React from 'react'
+import PeriodTypeDropDown from '../../forms/form-fields/period-type-drop-down'
+import DropDown from '../../forms/form-fields/drop-down'
 
 const reportDateOptions = [
     {
         text: 'incident_date',
-        value: 'incidentDate',
+        value: 'incidentDate'
     },
     {
         text: 'enrollment_date',
-        value: 'enrollmentDate',
-    },
-];
+        value: 'enrollmentDate'
+    }
+]
 
 /**
  * The need for this component is two-fold:
@@ -24,20 +24,21 @@ const reportDateOptions = [
  *  or translateOptions through fieldOptions to the DropDown-component.
  */
 
-const ReportDateToUseDropDown = props =>
-    <DropDown {...props} options={reportDateOptions} translateOptions />;
+const ReportDateToUseDropDown = props => (
+    <DropDown {...props} options={reportDateOptions} translateOptions />
+)
 
 export default new Map([
     [
         'periodType',
         {
-            component: PeriodTypeDropDown,
-        },
+            component: PeriodTypeDropDown
+        }
     ],
     [
         'reportDateToUse',
         {
-            component: ReportDateToUseDropDown,
-        },
-    ],
-]);
+            component: ReportDateToUseDropDown
+        }
+    ]
+])

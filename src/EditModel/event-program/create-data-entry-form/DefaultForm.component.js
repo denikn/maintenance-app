@@ -1,5 +1,5 @@
-import React, { PropTypes } from 'react';
-import SortableDataList from './SortableDataList.component';
+import React, { PropTypes } from 'react'
+import SortableDataList from './SortableDataList.component'
 
 const DefaultForm = ({ availableDataElements, onChange }) => (
     <SortableDataList
@@ -7,11 +7,11 @@ const DefaultForm = ({ availableDataElements, onChange }) => (
         dataElements={availableDataElements}
         onSortEnd={onChange}
     />
-);
+)
 
 DefaultForm.propTypes = {
     availableDataElements: PropTypes.array.isRequired,
-    onChange: PropTypes.func.isRequired,
-};
+    onChange: PropTypes.func.isRequired
+}
 
-export default DefaultForm;
+export default DefaultForm

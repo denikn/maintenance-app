@@ -1,11 +1,10 @@
-import React from 'react';
-import MenuCards from './MenuCards.component';
-import Heading from 'd2-ui/lib/headings/Heading.component';
-import menuCardsStore from './menuCardsStore';
-import withStateFrom from 'd2-ui/lib/component-helpers/withStateFrom';
+import React from 'react'
+import MenuCards from './MenuCards.component'
+import Heading from 'd2-ui/lib/headings/Heading.component'
+import menuCardsStore from './menuCardsStore'
+import withStateFrom from 'd2-ui/lib/component-helpers/withStateFrom'
 
-const sectionsForAllCards$ = menuCardsStore
-    .map(sections => ({ sections }));
+const sectionsForAllCards$ = menuCardsStore.map(sections => ({ sections }))
 
 function MenuCardsForAllSections(props) {
     return (
@@ -20,10 +19,10 @@ function MenuCardsForAllSections(props) {
                     </div>
                 ))}
         </div>
-    );
+    )
 }
 MenuCardsForAllSections.defaultProps = {
-    sections: [],
-};
+    sections: []
+}
 
-export default withStateFrom(sectionsForAllCards$, MenuCardsForAllSections);
+export default withStateFrom(sectionsForAllCards$, MenuCardsForAllSections)

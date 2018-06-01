@@ -1,14 +1,14 @@
-import React from 'react';
-import { branch, lifecycle } from 'recompose';
-import snackActions from './snack.actions';
+import React from 'react'
+import { branch, lifecycle } from 'recompose'
+import snackActions from './snack.actions'
 
-export const emptyComponent = () => null;
+export const emptyComponent = () => null
 
 export const RenderSnackbarError = lifecycle({
     componentDidMount() {
-        snackActions.show(this.props.snackAction);
-    },
-})(emptyComponent);
+        snackActions.show(this.props.snackAction)
+    }
+})(emptyComponent)
 
 /**
  * Return a component that renders nothing, but fires
@@ -18,6 +18,4 @@ export const RenderSnackbarError = lifecycle({
  * @returns {*} A component that renders nothing if test passes
  */
 export const branchWithMessage = (test, snackAction) =>
-    branch(test, _ => _ =>
-        <RenderSnackbarError snackAction={snackAction} />,
-    );
+    branch(test, _ => _ => <RenderSnackbarError snackAction={snackAction} />)

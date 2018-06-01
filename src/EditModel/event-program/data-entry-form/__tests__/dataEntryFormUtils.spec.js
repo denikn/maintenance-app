@@ -1,16 +1,20 @@
-import * as utils from '../dataEntryFormUtils';
+import * as utils from '../dataEntryFormUtils'
 
 describe('dataEntryFormUtils', () => {
     let editor = {
         insertHtml: jest.fn(),
-        getSelection: jest.fn(() => ({getRanges: jest.fn(() => ([{
-            moveToElementEditablePosition: jest.fn(),
-            endContainer: {}
-        }]))}))
+        getSelection: jest.fn(() => ({
+            getRanges: jest.fn(() => [
+                {
+                    moveToElementEditablePosition: jest.fn(),
+                    endContainer: {}
+                }
+            ])
+        }))
     }
-    let elements;
+    let elements
     const initialHTML =
-        '<p><input id="ZzYYXq4fJie-FqlgKAG8HOu-val" name="entryfield" title="MCH Measles dose" value="[ MCH Measles dose ]"/><input id="ZzYYXq4fJie-hDZbpskhqDd-val" name="entryfield" title="MCH HIV Test Type" value="[ MCH HIV Test Type ]"/><input id="ZzYYXq4fJie-BeynU4L6VCQ-val" name="entryfield" title="MCH Results given to caretaker" value="[ MCH Results given to caretaker ]"/></p>';
+        '<p><input id="ZzYYXq4fJie-FqlgKAG8HOu-val" name="entryfield" title="MCH Measles dose" value="[ MCH Measles dose ]"/><input id="ZzYYXq4fJie-hDZbpskhqDd-val" name="entryfield" title="MCH HIV Test Type" value="[ MCH HIV Test Type ]"/><input id="ZzYYXq4fJie-BeynU4L6VCQ-val" name="entryfield" title="MCH Results given to caretaker" value="[ MCH Results given to caretaker ]"/></p>'
     beforeEach(() => {
         elements = {
             'ZzYYXq4fJie-sj3j9Hwc7so-val': 'MCH Child ARVs',
@@ -26,21 +30,20 @@ describe('dataEntryFormUtils', () => {
             'ZzYYXq4fJie-aei1xRjSU2l-val': 'MCH Septrin Given',
             'ZzYYXq4fJie-OuJ6sgPyAbC-val': 'MCH Visit Comment',
             'ZzYYXq4fJie-HLmTEmupdX0-val': 'MCH Vit A',
-            'ZzYYXq4fJie-rxBfISxXS2U-val': 'MCH Yellow fever dose',
-        };
-    });
+            'ZzYYXq4fJie-rxBfISxXS2U-val': 'MCH Yellow fever dose'
+        }
+    })
 
     describe('processForm()', () => {
         test('it should work with empty formData', () => {
-            const dataEntryForm = initialHTML;
+            const dataEntryForm = initialHTML
             const { usedIds, outHtml } = utils.processFormData(
                 dataEntryForm,
                 elements,
                 utils.elementPatterns.combinedIdPattern
-            );
-            console.log(outHtml);
+            )
+            console.log(outHtml)
             expect(outHtml).toBe(initialHTML)
-        });
-    });
-
-});
+        })
+    })
+})

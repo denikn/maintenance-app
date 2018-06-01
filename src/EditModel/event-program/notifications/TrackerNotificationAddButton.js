@@ -1,14 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { hideIfNotAuthorizedToCreate } from './NotificationList';
-import addD2Context from 'd2-ui/lib/component-helpers/addD2Context';
-import Avatar from 'material-ui/Avatar';
-import FontIcon from 'material-ui/FontIcon';
-import { SpeedDial, BubbleList, BubbleListItem } from 'react-speed-dial';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { hideIfNotAuthorizedToCreate } from './NotificationList'
+import addD2Context from 'd2-ui/lib/component-helpers/addD2Context'
+import Avatar from 'material-ui/Avatar'
+import FontIcon from 'material-ui/FontIcon'
+import { SpeedDial, BubbleList, BubbleListItem } from 'react-speed-dial'
 
 class TrackerNotificationAddButton extends React.Component {
     constructor(props, context) {
-        super(props, context);
+        super(props, context)
 
         this.state = {
             items: [
@@ -22,7 +22,7 @@ class TrackerNotificationAddButton extends React.Component {
                             className="material-icons"
                             icon={<FontIcon>event</FontIcon>}
                         />
-                    ),
+                    )
                 },
                 {
                     id: 'PROGRAM_STAGE_NOTIFICATION',
@@ -34,28 +34,28 @@ class TrackerNotificationAddButton extends React.Component {
                             className="material-icons"
                             icon={<FontIcon>event_note</FontIcon>}
                         />
-                    ),
-                },
+                    )
+                }
             ],
-            open: false,
-        };
+            open: false
+        }
     }
 
     handleOpen = ({ isOpen }) => {
         this.setState({
             ...this.state,
-            open: isOpen,
-        });
-    };
+            open: isOpen
+        })
+    }
 
     handleItemClick = (item, event) => {
         this.setState({
             ...this.state,
-            open: false,
-        });
+            open: false
+        })
 
-        this.props.onAddClick(item);
-    };
+        this.props.onAddClick(item)
+    }
 
     render() {
         return (
@@ -65,25 +65,25 @@ class TrackerNotificationAddButton extends React.Component {
                 onChange={this.handleOpen}
             >
                 <BubbleList>
-                    {this.state.items.map((item, index) =>
+                    {this.state.items.map((item, index) => (
                         <BubbleListItem
                             key={item.id}
                             {...item}
                             onClick={this.handleItemClick.bind(this, item.id)}
                         />
-                    )}
+                    ))}
                 </BubbleList>
             </SpeedDial>
-        );
+        )
     }
 }
 
 TrackerNotificationAddButton.propTypes = {
-    onAddClick: PropTypes.func.isRequired,
-};
+    onAddClick: PropTypes.func.isRequired
+}
 
 const TrackerNotificationAddButtonWithContext = hideIfNotAuthorizedToCreate(
     addD2Context(TrackerNotificationAddButton)
-);
+)
 
-export default TrackerNotificationAddButtonWithContext;
+export default TrackerNotificationAddButtonWithContext

@@ -1,7 +1,7 @@
-import React from 'react';
-import Button from 'material-ui/FlatButton';
-import addD2Context from 'd2-ui/lib/component-helpers/addD2Context';
-import modelToEditStore from '../EditModel/modelToEditStore';
+import React from 'react'
+import Button from 'material-ui/FlatButton'
+import addD2Context from 'd2-ui/lib/component-helpers/addD2Context'
+import modelToEditStore from '../EditModel/modelToEditStore'
 
 function CancelButton(
     {
@@ -13,17 +13,17 @@ function CancelButton(
     context
 ) {
     const shouldConfirm =
-        isDirtyHandler && isDirtyHandler() && isDirtyHandler().dirty;
+        isDirtyHandler && isDirtyHandler() && isDirtyHandler().dirty
 
     const onClickWithConfirm = (...params) => {
         if (!shouldConfirm) {
-            onClick(...params);
+            onClick(...params)
         } else if (
             confirm(context.d2.i18n.getTranslation('abandon_unsaved_changes'))
         ) {
-            onClick(...params);
+            onClick(...params)
         }
-    };
+    }
 
     return (
         <Button
@@ -32,7 +32,7 @@ function CancelButton(
             secondary={shouldConfirm}
             label={context.d2.i18n.getTranslation('cancel')}
         />
-    );
+    )
 }
 
 CancelButton.propTypes = {
@@ -40,7 +40,7 @@ CancelButton.propTypes = {
     /* A handler that should return an object with "dirty"-key,
     describing if the current edited model is dirty
      */
-    isDirtyHandler: React.PropTypes.func,
-};
+    isDirtyHandler: React.PropTypes.func
+}
 
-export default addD2Context(CancelButton);
+export default addD2Context(CancelButton)

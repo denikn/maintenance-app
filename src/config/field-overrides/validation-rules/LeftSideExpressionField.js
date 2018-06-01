@@ -1,7 +1,7 @@
-import React from 'react';
-import { withProps } from 'recompose';
-import ValidationRuleExpressionField from './ValidationRuleExpressionField';
+import React from 'react'
+import { withProps } from 'recompose'
+import ValidationRuleExpressionField from './ValidationRuleExpressionField'
 
 export default withProps({
-    buttonLabel: 'left_side',
-})(ValidationRuleExpressionField);
+    buttonLabel: 'left_side'
+})(ValidationRuleExpressionField)

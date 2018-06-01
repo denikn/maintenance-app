@@ -2,33 +2,33 @@ const steps = [
     {
         key: 'details',
         name: 'program_details',
-        componentName: 'EditProgramDetailsForm',
+        componentName: 'EditProgramDetailsForm'
     },
     {
         key: 'enrollment',
         name: 'enrollment_details',
-        componentName: 'Enrollment',
+        componentName: 'Enrollment'
     },
     {
         key: 'tracked_attributes',
         name: 'attributes',
-        componentName: 'AssignAttributes',
+        componentName: 'AssignAttributes'
     },
     {
         key: 'stages',
         name: 'program_stages',
-        componentName: 'ProgramStage',
+        componentName: 'ProgramStage'
     },
     {
         key: 'assign_organisation_units',
         name: 'organisation_units',
-        componentName: 'AssignOrganisationUnits',
+        componentName: 'AssignOrganisationUnits'
     },
     {
         key: 'notifications',
         name: 'notifications',
-        componentName: 'TrackerProgramNotifications',
-    },
-];
+        componentName: 'TrackerProgramNotifications'
+    }
+]
 
-export default steps;
+export default steps

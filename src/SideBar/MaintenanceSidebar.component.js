@@ -1,9 +1,9 @@
-import React from 'react';
-import Sidebar from 'd2-ui/lib/sidebar/Sidebar.component';
-import noop from 'd2-utilizr/lib/noop';
+import React from 'react'
+import Sidebar from 'd2-ui/lib/sidebar/Sidebar.component'
+import noop from 'd2-utilizr/lib/noop'
 
 function MaintenanceSideBar(props) {
-    const sideBarWrapperStyle = {};
+    const sideBarWrapperStyle = {}
 
     return (
         <div style={sideBarWrapperStyle}>
@@ -12,11 +12,14 @@ function MaintenanceSideBar(props) {
                 onChangeSection={noop}
                 onSectionClick={props.onChangeSection || noop}
                 currentSection={props.currentSection}
-                styles={Object.assign({ leftBar: { overflowY: 'initial' } }, props.style)}
+                styles={Object.assign(
+                    { leftBar: { overflowY: 'initial' } },
+                    props.style
+                )}
             />
             {props.children}
         </div>
-    );
+    )
 }
 
 MaintenanceSideBar.propTypes = {
@@ -26,12 +29,12 @@ MaintenanceSideBar.propTypes = {
     currentSection: React.PropTypes.string,
     children: React.PropTypes.oneOfType([
         React.PropTypes.object,
-        React.PropTypes.array,
-    ]),
-};
+        React.PropTypes.array
+    ])
+}
 MaintenanceSideBar.defaultProps = {
     style: {},
-    sections: [],
-};
+    sections: []
+}
 
-export default MaintenanceSideBar;
+export default MaintenanceSideBar

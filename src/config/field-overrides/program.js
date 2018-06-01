@@ -1,25 +1,25 @@
-import PeriodTypeDropDown from '../../forms/form-fields/period-type-drop-down';
-import DropDownAsyncGetter from '../../forms/form-fields/drop-down-async-getter';
+import PeriodTypeDropDown from '../../forms/form-fields/period-type-drop-down'
+import DropDownAsyncGetter from '../../forms/form-fields/drop-down-async-getter'
 
 async function getRelationshipTypes(model, d2) {
     if (!model.relationshipType) {
-        return [];
+        return []
     }
     const relationship = await d2.models.relationshipTypes.get(
-        model.relationshipType.id,
-    );
+        model.relationshipType.id
+    )
     const relationshipOptions = [
         {
             text: relationship.aIsToB,
-            value: true,
+            value: true
         },
         {
             text: relationship.bIsToA,
-            value: false,
-        },
-    ];
+            value: false
+        }
+    ]
 
-    return relationshipOptions;
+    return relationshipOptions
 }
 
 /**
@@ -35,20 +35,20 @@ const sharedOverrides = new Map([
             fieldOptions: {
                 queryParamFilter: [
                     'dataDimensionType:eq:ATTRIBUTE',
-                    'name:eq:default',
-                ],
-            },
-        },
+                    'name:eq:default'
+                ]
+            }
+        }
     ],
     [
         'expiryPeriodType',
         {
-            component: PeriodTypeDropDown,
-        },
-    ],
-]);
+            component: PeriodTypeDropDown
+        }
+    ]
+])
 
-export const eventProgram = new Map([...sharedOverrides]);
+export const eventProgram = new Map([...sharedOverrides])
 
 //Enrollment is used as customFieldOrderName for enrollment-stepper
 export const enrollment = new Map([
@@ -61,11 +61,11 @@ export const enrollment = new Map([
             persisted: true,
             fieldOptions: {
                 getter: getRelationshipTypes,
-                useValueDotId: false,
-            },
-        },
-    ],
-]);
+                useValueDotId: false
+            }
+        }
+    ]
+])
 
 export const trackerProgram = new Map([
     ...sharedOverrides,
@@ -73,9 +73,9 @@ export const trackerProgram = new Map([
     [
         'trackedEntityType',
         {
-            required: true,
-        },
-    ],
-]);
+            required: true
+        }
+    ]
+])
 
-export default eventProgram;
+export default eventProgram

@@ -1,17 +1,16 @@
-import React from 'react';
-import FormBuilder from 'd2-ui/lib/forms/FormBuilder.component';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import React from 'react'
+import FormBuilder from 'd2-ui/lib/forms/FormBuilder.component'
+import Dialog from 'material-ui/Dialog'
+import FlatButton from 'material-ui/FlatButton'
+import RaisedButton from 'material-ui/RaisedButton'
 
-import DropDown from '../../../forms/form-fields/drop-down';
-import TextField from '../../../forms/form-fields/text-field';
-import programRuleActionTypes from './programRuleActionTypes';
-import ProgramRuleConditionField from './programRuleConditionField.component';
-import snackActions from '../../../Snackbar/snack.actions';
+import DropDown from '../../../forms/form-fields/drop-down'
+import TextField from '../../../forms/form-fields/text-field'
+import programRuleActionTypes from './programRuleActionTypes'
+import ProgramRuleConditionField from './programRuleConditionField.component'
+import snackActions from '../../../Snackbar/snack.actions'
 
-
-function toDisplay (element) {
+function toDisplay(element) {
     return {
         value: element.id,
         text: element.displayName,
@@ -21,16 +20,16 @@ function toDisplay (element) {
 
 class ProgramRuleActionDialog extends React.Component {
     constructor(props, context) {
-        super(props, context);
+        super(props, context)
 
         this.state = {
-            programRuleAction: this.props.ruleActionModel,
-        };
+            programRuleAction: this.props.ruleActionModel
+        }
 
-        this.d2 = context.d2;
-        this.getTranslation = this.d2.i18n.getTranslation.bind(this.d2.i18n);
-        this.save = this.save.bind(this);
-        this.update = this.update.bind(this);
+        this.d2 = context.d2
+        this.getTranslation = this.d2.i18n.getTranslation.bind(this.d2.i18n)
+        this.save = this.save.bind(this)
+        this.update = this.update.bind(this)
     }
 
     componentDidMount() {
@@ -43,96 +42,129 @@ class ProgramRuleActionDialog extends React.Component {
                         'notificationTemplates[id,displayName]',
                         'programStageDataElements[id,dataElement[id,displayName]]]',
                         'notificationTemplates[displayName,id]'
-                    ].join(','),
+                    ].join(',')
                 }),
                 this.d2.models.programs.get(this.props.program.id, {
-                    fields: 'programTrackedEntityAttributes[id,trackedEntityAttribute[id,displayName]]',
+                    fields:
+                        'programTrackedEntityAttributes[id,trackedEntityAttribute[id,displayName]]'
                 }),
                 this.d2.models.programRuleVariables.list({
                     filter: `program.id:eq:${this.props.program.id}`,
                     fields: 'id,displayName,programRuleVariableSourceType',
-                    paging: false,
-                }),
-            ]).then(([wrappedUpDataElements, wrappedUpTrackedEntityAttributes, programVariables]) => {
-                const programDataElements =
-                    Object.values(wrappedUpDataElements.programStages.toArray()
-                        .map(stage => stage.programStageDataElements.map(psde => psde.dataElement))
-                        .reduce((a, s) => a.concat(s), [])
-                        .reduce((o, de) => { o[de.id] = de; return o; }, {})
-                    )
-                    .map(toDisplay)
-                    .sort((a, b) => a.text.localeCompare(b.text));
+                    paging: false
+                })
+            ])
+                .then(
+                    ([
+                        wrappedUpDataElements,
+                        wrappedUpTrackedEntityAttributes,
+                        programVariables
+                    ]) => {
+                        const programDataElements = Object.values(
+                            wrappedUpDataElements.programStages
+                                .toArray()
+                                .map(stage =>
+                                    stage.programStageDataElements.map(
+                                        psde => psde.dataElement
+                                    )
+                                )
+                                .reduce((a, s) => a.concat(s), [])
+                                .reduce((o, de) => {
+                                    o[de.id] = de
+                                    return o
+                                }, {})
+                        )
+                            .map(toDisplay)
+                            .sort((a, b) => a.text.localeCompare(b.text))
 
-                const programSections =
-                    wrappedUpDataElements.programStages.toArray()
-                        .reduce((a, s) => a.concat(s.programStageSections.toArray()), [])
-                        .map(toDisplay)
-                        .sort((a, b) => a.text.localeCompare(b.text));
+                        const programSections = wrappedUpDataElements.programStages
+                            .toArray()
+                            .reduce(
+                                (a, s) =>
+                                    a.concat(s.programStageSections.toArray()),
+                                []
+                            )
+                            .map(toDisplay)
+                            .sort((a, b) => a.text.localeCompare(b.text))
 
-                const programStages =
-                    wrappedUpDataElements.programStages.toArray()
-                        .map(toDisplay)
-                        .sort((a, b) => a.text.localeCompare(b.text));
+                        const programStages = wrappedUpDataElements.programStages
+                            .toArray()
+                            .map(toDisplay)
+                            .sort((a, b) => a.text.localeCompare(b.text))
 
-                const programTrackedEntityAttributes =
-                    wrappedUpTrackedEntityAttributes.programTrackedEntityAttributes
-                        .map(ptea => ({
-                            text: ptea.trackedEntityAttribute.displayName,
-                            value: ptea.trackedEntityAttribute.id,
-                            model: ptea.trackedEntityAttribute,
-                        }))
-                        .sort((a, b) => a.text.localeCompare(b.text));
+                        const programTrackedEntityAttributes = wrappedUpTrackedEntityAttributes.programTrackedEntityAttributes
+                            .map(ptea => ({
+                                text: ptea.trackedEntityAttribute.displayName,
+                                value: ptea.trackedEntityAttribute.id,
+                                model: ptea.trackedEntityAttribute
+                            }))
+                            .sort((a, b) => a.text.localeCompare(b.text))
 
-                const programNotificationTemplates = wrappedUpDataElements
-                    .notificationTemplates.toArray()
-                    .map(toDisplay);
+                        const programNotificationTemplates = wrappedUpDataElements.notificationTemplates
+                            .toArray()
+                            .map(toDisplay)
 
-                const programStagesNotificationTemplates = wrappedUpDataElements
-                    .programStages.toArray()
-                    .reduce((a, b) => a.concat(b.notificationTemplates.toArray()), [])
-                    .map(toDisplay);
+                        const programStagesNotificationTemplates = wrappedUpDataElements.programStages
+                            .toArray()
+                            .reduce(
+                                (a, b) =>
+                                    a.concat(b.notificationTemplates.toArray()),
+                                []
+                            )
+                            .map(toDisplay)
 
-                let notificationTemplates = programStagesNotificationTemplates
-                    .concat(programNotificationTemplates)
-                    .sort((a, b) => a.text.localeCompare(b.text));
+                        let notificationTemplates = programStagesNotificationTemplates
+                            .concat(programNotificationTemplates)
+                            .sort((a, b) => a.text.localeCompare(b.text))
 
-                const dedupe = function dedupe(arr) {
-                    return [...new Set([].concat(...arr))];
-                };
+                        const dedupe = function dedupe(arr) {
+                            return [...new Set([].concat(...arr))]
+                        }
 
-                notificationTemplates = dedupe(notificationTemplates);
+                        notificationTemplates = dedupe(notificationTemplates)
 
-                this.setState({
-                    programStages,
-                    programSections,
-                    programDataElements,
-                    programTrackedEntityAttributes,
-                    programVariables: programVariables.toArray().map((v) => {
-                        const sign = v.programRuleVariableSourceType === 'TEI_ATTRIBUTE' ? 'A' : '#';
-                        return {
-                            text: `${sign}{${v.displayName}}`,
-                            value: `${sign}{${v.displayName}}`,
-                        };
-                    }),
-                    notificationTemplates,
-                });
-            }).catch((err) => {
-                this.props.onRequestClose();
-                snackActions.show({ message: `Error: ${err}`, action: 'ok' });
-            });
+                        this.setState({
+                            programStages,
+                            programSections,
+                            programDataElements,
+                            programTrackedEntityAttributes,
+                            programVariables: programVariables
+                                .toArray()
+                                .map(v => {
+                                    const sign =
+                                        v.programRuleVariableSourceType ===
+                                        'TEI_ATTRIBUTE'
+                                            ? 'A'
+                                            : '#'
+                                    return {
+                                        text: `${sign}{${v.displayName}}`,
+                                        value: `${sign}{${v.displayName}}`
+                                    }
+                                }),
+                            notificationTemplates
+                        })
+                    }
+                )
+                .catch(err => {
+                    this.props.onRequestClose()
+                    snackActions.show({
+                        message: `Error: ${err}`,
+                        action: 'ok'
+                    })
+                })
         }
     }
 
     componentWillReceiveProps(newProps) {
         if (newProps.programRuleAction) {
             this.setState({
-                programRuleAction: newProps.ruleActionModel,
-            });
+                programRuleAction: newProps.ruleActionModel
+            })
         }
     }
 
     async save() {
-        const programRuleAction = this.state.programRuleAction;
+        const programRuleAction = this.state.programRuleAction
 
         // Fancily translate from DropDown format to DataTable format - consistency is for sheeple
         const fieldRefs = {
@@ -141,47 +173,61 @@ class ProgramRuleActionDialog extends React.Component {
             programStage: this.state.programStages,
             programStageSection: this.state.programSections,
             programNotificationTemplate: this.state.notificationTemplates
-        };
+        }
 
-        Object.keys(fieldRefs).forEach((field) => {
+        Object.keys(fieldRefs).forEach(field => {
             if (programRuleAction[field]) {
-                const ref = fieldRefs[field].filter(v => v.value === programRuleAction[field])[0];
-                programRuleAction[field] = { id: ref.value, displayName: ref.text };
+                const ref = fieldRefs[field].filter(
+                    v => v.value === programRuleAction[field]
+                )[0]
+                programRuleAction[field] = {
+                    id: ref.value,
+                    displayName: ref.text
+                }
             } else {
-                programRuleAction[field] = undefined;
+                programRuleAction[field] = undefined
             }
-        });
+        })
 
         if (programRuleAction.id) {
             // <hack>
             // TODO: Add support for modifying an existing member of a ModelCollectionProperty in d2
-            this.props.parentModel.programRuleActions.set(programRuleAction.id, programRuleAction);
-            this.props.parentModel.programRuleActions.dirty = true;
+            this.props.parentModel.programRuleActions.set(
+                programRuleAction.id,
+                programRuleAction
+            )
+            this.props.parentModel.programRuleActions.dirty = true
             // </hack>
 
-            this.props.onChange({ target: { value: this.props.parentModel.programRuleActions } });
-            this.props.onRequestClose();
+            this.props.onChange({
+                target: { value: this.props.parentModel.programRuleActions }
+            })
+            this.props.onRequestClose()
         } else {
-            const newUid = await this.d2.Api.getApi().get('/system/id');
-            this.props.parentModel.programRuleActions.add(Object.assign(programRuleAction, { id: newUid.codes[0] }));
-            this.props.onChange({ target: { value: this.props.parentModel.programRuleActions } });
-            this.props.onRequestClose();
+            const newUid = await this.d2.Api.getApi().get('/system/id')
+            this.props.parentModel.programRuleActions.add(
+                Object.assign(programRuleAction, { id: newUid.codes[0] })
+            )
+            this.props.onChange({
+                target: { value: this.props.parentModel.programRuleActions }
+            })
+            this.props.onRequestClose()
         }
     }
 
     update(fieldName, value) {
-        this.state.programRuleAction[fieldName] = value;
+        this.state.programRuleAction[fieldName] = value
 
         this.setState({
-            programRuleAction: this.state.programRuleAction,
-        });
+            programRuleAction: this.state.programRuleAction
+        })
     }
 
     render() {
-        const modelDefinition = this.d2.models.programRuleActions;
-        const ruleActionModel = this.state.programRuleAction;
-        const currentActionType = ruleActionModel.programRuleActionType;
-        const fieldMapping = programRuleActionTypes[currentActionType];
+        const modelDefinition = this.d2.models.programRuleActions
+        const ruleActionModel = this.state.programRuleAction
+        const currentActionType = ruleActionModel.programRuleActionType
+        const fieldMapping = programRuleActionTypes[currentActionType]
 
         const fieldConfig = [
             {
@@ -191,11 +237,22 @@ class ProgramRuleActionDialog extends React.Component {
                     labelText: `${this.getTranslation('action')} (*)`,
                     fullWidth: true,
                     options: modelDefinition.modelProperties.programRuleActionType.constants
-                        .filter(o => o !== 'CREATEEVENT' || (ruleActionModel.id !== undefined && ruleActionModel.programRuleActionType === 'CREATEEVENT'))
-                        .map(o => ({ text: this.getTranslation(programRuleActionTypes[o].label), value: o })),
+                        .filter(
+                            o =>
+                                o !== 'CREATEEVENT' ||
+                                (ruleActionModel.id !== undefined &&
+                                    ruleActionModel.programRuleActionType ===
+                                        'CREATEEVENT')
+                        )
+                        .map(o => ({
+                            text: this.getTranslation(
+                                programRuleActionTypes[o].label
+                            ),
+                            value: o
+                        })),
                     value: ruleActionModel.programRuleActionType,
-                    isRequired: true,
-                },
+                    isRequired: true
+                }
             },
             {
                 name: 'location',
@@ -204,65 +261,85 @@ class ProgramRuleActionDialog extends React.Component {
                     labelText: this.getTranslation('display_widget'),
                     value: ruleActionModel.location,
                     options: [
-                        { text: this.getTranslation('feedback_widget'), value: 'feedback' },
-                        { text: this.getTranslation('program_indicator_widget'), value: 'indicators' },
+                        {
+                            text: this.getTranslation('feedback_widget'),
+                            value: 'feedback'
+                        },
+                        {
+                            text: this.getTranslation(
+                                'program_indicator_widget'
+                            ),
+                            value: 'indicators'
+                        }
                     ],
-                    fullWidth: true,
-                },
+                    fullWidth: true
+                }
             },
             {
                 name: 'dataElement',
                 component: DropDown,
                 props: {
                     labelText: this.getTranslation('data_element'),
-                    options: this.state && this.state.programDataElements || [],
+                    options:
+                        (this.state && this.state.programDataElements) || [],
                     value: ruleActionModel.dataElement,
-                    fullWidth: true,
-                },
+                    fullWidth: true
+                }
             },
             {
                 name: 'trackedEntityAttribute',
                 component: DropDown,
                 props: {
                     labelText: this.getTranslation('tracked_entity_attribute'),
-                    options: this.state && this.state.programTrackedEntityAttributes || [],
+                    options:
+                        (this.state &&
+                            this.state.programTrackedEntityAttributes) ||
+                        [],
                     value: ruleActionModel.trackedEntityAttribute,
-                    style: { display: ruleActionModel.trackedEntityAttribute ? 'inline-block' : 'none' },
-                    fullWidth: true,
-                },
+                    style: {
+                        display: ruleActionModel.trackedEntityAttribute
+                            ? 'inline-block'
+                            : 'none'
+                    },
+                    fullWidth: true
+                }
             },
             {
                 name: 'programStage',
                 component: DropDown,
                 props: {
                     labelText: this.getTranslation('program_stage'),
-                    options: this.state && this.state.programStages || [],
+                    options: (this.state && this.state.programStages) || [],
                     value: ruleActionModel.programStage,
-                    fullWidth: true,
-                },
+                    fullWidth: true
+                }
             },
             {
                 name: 'programStageSection',
                 component: DropDown,
                 props: {
                     labelText: this.getTranslation('program_stage_section'),
-                    options: this.state && this.state.programSections || [],
+                    options: (this.state && this.state.programSections) || [],
                     value: ruleActionModel.programStageSection,
-                    disabled: !this.state.programSections || this.state.programSections.length === 0,
-                    fullWidth: true,
-                },
+                    disabled:
+                        !this.state.programSections ||
+                        this.state.programSections.length === 0,
+                    fullWidth: true
+                }
             },
             {
                 name: 'content',
-                component: currentActionType === 'ASSIGN' ?
-                    DropDown : TextField,
+                component:
+                    currentActionType === 'ASSIGN' ? DropDown : TextField,
                 props: {
                     labelText: this.getTranslation('content'),
                     value: ruleActionModel.content,
                     fullWidth: true,
-                    options: currentActionType === 'ASSIGN' ?
-                        this.state.programVariables : undefined,
-                },
+                    options:
+                        currentActionType === 'ASSIGN'
+                            ? this.state.programVariables
+                            : undefined
+                }
             },
             {
                 name: 'data',
@@ -272,46 +349,63 @@ class ProgramRuleActionDialog extends React.Component {
                     value: ruleActionModel.data,
                     fullWidth: true,
                     hideOperators: true,
-                    quickAddLink: false,
-                },
+                    quickAddLink: false
+                }
             },
             {
                 name: 'programNotificationTemplate',
                 component: DropDown,
                 props: {
-                    labelText: this.getTranslation('program_notification_template'),
-                    options: this.state && this.state.notificationTemplates || [],
+                    labelText: this.getTranslation(
+                        'program_notification_template'
+                    ),
+                    options:
+                        (this.state && this.state.notificationTemplates) || [],
                     value: ruleActionModel.programNotificationTemplate,
-                    disabled: !this.state.notificationTemplates || this.state.notificationTemplates === 0,
-                    fullWidth: true,
+                    disabled:
+                        !this.state.notificationTemplates ||
+                        this.state.notificationTemplates === 0,
+                    fullWidth: true
                 }
-            },
-        ].map((field) => {
-            if (field.name !== 'programRuleActionType') {
-                const isRequired = fieldMapping && fieldMapping.required &&
-                    fieldMapping.required.includes(field.name);
+            }
+        ]
+            .map(field => {
+                if (field.name !== 'programRuleActionType') {
+                    const isRequired =
+                        fieldMapping &&
+                        fieldMapping.required &&
+                        fieldMapping.required.includes(field.name)
 
-                const isOptional = fieldMapping && fieldMapping.optional &&
-                    fieldMapping.optional.includes(field.name);
+                    const isOptional =
+                        fieldMapping &&
+                        fieldMapping.optional &&
+                        fieldMapping.optional.includes(field.name)
 
-                if (isOptional || isRequired) {
-                    field.props.style = { display: 'inline-block' };
-                    if (isRequired) {
-                        field.props.isRequired = true;
-                        field.props.labelText += ' (*)';
+                    if (isOptional || isRequired) {
+                        field.props.style = { display: 'inline-block' }
+                        if (isRequired) {
+                            field.props.isRequired = true
+                            field.props.labelText += ' (*)'
+                        }
+                    } else {
+                        field.props.style = { display: 'none' }
                     }
-                } else {
-                    field.props.style = { display: 'none' };
                 }
-            }
-            return field;
-        }).map((field) => {
-            if (fieldMapping && fieldMapping.labelOverrides && fieldMapping.labelOverrides[field.name]) {
-                field.props.labelText = this.getTranslation(fieldMapping.labelOverrides[field.name]);
-            }
+                return field
+            })
+            .map(field => {
+                if (
+                    fieldMapping &&
+                    fieldMapping.labelOverrides &&
+                    fieldMapping.labelOverrides[field.name]
+                ) {
+                    field.props.labelText = this.getTranslation(
+                        fieldMapping.labelOverrides[field.name]
+                    )
+                }
 
-            return field;
-        });
+                return field
+            })
 
         return (
             <Dialog
@@ -331,25 +425,30 @@ class ProgramRuleActionDialog extends React.Component {
                         label={this.getTranslation('commit')}
                         primary
                         onClick={this.save}
-                    />,
+                    />
                 ]}
             >
                 {this.state.programDataElements ? (
-                    <FormBuilder fields={fieldConfig} onUpdateField={this.update} />
-                ) : <div>Loading...</div>}
+                    <FormBuilder
+                        fields={fieldConfig}
+                        onUpdateField={this.update}
+                    />
+                ) : (
+                    <div>Loading...</div>
+                )}
             </Dialog>
-        );
+        )
     }
 }
 
-ProgramRuleActionDialog.contextTypes = { d2: React.PropTypes.any };
+ProgramRuleActionDialog.contextTypes = { d2: React.PropTypes.any }
 
 ProgramRuleActionDialog.propTypes = {
     open: React.PropTypes.bool.isRequired,
     onRequestClose: React.PropTypes.func.isRequired,
     onUpdateRuleActionModel: React.PropTypes.func.isRequired,
     program: React.PropTypes.object.isRequired,
-    ruleActionModel: React.PropTypes.object.isRequired,
-};
+    ruleActionModel: React.PropTypes.object.isRequired
+}
 
-export default ProgramRuleActionDialog;
+export default ProgramRuleActionDialog

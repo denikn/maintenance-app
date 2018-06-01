@@ -1,22 +1,22 @@
-import React, { Component, PropTypes } from 'react';
-import { grey100, grey200, grey300, grey500 } from 'material-ui/styles/colors';
-import { get, isEqual, find } from 'lodash/fp';
-import FontIcon from 'material-ui/FontIcon';
+import React, { Component, PropTypes } from 'react'
+import { grey100, grey200, grey300, grey500 } from 'material-ui/styles/colors'
+import { get, isEqual, find } from 'lodash/fp'
+import FontIcon from 'material-ui/FontIcon'
 
 const styles = {
     dataElementPicker: {
-        marginLeft: '1.5rem',
+        marginLeft: '1.5rem'
     },
 
     dataElementList: {
         overflowY: 'scroll',
-        maxHeight: '500px',
+        maxHeight: '500px'
     },
 
     header: {
         fontSize: '1.2rem',
         fontWeight: '500',
-        marginBottom: '16px',
+        marginBottom: '16px'
     },
 
     dataElement: {
@@ -27,17 +27,24 @@ const styles = {
         padding: '0 0.8rem',
         backgroundColor: grey200,
         marginBottom: '4px',
-        borderRadius: '8px',
-    },
-};
+        borderRadius: '8px'
+    }
+}
 
-const DataElementPicker = ({ availableDataElements, activeDataElements, onElementPicked }, { d2 }) => (
+const DataElementPicker = (
+    { availableDataElements, activeDataElements, onElementPicked },
+    { d2 }
+) => (
     <div style={styles.dataElementPicker}>
-        <div style={styles.header}>{`${d2.i18n.getTranslation('available_data_elements')}:`}</div>
+        <div style={styles.header}>{`${d2.i18n.getTranslation(
+            'available_data_elements'
+        )}:`}</div>
         <div style={styles.dataElementList}>
-            { availableDataElements.map((element) => {
-                const elementIsActive = find(active =>
-                    isEqual(get('id', active), get('id', element)), activeDataElements);
+            {availableDataElements.map(element => {
+                const elementIsActive = find(
+                    active => isEqual(get('id', active), get('id', element)),
+                    activeDataElements
+                )
 
                 return (
                     <AvailableDataElement
@@ -46,45 +53,45 @@ const DataElementPicker = ({ availableDataElements, activeDataElements, onElemen
                         pickDataElement={onElementPicked}
                         active={elementIsActive !== undefined}
                     />
-                );
+                )
             })}
         </div>
     </div>
-);
+)
 
 DataElementPicker.contextTypes = {
-    d2: PropTypes.object,
-};
+    d2: PropTypes.object
+}
 
 class AvailableDataElement extends Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
-            hover: false,
-        };
+            hover: false
+        }
     }
 
     onMouseEnter = () => {
-        this.setState({ hover: true });
-    };
+        this.setState({ hover: true })
+    }
 
     onMouseLeave = () => {
-        this.setState({ hover: false });
-    };
+        this.setState({ hover: false })
+    }
 
     getBackgroundColor = () => {
         if (this.props.active) {
-            return grey100;
+            return grey100
         }
 
-        return this.state.hover ? grey200 : grey300;
-    };
+        return this.state.hover ? grey200 : grey300
+    }
 
     pickDataElement = () => {
         if (!this.props.active) {
-            this.props.pickDataElement(this.props.dataElement.id);
+            this.props.pickDataElement(this.props.dataElement.id)
         }
-    };
+    }
 
     render = () => (
         <div
@@ -95,11 +102,15 @@ class AvailableDataElement extends Component {
                 ...styles.dataElement,
                 backgroundColor: this.getBackgroundColor(),
                 color: this.props.active ? grey500 : 'black',
-                cursor: this.props.active ? 'default' : 'pointer',
+                cursor: this.props.active ? 'default' : 'pointer'
             }}
         >
             {this.props.dataElement.displayName}
-            {!this.props.active && <FontIcon color="gray" className="material-icons">add</FontIcon>}
+            {!this.props.active && (
+                <FontIcon color="gray" className="material-icons">
+                    add
+                </FontIcon>
+            )}
         </div>
     )
 }
@@ -107,7 +118,7 @@ class AvailableDataElement extends Component {
 AvailableDataElement.propTypes = {
     dataElement: PropTypes.object.isRequired,
     pickDataElement: PropTypes.func.isRequired,
-    active: PropTypes.bool.isRequired,
-};
+    active: PropTypes.bool.isRequired
+}
 
-export default DataElementPicker;
+export default DataElementPicker

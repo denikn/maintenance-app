@@ -1,37 +1,39 @@
-import { get, compose, first, isEqual, curry, __ } from 'lodash/fp';
-import { getProgramStageIndexById } from '../tracker-program/program-stages/selectors';
+import { get, compose, first, isEqual, curry, __ } from 'lodash/fp'
+import { getProgramStageIndexById } from '../tracker-program/program-stages/selectors'
 
-export const getProgramStages = ({ programStages }) => programStages;
+export const getProgramStages = ({ programStages }) => programStages
 
 export const getStageNotifications = ({
     programStages,
-    programStageNotifications,
+    programStageNotifications
 }) =>
-    compose(get(__, programStageNotifications), get('id'), first)(
-        programStages
-    );
+    compose(
+        get(__, programStageNotifications),
+        get('id'),
+        first
+    )(programStages)
 
 export const getStageNotificationsForProgramStageId = curry((state, id) => {
-    const { programStageNotifications } = state;
+    const { programStageNotifications } = state
 
-    return get(id, programStageNotifications);
-});
+    return get(id, programStageNotifications)
+})
 
 export const getProgramNotifications = ({ program }) =>
-    program.notificationTemplates;
+    program.notificationTemplates
 
 export const getProgramStageDataElements = ({
     programStages,
-    availableDataElements,
+    availableDataElements
 }) => {
     const programStageDataElements = programStages[0].programStageDataElements.map(
         psde => psde.dataElement.id
-    );
+    )
 
     return availableDataElements.filter(de =>
         programStageDataElements.includes(de.id)
-    );
-};
+    )
+}
 
 /**
  * Gets the list of dataElements that are referenced in the programStage
@@ -41,36 +43,36 @@ export const getProgramStageDataElements = ({
  */
 
 export const getProgramStageDataElementsByStageId = state => id => {
-    const { programStages, availableDataElements } = state;
-    const index = getProgramStageIndexById(state, id);
-    if(index < 0) return null;
+    const { programStages, availableDataElements } = state
+    const index = getProgramStageIndexById(state, id)
+    if (index < 0) return null
     const programStageDataElements = programStages[
         index
-    ].programStageDataElements.map(psde => psde.dataElement.id);
+    ].programStageDataElements.map(psde => psde.dataElement.id)
 
     return availableDataElements.filter(de =>
         programStageDataElements.includes(de.id)
-    );
-};
+    )
+}
 
 export const isDeletingSelector = get(
     'eventProgram.stageNotifications.isDeleting'
-);
+)
 export const objectNameToBeDeletedSelector = get(
     'eventProgram.stageNotifications.objectNameToBeDeleted'
-);
+)
 export const modelToEditSelector = get(
     'eventProgram.stageNotifications.modelToEdit'
-);
+)
 
 export const getSelectedProgramStageId = get(
     'eventProgram.stageNotifications.selectedProgramStage'
-);
+)
 
 export const getNotificationType = get(
     'eventProgram.stageNotifications.notificationType'
-);
+)
 
-export const isProgramNotification = state => 'PROGRAM_NOTIFICATION' == get(
-    'eventProgram.stageNotifications.notificationType'
-)(state);
+export const isProgramNotification = state =>
+    'PROGRAM_NOTIFICATION' ==
+    get('eventProgram.stageNotifications.notificationType')(state)

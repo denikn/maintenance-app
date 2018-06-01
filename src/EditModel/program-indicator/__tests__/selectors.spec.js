@@ -1,4 +1,4 @@
-import { activeStepSelector } from '../selectors';
+import { activeStepSelector } from '../selectors'
 
 describe('Program indicator selectors', () => {
     describe('activeStepSelector', () => {
@@ -6,24 +6,24 @@ describe('Program indicator selectors', () => {
             const state = {
                 programIndicator: {
                     step: {
-                        activeStep: 'details',
-                    },
-                },
-            };
+                        activeStep: 'details'
+                    }
+                }
+            }
 
-            expect(activeStepSelector(state)).toBe('details');
-        });
+            expect(activeStepSelector(state)).toBe('details')
+        })
 
         test('should return undefined if step does not exist', () => {
-            const state = {};
+            const state = {}
 
-            expect(activeStepSelector(state)).toBeUndefined();
-        });
+            expect(activeStepSelector(state)).toBeUndefined()
+        })
 
         test('should return undefined if state is undefined', () => {
-            let state;
+            let state
 
-            expect(activeStepSelector(state)).toBeUndefined();
-        });
-    });
-});
+            expect(activeStepSelector(state)).toBeUndefined()
+        })
+    })
+})

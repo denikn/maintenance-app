@@ -1,13 +1,16 @@
-import mapPropsStream from 'recompose/mapPropsStream';
-import programStore$ from '../../eventProgramStore';
-import { get, first, compose } from 'lodash/fp';
+import mapPropsStream from 'recompose/mapPropsStream'
+import programStore$ from '../../eventProgramStore'
+import { get, first, compose } from 'lodash/fp'
 
-const program$ = programStore$.map(get('program'));
+const program$ = programStore$.map(get('program'))
 
-const programStages$ = programStore$.map(get('programStages'));
+const programStages$ = programStore$.map(get('programStages'))
 
-const getFirstProgramStage = compose(first, get('programStages'));
-export const firstProgramStage$ = programStore$.map(getFirstProgramStage);
+const getFirstProgramStage = compose(
+    first,
+    get('programStages')
+)
+export const firstProgramStage$ = programStore$.map(getFirstProgramStage)
 
 /**
  * Maps the programStage$ observable to a normal object to read the values in the component.
@@ -17,10 +20,10 @@ export const withProgramStageFromProgramStage$ = mapPropsStream(props$ =>
         props$.flatMap(x => x.programStage$),
         (props, programStage) => ({
             ...props,
-            programStage,
-        }),
-    ),
-);
+            programStage
+        })
+    )
+)
 
 /**
  * Adds program and programStages as props to the enhanced components.
@@ -34,16 +37,16 @@ export const withProgramAndStages = compose(
             (props, program, programStages) => ({
                 ...props,
                 program,
-                programStages,
-            }),
-        ),
-    ),
-);
+                programStages
+            })
+        )
+    )
+)
 
 export const getProgramStageById$ = stageId =>
     programStages$
         .flatMap(x => x)
-        .filter(stage => stage.id && stage.id === stageId);
+        .filter(stage => stage.id && stage.id === stageId)
 
 // Use programStage$ prop if present, else use first programStage
 export const getProgramStageOrFirstFromProps$ = props$ =>
@@ -51,7 +54,7 @@ export const getProgramStageOrFirstFromProps$ = props$ =>
         .take(1)
         .flatMap(
             props =>
-                (props.programStage$
+                props.programStage$
                     ? props.programStage$
-                    : programStore$.map(getFirstProgramStage)),
-        );
+                    : programStore$.map(getFirstProgramStage)
+        )

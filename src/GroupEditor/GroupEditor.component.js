@@ -1,11 +1,11 @@
-import React from 'react';
+import React from 'react'
 
-import Tabs from 'material-ui/Tabs/Tabs';
-import Tab from 'material-ui/Tabs/Tab';
-import Paper from 'material-ui/Paper/Paper';
+import Tabs from 'material-ui/Tabs/Tabs'
+import Tab from 'material-ui/Tabs/Tab'
+import Paper from 'material-ui/Paper/Paper'
 
-import ItemsInGroupManager from './ItemsInGroupManager.component';
-import GroupsForItemManager from './GroupsForItemManager.component';
+import ItemsInGroupManager from './ItemsInGroupManager.component'
+import GroupsForItemManager from './GroupsForItemManager.component'
 
 export default React.createClass({
     render() {
@@ -20,11 +20,11 @@ export default React.createClass({
                     </Tab>
                 </Tabs>
             </Paper>
-        );
+        )
     },
 
     _tabChanged() {
-        this.refs.itemsForGroup.reset();
-        this.refs.groupsForItem.reset();
-    },
-});
+        this.refs.itemsForGroup.reset()
+        this.refs.groupsForItem.reset()
+    }
+})

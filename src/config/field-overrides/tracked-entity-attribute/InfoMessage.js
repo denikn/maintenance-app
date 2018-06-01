@@ -1,26 +1,26 @@
-import React, { PropTypes } from 'react';
-import Translate from 'd2-ui/lib/i18n/Translate.component';
-import InfoIcon from 'material-ui/svg-icons/action/info-outline';
+import React, { PropTypes } from 'react'
+import Translate from 'd2-ui/lib/i18n/Translate.component'
+import InfoIcon from 'material-ui/svg-icons/action/info-outline'
 
 export default function InfoMessage({ message, ...wrapperProps }) {
     const styles = {
         wrap: {
             display: 'flex',
             flexDirection: 'row',
-            padding: '1rem 0',
+            padding: '1rem 0'
         },
 
         message: {
             lineHeight: '24px',
             display: 'block',
             textAlign: 'center',
-            paddingLeft: '0.5rem',
+            paddingLeft: '0.5rem'
         },
 
         infoIcon: {
-            fill: 'orange',
-        },
-    };
+            fill: 'orange'
+        }
+    }
 
     return (
         <div style={styles.wrap} {...wrapperProps}>
@@ -29,9 +29,9 @@ export default function InfoMessage({ message, ...wrapperProps }) {
                 <Translate>{message}</Translate>
             </div>
         </div>
-    );
+    )
 }
 
 InfoMessage.propTypes = {
-    message: PropTypes.string.isRequired,
-};
+    message: PropTypes.string.isRequired
+}

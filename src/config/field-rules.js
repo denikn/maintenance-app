@@ -1,4 +1,4 @@
-import { defaultAnalyticsPeriodBoundaries } from './field-config/field-defaults';
+import { defaultAnalyticsPeriodBoundaries } from './field-config/field-defaults'
 
 /**
  * Rule functions in EditModel/form-rules
@@ -41,705 +41,901 @@ function setValueTypeToOptionSet(model, fieldConfig) {
     // for the optionSet (which can occur during the initial run of the rules)
     if (model.optionSet && model.optionSet.valueType) {
         // Update the fieldConfig to contain the correct value
-        fieldConfig.value = model.optionSet.valueType;
+        fieldConfig.value = model.optionSet.valueType
 
         // Update the model only when the value is not the same as the current
         if (model[fieldConfig.name] !== model.optionSet.valueType) {
-            model[fieldConfig.name] = model.optionSet.valueType;
+            model[fieldConfig.name] = model.optionSet.valueType
         }
     }
 }
 
 export default new Map([
-    ['dataElement', [
-        {
-            field: 'domainType',
-            when: {
-                operator: 'EQUALS',
-                value: 'TRACKER',
+    [
+        'dataElement',
+        [
+            {
+                field: 'domainType',
+                when: {
+                    operator: 'EQUALS',
+                    value: 'TRACKER'
+                },
+                operations: [
+                    {
+                        field: 'categoryCombo',
+                        type: 'SET_PROP',
+                        propName: 'disabled',
+                        thenValue: true,
+                        elseValue: false
+                    }
+                ]
             },
-            operations: [{
-                field: 'categoryCombo',
-                type: 'SET_PROP',
-                propName: 'disabled',
-                thenValue: true,
-                elseValue: false,
-            }],
-        },
-        {
-            field: 'valueType',
-            when: {
-                field: 'optionSet',
-                operator: 'HAS_VALUE',
-            },
-            operations: [{
-                type: 'SET_PROP',
-                propName: 'disabled',
-                thenValue: true,
-                elseValue: false,
-            }, {
-                type: 'CHANGE_VALUE',
-                setValue: setValueTypeToOptionSet,
-            }],
-        },
-        {
-            field: 'aggregationType',
-            when: {
+            {
                 field: 'valueType',
-                operator: 'ONEOF',
-                value: [
-                    'TEXT',
-                    'LONG_TEXT',
-                    'LETTER',
-                    'PHONE_NUMBER',
-                    'EMAIL',
-                    'TRACKER_ASSOCIATE',
-                    'USERNAME',
-                    'FILE_RESOURCE',
-                    'COORDINATE',
-                ],
-            },
-            operations: [{
-                field: 'aggregationType',
-                type: 'SET_PROP',
-                propName: 'disabled',
-                thenValue: true,
-                elseValue: false,
-            }, {
-                field: 'aggregationType',
-                type: 'CHANGE_VALUE',
-                setValue: (model, fieldConfig) => {
-                    fieldConfig.value = 'NONE';
-                    model[fieldConfig.name] = 'NONE';
+                when: {
+                    field: 'optionSet',
+                    operator: 'HAS_VALUE'
                 },
-            }],
-        },
-    ]],
-    ['dataSetNotificationTemplate', [
-        {
-            when: [
-                {
-                    field: 'dataSetNotificationTrigger',
-                    operator: 'NOT_EQUALS',
-                    value: 'SCHEDULED_DAYS',
-                },
-            ],
-            operations: [
-                {
-                    field: 'relativeScheduledDays',
-                    type: 'HIDE_FIELD',
-                },
-                {
-                    field: 'sendStrategy',
-                    type: 'HIDE_FIELD',
-                },
-            ],
-        },
-        {
-            field: 'deliveryChannels',
-            when: [
-                {
-                    field: 'notificationRecipient',
-                    operator: 'NOT_EQUALS',
-                    value: 'ORGANISATION_UNIT_CONTACT',
-                },
-            ],
-            operations: [
-                {
-                    field: 'deliveryChannels',
-                    type: 'HIDE_FIELD',
-                },
-            ],
-        },
-    ]],
-    ['attribute', [
-        {
-            field: 'valueType',
-            when: {
-                field: 'optionSet',
-                operator: 'HAS_VALUE',
-            },
-            operations: [{
-                type: 'SET_PROP',
-                propName: 'disabled',
-                thenValue: true,
-                elseValue: false,
-            }, {
-                type: 'CHANGE_VALUE',
-                setValue: setValueTypeToOptionSet,
-            }],
-        },
-    ]],
-    ['trackedEntityAttribute', [
-        {
-            field: 'unique',
-            when: [{
-                field: 'valueType',
-                operator: 'ONEOF',
-                value: [
-                    'BOOLEAN',
-                    'TRUE_ONLY',
-                    'DATE',
-                    'TRACKER_ASSOCIATE',
-                    'USERNAME',
-                    'OPTION_SET',
-                ],
-            }],
-            operations: [
-                {
-                    field: 'unique',
-                    type: 'SET_PROP',
-                    propName: 'disabled',
-                    thenValue: true,
-                    elseValue: false,
-                },
-                {
-                    field: 'unique',
-                    type: 'CHANGE_VALUE',
-                    setValue: (model, fieldConfig) => {
-                        fieldConfig.value = false;
-                        model.unique = false;
+                operations: [
+                    {
+                        type: 'SET_PROP',
+                        propName: 'disabled',
+                        thenValue: true,
+                        elseValue: false
                     },
-                },
-            ],
-        },
-        {
-            field: 'valueType',
-            when: {
-                field: 'optionSet',
-                operator: 'HAS_VALUE',
+                    {
+                        type: 'CHANGE_VALUE',
+                        setValue: setValueTypeToOptionSet
+                    }
+                ]
             },
-            operations: [
-                {
-                    type: 'SET_PROP',
-                    propName: 'disabled',
-                    thenValue: true,
-                    elseValue: false,
-                }, {
-                    type: 'CHANGE_VALUE',
-                    setValue: setValueTypeToOptionSet,
-                },
-            ],
-        },
-        {
-            field: 'orgunitScope',
-            when: [
-                {
-                    field: 'unique',
-                    operator: 'NOT_EQUALS',
-                    value: true,
-                },
-                {
+            {
+                field: 'aggregationType',
+                when: {
                     field: 'valueType',
                     operator: 'ONEOF',
                     value: [
-                        'BOOLEAN',
-                        'TRUE_ONLY',
-                        'DATE',
+                        'TEXT',
+                        'LONG_TEXT',
+                        'LETTER',
+                        'PHONE_NUMBER',
+                        'EMAIL',
                         'TRACKER_ASSOCIATE',
                         'USERNAME',
-                        'OPTION_SET',
-                    ],
+                        'FILE_RESOURCE',
+                        'COORDINATE'
+                    ]
                 },
-            ],
-            operations: [{ type: 'HIDE_FIELD' }],
-        },
-        {
-            field: 'generated',
-            when: [
-                {
-                    field: 'orgunitScope',
-                    operator: 'IS_HIDDEN_FIELD',
-                },
-                {
-                    field: 'orgunitScope',
-                    operator: 'ONEOF',
-                    value: ['organisation_unit'],
-                },
-                {
-                    field: 'orgunitScope',
-                    operator: 'EQUALS',
-                    value: true,
-                },
-            ],
-            operations: [
-                {
-                    type: 'HIDE_FIELD',
-                },
-                {
-                    type: 'CHANGE_VALUE',
-                    setValue: (model, fieldConfig) => {
-                        fieldConfig.value = false;
-                        model.generated = false;
+                operations: [
+                    {
+                        field: 'aggregationType',
+                        type: 'SET_PROP',
+                        propName: 'disabled',
+                        thenValue: true,
+                        elseValue: false
                     },
-                },
-            ],
-        },
-        {
-            field: 'pattern',
-            when: [
-                {
-                    field: 'generated',
-                    operator: 'IS_HIDDEN_FIELD',
-                },
-                {
-                    field: 'generated',
-                    operator: 'NOT_EQUALS',
-                    value: true,
-                },
-            ],
-            operations: [
-                {
-                    type: 'HIDE_FIELD',
-                },
-                {
-                    type: 'CHANGE_VALUE',
-                    setValue: (model, fieldConfig) => {
-                        fieldConfig.value = null;
-                        model.pattern = null;
-                    },
-                },
-            ],
-        },
-    ]],
-    ['externalMapLayer', [
-        {
-            // When legendSet has value, clear and disable the legendSetUrl field
-            field: 'legendSetUrl',
-            when: [{
-                field: 'legendSet',
-                operator: 'HAS_VALUE',
-            }],
-            operations: [{
-                field: 'legendSetUrl',
-                type: 'SET_PROP',
-                propName: 'disabled',
-                thenValue: true,
-                elseValue: false,
-            }],
-        },
-        {
-            // When legendSetUrl has value, clear and disable the legendSet field
-            field: 'legendSet',
-            when: [{
-                field: 'legendSetUrl',
-                operator: 'HAS_STRING_VALUE',
-            }],
-            operations: [{
-                field: 'legendSet',
-                type: 'SET_PROP',
-                propName: 'disabled',
-                thenValue: true,
-                elseValue: false,
-            }],
-        },
-    ]],
-    ['organisationUnit', [
-        {
-            field: 'dataSets',
-            when: [{
-                operator: 'SYSTEM_SETTING_IS_FALSE',
-                value: 'keyAllowObjectAssignment',
-            }],
-            operations: [{
-                field: 'dataSets',
-                type: 'HIDE_FIELD',
-            }],
-        },
-        {
-            field: 'featureType',
-            when: [{
-                field: 'coordinates',
-                operator: 'HAS_VALUE',
-            }],
-            operations: [{
-                type: 'CHANGE_VALUE',
-                setValue: (model) => {
-                    // TODO: this is almost the same check as in the coordinate-field we should DRY these up.
-                    const isValidPoint = (value) => {
-                        try {
-                            const poly = JSON.parse(value);
-                            return Array.isArray(poly)
-                            && (poly.length === 0
-                                || (poly.length === 2 && !isNaN(poly[0]) && !isNaN(poly[1])));
-                        } catch (e) {}
-                        return false;
-                    };
-
-                    // If we have valid coordinates set the the featureType to POINT
-                    if (model.coordinates) {
-                        // Set the correct featureType if we're dealing with a point otherwise
-                        // keep the featureType the same as it was since we're not dealing with a point
-                        if (isValidPoint(model.coordinates)) {
-                            model.featureType = 'POINT';
+                    {
+                        field: 'aggregationType',
+                        type: 'CHANGE_VALUE',
+                        setValue: (model, fieldConfig) => {
+                            fieldConfig.value = 'NONE'
+                            model[fieldConfig.name] = 'NONE'
                         }
-                    } else {
-                        // The user might have removed the coordinates so we'll reset the featureType to `null`
-                        model.featureType = null;
                     }
+                ]
+            }
+        ]
+    ],
+    [
+        'dataSetNotificationTemplate',
+        [
+            {
+                when: [
+                    {
+                        field: 'dataSetNotificationTrigger',
+                        operator: 'NOT_EQUALS',
+                        value: 'SCHEDULED_DAYS'
+                    }
+                ],
+                operations: [
+                    {
+                        field: 'relativeScheduledDays',
+                        type: 'HIDE_FIELD'
+                    },
+                    {
+                        field: 'sendStrategy',
+                        type: 'HIDE_FIELD'
+                    }
+                ]
+            },
+            {
+                field: 'deliveryChannels',
+                when: [
+                    {
+                        field: 'notificationRecipient',
+                        operator: 'NOT_EQUALS',
+                        value: 'ORGANISATION_UNIT_CONTACT'
+                    }
+                ],
+                operations: [
+                    {
+                        field: 'deliveryChannels',
+                        type: 'HIDE_FIELD'
+                    }
+                ]
+            }
+        ]
+    ],
+    [
+        'attribute',
+        [
+            {
+                field: 'valueType',
+                when: {
+                    field: 'optionSet',
+                    operator: 'HAS_VALUE'
                 },
-            }],
-        },
-    ]],
-    ['programRule', [
-        {
-            field: 'name',
-            when: [{
-                field: 'program',
-                operator: 'HAS_VALUE',
-            }],
-            operations: [{
-                type: 'SET_PROP',
-                propName: 'disabled',
-                thenValue: false,
-                elseValue: true,
-            }],
-        },
-        {
-            field: 'description',
-            when: [{
-                field: 'program',
-                operator: 'HAS_VALUE',
-            }],
-            operations: [{
-                type: 'SET_PROP',
-                propName: 'disabled',
-                thenValue: false,
-                elseValue: true,
-            }],
-        },
-        {
-            field: 'priority',
-            when: [{
-                field: 'program',
-                operator: 'HAS_VALUE',
-            }],
-            operations: [{
-                type: 'SET_PROP',
-                propName: 'disabled',
-                thenValue: false,
-                elseValue: true,
-            }],
-        },
-        {
-            field: 'condition',
-            when: [{
-                field: 'program',
-                operator: 'HAS_VALUE',
-            }],
-            operations: [{
-                type: 'SET_PROP',
-                propName: 'disabled',
-                thenValue: false,
-                elseValue: true,
-            }],
-        },
-        {
-            field: 'programRuleActions',
-            when: [{
-                field: 'program',
-                operator: 'HAS_VALUE',
-            }],
-            operations: [{
-                type: 'SET_PROP',
-                propName: 'disabled',
-                thenValue: false,
-                elseValue: true,
-            }],
-        },
-    ]],
-    ['programRuleVariable', [
-        {
-            field: 'program',
-            when: [{
-                field: 'dataElement',
-                operator: 'HAS_STRING_VALUE',
-            }, {
-                field: 'trackedEntityAttribute',
-                operator: 'HAS_STRING_VALUE',
-            }, {
-                field: 'programStage',
-                operator: 'HAS_STRING_VALUE',
-            }],
-            operations: [{
-                type: 'SET_PROP',
-                propName: 'disabled',
-                thenValue: true,
-                elseValue: false,
-            }],
-        },
-        {
-            field: 'dataElement',
-            when: [{
-                field: 'programRuleVariableSourceType',
-                operator: 'ONEOF',
-                value: [
-                    'CALCULATED_VALUE',
-                    'TEI_ATTRIBUTE',
+                operations: [
+                    {
+                        type: 'SET_PROP',
+                        propName: 'disabled',
+                        thenValue: true,
+                        elseValue: false
+                    },
+                    {
+                        type: 'CHANGE_VALUE',
+                        setValue: setValueTypeToOptionSet
+                    }
+                ]
+            }
+        ]
+    ],
+    [
+        'trackedEntityAttribute',
+        [
+            {
+                field: 'unique',
+                when: [
+                    {
+                        field: 'valueType',
+                        operator: 'ONEOF',
+                        value: [
+                            'BOOLEAN',
+                            'TRUE_ONLY',
+                            'DATE',
+                            'TRACKER_ASSOCIATE',
+                            'USERNAME',
+                            'OPTION_SET'
+                        ]
+                    }
                 ],
-            }],
-            operations: [{
+                operations: [
+                    {
+                        field: 'unique',
+                        type: 'SET_PROP',
+                        propName: 'disabled',
+                        thenValue: true,
+                        elseValue: false
+                    },
+                    {
+                        field: 'unique',
+                        type: 'CHANGE_VALUE',
+                        setValue: (model, fieldConfig) => {
+                            fieldConfig.value = false
+                            model.unique = false
+                        }
+                    }
+                ]
+            },
+            {
+                field: 'valueType',
+                when: {
+                    field: 'optionSet',
+                    operator: 'HAS_VALUE'
+                },
+                operations: [
+                    {
+                        type: 'SET_PROP',
+                        propName: 'disabled',
+                        thenValue: true,
+                        elseValue: false
+                    },
+                    {
+                        type: 'CHANGE_VALUE',
+                        setValue: setValueTypeToOptionSet
+                    }
+                ]
+            },
+            {
+                field: 'orgunitScope',
+                when: [
+                    {
+                        field: 'unique',
+                        operator: 'NOT_EQUALS',
+                        value: true
+                    },
+                    {
+                        field: 'valueType',
+                        operator: 'ONEOF',
+                        value: [
+                            'BOOLEAN',
+                            'TRUE_ONLY',
+                            'DATE',
+                            'TRACKER_ASSOCIATE',
+                            'USERNAME',
+                            'OPTION_SET'
+                        ]
+                    }
+                ],
+                operations: [{ type: 'HIDE_FIELD' }]
+            },
+            {
+                field: 'generated',
+                when: [
+                    {
+                        field: 'orgunitScope',
+                        operator: 'IS_HIDDEN_FIELD'
+                    },
+                    {
+                        field: 'orgunitScope',
+                        operator: 'ONEOF',
+                        value: ['organisation_unit']
+                    },
+                    {
+                        field: 'orgunitScope',
+                        operator: 'EQUALS',
+                        value: true
+                    }
+                ],
+                operations: [
+                    {
+                        type: 'HIDE_FIELD'
+                    },
+                    {
+                        type: 'CHANGE_VALUE',
+                        setValue: (model, fieldConfig) => {
+                            fieldConfig.value = false
+                            model.generated = false
+                        }
+                    }
+                ]
+            },
+            {
+                field: 'pattern',
+                when: [
+                    {
+                        field: 'generated',
+                        operator: 'IS_HIDDEN_FIELD'
+                    },
+                    {
+                        field: 'generated',
+                        operator: 'NOT_EQUALS',
+                        value: true
+                    }
+                ],
+                operations: [
+                    {
+                        type: 'HIDE_FIELD'
+                    },
+                    {
+                        type: 'CHANGE_VALUE',
+                        setValue: (model, fieldConfig) => {
+                            fieldConfig.value = null
+                            model.pattern = null
+                        }
+                    }
+                ]
+            }
+        ]
+    ],
+    [
+        'externalMapLayer',
+        [
+            {
+                // When legendSet has value, clear and disable the legendSetUrl field
+                field: 'legendSetUrl',
+                when: [
+                    {
+                        field: 'legendSet',
+                        operator: 'HAS_VALUE'
+                    }
+                ],
+                operations: [
+                    {
+                        field: 'legendSetUrl',
+                        type: 'SET_PROP',
+                        propName: 'disabled',
+                        thenValue: true,
+                        elseValue: false
+                    }
+                ]
+            },
+            {
+                // When legendSetUrl has value, clear and disable the legendSet field
+                field: 'legendSet',
+                when: [
+                    {
+                        field: 'legendSetUrl',
+                        operator: 'HAS_STRING_VALUE'
+                    }
+                ],
+                operations: [
+                    {
+                        field: 'legendSet',
+                        type: 'SET_PROP',
+                        propName: 'disabled',
+                        thenValue: true,
+                        elseValue: false
+                    }
+                ]
+            }
+        ]
+    ],
+    [
+        'organisationUnit',
+        [
+            {
+                field: 'dataSets',
+                when: [
+                    {
+                        operator: 'SYSTEM_SETTING_IS_FALSE',
+                        value: 'keyAllowObjectAssignment'
+                    }
+                ],
+                operations: [
+                    {
+                        field: 'dataSets',
+                        type: 'HIDE_FIELD'
+                    }
+                ]
+            },
+            {
+                field: 'featureType',
+                when: [
+                    {
+                        field: 'coordinates',
+                        operator: 'HAS_VALUE'
+                    }
+                ],
+                operations: [
+                    {
+                        type: 'CHANGE_VALUE',
+                        setValue: model => {
+                            // TODO: this is almost the same check as in the coordinate-field we should DRY these up.
+                            const isValidPoint = value => {
+                                try {
+                                    const poly = JSON.parse(value)
+                                    return (
+                                        Array.isArray(poly) &&
+                                        (poly.length === 0 ||
+                                            (poly.length === 2 &&
+                                                !isNaN(poly[0]) &&
+                                                !isNaN(poly[1])))
+                                    )
+                                } catch (e) {}
+                                return false
+                            }
+
+                            // If we have valid coordinates set the the featureType to POINT
+                            if (model.coordinates) {
+                                // Set the correct featureType if we're dealing with a point otherwise
+                                // keep the featureType the same as it was since we're not dealing with a point
+                                if (isValidPoint(model.coordinates)) {
+                                    model.featureType = 'POINT'
+                                }
+                            } else {
+                                // The user might have removed the coordinates so we'll reset the featureType to `null`
+                                model.featureType = null
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
+    ],
+    [
+        'programRule',
+        [
+            {
+                field: 'name',
+                when: [
+                    {
+                        field: 'program',
+                        operator: 'HAS_VALUE'
+                    }
+                ],
+                operations: [
+                    {
+                        type: 'SET_PROP',
+                        propName: 'disabled',
+                        thenValue: false,
+                        elseValue: true
+                    }
+                ]
+            },
+            {
+                field: 'description',
+                when: [
+                    {
+                        field: 'program',
+                        operator: 'HAS_VALUE'
+                    }
+                ],
+                operations: [
+                    {
+                        type: 'SET_PROP',
+                        propName: 'disabled',
+                        thenValue: false,
+                        elseValue: true
+                    }
+                ]
+            },
+            {
+                field: 'priority',
+                when: [
+                    {
+                        field: 'program',
+                        operator: 'HAS_VALUE'
+                    }
+                ],
+                operations: [
+                    {
+                        type: 'SET_PROP',
+                        propName: 'disabled',
+                        thenValue: false,
+                        elseValue: true
+                    }
+                ]
+            },
+            {
+                field: 'condition',
+                when: [
+                    {
+                        field: 'program',
+                        operator: 'HAS_VALUE'
+                    }
+                ],
+                operations: [
+                    {
+                        type: 'SET_PROP',
+                        propName: 'disabled',
+                        thenValue: false,
+                        elseValue: true
+                    }
+                ]
+            },
+            {
+                field: 'programRuleActions',
+                when: [
+                    {
+                        field: 'program',
+                        operator: 'HAS_VALUE'
+                    }
+                ],
+                operations: [
+                    {
+                        type: 'SET_PROP',
+                        propName: 'disabled',
+                        thenValue: false,
+                        elseValue: true
+                    }
+                ]
+            }
+        ]
+    ],
+    [
+        'programRuleVariable',
+        [
+            {
+                field: 'program',
+                when: [
+                    {
+                        field: 'dataElement',
+                        operator: 'HAS_STRING_VALUE'
+                    },
+                    {
+                        field: 'trackedEntityAttribute',
+                        operator: 'HAS_STRING_VALUE'
+                    },
+                    {
+                        field: 'programStage',
+                        operator: 'HAS_STRING_VALUE'
+                    }
+                ],
+                operations: [
+                    {
+                        type: 'SET_PROP',
+                        propName: 'disabled',
+                        thenValue: true,
+                        elseValue: false
+                    }
+                ]
+            },
+            {
                 field: 'dataElement',
-                type: 'HIDE_FIELD',
-            }],
-        },
-        {
-            field: 'trackedEntityAttribute',
-            when: [{
-                field: 'programRuleVariableSourceType',
-                operator: 'NOT_EQUALS',
-                value: 'TEI_ATTRIBUTE',
-            }],
-            operations: [{
+                when: [
+                    {
+                        field: 'programRuleVariableSourceType',
+                        operator: 'ONEOF',
+                        value: ['CALCULATED_VALUE', 'TEI_ATTRIBUTE']
+                    }
+                ],
+                operations: [
+                    {
+                        field: 'dataElement',
+                        type: 'HIDE_FIELD'
+                    }
+                ]
+            },
+            {
                 field: 'trackedEntityAttribute',
-                type: 'HIDE_FIELD',
-            }],
-        },
-        {
-            field: 'programStage',
-            when: [{
-                field: 'programRuleVariableSourceType',
-                operator: 'NOT_EQUALS',
-                value: 'DATAELEMENT_NEWEST_EVENT_PROGRAM_STAGE',
-            }],
-            operations: [{
+                when: [
+                    {
+                        field: 'programRuleVariableSourceType',
+                        operator: 'NOT_EQUALS',
+                        value: 'TEI_ATTRIBUTE'
+                    }
+                ],
+                operations: [
+                    {
+                        field: 'trackedEntityAttribute',
+                        type: 'HIDE_FIELD'
+                    }
+                ]
+            },
+            {
                 field: 'programStage',
-                type: 'HIDE_FIELD',
-            }],
-        },
-        {
-            field: 'programStage',
-            when: [{
-                field: 'dataElement',
-                operator: 'HAS_STRING_VALUE',
-            }],
-            operations: [{
-                type: 'SET_PROP',
-                propName: 'disabled',
-                thenValue: true,
-                elseValue: false,
-            }],
-        },
-    ]],
-    ['programStage', [
-        {
-            field: 'autoGenerateEvent',
-            when: [{
+                when: [
+                    {
+                        field: 'programRuleVariableSourceType',
+                        operator: 'NOT_EQUALS',
+                        value: 'DATAELEMENT_NEWEST_EVENT_PROGRAM_STAGE'
+                    }
+                ],
+                operations: [
+                    {
+                        field: 'programStage',
+                        type: 'HIDE_FIELD'
+                    }
+                ]
+            },
+            {
+                field: 'programStage',
+                when: [
+                    {
+                        field: 'dataElement',
+                        operator: 'HAS_STRING_VALUE'
+                    }
+                ],
+                operations: [
+                    {
+                        type: 'SET_PROP',
+                        propName: 'disabled',
+                        thenValue: true,
+                        elseValue: false
+                    }
+                ]
+            }
+        ]
+    ],
+    [
+        'programStage',
+        [
+            {
                 field: 'autoGenerateEvent',
-                operator: 'NOT_EQUALS',
-                value: true,
-            }],
-            operations: [{
-                field: 'openAfterEnrollment',
-                type: 'HIDE_FIELD',
-            }, {
+                when: [
+                    {
+                        field: 'autoGenerateEvent',
+                        operator: 'NOT_EQUALS',
+                        value: true
+                    }
+                ],
+                operations: [
+                    {
+                        field: 'openAfterEnrollment',
+                        type: 'HIDE_FIELD'
+                    },
+                    {
+                        field: 'reportDateToUse',
+                        type: 'HIDE_FIELD'
+                    }
+                ]
+            },
+            {
                 field: 'reportDateToUse',
-                type: 'HIDE_FIELD',
-            }],
-        },
-        {
-            field: 'reportDateToUse',
-            when: [{
-                field: 'openAfterEnrollment',
-                operator: 'NOT_EQUALS',
-                value: true,
-            }],
-            operations: [{
-                type: 'SET_PROP',
-                propName: 'disabled',
-                thenValue: true,
-                elseValue: false,
-            }],
-        },
-    ]],
-    ['enrollment', [
-        {
-            field: 'relationshipType',
-            when: [{
+                when: [
+                    {
+                        field: 'openAfterEnrollment',
+                        operator: 'NOT_EQUALS',
+                        value: true
+                    }
+                ],
+                operations: [
+                    {
+                        type: 'SET_PROP',
+                        propName: 'disabled',
+                        thenValue: true,
+                        elseValue: false
+                    }
+                ]
+            }
+        ]
+    ],
+    [
+        'enrollment',
+        [
+            {
                 field: 'relationshipType',
-                operator: 'HAS_NO_VALUE',
-            }],
-            operations: [{
-                field: 'relationshipFromA',
-                type: 'HIDE_FIELD',
-            }, {
-                field: 'relationshipText',
-                type: 'HIDE_FIELD',
-            }, {
-                field: 'relatedProgram',
-                type: 'HIDE_FIELD',
-            }],
-        },
-        {
-            field: 'relationshipFromA',
-            when: [{
-                field: 'relationshipType',
-                operator: 'HAS_VALUE',
-            }],
-            operations: [{
-                field: 'relatedProgram',
-                type: 'SET_PROP',
-                propName: 'isRequired',
-                thenValue: true,
-                elseValue: false,
-            }, {
-                field: 'relationshipFromA',
-                type: 'SET_PROP',
-                propName: 'isRequired',
-                thenValue: true,
-                elseValue: false,
-            }, {
-                field: 'relationshipText',
-                type: 'SET_PROP',
-                propName: 'required',
-                thenValue: true,
-                elseValue: false,
-            }],
-        },
-    ]],
-    ['programIndicator', [{
-        field: 'analyticsPeriodBoundaries',
-        when: [{
-            field: 'analyticsType',
-            operator: 'EQUALS',
-            value: 'EVENT',
-        }],
-        operations: [{
-            type: 'CHANGE_VALUE',
-            setValue: (model, fieldConfig) => {
-                if (fieldConfig) {
-                    fieldConfig.value = defaultAnalyticsPeriodBoundaries('event', fieldConfig.value);
-                    model[fieldConfig.name] = defaultAnalyticsPeriodBoundaries('event', fieldConfig.value);
-                }
+                when: [
+                    {
+                        field: 'relationshipType',
+                        operator: 'HAS_NO_VALUE'
+                    }
+                ],
+                operations: [
+                    {
+                        field: 'relationshipFromA',
+                        type: 'HIDE_FIELD'
+                    },
+                    {
+                        field: 'relationshipText',
+                        type: 'HIDE_FIELD'
+                    },
+                    {
+                        field: 'relatedProgram',
+                        type: 'HIDE_FIELD'
+                    }
+                ]
             },
-        }],
-    }, {
-        field: 'analyticsPeriodBoundaries',
-        when: [{
-            field: 'analyticsType',
-            operator: 'EQUALS',
-            value: 'ENROLLMENT',
-        }],
-        operations: [{
-            type: 'CHANGE_VALUE',
-            setValue: (model, fieldConfig) => {
-                if (fieldConfig) {
-                    fieldConfig.value = defaultAnalyticsPeriodBoundaries('enrollment', fieldConfig.value);
-                    model[fieldConfig.name] = defaultAnalyticsPeriodBoundaries('enrollment', fieldConfig.value);
-                }
+            {
+                field: 'relationshipFromA',
+                when: [
+                    {
+                        field: 'relationshipType',
+                        operator: 'HAS_VALUE'
+                    }
+                ],
+                operations: [
+                    {
+                        field: 'relatedProgram',
+                        type: 'SET_PROP',
+                        propName: 'isRequired',
+                        thenValue: true,
+                        elseValue: false
+                    },
+                    {
+                        field: 'relationshipFromA',
+                        type: 'SET_PROP',
+                        propName: 'isRequired',
+                        thenValue: true,
+                        elseValue: false
+                    },
+                    {
+                        field: 'relationshipText',
+                        type: 'SET_PROP',
+                        propName: 'required',
+                        thenValue: true,
+                        elseValue: false
+                    }
+                ]
+            }
+        ]
+    ],
+    [
+        'programIndicator',
+        [
+            {
+                field: 'analyticsPeriodBoundaries',
+                when: [
+                    {
+                        field: 'analyticsType',
+                        operator: 'EQUALS',
+                        value: 'EVENT'
+                    }
+                ],
+                operations: [
+                    {
+                        type: 'CHANGE_VALUE',
+                        setValue: (model, fieldConfig) => {
+                            if (fieldConfig) {
+                                fieldConfig.value = defaultAnalyticsPeriodBoundaries(
+                                    'event',
+                                    fieldConfig.value
+                                )
+                                model[
+                                    fieldConfig.name
+                                ] = defaultAnalyticsPeriodBoundaries(
+                                    'event',
+                                    fieldConfig.value
+                                )
+                            }
+                        }
+                    }
+                ]
             },
-        }],
-    }]],
-    ['programStageNotificationTemplate', [
-        {
-            field: 'notificationTrigger',
-            when: [{
+            {
+                field: 'analyticsPeriodBoundaries',
+                when: [
+                    {
+                        field: 'analyticsType',
+                        operator: 'EQUALS',
+                        value: 'ENROLLMENT'
+                    }
+                ],
+                operations: [
+                    {
+                        type: 'CHANGE_VALUE',
+                        setValue: (model, fieldConfig) => {
+                            if (fieldConfig) {
+                                fieldConfig.value = defaultAnalyticsPeriodBoundaries(
+                                    'enrollment',
+                                    fieldConfig.value
+                                )
+                                model[
+                                    fieldConfig.name
+                                ] = defaultAnalyticsPeriodBoundaries(
+                                    'enrollment',
+                                    fieldConfig.value
+                                )
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
+    ],
+    [
+        'programStageNotificationTemplate',
+        [
+            {
                 field: 'notificationTrigger',
-                operator: 'NOT_EQUALS',
-                value: 'SCHEDULED_DAYS_DUE_DATE',
-            }],
-            operations: [{
-                field: 'relativeScheduledDays',
-                type: 'HIDE_FIELD',
-            }],
-        },
-        {
-            field: 'notificationRecipient',
-            when: [{
-                field: 'notificationRecipient',
-                operator: 'NONEOF',
-                value: [
-                    'TRACKED_ENTITY_INSTANCE',
-                    'ORGANISATION_UNIT_CONTACT',
+                when: [
+                    {
+                        field: 'notificationTrigger',
+                        operator: 'NOT_EQUALS',
+                        value: 'SCHEDULED_DAYS_DUE_DATE'
+                    }
                 ],
-            }],
-            operations: [{
-                field: 'deliveryChannels',
-                type: 'HIDE_FIELD',
-            }],
-        },
-        {
-            field: 'notificationRecipient',
-            when: [{
+                operations: [
+                    {
+                        field: 'relativeScheduledDays',
+                        type: 'HIDE_FIELD'
+                    }
+                ]
+            },
+            {
                 field: 'notificationRecipient',
-                operator: 'NOT_EQUALS',
-                value: 'DATA_ELEMENT',
-            }],
-            operations: [{
-                field: 'recipientDataElement',
-                type: 'HIDE_FIELD',
-            }],
-        },
-        {
-            field: 'notificationRecipient',
-            when: [{
+                when: [
+                    {
+                        field: 'notificationRecipient',
+                        operator: 'NONEOF',
+                        value: [
+                            'TRACKED_ENTITY_INSTANCE',
+                            'ORGANISATION_UNIT_CONTACT'
+                        ]
+                    }
+                ],
+                operations: [
+                    {
+                        field: 'deliveryChannels',
+                        type: 'HIDE_FIELD'
+                    }
+                ]
+            },
+            {
                 field: 'notificationRecipient',
-                operator: 'NOT_EQUALS',
-                value: 'PROGRAM_ATTRIBUTE',
-            }],
-            operations: [{
-                field: 'recipientProgramAttribute',
-                type: 'HIDE_FIELD',
-            }],
-        },
-    ]],
-    ['programNotificationTemplate', [
-        {
-            field: 'notificationTrigger',
-            when: [{
+                when: [
+                    {
+                        field: 'notificationRecipient',
+                        operator: 'NOT_EQUALS',
+                        value: 'DATA_ELEMENT'
+                    }
+                ],
+                operations: [
+                    {
+                        field: 'recipientDataElement',
+                        type: 'HIDE_FIELD'
+                    }
+                ]
+            },
+            {
+                field: 'notificationRecipient',
+                when: [
+                    {
+                        field: 'notificationRecipient',
+                        operator: 'NOT_EQUALS',
+                        value: 'PROGRAM_ATTRIBUTE'
+                    }
+                ],
+                operations: [
+                    {
+                        field: 'recipientProgramAttribute',
+                        type: 'HIDE_FIELD'
+                    }
+                ]
+            }
+        ]
+    ],
+    [
+        'programNotificationTemplate',
+        [
+            {
                 field: 'notificationTrigger',
-                operator: 'NONEOF',
-                value: [
-                    'SCHEDULED_DAYS_INCIDENT_DATE',
-                    'SCHEDULED_DAYS_ENROLLMENT_DATE',
+                when: [
+                    {
+                        field: 'notificationTrigger',
+                        operator: 'NONEOF',
+                        value: [
+                            'SCHEDULED_DAYS_INCIDENT_DATE',
+                            'SCHEDULED_DAYS_ENROLLMENT_DATE'
+                        ]
+                    }
                 ],
-            }],
-            operations: [{
-                field: 'relativeScheduledDays',
-                type: 'HIDE_FIELD',
-            }],
-        },
-        {
-            field: 'notificationRecipient',
-            when: [{
+                operations: [
+                    {
+                        field: 'relativeScheduledDays',
+                        type: 'HIDE_FIELD'
+                    }
+                ]
+            },
+            {
                 field: 'notificationRecipient',
-                operator: 'NONEOF',
-                value: [
-                    'TRACKED_ENTITY_INSTANCE',
-                    'ORGANISATION_UNIT_CONTACT',
+                when: [
+                    {
+                        field: 'notificationRecipient',
+                        operator: 'NONEOF',
+                        value: [
+                            'TRACKED_ENTITY_INSTANCE',
+                            'ORGANISATION_UNIT_CONTACT'
+                        ]
+                    }
                 ],
-            }],
-            operations: [{
-                field: 'deliveryChannels',
-                type: 'HIDE_FIELD',
-            }],
-        },
-        {
-            field: 'notificationRecipient',
-            when: [{
+                operations: [
+                    {
+                        field: 'deliveryChannels',
+                        type: 'HIDE_FIELD'
+                    }
+                ]
+            },
+            {
                 field: 'notificationRecipient',
-                operator: 'NOT_EQUALS',
-                value: 'PROGRAM_ATTRIBUTE',
-            }],
-            operations: [{
-                field: 'recipientProgramAttribute',
-                type: 'HIDE_FIELD',
-            }]
-        }
-    ]],
-    ['categoryCombo', [
-        {
-            field: 'dataDimensionType',
-            when: [{
+                when: [
+                    {
+                        field: 'notificationRecipient',
+                        operator: 'NOT_EQUALS',
+                        value: 'PROGRAM_ATTRIBUTE'
+                    }
+                ],
+                operations: [
+                    {
+                        field: 'recipientProgramAttribute',
+                        type: 'HIDE_FIELD'
+                    }
+                ]
+            }
+        ]
+    ],
+    [
+        'categoryCombo',
+        [
+            {
                 field: 'dataDimensionType',
-                operator: 'HAS_NO_VALUE'
-            }],
-            operations: [{
-                type: 'CHANGE_VALUE',
-                setValue: (model, fieldConfig) => {
-                    fieldConfig.value = model[fieldConfig.name] = 'DISAGGREGATION'
-                }
-            }]
-        }
-     ]],
-]);
+                when: [
+                    {
+                        field: 'dataDimensionType',
+                        operator: 'HAS_NO_VALUE'
+                    }
+                ],
+                operations: [
+                    {
+                        type: 'CHANGE_VALUE',
+                        setValue: (model, fieldConfig) => {
+                            fieldConfig.value = model[fieldConfig.name] =
+                                'DISAGGREGATION'
+                        }
+                    }
+                ]
+            }
+        ]
+    ]
+])

@@ -1,7 +1,12 @@
-import { config } from 'd2/lib/d2';
-import { isRequired, isUrl, isNumber as isNumberValidator, isEmail } from 'd2-ui/lib/forms/Validators';
+import { config } from 'd2/lib/d2'
+import {
+    isRequired,
+    isUrl,
+    isNumber as isNumberValidator,
+    isEmail
+} from 'd2-ui/lib/forms/Validators'
 
-[
+;[
     'file_resource',
     'username',
     'tracker_associate',
@@ -77,5 +82,5 @@ import { isRequired, isUrl, isNumber as isNumberValidator, isEmail } from 'd2-ui
     'pdfDataSetForm',
     'search_by_name',
     'success',
-    'dismiss',
-].forEach(key => config.i18n.strings.add(key));
+    'dismiss'
+].forEach(key => config.i18n.strings.add(key))

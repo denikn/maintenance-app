@@ -1,3 +1,1 @@
-export default [
-    'program',
-];
+export default ['program']

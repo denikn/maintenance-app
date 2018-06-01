@@ -1,53 +1,53 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { get, has } from 'lodash/fp';
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { get, has } from 'lodash/fp'
 
-import mapProps from 'recompose/mapProps';
-import compose from 'recompose/compose';
-import mapPropsStream from 'recompose/mapPropsStream';
-import withState from 'recompose/withState';
-import withHandlers from 'recompose/withHandlers';
-import lifecycle from 'recompose/lifecycle';
-import GroupEditorWithOrdering from 'd2-ui/lib/group-editor/GroupEditorWithOrdering.component';
-import Store from 'd2-ui/lib/store/Store';
+import mapProps from 'recompose/mapProps'
+import compose from 'recompose/compose'
+import mapPropsStream from 'recompose/mapPropsStream'
+import withState from 'recompose/withState'
+import withHandlers from 'recompose/withHandlers'
+import lifecycle from 'recompose/lifecycle'
+import GroupEditorWithOrdering from 'd2-ui/lib/group-editor/GroupEditorWithOrdering.component'
+import Store from 'd2-ui/lib/store/Store'
 
-import Paper from 'material-ui/Paper/Paper';
-import TextField from 'material-ui/TextField/TextField';
+import Paper from 'material-ui/Paper/Paper'
+import TextField from 'material-ui/TextField/TextField'
 import {
     Table,
     TableBody,
     TableHeader,
     TableHeaderColumn,
-    TableRow,
-} from 'material-ui/Table';
+    TableRow
+} from 'material-ui/Table'
 
-import ProgramAttributeRow from '../../../../forms/form-fields/attribute-row';
-import eventProgramStore from '../../eventProgramStore';
+import ProgramAttributeRow from '../../../../forms/form-fields/attribute-row'
+import eventProgramStore from '../../eventProgramStore'
 import {
     addAttributesToProgram,
     removeAttributesFromProgram,
     editProgramAttributes,
     setAttributesOrder
-} from './actions';
+} from './actions'
 
 const styles = {
     groupEditor: {
-        padding: '2rem 3rem 4rem',
+        padding: '2rem 3rem 4rem'
     },
     fieldname: {
         fontSize: 16,
-        color: '#00000080',
-    },
-};
+        color: '#00000080'
+    }
+}
 
-const program$ = eventProgramStore.map(get('program'));
+const program$ = eventProgramStore.map(get('program'))
 
 const availableAttributes$ = eventProgramStore
     .map(get('availableAttributes'))
-    .take(1);
+    .take(1)
 
 const mapDispatchToProps = dispatch =>
     bindActionCreators(
@@ -58,7 +58,7 @@ const mapDispatchToProps = dispatch =>
             setAttributesOrder
         },
         dispatch
-    );
+    )
 
 /**
  * Extracts attributes that are in TrackedEntityTypeAttributes, but not in
@@ -78,21 +78,24 @@ export function tetAttributesNotInProgram(programModel) {
                     ptea =>
                         ptea.trackedEntityAttribute.id ===
                         teta.trackedEntityAttribute.id
-                );
-                return !hasAttribute;
+                )
+                return !hasAttribute
             }
-        );
+        )
     }
-    return [];
+    return []
 }
 
 const enhance = compose(
     mapProps(props => ({
         groupName: props.params.groupName,
         modelType: props.schema,
-        modelId: props.params.modelId,
+        modelId: props.params.modelId
     })),
-    connect(null, mapDispatchToProps),
+    connect(
+        null,
+        mapDispatchToProps
+    ),
     mapPropsStream(props$ =>
         props$.combineLatest(
             program$,
@@ -101,7 +104,7 @@ const enhance = compose(
                 ...props,
                 availableAttributes,
                 model: program,
-                assignedAttributes: program.programTrackedEntityAttributes,
+                assignedAttributes: program.programTrackedEntityAttributes
             })
         )
     ),
@@ -110,34 +113,34 @@ const enhance = compose(
             //Assign attributes for selected trackedEntityType
             const attributes = tetAttributesNotInProgram(this.props.model).map(
                 a => a.trackedEntityAttribute.id
-            );
-            this.props.addAttributesToProgram({ attributes });
-        },
+            )
+            this.props.addAttributesToProgram({ attributes })
+        }
     }),
     withState('attributeFilter', 'setAttributeFilter', ''),
     withHandlers({
         onAssignItems: ({ addAttributesToProgram }) => attributes => {
-            addAttributesToProgram({ attributes });
-            return Promise.resolve();
+            addAttributesToProgram({ attributes })
+            return Promise.resolve()
         },
         onRemoveItems: ({ removeAttributesFromProgram }) => attributes => {
-            removeAttributesFromProgram({ attributes });
-            return Promise.resolve();
+            removeAttributesFromProgram({ attributes })
+            return Promise.resolve()
         },
         onEditProgramAttribute: ({ editProgramAttributes }) => attribute =>
             editProgramAttributes({
-                attribute,
+                attribute
             }),
         onAttributeFilter: ({ setAttributeFilter }) => e =>
-            setAttributeFilter(e.target.value),
+            setAttributeFilter(e.target.value)
     })
-);
+)
 
 function addDisplayProperties(attributes) {
     return ({ trackedEntityAttribute, ...other }) => {
         const { displayName, valueType, optionSet, unique } = attributes.find(
             ({ id }) => id === trackedEntityAttribute.id
-        );
+        )
 
         return {
             ...other,
@@ -146,38 +149,38 @@ function addDisplayProperties(attributes) {
                 displayName,
                 valueType,
                 optionSet,
-                unique,
-            },
-        };
-    };
+                unique
+            }
+        }
+    }
 }
 
 function AssignAttributes(props, { d2 }) {
-    const availableItemStore = Store.create();
-    const assignedItemStore = Store.create();
+    const availableItemStore = Store.create()
+    const assignedItemStore = Store.create()
 
     availableItemStore.setState(
         props.availableAttributes.map(attribute => ({
             id: attribute.id,
             text: attribute.displayName,
-            value: attribute.id,
+            value: attribute.id
         }))
-    );
+    )
 
     // Assign existing attributes
     assignedItemStore.setState(
         props.assignedAttributes.map(a => a.trackedEntityAttribute.id)
-    );
+    )
 
     const onMoveAttributes = newAttributesOrderIds => {
-        assignedItemStore.setState(newAttributesOrderIds);
-        props.setAttributesOrder(newAttributesOrderIds);
-    };
+        assignedItemStore.setState(newAttributesOrderIds)
+        props.setAttributesOrder(newAttributesOrderIds)
+    }
 
     // Create edit-able rows for assigned attributes
     const tableRows = props.assignedAttributes
         .map(addDisplayProperties(props.availableAttributes))
-        .map(programAttribute =>
+        .map(programAttribute => (
             <ProgramAttributeRow
                 key={programAttribute.id}
                 displayName={
@@ -193,7 +196,7 @@ function AssignAttributes(props, { d2 }) {
                     !!programAttribute.trackedEntityAttribute.optionSet
                 }
             />
-        );
+        ))
 
     return (
         <Paper>
@@ -244,12 +247,10 @@ function AssignAttributes(props, { d2 }) {
                         </TableHeaderColumn>
                     </TableRow>
                 </TableHeader>
-                <TableBody displayRowCheckbox={false}>
-                    {tableRows}
-                </TableBody>
+                <TableBody displayRowCheckbox={false}>{tableRows}</TableBody>
             </Table>
         </Paper>
-    );
+    )
 }
 
 AssignAttributes.propTypes = {
@@ -259,11 +260,11 @@ AssignAttributes.propTypes = {
     attributeFilter: PropTypes.string.isRequired,
     onAttributeFilter: PropTypes.func.isRequired,
     onAssignItems: PropTypes.func.isRequired,
-    onRemoveItems: PropTypes.func.isRequired,
-};
+    onRemoveItems: PropTypes.func.isRequired
+}
 
 AssignAttributes.contextTypes = {
-    d2: PropTypes.object,
-};
+    d2: PropTypes.object
+}
 
-export default enhance(AssignAttributes);
+export default enhance(AssignAttributes)

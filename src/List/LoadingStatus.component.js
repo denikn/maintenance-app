@@ -1,22 +1,27 @@
-import React from 'react';
-import LinearProgress from 'material-ui/LinearProgress/LinearProgress';
+import React from 'react'
+import LinearProgress from 'material-ui/LinearProgress/LinearProgress'
 
 export default React.createClass({
     propTypes: {
-        isLoading: React.PropTypes.bool.isRequired,
+        isLoading: React.PropTypes.bool.isRequired
     },
 
     getDefaultProps() {
         return {
-            isLoading: false,
-        };
+            isLoading: false
+        }
     },
 
     render() {
-        if (!this.props.isLoading) { return null; }
+        if (!this.props.isLoading) {
+            return null
+        }
 
         return (
-            <LinearProgress mode="indeterminate" style={{ backgroundColor: 'lightblue' }} />
-        );
-    },
-});
+            <LinearProgress
+                mode="indeterminate"
+                style={{ backgroundColor: 'lightblue' }}
+            />
+        )
+    }
+})

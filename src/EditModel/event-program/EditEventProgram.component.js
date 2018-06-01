@@ -1,47 +1,47 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import { camelCaseToUnderscores } from 'd2-utilizr';
-import FormHeading from '../FormHeading';
-import FormSubHeading from '../FormSubHeading';
-import EventProgramStepper from './EventProgramStepper';
-import EventProgramStepperContent from './EventProgramStepperContent';
-import eventProgramStore$, { isStoreStateDirty } from './eventProgramStore';
-import EventActionButtons from './EventActionButtons';
+import { camelCaseToUnderscores } from 'd2-utilizr'
+import FormHeading from '../FormHeading'
+import FormSubHeading from '../FormSubHeading'
+import EventProgramStepper from './EventProgramStepper'
+import EventProgramStepperContent from './EventProgramStepperContent'
+import eventProgramStore$, { isStoreStateDirty } from './eventProgramStore'
+import EventActionButtons from './EventActionButtons'
 import {
     createConnectedForwardButton,
     createConnectedBackwardButton,
-    createStepperNavigation,
-} from '../stepper/stepper';
-import { previousStep, nextStep } from './actions';
+    createStepperNavigation
+} from '../stepper/stepper'
+import { previousStep, nextStep } from './actions'
 
 const EventProgramStepperNavigationForward = createConnectedForwardButton(
-    nextStep,
-);
+    nextStep
+)
 const EventProgramStepperNavigationBackward = createConnectedBackwardButton(
-    previousStep,
-);
+    previousStep
+)
 
 const StepperNavigation = createStepperNavigation(
     EventProgramStepperNavigationBackward,
-    EventProgramStepperNavigationForward,
-);
+    EventProgramStepperNavigationForward
+)
 
 const styles = {
     heading: {
         display: 'flex',
         flexDirection: 'column',
-        marginBottom: '1rem',
-    },
-};
+        marginBottom: '1rem'
+    }
+}
 
 const isModelDirty = () => ({
-    dirty: isStoreStateDirty(eventProgramStore$.getState()),
-});
+    dirty: isStoreStateDirty(eventProgramStore$.getState())
+})
 
 function EditEventProgram(props) {
-    const schema = props.params.modelType || 'program';
-    const { groupName } = props.params;
+    const schema = props.params.modelType || 'program'
+    const { groupName } = props.params
 
     return (
         <div>
@@ -53,9 +53,7 @@ function EditEventProgram(props) {
                 >
                     {`event_${camelCaseToUnderscores(schema)}`}
                 </FormHeading>
-                <FormSubHeading>
-                    {props.model.displayName}
-                </FormSubHeading>
+                <FormSubHeading>{props.model.displayName}</FormSubHeading>
             </div>
             <div>
                 <EventProgramStepper />
@@ -69,19 +67,17 @@ function EditEventProgram(props) {
                 />
             </StepperNavigation>
         </div>
-    );
+    )
 }
-
 
 EditEventProgram.propTypes = {
     params: PropTypes.object.isRequired,
     isProgramStageStepperActive: PropTypes.bool,
-    model: PropTypes.object.isRequired,
-};
+    model: PropTypes.object.isRequired
+}
 
 EditEventProgram.defaultProps = {
-    isProgramStageStepperActive: false,
-};
+    isProgramStageStepperActive: false
+}
 
-
-export default EditEventProgram;
+export default EditEventProgram

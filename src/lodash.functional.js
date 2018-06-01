@@ -1,4 +1,3 @@
-import baseConvert from 'lodash/fp/_baseConvert';
+import baseConvert from 'lodash/fp/_baseConvert'
 
-module.exports = baseConvert(window._, window._, {});
-
+module.exports = baseConvert(window._, window._, {})

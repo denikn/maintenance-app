@@ -1,63 +1,71 @@
-import React, { Component } from 'react';
-import { PropTypes } from 'prop-types';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
+import React, { Component } from 'react'
+import { PropTypes } from 'prop-types'
+import { connect } from 'react-redux'
+import { compose } from 'recompose'
 
-import ProgramStageList from './ProgramStageList';
-import EditProgramStage from './EditProgramStage';
-import { editProgramStage } from './actions';
-import { getProgramStageById$, firstProgramStage$, withProgramAndStages } from './utils';
-import { getCurrentProgramStageId } from './selectors';
+import ProgramStageList from './ProgramStageList'
+import EditProgramStage from './EditProgramStage'
+import { editProgramStage } from './actions'
+import {
+    getProgramStageById$,
+    firstProgramStage$,
+    withProgramAndStages
+} from './utils'
+import { getCurrentProgramStageId } from './selectors'
 
 class ProgramStage extends Component {
     shouldComponentUpdate(nextProps) {
-        return nextProps.programStage === this.props.programStage;
+        return nextProps.programStage === this.props.programStage
     }
 
     render() {
-        const props = this.props;
+        const props = this.props
 
         const programStage$ =
             props.currentProgramStageId !== 'add' &&
             getProgramStageById$(props.currentProgramStageId).defaultIfEmpty(
-                firstProgramStage$,
-            );
+                firstProgramStage$
+            )
 
         return (
             <div>
-                {this.props.currentProgramStageId
-                    ? <EditProgramStage programStage$={programStage$} />
-                    : <ProgramStageList
+                {this.props.currentProgramStageId ? (
+                    <EditProgramStage programStage$={programStage$} />
+                ) : (
+                    <ProgramStageList
                         program={props.program}
                         programStages={props.programStages}
-                    />}
+                    />
+                )}
             </div>
-        );
+        )
     }
 }
 
 const mapStateToProps = state => ({
-    currentProgramStageId: getCurrentProgramStageId(state),
-});
+    currentProgramStageId: getCurrentProgramStageId(state)
+})
 
 const mapDispatchToProps = dispatch => ({
     editProgramStage(id) {
-        dispatch(editProgramStage(id));
-    },
-});
+        dispatch(editProgramStage(id))
+    }
+})
 
 ProgramStage.propTypes = {
     programStage: PropTypes.object,
-    currentProgramStageId: PropTypes.string,
-};
+    currentProgramStageId: PropTypes.string
+}
 
 ProgramStage.defaultProps = {
     currentProgramStageId: '',
-    programStage: {},
-};
-
+    programStage: {}
+}
 
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    withProgramAndStages,
-)(ProgramStage);
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    ),
+    withProgramAndStages
+)(ProgramStage)

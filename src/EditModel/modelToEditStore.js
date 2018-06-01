@@ -1,3 +1,3 @@
-import SingleModelStore from './SingleModelStore';
+import SingleModelStore from './SingleModelStore'
 
-export default SingleModelStore.create();
+export default SingleModelStore.create()

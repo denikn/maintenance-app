@@ -1,8 +1,8 @@
-import React, { PropTypes } from 'react';
-import TopBarButtons from '../TopBar/TopBarButtons.component';
-import Tabs from 'material-ui/Tabs/Tabs';
-import Tab from 'material-ui/Tabs/Tab';
-import noop from 'd2-utilizr/lib/noop';
+import React, { PropTypes } from 'react'
+import TopBarButtons from '../TopBar/TopBarButtons.component'
+import Tabs from 'material-ui/Tabs/Tabs'
+import Tab from 'material-ui/Tabs/Tab'
+import noop from 'd2-utilizr/lib/noop'
 
 function SectionTabs(props) {
     const styles = {
@@ -14,54 +14,53 @@ function SectionTabs(props) {
             width: '100%',
             zIndex: 10,
             top: '44px',
-            flex: 1,
+            flex: 1
         },
         navButtonStyle: {
             display: 'inline-block',
             padding: '1rem',
             width: '100%',
             borderBottom: '2px solid #DDD',
-            color: '#AAA',
+            color: '#AAA'
         },
         navWrapButtonStyle: {
-            width: 'auto',
+            width: 'auto'
         },
         extraButtons: {
             flex: 0,
-            textAlign: 'right',
+            textAlign: 'right'
         },
         tabItemContainerStyle: {
             width: 'auto',
-            backgroundColor: 'transparent',
+            backgroundColor: 'transparent'
         },
         tabsStyle: {
             // flex: 1,
         },
         tabsWrap: {
-            flex: 1,
+            flex: 1
         },
         tabStyle: {
-            color: 'rgba(0,0,0,0.6)',
+            color: 'rgba(0,0,0,0.6)'
         },
         disabledTabStyle: {
-            color: 'rgba(0,0,0,0.2)',
+            color: 'rgba(0,0,0,0.2)'
         },
         inkBarStyle: {},
         disabledInkBarStyle: {
-            opacity: 0.4,
-        },
-    };
+            opacity: 0.4
+        }
+    }
 
-    const sections = props.sections
-        .map((section, index) => (
-            <Tab
-                key={index}
-                style={props.disabled ? styles.disabledTabStyle : styles.tabStyle}
-                disabled={props.disabled}
-                label={section.label}
-                value={section.key}
-            />
-        ));
+    const sections = props.sections.map((section, index) => (
+        <Tab
+            key={index}
+            style={props.disabled ? styles.disabledTabStyle : styles.tabStyle}
+            disabled={props.disabled}
+            label={section.label}
+            value={section.key}
+        />
+    ))
 
     return (
         <div style={styles.navStyle}>
@@ -71,7 +70,11 @@ function SectionTabs(props) {
                     onChange={props.changeSection}
                     style={styles.tabsStyle}
                     tabItemContainerStyle={styles.tabItemContainerStyle}
-                    inkBarStyle={props.disabled ? styles.disabledInkBarStyle : styles.inkBarStyle}
+                    inkBarStyle={
+                        props.disabled
+                            ? styles.disabledInkBarStyle
+                            : styles.inkBarStyle
+                    }
                 >
                     {sections}
                 </Tabs>
@@ -80,17 +83,17 @@ function SectionTabs(props) {
                 <TopBarButtons disabled={props.disabled} />
             </div>
         </div>
-    );
+    )
 }
 SectionTabs.propTypes = {
     sections: PropTypes.array,
     current: PropTypes.string,
-    changeSection: PropTypes.func,
-};
+    changeSection: PropTypes.func
+}
 SectionTabs.defaultProps = {
     sections: [],
     current: 'unknown',
-    changeSection: noop,
-};
+    changeSection: noop
+}
 
-export default SectionTabs;
+export default SectionTabs

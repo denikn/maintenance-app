@@ -1,25 +1,27 @@
-import React from 'react';
-import Card from 'material-ui/Card/Card';
-import CardHeader from 'material-ui/Card/CardHeader';
-import CardText from 'material-ui/Card/CardText';
-import CardActions from 'material-ui/Card/CardActions';
-import IconButton from 'material-ui/IconButton/IconButton';
-import Translate from 'd2-ui/lib/i18n/Translate.mixin';
+import React from 'react'
+import Card from 'material-ui/Card/Card'
+import CardHeader from 'material-ui/Card/CardHeader'
+import CardText from 'material-ui/Card/CardText'
+import CardActions from 'material-ui/Card/CardActions'
+import IconButton from 'material-ui/IconButton/IconButton'
+import Translate from 'd2-ui/lib/i18n/Translate.mixin'
 
 export default React.createClass({
     propTypes: {
-        menuItems: React.PropTypes.arrayOf(React.PropTypes.shape({
-            name: React.PropTypes.string,
-            description: React.PropTypes.string,
-        })),
+        menuItems: React.PropTypes.arrayOf(
+            React.PropTypes.shape({
+                name: React.PropTypes.string,
+                description: React.PropTypes.string
+            })
+        )
     },
 
     mixins: [Translate],
 
     getDefaultProps() {
         return {
-            menuItems: [],
-        };
+            menuItems: []
+        }
     },
 
     renderCard(details, index) {
@@ -27,32 +29,32 @@ export default React.createClass({
             padding: '0',
             margin: '.5rem',
             float: 'left',
-            width: '230px',
-        };
+            width: '230px'
+        }
 
         const headerStyle = {
             padding: '1rem',
             height: 'auto',
             borderBottom: '1px solid #ddd',
-            cursor: 'pointer',
-        };
+            cursor: 'pointer'
+        }
 
         const textStyle = {
             height: '85px',
-            padding: '.5rem 1rem',
-        };
+            padding: '.5rem 1rem'
+        }
 
         const actionStyle = {
-            textAlign: 'right',
-        };
+            textAlign: 'right'
+        }
 
         const styles = {
             cardHeaderText: {
-                paddingRight: 0,
-            },
-        };
+                paddingRight: 0
+            }
+        }
 
-        const actionButtons = [];
+        const actionButtons = []
 
         if (details.canCreate) {
             actionButtons.push(
@@ -62,8 +64,10 @@ export default React.createClass({
                     tooltip={this.getTranslation('add')}
                     tooltipPosition="top-center"
                     onClick={details.add}
-                >&#xE145;</IconButton>
-            );
+                >
+                    &#xE145;
+                </IconButton>
+            )
         }
 
         actionButtons.push(
@@ -73,8 +77,10 @@ export default React.createClass({
                 tooltip={this.getTranslation('list')}
                 tooltipPosition="top-center"
                 onClick={details.list}
-            >&#xE8EF;</IconButton>
-        );
+            >
+                &#xE8EF;
+            </IconButton>
+        )
 
         return (
             <Card key={index} style={cardStyle}>
@@ -85,11 +91,9 @@ export default React.createClass({
                     textStyle={styles.cardHeaderText}
                 />
                 <CardText style={textStyle}>{details.description}</CardText>
-                <CardActions style={actionStyle}>
-                    {actionButtons}
-                </CardActions>
+                <CardActions style={actionStyle}>{actionButtons}</CardActions>
             </Card>
-        );
+        )
     },
 
     render() {
@@ -98,6 +102,6 @@ export default React.createClass({
                 {this.props.menuItems.map(this.renderCard)}
                 <div style={{ clear: 'both' }} />
             </div>
-        );
-    },
-});
+        )
+    }
+})

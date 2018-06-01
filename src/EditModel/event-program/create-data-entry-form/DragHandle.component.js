@@ -1,18 +1,18 @@
-import React from 'react';
-import { SortableHandle } from 'react-sortable-hoc';
-import { orange200, orange500 } from 'material-ui/styles/colors';
-import FontIcon from 'material-ui/FontIcon';
+import React from 'react'
+import { SortableHandle } from 'react-sortable-hoc'
+import { orange200, orange500 } from 'material-ui/styles/colors'
+import FontIcon from 'material-ui/FontIcon'
 
 const styles = {
     dragHandle: {
         userSelect: 'none',
         cursor: 'move',
-        transition: 'none',
+        transition: 'none'
     },
 
     dragHandleColor: orange500,
-    dragHandleHoverColor: orange200,
-};
+    dragHandleHoverColor: orange200
+}
 
 const DragHandle = () => (
     <FontIcon
@@ -20,7 +20,9 @@ const DragHandle = () => (
         hoverColor={styles.dragHandleHoverColor}
         className="material-icons"
         style={styles.dragHandle}
-    >reorder</FontIcon>
-);
+    >
+        reorder
+    </FontIcon>
+)
 
-export default SortableHandle(DragHandle);
+export default SortableHandle(DragHandle)

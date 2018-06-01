@@ -1,21 +1,21 @@
-import React, { PropTypes } from 'react';
-import Checkbox from 'material-ui/Checkbox/Checkbox';
+import React, { PropTypes } from 'react'
+import Checkbox from 'material-ui/Checkbox/Checkbox'
 
 function isTrueOrTheStringTrue(value) {
-    return value === true || value === 'true';
+    return value === true || value === 'true'
 }
 
 function createOnClick({ onChange, value }) {
     return () => {
         onChange({
             target: {
-                value: !isTrueOrTheStringTrue(value),
-            },
-        });
-    };
+                value: !isTrueOrTheStringTrue(value)
+            }
+        })
+    }
 }
 
-const CheckboxWrap = (props) => {
+const CheckboxWrap = props => {
     // Do not pass the value on to the CheckBox component
     const {
         value,
@@ -34,7 +34,7 @@ const CheckboxWrap = (props) => {
         options,
         model,
         ...otherProps
-    } = props;
+    } = props
 
     return (
         <div style={{ marginTop: 24, marginBottom: 0 }}>
@@ -45,25 +45,22 @@ const CheckboxWrap = (props) => {
                 defaultChecked={isTrueOrTheStringTrue(value)}
             />
         </div>
-    );
-};
+    )
+}
 
 CheckboxWrap.propTypes = {
     onChange: PropTypes.func,
-    labelText: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.object,
-    ]).isRequired,
+    labelText: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+        .isRequired,
     value: PropTypes.oneOfType([
         PropTypes.bool,
-        PropTypes.oneOf(['true', 'false']),
-    ]),
-};
+        PropTypes.oneOf(['true', 'false'])
+    ])
+}
 
 CheckboxWrap.defaultProps = {
     onChange: () => {},
-    value: false,
-};
+    value: false
+}
 
-
-export default CheckboxWrap;
+export default CheckboxWrap

@@ -21,7 +21,7 @@ const programRuleFunctions = [
     'd2:right( <text>, <number> )',
     'd2:substring( <text>, <number>, <number> )',
     'd2:split( <text>, <text>, <number> )',
-    'd2:length( <text> )',
-];
+    'd2:length( <text> )'
+]
 
-export default programRuleFunctions;
+export default programRuleFunctions

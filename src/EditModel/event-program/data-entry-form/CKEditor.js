@@ -1,77 +1,115 @@
-import React, { Component, PropTypes } from 'react';
-import { noop } from 'lodash/fp';
-import log from 'loglevel';
-import { Observable } from 'rxjs';
+import React, { Component, PropTypes } from 'react'
+import { noop } from 'lodash/fp'
+import log from 'loglevel'
+import { Observable } from 'rxjs'
 
 export default class CKEditor extends Component {
     constructor(props, context) {
-        super(props, context);
+        super(props, context)
 
-        this.subscriptions = new Set();
+        this.subscriptions = new Set()
     }
 
     componentDidMount() {
-        const { onEditorChange = noop, onEditorInitialized = noop } = this.props;
+        const { onEditorChange = noop, onEditorInitialized = noop } = this.props
 
         if (!window.CKEDITOR) {
-            log.error('CKEDITOR namespace can not be found on the window. You probably forgot to load the CKEditor script');
+            log.error(
+                'CKEDITOR namespace can not be found on the window. You probably forgot to load the CKEditor script'
+            )
         }
 
         this.editor = window.CKEDITOR.replace(this.editorContainer, {
             plugins: [
-                'a11yhelp', 'basicstyles', 'bidi', 'blockquote',
-                'clipboard', 'colorbutton', 'colordialog', 'contextmenu',
-                'dialogadvtab', 'div', 'elementspath', 'enterkey',
-                'entities', 'filebrowser', 'find', 'floatingspace',
-                'font', 'format', 'horizontalrule', 'htmlwriter',
-                'image', 'indentlist', 'indentblock', 'justify',
-                'link', 'list', 'liststyle', 'magicline',
-                'maximize', 'forms', 'pastefromword', 'pastetext',
-                'preview', 'removeformat', 'resize', 'selectall',
-                'showblocks', 'showborders', 'sourcearea', 'specialchar',
-                'stylescombo', 'tab', 'table', 'tabletools',
-                'toolbar', 'undo', 'wsc', 'wysiwygarea',
+                'a11yhelp',
+                'basicstyles',
+                'bidi',
+                'blockquote',
+                'clipboard',
+                'colorbutton',
+                'colordialog',
+                'contextmenu',
+                'dialogadvtab',
+                'div',
+                'elementspath',
+                'enterkey',
+                'entities',
+                'filebrowser',
+                'find',
+                'floatingspace',
+                'font',
+                'format',
+                'horizontalrule',
+                'htmlwriter',
+                'image',
+                'indentlist',
+                'indentblock',
+                'justify',
+                'link',
+                'list',
+                'liststyle',
+                'magicline',
+                'maximize',
+                'forms',
+                'pastefromword',
+                'pastetext',
+                'preview',
+                'removeformat',
+                'resize',
+                'selectall',
+                'showblocks',
+                'showborders',
+                'sourcearea',
+                'specialchar',
+                'stylescombo',
+                'tab',
+                'table',
+                'tabletools',
+                'toolbar',
+                'undo',
+                'wsc',
+                'wysiwygarea'
             ].join(','),
             removePlugins: 'scayt,wsc,about',
             allowedContent: true,
             extraPlugins: 'div',
-            height: 500,
-        });
+            height: 500
+        })
 
-        this.editor.setData(this.props.initialContent);
+        this.editor.setData(this.props.initialContent)
 
-        const editorChangeSubscription = Observable.fromEventPattern((x) => { this.editor.on('change', x); })
+        const editorChangeSubscription = Observable.fromEventPattern(x => {
+            this.editor.on('change', x)
+        })
             .debounceTime(250)
             .subscribe(() => {
-                onEditorChange(this.editor.getData());
-            });
+                onEditorChange(this.editor.getData())
+            })
 
-        this.subscriptions.add(editorChangeSubscription);
+        this.subscriptions.add(editorChangeSubscription)
 
         // Callback to the parent to pass the editor instance so the parent can call functions on it like insertHTML.
-        onEditorInitialized(this.editor);
+        onEditorInitialized(this.editor)
     }
 
     componentWillUnmount() {
         if (this.editor) {
-            this.editor.destroy();
+            this.editor.destroy()
         }
 
-        this.subscriptions.forEach(subscription => subscription.unsubscribe());
+        this.subscriptions.forEach(subscription => subscription.unsubscribe())
     }
 
     shouldComponentUpdate() {
-        return false;
+        return false
     }
 
-    setContainerRef = (textarea) => {
-        this.editorContainer = textarea;
+    setContainerRef = textarea => {
+        this.editorContainer = textarea
     }
 
     render() {
-        return (
-            <textarea ref={this.setContainerRef} />
-        );
+        return <textarea ref={this.setContainerRef} />
     }
 }
 
@@ -90,5 +128,5 @@ CKEditor.propTypes = {
      * `componentDidMount` lifecycle, updating the content will need to be done though setting it on the editor instance
      * directly by calling CKEditor functions like `editor.insertHtml()`.
      */
-    initialContent: PropTypes.string,
-};
+    initialContent: PropTypes.string
+}

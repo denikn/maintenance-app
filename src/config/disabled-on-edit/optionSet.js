@@ -1,3 +1,1 @@
-export default [
-    'valueType',
-];
+export default ['valueType']

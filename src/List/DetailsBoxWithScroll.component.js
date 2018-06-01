@@ -1,25 +1,28 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Observable } from 'rxjs';
-import Paper from 'material-ui/Paper/Paper';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { Observable } from 'rxjs'
+import Paper from 'material-ui/Paper/Paper'
 
-import DetailsBox from './DetailsBox.component';
+import DetailsBox from './DetailsBox.component'
 
 class DetailsBoxWithScroll extends Component {
     componentDidMount() {
-        this.subscription = Observable
-            .fromEvent(global, 'scroll')
+        this.subscription = Observable.fromEvent(global, 'scroll')
             .debounceTime(200)
             .map(() => document.querySelector('body').scrollTop)
-            .subscribe(() => this.forceUpdate());
+            .subscribe(() => this.forceUpdate())
     }
 
     componentWillUnmount() {
-        this.subscription && this.subscription.unsubscribe();
+        this.subscription && this.subscription.unsubscribe()
     }
 
     render() {
-        const paperStyle = { maxWidth: 500, minWidth: 300, marginTop: document.querySelector('body').scrollTop };
+        const paperStyle = {
+            maxWidth: 500,
+            minWidth: 300,
+            marginTop: document.querySelector('body').scrollTop
+        }
 
         return (
             <div style={this.props.style}>
@@ -31,18 +34,18 @@ class DetailsBoxWithScroll extends Component {
                     />
                 </Paper>
             </div>
-        );
+        )
     }
 }
 
 DetailsBoxWithScroll.propTypes = {
     style: PropTypes.object,
     detailsObject: PropTypes.object.isRequired,
-    onClose: PropTypes.func.isRequired,
-};
+    onClose: PropTypes.func.isRequired
+}
 
 DetailsBoxWithScroll.defaultProps = {
-    style: {},
-};
+    style: {}
+}
 
-export default DetailsBoxWithScroll;
+export default DetailsBoxWithScroll

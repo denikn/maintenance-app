@@ -1,6 +1,6 @@
-import log from 'loglevel';
+import log from 'loglevel'
 
-const inputPattern = /<input.*?\/>/gi;
+const inputPattern = /<input.*?\/>/gi
 
 /* AttributeIdPattern is used in tracker-programs Custom registration forms
    programIdPattern is used in tracker-programs Custom registration forms
@@ -20,20 +20,26 @@ const allPatterns = /attributeid="(\w*?)"|programid="(\w*?)"|id="((\w*?)-(\w*?)-
 //Map over the position of the match of the pattern in the allPattern.
 //matchIndexes[attributeid] will be the id of the element matched.
 const matchIndexes = {
-    'attributeid': 1,
-    'programid': 2,
-    'id': 3,
+    attributeid: 1,
+    programid: 2,
+    id: 3
 }
 
-export function generateHtmlForField(id, styleAttr, disabledAttr, label, nameAttr = "entryfield", fieldType='id') {
-    const style = styleAttr ? ` style=${styleAttr}` : '';
-    const disabled = disabledAttr ? ` disabled=${disabledAttr}` : '';
+export function generateHtmlForField(
+    id,
+    styleAttr,
+    disabledAttr,
+    label,
+    nameAttr = 'entryfield',
+    fieldType = 'id'
+) {
+    const style = styleAttr ? ` style=${styleAttr}` : ''
+    const disabled = disabledAttr ? ` disabled=${disabledAttr}` : ''
 
-    const attr = `name="${nameAttr}" title="${label}" value="[ ${label} ]"${style}${disabled}`.trim();
+    const attr = `name="${nameAttr}" title="${label}" value="[ ${label} ]"${style}${disabled}`.trim()
     console.log(attr)
-    console.log("FIELDTYPE", fieldType)
-    return `<input ${fieldType}="${id}" ${attr}/>`;
-
+    console.log('FIELDTYPE', fieldType)
+    return `<input ${fieldType}="${id}" ${attr}/>`
 }
 
 /* Operands with ID's that contain a dot ('.') are a combined IDs of two objects.
@@ -43,15 +49,12 @@ export function generateHtmlForField(id, styleAttr, disabledAttr, label, nameAtt
     And dataElementId-categoryOptionId for event-programs
  */
 export function transformElementsToCustomForm(elements) {
-    elements
-        .filter(op => op.id.indexOf('.') !== -1)
-        .reduce((out, op) => {
-            const id = `${op.id.split('.').join('-')}-val`;
-            out[id] = op.displayName; // eslint-disable-line
-            return out;
-        }, {});
+    elements.filter(op => op.id.indexOf('.') !== -1).reduce((out, op) => {
+        const id = `${op.id.split('.').join('-')}-val`
+        out[id] = op.displayName // eslint-disable-line
+        return out
+    }, {})
 }
-
 
 /**
  * Gets the id and idString from a matched element.
@@ -64,11 +67,11 @@ export function transformElementsToCustomForm(elements) {
  * @returns {*} an object with idString, id and fieldType of the element.
  */
 function getFieldInfoFromMatch(match) {
-    for(let patternId in matchIndexes) {
-        const index = matchIndexes[patternId];
-        const elemId = match[index];
-        if(elemId) {
-            let id = elemId;
+    for (let patternId in matchIndexes) {
+        const index = matchIndexes[patternId]
+        const elemId = match[index]
+        if (elemId) {
+            let id = elemId
             return {
                 idString: match[0],
                 id,
@@ -76,43 +79,50 @@ function getFieldInfoFromMatch(match) {
             }
         }
     }
-    return null;
+    return null
 }
 
 export function processFormData(formData, elements, idPattern) {
-    const inHtml = formData;
-    let outHtml = '';
+    const inHtml = formData
+    let outHtml = ''
 
-    const usedIds = [];
+    const usedIds = []
     idPattern = elementPatterns.attributeid
-    let inputElement = inputPattern.exec(inHtml);
-    let inPos = 0;
+    let inputElement = inputPattern.exec(inHtml)
+    let inPos = 0
     while (inputElement !== null) {
-        outHtml += inHtml.substr(inPos, inputElement.index - inPos);
-        inPos = inputPattern.lastIndex;
-        const inputHtml = inputElement[0];
-        const inputStyle = (/style="(.*?)"/.exec(inputHtml) || ['', ''])[1];
-        const inputDisabled = /disabled/.exec(inputHtml) !== null;
+        outHtml += inHtml.substr(inPos, inputElement.index - inPos)
+        inPos = inputPattern.lastIndex
+        const inputHtml = inputElement[0]
+        const inputStyle = (/style="(.*?)"/.exec(inputHtml) || ['', ''])[1]
+        const inputDisabled = /disabled/.exec(inputHtml) !== null
 
-        const idMatch = idPattern.exec(inputHtml);
-        const allMatch = allPatterns.exec(inputHtml);
-        const { idString, id, fieldType} = getFieldInfoFromMatch(allMatch)
+        const idMatch = idPattern.exec(inputHtml)
+        const allMatch = allPatterns.exec(inputHtml)
+        const { idString, id, fieldType } = getFieldInfoFromMatch(allMatch)
         console.log(idString)
         console.log(id)
         console.log(allMatch)
         console.log(idMatch)
         if (idString && id) {
-         //   console.log(idMatch);
-            usedIds.push(id);
-            const label = elements && elements[id];
-            outHtml += generateHtmlForField(id, inputStyle, inputDisabled, label, undefined, fieldType);
+            //   console.log(idMatch);
+            usedIds.push(id)
+            const label = elements && elements[id]
+            outHtml += generateHtmlForField(
+                id,
+                inputStyle,
+                inputDisabled,
+                label,
+                undefined,
+                fieldType
+            )
         } else {
-            outHtml += inputHtml;
+            outHtml += inputHtml
         }
 
-        inputElement = inputPattern.exec(inHtml);
+        inputElement = inputPattern.exec(inHtml)
     }
-    outHtml += inHtml.substr(inPos);
+    outHtml += inHtml.substr(inPos)
     //console.log(outHtml)
     return {
         usedIds,
@@ -131,26 +141,36 @@ export function processFormData(formData, elements, idPattern) {
  * @returns {{}} - And object where each property is a bound function
  */
 export function bindFuncsToKeys(obj, func, selfArg, extraArgs) {
-    const boundFuncs = {};
-    Object.keys(obj).forEach((x) => {
-        boundFuncs[x] = func.bind(selfArg, x, extraArgs);
-    });
-    return boundFuncs;
+    const boundFuncs = {}
+    Object.keys(obj).forEach(x => {
+        boundFuncs[x] = func.bind(selfArg, x, extraArgs)
+    })
+    return boundFuncs
 }
 
 export function insertElement(id, label, editor, fieldType = 'id') {
     console.log(fieldType)
-    const elementHtml = generateHtmlForField(id, null, null, label, undefined, fieldType);
-    console.log("ElementHTML", elementHtml);
-    editor.insertHtml(elementHtml, 'unfiltered_html');
+    const elementHtml = generateHtmlForField(
+        id,
+        null,
+        null,
+        label,
+        undefined,
+        fieldType
+    )
+    console.log('ElementHTML', elementHtml)
+    editor.insertHtml(elementHtml, 'unfiltered_html')
     // Move the current selection to just after the newly inserted element
-    const range = editor.getSelection().getRanges()[0];
+    const range = editor.getSelection().getRanges()[0]
     console.log(range)
-    range && range.moveToElementEditablePosition(range.endContainer, true);
+    range && range.moveToElementEditablePosition(range.endContainer, true)
 }
 
 export function insertFlag(img, editor) {
-    editor.insertHtml(`<img src="../dhis-web-commons/flags/${img}" />`, 'unfiltered_html');
-    const range = editor.getSelection().getRanges()[0];
-    range && range.moveToElementEditablePosition(range.endContainer, true);
+    editor.insertHtml(
+        `<img src="../dhis-web-commons/flags/${img}" />`,
+        'unfiltered_html'
+    )
+    const range = editor.getSelection().getRanges()[0]
+    range && range.moveToElementEditablePosition(range.endContainer, true)
 }

@@ -1,4 +1,4 @@
-import fieldOrder from './field-order';
+import fieldOrder from './field-order'
 
 /*
     The stepper sets the style of the fields of the not active step to "display: none"
@@ -14,53 +14,53 @@ const fieldGroupsForModelType = new Map([
         [
             {
                 label: 'enter_program_rule_details',
-                fields: ['program', 'name', 'description', 'priority'],
+                fields: ['program', 'name', 'description', 'priority']
             },
             {
                 label: 'enter_program_rule_expression',
-                fields: ['condition'],
+                fields: ['condition']
             },
             {
                 label: 'define_program_rule_actions',
-                fields: ['programRuleActions'],
-            },
-        ],
+                fields: ['programRuleActions']
+            }
+        ]
     ],
     [
         'dataSetNotificationTemplate',
         [
             {
                 label: 'what_to_send',
-                fields: ['name', 'code', 'dataSets', 'messageTemplate'],
+                fields: ['name', 'code', 'dataSets', 'messageTemplate']
             },
             {
                 label: 'when_to_send_it',
                 fields: [
                     'dataSetNotificationTrigger',
                     'relativeScheduledDays',
-                    'sendStrategy',
-                ],
+                    'sendStrategy'
+                ]
             },
             {
                 label: 'who_to_send_it_to',
                 fields: [
                     'notificationRecipient',
                     'recipientUserGroup',
-                    'deliveryChannels',
-                ],
-            },
-        ],
+                    'deliveryChannels'
+                ]
+            }
+        ]
     ],
     [
         'programNotificationTemplate',
         [
             {
                 label: 'what_to_send',
-                fields: ['name', 'messageTemplate'],
+                fields: ['name', 'messageTemplate']
             },
             {
                 label: 'when_to_send_it',
-                fields: ['notificationTrigger', 'relativeScheduledDays'],
+                fields: ['notificationTrigger', 'relativeScheduledDays']
             },
             {
                 label: 'who_to_send_it_to',
@@ -68,21 +68,21 @@ const fieldGroupsForModelType = new Map([
                     'notificationRecipient',
                     'recipientUserGroup',
                     'deliveryChannels',
-                    'recipientProgramAttribute',
-                ],
-            },
-        ],
+                    'recipientProgramAttribute'
+                ]
+            }
+        ]
     ],
     [
         'programStageNotificationTemplate',
         [
             {
                 label: 'what_to_send',
-                fields: ['name', 'messageTemplate'],
+                fields: ['name', 'messageTemplate']
             },
             {
                 label: 'when_to_send_it',
-                fields: ['notificationTrigger', 'relativeScheduledDays'],
+                fields: ['notificationTrigger', 'relativeScheduledDays']
             },
             {
                 label: 'who_to_send_it_to',
@@ -91,25 +91,25 @@ const fieldGroupsForModelType = new Map([
                     'recipientUserGroup',
                     'deliveryChannels',
                     'recipientDataElement',
-                    'recipientProgramAttribute',
-                ],
-            },
-        ],
-    ],
-]);
+                    'recipientProgramAttribute'
+                ]
+            }
+        ]
+    ]
+])
 
 export default {
     for(modelType) {
         if (modelType && fieldGroupsForModelType.has(modelType)) {
-            return fieldGroupsForModelType.get(modelType);
+            return fieldGroupsForModelType.get(modelType)
         }
 
         return [
             {
                 label: 'details',
-                fields: fieldOrder.for(modelType),
-            },
-        ];
+                fields: fieldOrder.for(modelType)
+            }
+        ]
     },
 
     groupsByField(modelType) {
@@ -118,9 +118,9 @@ export default {
                 .get(modelType)
                 .map(g => g.fields)
                 .reduce((o, f, s) => {
-                    f.forEach(x => (o[x] = s));
-                    return o;
-                }, {});
+                    f.forEach(x => (o[x] = s))
+                    return o
+                }, {})
         }
-    },
-};
+    }
+}

@@ -1,15 +1,15 @@
-import React from 'react';
-import DatePicker from 'material-ui/DatePicker/DatePicker';
-import IconButton from 'material-ui/IconButton/IconButton';
+import React from 'react'
+import DatePicker from 'material-ui/DatePicker/DatePicker'
+import IconButton from 'material-ui/IconButton/IconButton'
 
 export default React.createClass({
     propTypes: {
         value: React.PropTypes.oneOfType([
             React.PropTypes.string,
-            React.PropTypes.object,
+            React.PropTypes.object
         ]),
         labelText: React.PropTypes.string.isRequired,
-        onChange: React.PropTypes.func.isRequired,
+        onChange: React.PropTypes.func.isRequired
     },
 
     renderDatePicker() {
@@ -25,7 +25,7 @@ export default React.createClass({
             models,
             modelDefinition,
             ...other
-        } = this.props;
+        } = this.props
 
         return (
             <div style={{ ...this.props.style }}>
@@ -38,7 +38,7 @@ export default React.createClass({
                     onChange={this._onDateSelect}
                 />
             </div>
-        );
+        )
     },
 
     render() {
@@ -47,37 +47,41 @@ export default React.createClass({
                 position: 'absolute',
                 right: '-16px',
                 top: '28px',
-                zIndex: 1,
+                zIndex: 1
             },
             closeIcon: {
-                color: '#888888',
-            },
-        };
+                color: '#888888'
+            }
+        }
 
         return (
             <div>
-                {!this.props.isRequired && this.props.value !== undefined && this.props.value !== '' ? (
+                {!this.props.isRequired &&
+                this.props.value !== undefined &&
+                this.props.value !== '' ? (
                     <IconButton
                         iconClassName="material-icons"
                         style={styles.closeButton}
                         iconStyle={styles.closeIcon}
                         onClick={this._clearDate}
-                    >close</IconButton>
+                    >
+                        close
+                    </IconButton>
                 ) : null}
                 {this.renderDatePicker()}
             </div>
-        );
+        )
     },
 
     _clearDate() {
-        this._onDateSelect(undefined, '');
+        this._onDateSelect(undefined, '')
     },
 
     _onDateSelect(event, date) {
         this.props.onChange({
             target: {
-                value: date,
-            },
-        });
-    },
-});
+                value: date
+            }
+        })
+    }
+})

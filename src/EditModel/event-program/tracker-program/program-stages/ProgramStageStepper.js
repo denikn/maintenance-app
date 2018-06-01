@@ -1,45 +1,45 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import pure from 'recompose/pure';
-import { bindActionCreators } from 'redux';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import pure from 'recompose/pure'
+import { bindActionCreators } from 'redux'
 
-import steps from './programStageSteps';
-import { changeStep } from './actions';
-import { createStepperFromConfig } from '../../../stepper/stepper';
-import EditProgramStageDetails from './EditProgramStageDetails';
-import AssignProgramStageDataElements from './AssignProgramStageDataElements';
-import CreateDataEntryFormWithoutMargin from '../../create-data-entry-form/CreateDataEntryForm.component';
-import { getActiveProgramStageStep } from './selectors';
+import steps from './programStageSteps'
+import { changeStep } from './actions'
+import { createStepperFromConfig } from '../../../stepper/stepper'
+import EditProgramStageDetails from './EditProgramStageDetails'
+import AssignProgramStageDataElements from './AssignProgramStageDataElements'
+import CreateDataEntryFormWithoutMargin from '../../create-data-entry-form/CreateDataEntryForm.component'
+import { getActiveProgramStageStep } from './selectors'
 
-const CreateDataEntryForm = props =>
+const CreateDataEntryForm = props => (
     <div style={{ marginTop: '15px' }}>
         <CreateDataEntryFormWithoutMargin {...props} />
-    </div>;
+    </div>
+)
 
 const stepperConfig = () => {
     const stepComponents = {
         EditProgramStageDetails,
         AssignProgramStageDataElements,
-        CreateDataEntryForm,
-    };
+        CreateDataEntryForm
+    }
 
     return steps.map(step => {
-        step.component = stepComponents[step.componentName]; // eslint-disable-line no-param-reassign
-        step.content = stepComponents[step.componentName];
-        return step;
-    });
-};
+        step.component = stepComponents[step.componentName] // eslint-disable-line no-param-reassign
+        step.content = stepComponents[step.componentName]
+        return step
+    })
+}
 
 const ProgramStageVerticalStepper = connect(
     state => ({
-        activeStep: getActiveProgramStageStep(state),
+        activeStep: getActiveProgramStageStep(state)
     }),
     dispatch => bindActionCreators({ stepperClicked: changeStep }, dispatch)
-)(createStepperFromConfig(stepperConfig(), 'vertical'));
+)(createStepperFromConfig(stepperConfig(), 'vertical'))
 
 export const ProgramStageStepper = pure(props => {
-
     return (
         <div>
             <ProgramStageVerticalStepper
@@ -47,8 +47,8 @@ export const ProgramStageStepper = pure(props => {
                 programStage={props.programStage}
             />
         </div>
-    );
-});
+    )
+})
 
 ProgramStageStepper.propTypes = {
     /**
@@ -58,7 +58,7 @@ ProgramStageStepper.propTypes = {
     /**
      * Programstage-model object
      */
-    programStage: PropTypes.object,
-};
+    programStage: PropTypes.object
+}
 
-export default ProgramStageStepper;
+export default ProgramStageStepper

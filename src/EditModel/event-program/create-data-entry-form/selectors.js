@@ -1,1 +1,2 @@
-export const getCurrentProgramStage = state => state.eventProgram.programStageStepper.stageId;
+export const getCurrentProgramStage = state =>
+    state.eventProgram.programStageStepper.stageId

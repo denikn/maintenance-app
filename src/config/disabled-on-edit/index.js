@@ -1,10 +1,10 @@
-import category from './category';
-import categoryCombo from './categoryCombo';
-import categoryOptionCombo from './categoryOptionCombo';
-import categoryOptionGroup from './categoryOptionGroup';
-import categoryOptionGroupSet from './categoryOptionGroupSet';
-import optionSet from './optionSet';
-import programRule from './programRule';
+import category from './category'
+import categoryCombo from './categoryCombo'
+import categoryOptionCombo from './categoryOptionCombo'
+import categoryOptionGroup from './categoryOptionGroup'
+import categoryOptionGroupSet from './categoryOptionGroupSet'
+import optionSet from './optionSet'
+import programRule from './programRule'
 
 const disabledByType = {
     category,
@@ -13,14 +13,14 @@ const disabledByType = {
     categoryOptionGroup,
     categoryOptionGroupSet,
     optionSet,
-    programRule,
-};
+    programRule
+}
 
 export default {
     for(schemaName) {
         if (schemaName && disabledByType[schemaName]) {
-            return disabledByType[schemaName];
+            return disabledByType[schemaName]
         }
-        return [];
-    },
-};
+        return []
+    }
+}

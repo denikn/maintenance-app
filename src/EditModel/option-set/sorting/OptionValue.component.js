@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 export default function OptionValue(props, context) {
     const {
@@ -6,10 +6,21 @@ export default function OptionValue(props, context) {
         connectDropTarget,
         isDragging,
         displayName,
-        code,
-    } = props;
+        code
+    } = props
 
-    return connectDropTarget(connectDragSource(
-        <div style={{ opacity: isDragging ? 0.2 : 1, padding: '.5rem', margin: '.5rem', border: '1px dotted #333' }}>{displayName} ({code})</div>
-    ));
+    return connectDropTarget(
+        connectDragSource(
+            <div
+                style={{
+                    opacity: isDragging ? 0.2 : 1,
+                    padding: '.5rem',
+                    margin: '.5rem',
+                    border: '1px dotted #333'
+                }}
+            >
+                {displayName} ({code})
+            </div>
+        )
+    )
 }

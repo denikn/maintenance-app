@@ -1,156 +1,187 @@
-import { isRequired, isUrl, isNumber as isNumberValidator, isEmail } from 'd2-ui/lib/forms/Validators';
-import isString from 'd2-utilizr/lib/isString';
-import isNumber from 'lodash.isnumber';
-import TextField from './form-fields/text-field';
-import MultiSelect from './form-fields/multi-select';
-import CheckBox from './form-fields/check-box';
-import DropDown from './form-fields/drop-down';
-import DropDownAsync from './form-fields/drop-down-async';
-import DateSelect from './form-fields/date-select';
-import { constantNameConverter } from "../config/field-overrides/helpers/constantNameConverter";
+import {
+    isRequired,
+    isUrl,
+    isNumber as isNumberValidator,
+    isEmail
+} from 'd2-ui/lib/forms/Validators'
+import isString from 'd2-utilizr/lib/isString'
+import isNumber from 'lodash.isnumber'
+import TextField from './form-fields/text-field'
+import MultiSelect from './form-fields/multi-select'
+import CheckBox from './form-fields/check-box'
+import DropDown from './form-fields/drop-down'
+import DropDownAsync from './form-fields/drop-down-async'
+import DateSelect from './form-fields/date-select'
+import { constantNameConverter } from '../config/field-overrides/helpers/constantNameConverter'
 
-export const CHECKBOX = Symbol('CHECKBOX');
-export const INPUT = Symbol('INPUT');
-export const SELECT = Symbol('SELECT');
-export const SELECTASYNC = Symbol('SELECTASYNC');
-export const MULTISELECT = Symbol('MULTISELECT');
-export const TEXT = Symbol('TEXT');
-export const DATE = Symbol('DATE');
-export const INTEGER = Symbol('INTEGER');
-export const IDENTIFIER = Symbol('IDENTIFIER');
-export const URL = Symbol('URL');
-export const EMAIL = Symbol('EMAIL');
-export const NUMBER = Symbol('NUMBER');
-export const COMPLEX = Symbol('COMPLEX');
+export const CHECKBOX = Symbol('CHECKBOX')
+export const INPUT = Symbol('INPUT')
+export const SELECT = Symbol('SELECT')
+export const SELECTASYNC = Symbol('SELECTASYNC')
+export const MULTISELECT = Symbol('MULTISELECT')
+export const TEXT = Symbol('TEXT')
+export const DATE = Symbol('DATE')
+export const INTEGER = Symbol('INTEGER')
+export const IDENTIFIER = Symbol('IDENTIFIER')
+export const URL = Symbol('URL')
+export const EMAIL = Symbol('EMAIL')
+export const NUMBER = Symbol('NUMBER')
+export const COMPLEX = Symbol('COMPLEX')
 
 function toInteger(value) {
-    return Number.parseInt(value, 10);
+    return Number.parseInt(value, 10)
 }
 
 function isIntegerValidator(value) {
     // Empty string values are correct values
     if (isString(value) && !value) {
-        return true;
+        return true
     }
 
     if (isString(value) && /\./.test(value)) {
-        return false;
+        return false
     }
-    return Number.parseInt(value, 10) === Number.parseFloat(value);
+    return Number.parseInt(value, 10) === Number.parseFloat(value)
 }
-isIntegerValidator.message = 'number_should_not_have_decimals';
+isIntegerValidator.message = 'number_should_not_have_decimals'
 
 function createValidatorFromValidatorFunction(validatorFn) {
     return {
         validator: validatorFn,
-        message: validatorFn.message,
-    };
+        message: validatorFn.message
+    }
 }
 
 function addValidatorForType(type, modelValidation, modelDefinition) {
     function maxNumber(value) {
-        return Number(value) <= modelValidation.max;
+        return Number(value) <= modelValidation.max
     }
-    maxNumber.message = 'value_not_max';
+    maxNumber.message = 'value_not_max'
 
     function minNumber(value) {
-        return Number(value) >= modelValidation.min;
+        return Number(value) >= modelValidation.min
     }
-    minNumber.message = 'value_not_min';
+    minNumber.message = 'value_not_min'
 
     function maxTextOrArray(value) {
-        return !value || value.length <= modelValidation.max;
+        return !value || value.length <= modelValidation.max
     }
-    maxTextOrArray.message = 'value_not_max';
+    maxTextOrArray.message = 'value_not_max'
 
     function minTextOrArray(value) {
-        return !value || value.length >= modelValidation.min;
+        return !value || value.length >= modelValidation.min
     }
-    minTextOrArray.message = 'value_not_min';
+    minTextOrArray.message = 'value_not_min'
 
-    const validators = [];
+    const validators = []
 
     switch (type) {
-    case NUMBER:
-        validators.push(createValidatorFromValidatorFunction(isNumberValidator));
-        break;
-    case INTEGER:
-        validators.push(createValidatorFromValidatorFunction(isNumberValidator));
-        validators.push(createValidatorFromValidatorFunction(isIntegerValidator));
+        case NUMBER:
+            validators.push(
+                createValidatorFromValidatorFunction(isNumberValidator)
+            )
+            break
+        case INTEGER:
+            validators.push(
+                createValidatorFromValidatorFunction(isNumberValidator)
+            )
+            validators.push(
+                createValidatorFromValidatorFunction(isIntegerValidator)
+            )
 
-        if (isNumber(modelValidation.max)) {
-            validators.push(createValidatorFromValidatorFunction(maxNumber));
-        }
+            if (isNumber(modelValidation.max)) {
+                validators.push(createValidatorFromValidatorFunction(maxNumber))
+            }
 
-        if (isNumber(modelValidation.min)) {
-            validators.push(createValidatorFromValidatorFunction(minNumber));
-        }
-        break;
-    case IDENTIFIER:
-    case INPUT:
-        if (isNumber(modelValidation.max)) {
-            validators.push(createValidatorFromValidatorFunction(maxTextOrArray));
-        }
+            if (isNumber(modelValidation.min)) {
+                validators.push(createValidatorFromValidatorFunction(minNumber))
+            }
+            break
+        case IDENTIFIER:
+        case INPUT:
+            if (isNumber(modelValidation.max)) {
+                validators.push(
+                    createValidatorFromValidatorFunction(maxTextOrArray)
+                )
+            }
 
-        if (isNumber(modelValidation.min)) {
-            validators.push(createValidatorFromValidatorFunction(minTextOrArray));
-        }
+            if (isNumber(modelValidation.min)) {
+                validators.push(
+                    createValidatorFromValidatorFunction(minTextOrArray)
+                )
+            }
 
-        break;
-    case URL:
-        validators.push(createValidatorFromValidatorFunction(isUrl));
-        break;
-    case EMAIL:
-        validators.push(createValidatorFromValidatorFunction(isEmail));
-    default:
-        break;
+            break
+        case URL:
+            validators.push(createValidatorFromValidatorFunction(isUrl))
+            break
+        case EMAIL:
+            validators.push(createValidatorFromValidatorFunction(isEmail))
+        default:
+            break
     }
 
-    return validators;
+    return validators
 }
 
-export function getValidatorsFromModelValidation(modelValidation, modelDefinition) {
-    let validators = [];
+export function getValidatorsFromModelValidation(
+    modelValidation,
+    modelDefinition
+) {
+    let validators = []
 
     if (modelValidation.required) {
-        validators.push(createValidatorFromValidatorFunction(isRequired));
+        validators.push(createValidatorFromValidatorFunction(isRequired))
     }
 
     if (modelDefinition) {
-        validators = validators.concat(addValidatorForType(modelValidation.type, modelValidation, modelDefinition));
+        validators = validators.concat(
+            addValidatorForType(
+                modelValidation.type,
+                modelValidation,
+                modelDefinition
+            )
+        )
     }
 
-    return validators;
+    return validators
 }
 
 export function getFieldUIComponent(type) {
     switch (type) {
-    case SELECT:
-        return DropDown;
-    case SELECTASYNC:
-        return DropDownAsync;
-    case CHECKBOX:
-        return CheckBox;
-    case MULTISELECT:
-        return MultiSelect;
-    case DATE:
-        return DateSelect;
-    case EMAIL:
-    case INPUT:
-    case IDENTIFIER:
-    default:
-        break;
+        case SELECT:
+            return DropDown
+        case SELECTASYNC:
+            return DropDownAsync
+        case CHECKBOX:
+            return CheckBox
+        case MULTISELECT:
+            return MultiSelect
+        case DATE:
+            return DateSelect
+        case EMAIL:
+        case INPUT:
+        case IDENTIFIER:
+        default:
+            break
     }
-    return TextField;
+    return TextField
 }
 
-export function createFieldConfig(fieldConfig, modelDefinition, models, customFieldOrderName) {
-    const fieldConstants = modelDefinition.modelProperties[fieldConfig.name] &&
-        modelDefinition.modelProperties[fieldConfig.name].constants ||
-        [];
+export function createFieldConfig(
+    fieldConfig,
+    modelDefinition,
+    models,
+    customFieldOrderName
+) {
+    const fieldConstants =
+        (modelDefinition.modelProperties[fieldConfig.name] &&
+            modelDefinition.modelProperties[fieldConfig.name].constants) ||
+        []
     const basicFieldConfig = {
         name: fieldConfig.name,
-        component: fieldConfig.component || getFieldUIComponent(fieldConfig.type),
+        component:
+            fieldConfig.component || getFieldUIComponent(fieldConfig.type),
         props: Object.assign(fieldConfig.fieldOptions || {}, {
             labelText: fieldConfig.fieldOptions.labelText,
             modelDefinition,
@@ -162,36 +193,43 @@ export function createFieldConfig(fieldConfig, modelDefinition, models, customFi
             fullWidth: true,
             translateOptions: fieldConstants && !!fieldConstants.length,
             isRequired: fieldConfig.required,
-            options: (fieldConfig.fieldOptions.options || fieldConstants)
-                .map((constant) => {
+            options: (fieldConfig.fieldOptions.options || fieldConstants).map(
+                constant => {
                     if (constant.name && constant.value) {
                         return {
                             text: constant.name,
-                            value: constant.value,
-                        };
+                            value: constant.value
+                        }
                     }
 
                     return {
-                        text: constantNameConverter(customFieldOrderName || modelDefinition.name, fieldConfig.name, constant),
-                        value: constant.toString(),
-                    };
-                }),
-        }),
-    };
+                        text: constantNameConverter(
+                            customFieldOrderName || modelDefinition.name,
+                            fieldConfig.name,
+                            constant
+                        ),
+                        value: constant.toString()
+                    }
+                }
+            )
+        })
+    }
 
     // Checkbox fields should not be marked as required
     // This looks strange from a ui perspective as the user looks like he/she needs to check the box
     if (fieldConfig.type === CHECKBOX) {
-        basicFieldConfig.props.isRequired = false;
+        basicFieldConfig.props.isRequired = false
     }
 
     if (fieldConfig.constants && fieldConfig.constants.length) {
-        basicFieldConfig.translate = true;
+        basicFieldConfig.translate = true
     }
 
-    const validators = [].concat(getValidatorsFromModelValidation(fieldConfig, modelDefinition)).concat(fieldConfig.validators || []);
+    const validators = []
+        .concat(getValidatorsFromModelValidation(fieldConfig, modelDefinition))
+        .concat(fieldConfig.validators || [])
 
-    return Object.assign(fieldConfig, { validators }, basicFieldConfig);
+    return Object.assign(fieldConfig, { validators }, basicFieldConfig)
 }
 
 export const typeToFieldMap = new Map([
@@ -209,5 +247,5 @@ export const typeToFieldMap = new Map([
     ['NUMBER', NUMBER],
     ['COMPLEX', COMPLEX],
     ['GEOLOCATION', INPUT],
-    ['TRUE_ONLY', CHECKBOX],
-]);
+    ['TRUE_ONLY', CHECKBOX]
+])

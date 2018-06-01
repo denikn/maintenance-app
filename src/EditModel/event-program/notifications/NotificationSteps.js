@@ -1,55 +1,54 @@
-import React, { PropTypes, Component } from 'react';
-import { connect } from 'react-redux';
-import { get } from 'lodash/fp';
-import compose from 'recompose/compose';
-import FormBuilder from 'd2-ui/lib/forms/FormBuilder.component';
-import { modelToEditSelector } from './selectors';
-import { setStageNotificationValue, setSelectedProgramStage } from './actions';
-import {
-    createFieldConfigsFor,
-    addPropsToFieldConfig,
-} from '../../formHelpers';
-import DropDown from '../../../forms/form-fields/drop-down';
-import fieldGroups from '../../../config/field-config/field-groups';
+import React, { PropTypes, Component } from 'react'
+import { connect } from 'react-redux'
+import { get } from 'lodash/fp'
+import compose from 'recompose/compose'
+import FormBuilder from 'd2-ui/lib/forms/FormBuilder.component'
+import { modelToEditSelector } from './selectors'
+import { setStageNotificationValue, setSelectedProgramStage } from './actions'
+import { createFieldConfigsFor, addPropsToFieldConfig } from '../../formHelpers'
+import DropDown from '../../../forms/form-fields/drop-down'
+import fieldGroups from '../../../config/field-config/field-groups'
 
 const mapStateToProps = state => {
     return {
-        model: modelToEditSelector(state),
-    };
-};
+        model: modelToEditSelector(state)
+    }
+}
 
 const mapDispatchToProps = dispatch => ({
     onUpdateField(fieldName, value) {
-        dispatch(setStageNotificationValue(fieldName, value));
+        dispatch(setStageNotificationValue(fieldName, value))
     },
     handleProgramStageSelect(stageId) {
-        dispatch(setSelectedProgramStage(stageId));
-    },
-});
+        dispatch(setSelectedProgramStage(stageId))
+    }
+})
 
 const programStagesToOptions = programStages =>
     programStages.map((elem, i) => ({
         text: elem.displayName,
-        value: elem.id,
-    }));
+        value: elem.id
+    }))
 
 class WhatToSendStep extends Component {
     constructor(props) {
-        super(props);
+        super(props)
 
         this.state = {
-            programStageId: props.model.programStage ?  props.model.programStage.id : null,
-        };
+            programStageId: props.model.programStage
+                ? props.model.programStage.id
+                : null
+        }
     }
 
     handleProgramStage = event => {
-        const sId = event.target.value;
+        const sId = event.target.value
         this.setState({
             ...this.state,
-            programStageId: sId,
-        });
-        this.props.handleProgramStageSelect(sId);
-    };
+            programStageId: sId
+        })
+        this.props.handleProgramStageSelect(sId)
+    }
 
     createProgramStageDropdown = () => {
         return {
@@ -60,10 +59,10 @@ class WhatToSendStep extends Component {
                 labelText: 'Program stage',
                 fullWidth: true,
                 value: this.state.programStageId,
-                onChange: this.handleProgramStage,
-            },
-        };
-    };
+                onChange: this.handleProgramStage
+            }
+        }
+    }
 
     render() {
         const {
@@ -72,14 +71,14 @@ class WhatToSendStep extends Component {
             isTracker,
             isProgram,
             dataElements,
-            attributes,
-        } = this.props;
+            attributes
+        } = this.props
         let fieldsToUse =
             isTracker && !isProgram
                 ? [this.createProgramStageDropdown(), ...fieldConfigs]
-                : fieldConfigs;
+                : fieldConfigs
 
-        const propsToField = { dataElements, attributes, isProgram };
+        const propsToField = { dataElements, attributes, isProgram }
         return (
             <FormBuilder
                 fields={fieldsToUse.map(
@@ -87,7 +86,7 @@ class WhatToSendStep extends Component {
                 )}
                 onUpdateField={onUpdateField}
             />
-        );
+        )
     }
 }
 
@@ -96,11 +95,11 @@ WhatToSendStep = compose(
         mapStateToProps,
         dispatch => ({
             onUpdateField(fieldName, value) {
-                dispatch(setStageNotificationValue(fieldName, value));
+                dispatch(setStageNotificationValue(fieldName, value))
             },
             handleProgramStageSelect(stageId) {
-                dispatch(setSelectedProgramStage(stageId));
-            },
+                dispatch(setSelectedProgramStage(stageId))
+            }
         }),
         undefined,
         { pure: false }
@@ -109,7 +108,7 @@ WhatToSendStep = compose(
         'programNotificationTemplate',
         fieldGroups.for('programStageNotificationTemplate')[0].fields
     )
-)(WhatToSendStep);
+)(WhatToSendStep)
 
 const stepToFormBuilder = ({
     fieldConfigs = [],
@@ -117,40 +116,55 @@ const stepToFormBuilder = ({
     dataElements,
     isTracker,
     isProgram,
-    attributes,
+    attributes
 }) => {
-    const fieldProps = { dataElements, isTracker, isProgram, attributes };
-    let fieldsToUse = fieldConfigs;
+    const fieldProps = { dataElements, isTracker, isProgram, attributes }
+    let fieldsToUse = fieldConfigs
 
     //TODO cleanup this
     //Remove PROGRAM_ATTRIBUTE options when it's an event-program
-    if(!isTracker && !isProgram) {
+    if (!isTracker && !isProgram) {
         fieldsToUse = fieldsToUse.map(field => {
-            if(field.name == 'notificationRecipient') {
-                const removedOptions = field.props.options.filter(opt => opt.value !== "PROGRAM_ATTRIBUTE");
-                const propsWithRemovedRecipient = {...field.props, options: removedOptions}
-                return { ...field, props: { ...propsWithRemovedRecipient} }
+            if (field.name == 'notificationRecipient') {
+                const removedOptions = field.props.options.filter(
+                    opt => opt.value !== 'PROGRAM_ATTRIBUTE'
+                )
+                const propsWithRemovedRecipient = {
+                    ...field.props,
+                    options: removedOptions
+                }
+                return { ...field, props: { ...propsWithRemovedRecipient } }
             }
-            return field;
+            return field
         })
     }
     return (
         <FormBuilder
-            fields={fieldsToUse.map(addPropsToFieldConfig(fieldProps, ['recipientDataElement', 'recipientProgramAttribute']))}
+            fields={fieldsToUse.map(
+                addPropsToFieldConfig(fieldProps, [
+                    'recipientDataElement',
+                    'recipientProgramAttribute'
+                ])
+            )}
             onUpdateField={onUpdateField}
         />
-    );
-};
+    )
+}
 
-const connectSteps = connect(mapStateToProps, mapDispatchToProps, undefined, {
-    pure: false,
-});
+const connectSteps = connect(
+    mapStateToProps,
+    mapDispatchToProps,
+    undefined,
+    {
+        pure: false
+    }
+)
 
 export const programStageSteps = [
     {
         key: 'what',
         name: 'what_to_send',
-        content: WhatToSendStep,
+        content: WhatToSendStep
     },
     {
         key: 'when',
@@ -165,7 +179,7 @@ export const programStageSteps = [
                 true,
                 'programStageNotificationTemplate'
             )
-        )(stepToFormBuilder),
+        )(stepToFormBuilder)
     },
     {
         key: 'who',
@@ -180,15 +194,15 @@ export const programStageSteps = [
                 true,
                 'programStageNotificationTemplate'
             )
-        )(stepToFormBuilder),
-    },
-];
+        )(stepToFormBuilder)
+    }
+]
 
 export const programSteps = [
     {
         key: 'what',
         name: 'what_to_send',
-        content: WhatToSendStep,
+        content: WhatToSendStep
     },
     {
         key: 'when',
@@ -199,7 +213,7 @@ export const programSteps = [
                 'programNotificationTemplate',
                 fieldGroups.for('programNotificationTemplate')[1].fields
             )
-        )(stepToFormBuilder),
+        )(stepToFormBuilder)
     },
     {
         key: 'who',
@@ -210,6 +224,6 @@ export const programSteps = [
                 'programNotificationTemplate',
                 fieldGroups.for('programNotificationTemplate')[2].fields
             )
-        )(stepToFormBuilder),
-    },
-];
+        )(stepToFormBuilder)
+    }
+]

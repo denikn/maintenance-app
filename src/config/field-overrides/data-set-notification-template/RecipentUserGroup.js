@@ -1,29 +1,29 @@
+import React from 'react'
+import PropTypes from 'prop-types'
+import DropDownAsync from '../../../forms/form-fields/drop-down-async'
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import DropDownAsync from '../../../forms/form-fields/drop-down-async';
-
-const RecipentUserGroup = (props) => {
+const RecipentUserGroup = props => {
     if (!props.model || props.model.notificationRecipient !== 'USER_GROUP') {
-        return null;
+        return null
     }
 
     return (
-        <div style={props.style} >
+        <div style={props.style}>
             <DropDownAsync {...props} />
-        </div>);
-};
+        </div>
+    )
+}
 
 RecipentUserGroup.propTypes = {
     style: PropTypes.object,
     model: PropTypes.shape({
-        notificationRecipient: PropTypes.string,
-    }),
-};
+        notificationRecipient: PropTypes.string
+    })
+}
 
 RecipentUserGroup.defaultProps = {
     style: {},
-    model: null,
-};
+    model: null
+}
 
-export default RecipentUserGroup;
+export default RecipentUserGroup

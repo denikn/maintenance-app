@@ -1,17 +1,15 @@
-import React from 'react';
-import ObservedEvents from '../utils/ObservedEvents.mixin';
-import Translate from 'd2-ui/lib/i18n/Translate.mixin';
-import TextField from 'material-ui/TextField/TextField';
-import { config } from 'd2/lib/d2';
-import { currentSubSection$ } from '../App/appStateStore';
+import React from 'react'
+import ObservedEvents from '../utils/ObservedEvents.mixin'
+import Translate from 'd2-ui/lib/i18n/Translate.mixin'
+import TextField from 'material-ui/TextField/TextField'
+import { config } from 'd2/lib/d2'
+import { currentSubSection$ } from '../App/appStateStore'
 
-const unsearchableSections = [
-    'organisationUnit',
-];
+const unsearchableSections = ['organisationUnit']
 
 const SearchBox = React.createClass({
     propTypes: {
-        searchObserverHandler: React.PropTypes.func.isRequired,
+        searchObserverHandler: React.PropTypes.func.isRequired
     },
 
     mixins: [ObservedEvents, Translate],
@@ -19,31 +17,39 @@ const SearchBox = React.createClass({
     getInitialState() {
         return {
             showSearchField: false,
-            value: '',
-        };
+            value: ''
+        }
     },
 
     componentWillMount() {
-        this.searchBoxCb = this.createEventObserver('searchBox');
+        this.searchBoxCb = this.createEventObserver('searchBox')
     },
 
     componentDidMount() {
         const searchObserver = this.events.searchBox
             .debounceTime(400)
-            .map(event => event && event.target && event.target.value ? event.target.value : '')
-            .distinctUntilChanged();
+            .map(
+                event =>
+                    event && event.target && event.target.value
+                        ? event.target.value
+                        : ''
+            )
+            .distinctUntilChanged()
 
-        this.props.searchObserverHandler(searchObserver);
+        this.props.searchObserverHandler(searchObserver)
 
-        this.subscription = currentSubSection$
-            .subscribe(currentSection => this.setState({
+        this.subscription = currentSubSection$.subscribe(currentSection =>
+            this.setState({
                 value: '',
-                showSearchField: !unsearchableSections.includes(currentSection),
-            }));
+                showSearchField: !unsearchableSections.includes(currentSection)
+            })
+        )
     },
 
     componentWillUnmount() {
-        this.subscription && this.subscription.unsubscribe && this.subscription.unsubscribe();
+        this.subscription &&
+            this.subscription.unsubscribe &&
+            this.subscription.unsubscribe()
     },
 
     render() {
@@ -51,8 +57,8 @@ const SearchBox = React.createClass({
             display: 'inline-block',
             marginRight: 16,
             position: 'relative',
-            top: -15,
-        };
+            top: -15
+        }
         return this.state.showSearchField ? (
             <div className="search-list-items" style={style}>
                 <TextField
@@ -61,18 +67,20 @@ const SearchBox = React.createClass({
                     fullWidth={false}
                     type="search"
                     onChange={this._onKeyUp}
-                    floatingLabelText={`${this.getTranslation('search_by_name')}`}
+                    floatingLabelText={`${this.getTranslation(
+                        'search_by_name'
+                    )}`}
                 />
             </div>
-        ) : null;
+        ) : null
     },
 
     _onKeyUp(event) {
         this.setState({
-            value: event.target.value,
-        });
-        this.searchBoxCb(event);
-    },
-});
+            value: event.target.value
+        })
+        this.searchBoxCb(event)
+    }
+})
 
-export default SearchBox;
+export default SearchBox
