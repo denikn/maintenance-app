@@ -1,6 +1,5 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { get } from 'lodash/fp';
 import compose from 'recompose/compose';
 import FormBuilder from 'd2-ui/lib/forms/FormBuilder.component';
 import { modelToEditSelector } from './selectors';

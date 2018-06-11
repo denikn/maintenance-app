@@ -1,17 +1,19 @@
+import { Observable } from 'rxjs';
+import { combineEpics } from 'redux-observable';
+import { equals, first, negate, find, pick } from 'lodash/fp';
+import { getInstance } from 'd2/lib/d2';
+import { generateUid } from 'd2/lib/uid';
+
+import { getStageNotificationsForProgramStageId } from './selectors';
+import { getProgramStageById } from '../tracker-program/program-stages/selectors';
+import eventProgramStore from '../event-program/eventProgramStore';
+import snackActions from '../../../Snackbar/snack.actions';
+
 import {
     NOTIFICATION_STAGE_REMOVE, NOTIFICATION_STAGE_SAVE, NOTIFICATION_SET_ADD_MODEL, removeProgramNotificationSuccess,
     setEditModel, saveStageNotificationSuccess, saveStageNotificationError,
-    NOTIFICATION_PROGRAM_SAVE, NOTIFICATION_PROGRAM_REMOVE
+    NOTIFICATION_PROGRAM_SAVE, NOTIFICATION_PROGRAM_REMOVE,
 } from './actions';
-import { Observable } from 'rxjs';
-import { combineEpics } from 'redux-observable';
-import { getInstance } from 'd2/lib/d2';
-import { getStageNotifications, getStageNotificationsForProgramStageId } from './selectors';
-import { getProgramStageById } from "../tracker-program/program-stages/selectors";
-import eventProgramStore from '../eventProgramStore';
-import { equals, first, negate, some, get, compose, find, identity, map, __, pick } from 'lodash/fp';
-import { generateUid } from 'd2/lib/uid';
-import snackActions from "../../../Snackbar/snack.actions";
 
 // notEqualTo :: any -> any -> Boolean
 const notEqualTo = left => right => left !== right;
@@ -22,8 +24,8 @@ const notEqualTo = left => right => left !== right;
  * @returns {*} The programStage model that the notification is part of, or the first programStage if
  * programStage is not defined on the notification.
  */
-const getProgramStageFromModel = (state, model) => model.programStage && model.programStage.id ? getProgramStageById(state, model.programStage.id) :
-    first(state.programStages);
+const getProgramStageFromModel = (state, model) => (model.programStage && model.programStage.id ? getProgramStageById(state, model.programStage.id) :
+    first(state.programStages));
 
 const removeProgramStageNotification = action$ => action$
     .ofType(NOTIFICATION_STAGE_REMOVE)
@@ -40,8 +42,8 @@ const removeProgramStageNotification = action$ => action$
                 programStageNotifications[programStage.id] = stageNotifications.filter(notEqualTo(model));
 
                 eventProgramStore.setState(eventProgramState);
-            })
-        )
+            }),
+        ),
     )
     .flatMapTo(Observable.never());
 
@@ -55,16 +57,15 @@ const saveProgramStageNotification = (action$, store) => action$
         eventProgramStore
             .take(1)
             .flatMap((eventProgramState) => {
-                const { programStages, programStageNotifications } = eventProgramState;
                 const programStage = getProgramStageFromModel(eventProgramState, model);
 
-                let stageNotifications = getStageNotificationsForProgramStageId(eventProgramState, programStage.id)
+                let stageNotifications = getStageNotificationsForProgramStageId(eventProgramState, programStage.id);
                 // If we're dealing with a new model we have to add it to the notification lists
                 // Both on the notification list on the programStage and on the eventStore
                 if (negate(find(equals(model)))(stageNotifications)) {
                     programStage.notificationTemplates.add(model);
-                    //Add empty stageNotifications if its a new programStage
-                    if(!stageNotifications) {
+                    // Add empty stageNotifications if its a new programStage
+                    if (!stageNotifications) {
                         stageNotifications = eventProgramState.programStageNotifications[programStage.id] = [];
                     }
                     stageNotifications.push(model);
@@ -89,21 +90,21 @@ const setProgramStageNotificationAddModel = (action$, store) => action$
         // Set default values
         model.id = generateUid();
         model.lastUpdated = new Date().toISOString();
-        if(notificationType == 'PROGRAM_NOTIFICATION') {
+        if (notificationType == 'PROGRAM_NOTIFICATION') {
             return setEditModel(model, 'PROGRAM_NOTIFICATION');
         }
-        if(psStore.programStages.length < 1) {
+        if (psStore.programStages.length < 1) {
             snackActions.show({
                 message: 'cannot_create_program_notification_without_program_stage',
                 translate: true,
             });
             return {
-                type: "SET_EDIT_MODEL_ERROR",
-            }
+                type: 'SET_EDIT_MODEL_ERROR',
+            };
         }
 
-        //set default to first programStage
-        model.programStage = pick('id', first(psStore.programStages))
+        // set default to first programStage
+        model.programStage = pick('id', first(psStore.programStages));
 
         return setEditModel(model);
     });
@@ -111,14 +112,14 @@ const setProgramStageNotificationAddModel = (action$, store) => action$
 const saveProgramNotification = (action$, store) => action$
     .ofType(NOTIFICATION_PROGRAM_SAVE)
     // FIXME: Remove href hack when d2 is fixed
-    .do(({ payload: {model} }) => {
+    .do(({ payload: { model } }) => {
         model.dataValues.href = `${model.modelDefinition.apiEndpoint}/${model.id}`;
     })
-    .mergeMap(({ payload: {model} }) => (
+    .mergeMap(({ payload: { model } }) => (
         eventProgramStore
             .take(1)
             .flatMap((eventProgramState) => {
-                const { program, programNotifications } = eventProgramState;
+                const { program } = eventProgramState;
 
                 // If we're dealing with a new model we have to add it to the notification lists
                 if (negate(find(equals(model)))(program)) {
@@ -143,8 +144,8 @@ const removeProgramNotification = action$ => action$
                 program.notificationTemplates.remove(model);
 
                 eventProgramStore.setState(eventProgramState);
-            })
-        )
+            }),
+        ),
     )
     .mapTo(removeProgramNotificationSuccess());
 

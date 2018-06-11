@@ -1,4 +1,4 @@
-import { get, compose, first, isEqual, curry, __ } from 'lodash/fp';
+import { get, compose, first, curry, __ } from 'lodash/fp';
 import { getProgramStageIndexById } from '../tracker-program/program-stages/selectors';
 
 export const getProgramStages = ({ programStages }) => programStages;

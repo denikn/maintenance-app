@@ -20,12 +20,11 @@ import {
     __,
 } from 'lodash/fp';
 import { generateUid } from 'd2/lib/uid';
-import programStore from '../eventProgramStore';
 
 // getProgramStageToModify :: String -> ProgramStage[] -> ProgramStage
 export const getProgramStageToModify = (
     programStageIdToModify,
-    programStages
+    programStages,
 ) => find(compose(isEqual(programStageIdToModify), get('id')), programStages);
 
 const programStageDataElementExistsInDataElementUidList = uids =>
@@ -42,22 +41,21 @@ const getProgramStageByIdFromAction = (store, action) => {
 const addDataElementsToStage = store => action$ =>
     action$
         .ofType(PROGRAM_STAGE_DATA_ELEMENTS_ADD)
-        .map(action => {
-            const state = store.getState();
+        .map((action) => {
             const programStageToEdit = getProgramStageByIdFromAction(
                 store,
-                action
+                action,
             );
 
             const programStageDataElements = getOr(
                 [],
                 'programStageDataElements',
-                programStageToEdit
+                programStageToEdit,
             );
             const dataElementIdsToAdd = getOr(
                 [],
                 'payload.dataElements',
-                action
+                action,
             );
             const programStageDataElementsToAdd = map(
                 id => ({
@@ -66,11 +64,11 @@ const addDataElementsToStage = store => action$ =>
                         id,
                     },
                 }),
-                dataElementIdsToAdd
+                dataElementIdsToAdd,
             );
 
             programStageToEdit.programStageDataElements = programStageDataElements.concat(
-                programStageDataElementsToAdd
+                programStageDataElementsToAdd,
             );
             const programStages = getOr([], 'programStages', store.getState());
             store.setState({
@@ -83,30 +81,29 @@ const addDataElementsToStage = store => action$ =>
 const removeDataElementFromStage = store => action$ =>
     action$
         .ofType(PROGRAM_STAGE_DATA_ELEMENTS_REMOVE)
-        .map(action => {
-            const state = store.getState();
+        .map((action) => {
             const programStageToEdit = getProgramStageByIdFromAction(
                 store,
-                action
+                action,
             );
 
             const programStageDataElements = getOr(
                 [],
                 'programStageDataElements',
-                programStageToEdit
+                programStageToEdit,
             );
             const dataElementIdsToRemove = getOr(
                 [],
                 'payload.dataElements',
-                action
+                action,
             );
 
             const removeDataElements = keepProgramStageDataElementsNotInUidList(
-                dataElementIdsToRemove
+                dataElementIdsToRemove,
             );
 
             programStageToEdit.programStageDataElements = removeDataElements(
-                programStageDataElements
+                programStageDataElements,
             );
             const programStages = getOr([], 'programStages', store.getState());
             store.setState({
@@ -121,32 +118,32 @@ const isObjectHasId = id => compose(isEqual(id), get('id'));
 const editProgramStageDataElement = store => action$ =>
     action$
         .ofType(PROGRAM_STAGE_DATA_ELEMENT_EDIT)
-        .map(action => {
+        .map((action) => {
             const programStageDataElementId = get(
                 'payload.programStageDataElement.id',
-                action
+                action,
             );
             const programStageToEdit = getProgramStageByIdFromAction(
                 store,
-                action
+                action,
             );
 
             const programStageDataElements = getOr(
                 [],
                 'programStageDataElements',
-                programStageToEdit
+                programStageToEdit,
             );
             const programStageDataElement = programStageDataElements.find(
-                isObjectHasId(programStageDataElementId)
+                isObjectHasId(programStageDataElementId),
             );
 
             programStageToEdit.programStageDataElements = programStageDataElements.map(
-                value => {
+                (value) => {
                     if (programStageDataElement === value) {
                         return action.payload.programStageDataElement;
                     }
                     return value;
-                }
+                },
             );
             const programStages = getOr([], 'programStages', store.getState());
             store.setState({
@@ -160,6 +157,6 @@ export default function createEpicsForStore(store) {
     return combineEpics(
         addDataElementsToStage(store),
         removeDataElementFromStage(store),
-        editProgramStageDataElement(store)
+        editProgramStageDataElement(store),
     );
 }

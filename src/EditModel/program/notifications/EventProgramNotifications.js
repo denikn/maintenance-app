@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { __, first, get } from 'lodash/fp';
 import withState from 'recompose/withState';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
@@ -11,16 +10,16 @@ import NotificationList from './NotificationList';
 import {
     getStageNotifications,
     getProgramStageDataElements,
-    getProgramStages
+    getProgramStages,
 } from './selectors';
 import NotificationDeleteDialog from './NotificationDeleteDialog';
 import { removeStageNotification, setEditModel, setAddModel } from './actions';
 import NotificationDialog from './NotificationDialog';
-import eventProgramStore from '../eventProgramStore';
+import eventProgramStore from '../event-program/eventProgramStore';
 
 const notifications$ = eventProgramStore.map(getStageNotifications);
 const programStageDataElements$ = eventProgramStore.map(
-    getProgramStageDataElements
+    getProgramStageDataElements,
 );
 const programStages$ = eventProgramStore.map(getProgramStages);
 

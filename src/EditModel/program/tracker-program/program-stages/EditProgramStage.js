@@ -5,7 +5,7 @@ import { compose, lifecycle } from 'recompose';
 
 import ProgramStageStepper from './ProgramStageStepper';
 import { withProgramStageFromProgramStage$ } from './utils';
-import { changeStepperDisabledState } from '../../actions';
+import { changeStepperDisabledState } from '../../event-program/actions';
 import { saveProgramStageEdit, cancelProgramStageEdit, editProgramStageReset } from './actions';
 import FormActionButtons from '../../../FormActionButtons';
 

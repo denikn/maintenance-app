@@ -1,17 +1,18 @@
-import React, { PropTypes, Component } from 'react';
+import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { get } from 'lodash/fp';
 import branch from 'recompose/branch';
 import renderNothing from 'recompose/renderNothing';
-import { modelToEditSelector } from './selectors';
-import { isProgramNotification } from './selectors';
-import { programStageSteps, programSteps } from './NotificationSteps';
-import FlatButton from 'material-ui/FlatButton';
-import Dialog from 'material-ui/Dialog';
 import withState from 'recompose/withState';
 import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
+
+import Subheader from 'material-ui/Subheader/';
+import FlatButton from 'material-ui/FlatButton';
+import Dialog from 'material-ui/Dialog';
+
+import { programStageSteps, programSteps } from './NotificationSteps';
+
 import { createStepperFromConfig } from '../../stepper/stepper';
 import {
     setEditModel,
@@ -19,10 +20,11 @@ import {
     saveProgramNotification,
 } from './actions';
 import {
+    modelToEditSelector,
+    isProgramNotification,
     getProgramStageDataElementsByStageId,
     getNotificationType,
 } from './selectors';
-import Subheader from 'material-ui/Subheader/';
 import { branchWithMessage } from '../../../Snackbar/snackBarUtils';
 
 const withStepper = compose(
@@ -30,11 +32,11 @@ const withStepper = compose(
     withProps(({ setActiveStep, dataElements }) => ({
         stepperClicked(stepKey) {
             setActiveStep(
-                programStageSteps.findIndex(step => step.key === stepKey)
+                programStageSteps.findIndex(step => step.key === stepKey),
             );
         },
         dataElements,
-    }))
+    })),
 );
 
 const stepperForSteps = steps =>

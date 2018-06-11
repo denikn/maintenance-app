@@ -14,7 +14,7 @@ describe('ProgramStage Reducer', () => {
 
         intialState = {
             activeStep: iterator.first(steps),
-            stageId: null
+            stageId: null,
         };
     });
 

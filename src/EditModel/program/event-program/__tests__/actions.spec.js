@@ -90,7 +90,7 @@ describe('Event Program actions', () => {
                 };
 
                 expect(actions.saveEventProgramSuccess()).toEqual(expectedAction);
-            }
+            },
         );
 
         test(
@@ -102,7 +102,7 @@ describe('Event Program actions', () => {
                 };
 
                 expect(actions.saveEventProgramError(new Error('Could not load'))).toEqual(expectedAction);
-            }
+            },
         );
     });
 

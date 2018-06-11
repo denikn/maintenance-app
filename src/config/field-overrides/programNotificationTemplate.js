@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import withProps from 'recompose/withProps';
@@ -9,7 +9,7 @@ import RelativeScheduledDays from './program-notification-template/RelativeSched
 import DeliveryChannels from './program-notification-template/DeliveryChannels';
 import DropDownAsync from '../../forms/form-fields/drop-down-async';
 import SubjectAndMessageTemplateFields from './validation-notification-template/SubjectAndMessageTemplateFields';
-import { setStageNotificationValue } from '../../EditModel/event-program/notifications/actions';
+import { setStageNotificationValue } from '../../EditModel/program/notifications/actions';
 import DropDownAsyncGetter from '../../forms/form-fields/drop-down-async-getter';
 
 const PROGRAM_STAGE_VARIABLES = [
@@ -99,7 +99,7 @@ const DataElementDropDown = compose(
     connect(undefined, boundOnUpdate),
 )((props) => {
     const dataElementOpts = props.dataElements
-        .filter(de => de.valueType == 'PHONE_NUMBER')
+        .filter(de => de.valueType === 'PHONE_NUMBER')
         .map(de => ({
             text: de.displayName,
             value: de.id,

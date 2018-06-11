@@ -1,13 +1,16 @@
 import React, { PropTypes } from 'react';
-import mapProps from 'recompose/mapProps';
-import compose from 'recompose/compose';
-import GroupEditor from 'd2-ui/lib/group-editor/GroupEditor.component';
-import Paper from 'material-ui/Paper/Paper';
-import mapPropsStream from 'recompose/mapPropsStream';
-import programStore from '../eventProgramStore';
-import { get, noop, first, getOr, __ } from 'lodash/fp';
+import Store from 'd2-ui/lib/store/Store';
+import { get, first, getOr, __ } from 'lodash/fp';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import mapPropsStream from 'recompose/mapPropsStream';
+import withHandlers from 'recompose/withHandlers';
+import mapProps from 'recompose/mapProps';
+import compose from 'recompose/compose';
+import pure from 'recompose/pure';
+import withState from 'recompose/withState';
+import { withRouter } from 'react-router';
+
 import {
     Table,
     TableBody,
@@ -16,36 +19,30 @@ import {
     TableRow,
     TableRowColumn,
 } from 'material-ui/Table';
+import Paper from 'material-ui/Paper/Paper';
 import Checkbox from 'material-ui/Checkbox/Checkbox';
-import Store from 'd2-ui/lib/store/Store';
+import Visibility from 'material-ui/svg-icons/action/visibility';
+import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
+import TextField from 'material-ui/TextField/TextField';
+import GroupEditor from 'd2-ui/lib/group-editor/GroupEditor.component';
+
+import programStore from '../event-program/eventProgramStore';
 import {
     addDataElementsToStage,
     removeDataElementsFromStage,
     editProgramStageDataElement,
 } from './actions';
-import withHandlers from 'recompose/withHandlers';
-import Visibility from 'material-ui/svg-icons/action/visibility';
-import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
-import TextField from 'material-ui/TextField/TextField';
-import pure from 'recompose/pure';
-import withState from 'recompose/withState';
-import { withProgramStageFromProgramStage$ } from '../tracker-program/program-stages/utils';
-import { withRouter } from 'react-router';
-import { getProgramStage$ById } from '../tracker-program/program-stages/utils';
 
 const getFirstProgramStage = compose(first, get('programStages'));
 
-const firstProgramStage$ = programStore.map(getFirstProgramStage);
-
-//Use programStage$ prop if present, else use first programStage
+// Use programStage$ prop if present, else use first programStage
 const programStage$ = props$ =>
     props$
         .take(1)
-        .flatMap(
-            props =>
-                props.programStage$
-                    ? props.programStage$
-                    : programStore.map(getFirstProgramStage)
+        .flatMap(props =>
+            (props.programStage$
+                ? props.programStage$
+                : programStore.map(getFirstProgramStage)),
         );
 
 const availableTrackerDataElements$ = programStore
@@ -59,7 +56,7 @@ const mapDispatchToProps = dispatch =>
             removeDataElementsFromStage,
             editProgramStageDataElement,
         },
-        dispatch
+        dispatch,
     );
 
 const enhance = compose(
@@ -80,11 +77,11 @@ const enhance = compose(
                 trackerDataElements,
                 model: programStage,
                 items: programStage.programStageDataElements,
-            })
-        )
+            }),
+        ),
     ),
     withHandlers({
-        onAssignItems: props => dataElements => {
+        onAssignItems: props => (dataElements) => {
             const { model, addDataElementsToStage } = props;
             addDataElementsToStage({ programStage: model.id, dataElements });
             return Promise.resolve();
@@ -92,7 +89,7 @@ const enhance = compose(
         onRemoveItems: ({
             model,
             removeDataElementsFromStage,
-        }) => dataElements => {
+        }) => (dataElements) => {
             removeDataElementsFromStage({
                 programStage: model.id,
                 dataElements,
@@ -108,7 +105,7 @@ const enhance = compose(
                 programStageDataElement,
             }),
     }),
-    withState('dataElementFilter', 'setDataElementFilter', '')
+    withState('dataElementFilter', 'setDataElementFilter', ''),
     // withProgramStageFromProgramStage$,
 );
 
@@ -124,7 +121,7 @@ const ProgramStageDataElement = pure(
         const hasOptionSet = !!programStageDataElement.dataElement.optionSet;
         const onChangeFlipBooleanForProperty = propertyName => () =>
             onEditProgramStageDataElement(
-                flipBooleanPropertyOn(programStageDataElement, propertyName)
+                flipBooleanPropertyOn(programStageDataElement, propertyName),
             );
         const isCheckedForProp = getOr(false, __, programStageDataElement);
 
@@ -143,7 +140,7 @@ const ProgramStageDataElement = pure(
                     <Checkbox
                         checked={isCheckedForProp('allowProvidedElsewhere')}
                         onClick={onChangeFlipBooleanForProperty(
-                            'allowProvidedElsewhere'
+                            'allowProvidedElsewhere',
                         )}
                     />
                 </TableRowColumn>
@@ -153,39 +150,39 @@ const ProgramStageDataElement = pure(
                         checkedIcon={<Visibility />}
                         uncheckedIcon={<VisibilityOff />}
                         onClick={onChangeFlipBooleanForProperty(
-                            'displayInReports'
+                            'displayInReports',
                         )}
                     />
                 </TableRowColumn>
                 <TableRowColumn>
                     {isDateValue
                         ? <Checkbox
-                              checked={isCheckedForProp('allowFutureDate')}
-                              onClick={onChangeFlipBooleanForProperty(
-                                  'allowFutureDate'
-                              )}
-                          />
+                            checked={isCheckedForProp('allowFutureDate')}
+                            onClick={onChangeFlipBooleanForProperty(
+                                'allowFutureDate',
+                            )}
+                        />
                         : null}
                 </TableRowColumn>
                 <TableRowColumn>
                     {hasOptionSet
                         ? <Checkbox
-                              checked={isCheckedForProp('renderOptionsAsRadio')}
-                              onClick={onChangeFlipBooleanForProperty(
-                                  'renderOptionsAsRadio'
-                              )}
-                          />
+                            checked={isCheckedForProp('renderOptionsAsRadio')}
+                            onClick={onChangeFlipBooleanForProperty(
+                                'renderOptionsAsRadio',
+                            )}
+                        />
                         : null}
                 </TableRowColumn>
             </TableRow>
         );
-    }
+    },
 );
 
 function addDisplayProperties(dataElements) {
     return ({ dataElement, ...other }) => {
         const { displayName, valueType, optionSet } = dataElements.find(
-            ({ id }) => id === dataElement.id
+            ({ id }) => id === dataElement.id,
         );
 
         return {
@@ -209,37 +206,35 @@ function AssignDataElements(props, { d2 }) {
             id: dataElement.id,
             text: dataElement.displayName,
             value: dataElement.id,
-        }))
+        })),
     );
 
     assignedItemStore.setState(
-        props.model.programStageDataElements.map(v => v.dataElement.id)
+        props.model.programStageDataElements.map(v => v.dataElement.id),
     );
 
     const tableRows = props.model.programStageDataElements
         .map(addDisplayProperties(props.trackerDataElements))
-        .map((programStageDataElement, index) => {
-            return (
-                <ProgramStageDataElement
-                    key={programStageDataElement.id}
-                    programStageDataElement={programStageDataElement}
-                    onEditProgramStageDataElement={
-                        props.onEditProgramStageDataElement
-                    }
-                />
-            );
-        });
+        .map(programStageDataElement => (
+            <ProgramStageDataElement
+                key={programStageDataElement.id}
+                programStageDataElement={programStageDataElement}
+                onEditProgramStageDataElement={
+                    props.onEditProgramStageDataElement
+                }
+            />
+        ));
 
     return (
         <Paper>
-            <div style={{ padding: '2rem 3rem 4rem', ...(props.outerDivStyle)}}>
+            <div style={{ padding: '2rem 3rem 4rem', ...(props.outerDivStyle) }}>
                 <TextField
                     hintText={d2.i18n.getTranslation(
-                        'search_available_selected_items'
+                        'search_available_selected_items',
                     )}
                     onChange={compose(
                         props.setDataElementFilter,
-                        getOr('', 'target.value')
+                        getOr('', 'target.value'),
                     )}
                     value={props.dataElementFilter}
                     fullWidth
@@ -280,7 +275,7 @@ function AssignDataElements(props, { d2 }) {
 
 AssignDataElements.contextTypes = {
     d2: PropTypes.object,
-    outerDivStyle: PropTypes.object
+    outerDivStyle: PropTypes.object,
 };
 
 export default enhance(AssignDataElements);
