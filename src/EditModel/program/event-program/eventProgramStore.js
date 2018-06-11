@@ -1,11 +1,9 @@
 import Store from 'd2-ui/lib/store/Store';
-import { equals, first, negate, some, get, compose, find, identity, map, __, concat, includes, reduce, findIndex, isObject, keys, values, flatten } from 'lodash/fp';
+import { equals, some, get, compose, identity, map, __, concat, isObject, values, flatten } from 'lodash/fp';
 import { getOwnedPropertyJSON } from 'd2/lib/model/helpers/json';
 
 // ___ programSelector :: StoreState -> Model<Program>
 const programSelector = get('program');
-
-const progamDataEntrySelector = get('program.dataEntryForm');
 
 // ___ programStagesSelector :: StoreState -> Array<Model<ProgramStage>>
 const programStagesSelector = get('programStages');
@@ -30,18 +28,15 @@ const modelToJson = getOwnedPropertyJSON;
 // ___ isProgramStageDirty :: Object<StoreState> -> Object<{programStages}> -> Boolean
 const isProgramStageDirty = compose(some(checkIfDirty), programStagesSelector);
 
-// ___ getIdForFirstProgramStage : Object<StoreState> -> Object<{programStages}> -> String
-const getIdForFirstProgramStage = compose(get('id'), first, programStagesSelector);
-
 // ___ hasDirtyProgramStageSections :: Object<StoreState> -> Boolean
-//const hasDirtyProgramStageSections = compose(some(checkIfDirty), programStageSectionsSelector);
-const hasDirtyProgramStageSections = compose(some(checkIfDirty), flatten, values, programStageSectionsSelector)
+// const hasDirtyProgramStageSections = compose(some(checkIfDirty), programStageSectionsSelector);
+const hasDirtyProgramStageSections = compose(some(checkIfDirty), flatten, values, programStageSectionsSelector);
 
 const hasDirtyProgramNotifications = state => programNotificationsSelector(state).isDirty();
 
 // ___ hasDirtyNotificationTemplate :: Object<{programStageNotifications, programStages}> -> Boolean
 
-const hasDirtyNotificationTemplate = compose(some(checkIfDirty), flatten, values, programStageNotificationsSelector)
+const hasDirtyNotificationTemplate = compose(some(checkIfDirty), flatten, values, programStageNotificationsSelector);
 
 // ___ hasDirtyDataEntryForms :: Object<StoreState> -> Object<{programStageId: Model.DataEntryForm}> -> Boolean
 const hasDirtyDataEntryForms = compose(some(checkIfDirty), values, dataEntryFormsSelector);
@@ -60,10 +55,10 @@ export const isStoreStateDirty = compose(
             hasDirtyProgramStageSections,
             hasDirtyNotificationTemplate,
             hasDirtyDataEntryForms,
-            hasDirtyProgramNotifications
-        ]
+            hasDirtyProgramNotifications,
+        ],
     ),
-    value => func => func(value)
+    value => func => func(value),
 );
 
 // getMetaDataToSend :: StoreState -> SaveState
@@ -74,10 +69,10 @@ export const getMetaDataToSend = (state) => {
         payload.programs = [programSelector(state)]
             .map(modelToJson);
 
-        //For custom-form
+        // For custom-form
         const programDataEntryForm = state.program.dataEntryForm;
-        if(programDataEntryForm && programDataEntryForm.id && programDataEntryForm.isDirty()) {
-            payload.dataEntryForms  = [programDataEntryForm].map(modelToJson);
+        if (programDataEntryForm && programDataEntryForm.id && programDataEntryForm.isDirty()) {
+            payload.dataEntryForms = [programDataEntryForm].map(modelToJson);
         }
     }
 
@@ -93,7 +88,7 @@ export const getMetaDataToSend = (state) => {
             .map(get(__, programStageSections))
             .reduce(concat)
             .filter(checkIfDirty)
-            .map(modelToJson)
+            .map(modelToJson);
     }
 
     if (hasDirtyNotificationTemplate(state)) {
@@ -107,15 +102,17 @@ export const getMetaDataToSend = (state) => {
             .map(modelToJson);
     }
 
-    if(hasDirtyProgramNotifications(state)) {
+    if (hasDirtyProgramNotifications(state)) {
         payload.programNotificationTemplates = payload.programNotificationTemplates || [];
 
         payload.programNotificationTemplates = payload.programNotificationTemplates.concat(
-            programNotificationsSelector(state).toArray().map(modelToJson)
-        )
+            programNotificationsSelector(state)
+                .toArray()
+                .map(modelToJson),
+        );
     }
 
-    //Program stage dataEntryForms
+    // Program stage dataEntryForms
     if (hasDirtyDataEntryForms(state)) {
         const dataEntryForms = dataEntryFormsSelector(state);
         const programStageDataEntryForms = Object
@@ -142,7 +139,6 @@ function isValidState(state) {
         'availableDataElements',
         'availableAttributes',
         'dataEntryFormForProgramStage',
-        //'programStageSectionsExtracted' //FIX ME REMOVE
     ];
 
     return Object
@@ -179,8 +175,8 @@ function isValidState(state) {
  */
 const eventProgramStore = Store.create();
 
-if (process.env.NODE_ENV === "development") {
-    eventProgramStore.subscribe(state => {
+if (process.env.NODE_ENV === 'development') {
+    eventProgramStore.subscribe((state) => {
         console.log('=====================');
         console.info('new store state');
         console.log(state);

@@ -1,9 +1,10 @@
-import { createStepperFromConfig } from '../stepper/stepper';
-import { activeStepSelector } from './selectors';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import { createStepperFromConfig } from '../../stepper/stepper';
+import { activeStepSelector } from './selectors';
 import steps from './event-program-steps';
 import { changeStep } from './actions';
-import { bindActionCreators } from 'redux';
 
 const mapStateToProps = state => ({
     activeStep: activeStepSelector(state),

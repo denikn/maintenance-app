@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { camelCaseToUnderscores } from 'd2-utilizr';
-import FormHeading from '../FormHeading';
-import FormSubHeading from '../FormSubHeading';
+import FormHeading from '../../FormHeading';
+import FormSubHeading from '../../FormSubHeading';
 import EventProgramStepper from './EventProgramStepper';
 import EventProgramStepperContent from './EventProgramStepperContent';
 import eventProgramStore$, { isStoreStateDirty } from './eventProgramStore';
@@ -12,7 +12,7 @@ import {
     createConnectedForwardButton,
     createConnectedBackwardButton,
     createStepperNavigation,
-} from '../stepper/stepper';
+} from '../../stepper/stepper';
 import { previousStep, nextStep } from './actions';
 
 const EventProgramStepperNavigationForward = createConnectedForwardButton(
@@ -57,9 +57,7 @@ function EditEventProgram(props) {
                     {props.model.displayName}
                 </FormSubHeading>
             </div>
-            <div>
-                <EventProgramStepper />
-            </div>
+            <div><EventProgramStepper /></div>
             <EventProgramStepperContent schema={schema} {...props} />
             <StepperNavigation>
                 <EventActionButtons

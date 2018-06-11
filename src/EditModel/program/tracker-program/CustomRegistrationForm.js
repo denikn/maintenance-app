@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { get, compose } from 'lodash/fp';
+import { connect } from 'react-redux';
+
 import Checkbox from 'material-ui/Checkbox';
 import addD2Context from 'd2-ui/lib/component-helpers/addD2Context';
 import { CustomRegistrationDataEntryForm } from '../data-entry-form/EditCustomRegistrationForm';
-import { connect } from 'react-redux';
 import { programDataEntryFormRemove } from '../data-entry-form/actions';
 
 const styles = {

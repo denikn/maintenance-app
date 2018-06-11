@@ -1,12 +1,14 @@
 import { Observable } from 'rxjs';
-import store, { isStoreStateDirty, getMetaDataToSend } from '../eventProgramStore';
+import { noop } from 'lodash/fp';
+
 import ModelDefinition from 'd2/lib/model/ModelDefinition';
 import ModelDefinitions from 'd2/lib/model/ModelDefinitions';
-import programSchema from '../../../__fixtures__/schemas/program.json';
-import programStageSchema from '../../../__fixtures__/schemas/programStage.json';
-import programNotificationTemplateSchema from '../../../__fixtures__/schemas/programNotificationTemplate.json';
-import dataEntryFormSchema from '../../../__fixtures__/schemas/dataEntryForm.json';
-import { noop } from 'lodash/fp';
+
+import store, { isStoreStateDirty, getMetaDataToSend } from '../eventProgramStore';
+import programSchema from '../../../../__fixtures__/schemas/program.json';
+import programStageSchema from '../../../../__fixtures__/schemas/programStage.json';
+import programNotificationTemplateSchema from '../../../../__fixtures__/schemas/programNotificationTemplate.json';
+import dataEntryFormSchema from '../../../../__fixtures__/schemas/dataEntryForm.json';
 
 describe('Event Program Store', () => {
     let mockState;

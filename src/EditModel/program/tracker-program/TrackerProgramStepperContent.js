@@ -3,20 +3,24 @@ import { bindActionCreators } from 'redux';
 import mapPropsStream from 'recompose/mapPropsStream';
 import { get, compose } from 'lodash/fp';
 
-import { createStepperContentFromConfig } from '../../stepper/stepper';
-import { activeStepSelector } from '../selectors';
-import programStore from '../eventProgramStore';
-import steps from './tracker-program-steps';
 import EditDataEntryForm from '../create-data-entry-form/CreateDataEntryForm.component';
 import AssignOrganisationUnits from '../assign-organisation-units/AssignOrganisationUnits';
 import TrackerProgramNotifications from '../notifications/TrackerProgramNotifications';
-import { createFormFor } from '../../formHelpers';
-import { editFieldChanged } from '../actions';
-import { flattenRouterProps, wrapInPaper } from '../../componentHelpers';
-import fieldOrder from '../../../config/field-config/field-order';
 import AssignAttributes from './assign-tracked-entity-attributes/AssignAttributes';
 import ProgramStage from './program-stages/ProgramStage';
 import EnrollmentDetails from './EnrollmentStep';
+
+import { createStepperContentFromConfig } from '../../stepper/stepper';
+import steps from './tracker-program-steps';
+
+import { activeStepSelector } from '../event-program/selectors';
+import { createFormFor } from '../../formHelpers';
+import { flattenRouterProps, wrapInPaper } from '../../componentHelpers';
+import fieldOrder from '../../../config/field-config/field-order';
+
+import { editFieldChanged } from '../event-program/actions';
+import programStore from '../event-program/eventProgramStore';
+
 const stepperConfig = () => {
     const program$ = programStore.map(get('program'));
 
@@ -28,7 +32,6 @@ const stepperConfig = () => {
         connect(null, mapDispatchToProps),
     );
     const trackerDetailsFields = fieldOrder.for('trackerProgram');
-    const enrollmentFields = fieldOrder.for('enrollment');
 
     const stepComponents = {
         EditProgramDetailsForm: connectEditForm(
@@ -36,9 +39,7 @@ const stepperConfig = () => {
                 createFormFor(program$, 'program', trackerDetailsFields, true, 'trackerProgram'),
             ),
         ),
-        Enrollment: EnrollmentDetails,/*connectEditForm(
-            wrapInPaper(createFormFor(program$, 'program', enrollmentFields, true, 'enrollment')),
-        ), */
+        Enrollment: EnrollmentDetails,
         AssignAttributes,
         ProgramStage,
         EditDataEntryForm,

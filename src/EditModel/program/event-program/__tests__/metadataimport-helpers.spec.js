@@ -1,4 +1,4 @@
-import { getImportStatus } from '../metadataimport-helpers';
+import { getImportStatus } from '../../metadataimport-helpers';
 
 describe('MetaDataImport helpers', () => {
     let successfullImportResponse;

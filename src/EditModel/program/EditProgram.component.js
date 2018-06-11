@@ -3,8 +3,8 @@ import React from 'react';
 import { compose, branch, renderComponent } from 'recompose';
 import mapPropsStream from 'recompose/mapPropsStream';
 
-import eventProgramStore$ from './eventProgramStore';
-import EditEventProgram from './EditEventProgram.component';
+import eventProgramStore$ from './event-program/eventProgramStore';
+import EditEventProgram from './event-program/EditEventProgram.component';
 import EditTrackerProgram from './tracker-program/EditTrackerProgram';
 import LoadingMask from '../../loading-mask/LoadingMask.component';
 import { isProgramStageStepperActive } from './tracker-program/program-stages/selectors';

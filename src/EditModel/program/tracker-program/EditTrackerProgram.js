@@ -7,9 +7,9 @@ import FormHeading from '../../FormHeading';
 import FormSubHeading from '../../FormSubHeading';
 import EventProgramStepper from './TrackerProgramStepper';
 import TrackerProgramStepperContent from './TrackerProgramStepperContent';
-import eventProgramStore$, { isStoreStateDirty } from '../eventProgramStore';
-import EventActionButtons from '../EventActionButtons';
-import { previousTrackerStep, nextTrackerStep } from '../actions';
+import eventProgramStore$, { isStoreStateDirty } from '../event-program/eventProgramStore';
+import EventActionButtons from '../event-program/EventActionButtons';
+import { previousTrackerStep, nextTrackerStep } from '../event-program/actions';
 import {
     createConnectedForwardButton,
     createConnectedBackwardButton,

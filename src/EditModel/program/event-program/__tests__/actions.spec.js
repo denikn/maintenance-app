@@ -1,5 +1,5 @@
 import * as actions from '../actions';
-import { NOTIFY_USER, notifyUser } from '../../actions';
+import { NOTIFY_USER, notifyUser } from '../../../actions';
 
 describe('Event Program actions', () => {
     describe('for stepper', () => {

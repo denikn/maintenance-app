@@ -6,20 +6,20 @@ import { get, getOr, first, map, compose, values, flatten } from 'lodash/fp';
 
 import eventProgramStore, { isStoreStateDirty, getMetaDataToSend } from './eventProgramStore';
 
-import { getImportStatus } from './metadataimport-helpers';
-import { goToAndScrollUp } from '../../router-utils';
+import { getImportStatus } from '../metadataimport-helpers';
+import { goToAndScrollUp } from '../../../router-utils';
 
-import notificationEpics from './notifications/epics';
-import createAssignDataElementEpics from './assign-data-elements/epics';
-import createAssignAttributeEpics from './tracker-program/assign-tracked-entity-attributes/epics';
-import createCreateDataEntryFormEpics from './create-data-entry-form/epics';
-import dataEntryFormEpics from './data-entry-form/epics';
-import trackerProgramEpics from './tracker-program/epics';
-import { createModelToEditEpic, createModelToEditProgramStageEpic } from '../epicHelpers';
+import notificationEpics from '../notifications/epics';
+import createAssignDataElementEpics from '../assign-data-elements/epics';
+import createAssignAttributeEpics from '../tracker-program/assign-tracked-entity-attributes/epics';
+import createCreateDataEntryFormEpics from '../create-data-entry-form/epics';
+import dataEntryFormEpics from '../data-entry-form/epics';
+import trackerProgramEpics from '../tracker-program/epics';
+import { createModelToEditEpic, createModelToEditProgramStageEpic } from '../../epicHelpers';
 
-import showSnackBarMessageEpic from '../../Snackbar/epics';
-import { notifyUser } from '../actions';
-import { PROGRAM_STAGE_FIELD_EDIT } from './tracker-program/program-stages/actions';
+import showSnackBarMessageEpic from '../../../Snackbar/epics';
+import { notifyUser } from '../../actions';
+import { PROGRAM_STAGE_FIELD_EDIT } from '../tracker-program/program-stages/actions';
 import {
     MODEL_TO_EDIT_FIELD_CHANGED,
     EVENT_PROGRAM_LOAD,
@@ -100,8 +100,6 @@ function loadEventProgramMetadataByProgramId(programPayload) {
             .map((state) => {
                 // Set some eventProgram defaults
                 // Set programType to router-query type
-                const programType = programPayload.query.type;
-
                 state.program.programType = programPayload.query.type;
                 if (state.programStages.length > 0) {
                     const programStage = first(state.programStages);
@@ -239,7 +237,7 @@ async function loadAdditionalTrackerMetadata(loadedMetadata) {
     if(!program.programType || program.programType !== 'WITH_REGISTRATION' || !program.trackedEntityType) {
         return loadedMetadata;
     }
-    //Load trackedEntityTypeAttributes
+    // Load trackedEntityTypeAttributes
     const tetId = program.trackedEntityType.id;
     const d2 = await getInstance();
     try {
@@ -248,7 +246,7 @@ async function loadAdditionalTrackerMetadata(loadedMetadata) {
         });
         program.trackedEntityType = tet;
         program.resetDirtyState();
-    } catch(e) {
+    } catch (e) {
         return loadedMetadata;
     }
 
@@ -316,14 +314,14 @@ export const programModelSave = action$ =>
                 return saveEventProgram;
             }
             const successObs = Observable.of(saveEventProgramSuccess());
-            return successObs.concat(Observable.of(notifyUser({message: 'no_changes_to_be_saved', translate: true})).do(() =>
+            return successObs.concat(Observable.of(notifyUser({ message: 'no_changes_to_be_saved', translate: true })).do(() =>
                 goToAndScrollUp('/list/programSection/program'),
             ));
         }).catch(e => console.log(e));
 
 export const programModelSaveResponses = action$ =>
     Observable.merge(
-        action$.ofType(EVENT_PROGRAM_SAVE_SUCCESS).mapTo(notifyUser({message: 'success', translate: true})),
+        action$.ofType(EVENT_PROGRAM_SAVE_SUCCESS).mapTo(notifyUser({ message: 'success', translate: true })),
         action$.ofType(EVENT_PROGRAM_SAVE_ERROR).map((action) => {
             const getFirstErrorMessageFromAction = compose(
                 get('message'),
