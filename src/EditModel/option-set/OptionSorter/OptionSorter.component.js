@@ -9,87 +9,82 @@ import RaisedButton from 'material-ui/RaisedButton/RaisedButton';
 import SortDialog, { setSortDialogOpenTo } from './SortDialog.component';
 import optionSorter from './optionSorter';
 
-import snackActions from '../../../Snackbar/snack.actions';
+import { showTranslatedOkMessage, showTranslatedMessage } from '../../../Snackbar/snackBarShortCuts';
 
 import { optionsForOptionSetStore } from '../stores';
 import modelToEditStore from '../../modelToEditStore';
 
 class OptionSorter extends Component {
-    constructor(props, context) {
-        super(props, context);
-
-        this.state = {
-            sortedASC: {
-                displayName: false,
-                code: false,
-            },
-        };
-
-        this.getTranslation = this.context.d2.i18n.getTranslation.bind(this.context.d2.i18n);
-    }
+    state = {
+        sortedASC: {
+            displayName: false,
+            code: false,
+        },
+    };
 
     onSortBy = (propertyName) => {
+        this.setState(
+            { isSorting: true },
+            this.sortOptions(propertyName),
+        );
+    }
+
+    onOptionSortSuccess = (propertyName) => {
         this.setState({
-            isSorting: true,
-        }, () => {
-            optionSorter(
-                modelToEditStore.getState().options.toArray(),
-                propertyName,
-                this.state.sortedASC[propertyName] ? 'DESC' : 'ASC',
-            )
-                .flatMap(async (options) => {
-                    const d2 = await getInstance();
-
-                    return modelToEditStore
-                        .take(1)
-                        .map(modelToEdit => ({
-                            options: options.map(optionData => d2.models.option.create(optionData)),
-                            modelToEdit,
-                        }));
-                })
-                .concatAll()
-                .map(({ options, modelToEdit }) => {
-                    modelToEdit.options.clear();
-                    options.forEach((option) => {
-                        modelToEdit.options.add(option);
-                    });
-
-                    modelToEditStore.setState(modelToEdit);
-                    optionsForOptionSetStore.setState({
-                        ...optionsForOptionSetStore.getState(),
-                        options,
-                    });
-                    options.map(v => v.displayName);
-
-                    snackActions.show({
-                        message: 'options_sorted_locally_saving_to_server',
-                        translate: true,
-                    });
-
-                    return Observable.fromPromise(modelToEdit.save());
-                })
-                .concatAll()
-                .subscribe(
-                    () => {
-                        this.setState({
-                            sortedASC: {
-                                ...this.state.sortedASC,
-                                [propertyName]: !this.state.sortedASC[propertyName],
-                            },
-                            isSorting: false,
-                        });
-                        snackActions.show({
-                            message: 'options_sorted_and_saved',
-                            translate: true,
-                        });
-                    },
-                    () => snackActions.show({
-                        message: 'options_not_sorted',
-                        action: 'ok',
-                        translate: true,
-                    }),
-                );
+            sortedASC: {
+                ...this.state.sortedASC,
+                [propertyName]: !this.state.sortedASC[propertyName],
+            },
+            isSorting: false,
         });
+        showTranslatedMessage('options_sorted_and_saved');
+    }
+
+    getTranslation = message => this.context.d2.i18n.getTranslation(message)
+
+    addSortedOptionsToStore = async (options) => {
+        const d2 = await getInstance();
+
+        return modelToEditStore
+            .take(1)
+            .map(modelToEdit => ({
+                options: options.map(optionData => d2.models.option.create(optionData)),
+                modelToEdit,
+            }));
+    }
+
+    addSortedOptionsToServer = ({ options, modelToEdit }) => {
+        modelToEdit.options.clear();
+        options.forEach((option) => {
+            modelToEdit.options.add(option);
+        });
+
+        modelToEditStore.setState(modelToEdit);
+        optionsForOptionSetStore.setState({
+            ...optionsForOptionSetStore.getState(),
+            options,
+        });
+
+        options.map(v => v.displayName);
+        showTranslatedMessage('options_sorted_locally_saving_to_server');
+
+        return Observable.fromPromise(modelToEdit.save());
+    }
+
+    sortOptions = (propertyName) => {
+        optionSorter(
+            modelToEditStore.getState().options.toArray(),
+            propertyName,
+            this.state.sortedASC[propertyName] ? 'DESC' : 'ASC',
+        )
+            .flatMap(this.addSortedOptionsToStore)
+            .concatAll()
+            .map(this.addSortedOptionsToServer)
+            .concatAll()
+            .subscribe(
+                () => this.onOptionSortSuccess(propertyName),
+                () => showTranslatedOkMessage('options_not_sorted'),
+            );
     }
 
     render() {

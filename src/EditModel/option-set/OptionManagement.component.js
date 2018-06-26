@@ -15,9 +15,9 @@ import TranslationDialog from 'd2-ui/lib/i18n/TranslationDialog.component';
 import OptionSorter from './OptionSorter/OptionSorter.component';
 import OptionDialogForOptions from './OptionDialogForOptions/OptionDialogForOptions.component';
 
-import { calculatePageValue } from '../../List/helpers/pagination'; // TODO: Move this out to some other file.
+import { calculatePageValue } from '../../List/helpers/pagination';
 
-import snackActions from '../../Snackbar/snack.actions';
+import { showTranslatedOkMessage, showTranslatedMessage } from '../../Snackbar/snackBarShortCuts';
 import actions from './actions';
 import modelToEditStore from '../modelToEditStore';
 import { optionsForOptionSetStore } from './stores';
@@ -94,16 +94,11 @@ class OptionManagement extends Component {
 
     onEditOption = model => actions.setActiveModel(model);
 
-    translationSaved = () => snackActions.show({
-        message: 'translation_saved',
-        translate: true,
-    });
+    getTranslation = message => this.context.d2.i18n.getTranslation(message);
 
-    translationErrored = () => snackActions.show({
-        message: 'translation_save_error',
-        action: 'ok',
-        translate: true,
-    });
+    translationSaved = () => showTranslatedMessage('translation_saved');
+
+    translationErrored = () => showTranslatedOkMessage('translation_save_error');
 
     displayInCorrectOrderWarning() {
         if (!(this.props.pager && this.props.pager.total > 50)) {
@@ -114,11 +109,12 @@ class OptionManagement extends Component {
             <div style={styles.alertWrapper}>
                 <AlertIcon color="orange" />
                 <div style={styles.alertText}>
-                    {this.i18n.getTranslation('list_might_not_represent_the_accurate_order_of_options_due_the_availability_of_pagination')}
+                    {this.getTranslation('list_might_not_represent_the_accurate_order_of_options_due_the_availability_of_pagination')}
                 </div>
             </div>
         );
     }
+
 
     renderPagination() {
         if (!this.props.pager) {
@@ -189,7 +185,7 @@ class OptionManagement extends Component {
                 />}
                 <div>
                     <RaisedButton
-                        label={this.i18n.getTranslation('add_option')}
+                        label={this.getTranslation('add_option')}
                         primary
                         onClick={this.onAddOption}
                         style={styles.addButton}

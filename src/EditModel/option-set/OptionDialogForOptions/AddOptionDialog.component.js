@@ -10,7 +10,7 @@ import SaveButton from '../../SaveButton.component';
 import CancelButton from '../../CancelButton.component';
 
 import actions from '../actions';
-import snackActions from '../../../Snackbar/snack.actions';
+import { showTranslatedOkMessage, showTranslatedMessage, showOkMessage } from '../../../Snackbar/snackBarShortCuts';
 import getFirstInvalidFieldMessage from '../../form-helpers/validateFields';
 
 class AddOptionDialog extends Component {
@@ -24,25 +24,24 @@ class AddOptionDialog extends Component {
     }
 
     onSaveSuccess = () => {
-        this.showSuccessMessage();
+        showTranslatedMessage('option_saved');
         this.setState({ isSaving: false });
         this.props.onRequestClose();
         // After the save was successful we request the options from the server to get the updated list
         actions.getOptionsFor(this.props.parentModel);
     }
 
-    onSaveError = ({ message, translate }) => {
-        this.showErrorMessage(message, translate);
+    onSaveError = ({ message }) => {
+        showTranslatedOkMessage(message);
         this.setState({ isSaving: false });
     }
 
     onSaveOption = () => {
         const invalidFieldMessage = getFirstInvalidFieldMessage(this.props.fieldConfigs, this.formRef);
         if (invalidFieldMessage) {
-            this.showFirstValidationErrorMessage(invalidFieldMessage);
+            showOkMessage(invalidFieldMessage);
         } else {
             this.setState({ isSaving: true });
-
             actions
                 .saveOption(this.props.model, this.props.parentModel)
                 .subscribe(this.onSaveSuccess, this.onSaveError);
@@ -52,30 +51,6 @@ class AddOptionDialog extends Component {
     setFormRef = (form) => {
         this.formRef = form;
     }
-
-    showFirstValidationErrorMessage = (invalidFieldMessage) => {
-        snackActions.show({
-            message: invalidFieldMessage,
-            action: 'ok',
-        });
-    }
-
-    showSuccessMessage = () => {
-        snackActions.show({
-            message: 'option_saved',
-            translate: true,
-        });
-    }
-
-    showErrorMessage = (message, translate) => {
-        snackActions.show({
-            message,
-            action: 'ok',
-            translate,
-        });
-    }
-
-    translate = message => this.context.d2.i18n.getTranslation(message);
 
     render() {
         return (

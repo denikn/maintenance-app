@@ -37,7 +37,7 @@ function processResponse(options) {
                     .filter(option => option);
 
                 optionsForOptionSetStore.setState({
-                    onePage: true,
+                    isOnePage: true,
                     isLoading: false,
                     options: optionsInOrder,
                 });
@@ -55,7 +55,7 @@ function processResponse(options) {
                 .then(processResponse);
         },
         pager: options.pager,
-        onePage: false,
+        isOnePage: false,
         isLoading: false,
     };
 

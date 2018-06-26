@@ -30,7 +30,7 @@ const addDisabledStatusToCodeFieldConfig = (codeFieldConfig, isAdd) => {
     }
 };
 
-const handleFieldConfigForCode = (codeFieldConfig, modelToEdit, d2, isAdd) => {
+const handleFieldConfigForCode = (codeFieldConfig, modelToEdit, isAdd) => {
     addUiComponentToCodeFieldConfig(codeFieldConfig, modelToEdit);
     addValueTypeToCodeFieldConfig(codeFieldConfig, modelToEdit);
     addDisabledStatusToCodeFieldConfig(codeFieldConfig, isAdd);
@@ -51,7 +51,7 @@ async function setupFieldConfigs([fieldConfigs, modelToEdit, optionDialogState])
 
     return fieldConfigs.map((fieldConfig) => {
         if (isFieldCode(fieldConfig) && valueTypeExist(modelToEdit)) {
-            handleFieldConfigForCode(fieldConfig, modelToEdit, d2, isAdd);
+            handleFieldConfigForCode(fieldConfig, modelToEdit, isAdd);
         }
         addValidatorForUniqueField(fieldConfig, model.id, d2);
         addAttributeStatusToFieldConfig(fieldConfig, model);
